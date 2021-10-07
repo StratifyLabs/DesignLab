@@ -1,0 +1,26 @@
+{
+	"folders": [
+		{
+			"path": "dependencies/API"
+		},
+		{
+			"path": "dependencies/CMakeSDK"
+		},
+		{
+			"path": "dependencies/JsonAPI"
+		},
+		{
+			"path": "dependencies/LvglAPI"
+		}
+	],
+	"settings": {
+		"files.exclude": {
+			"SDK/dependencies": true
+		},
+		"git.detectSubmodules": false,
+		"git.scanRepositories": [
+			"SDK/dependencies/API",
+			"SDK/dependencies/ServiceAPI"
+		]
+	}
+}
