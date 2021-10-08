@@ -5,6 +5,9 @@
 #include "Tools.hpp"
 #include "Properties.hpp"
 
+Group Elements::keyboard_group;
+
+
 Application::Application(lvgl::Group keyboard_group) {
   static auto screen = Container::active_screen();
 
@@ -16,6 +19,7 @@ Application::Application(lvgl::Group keyboard_group) {
     .set_flex_align(SetFlexAlign().set_main(FlexAlign::start));
 
   private_model().keyboard_group = keyboard_group;
+  Elements::keyboard_group = private_model().keyboard_group;
 
   static const lv_coord_t tools_width = screen.get_width() / 6;
   static const lv_coord_t properties_width = screen.get_width() / 4;

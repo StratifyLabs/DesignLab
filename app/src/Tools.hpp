@@ -1,7 +1,9 @@
 #ifndef TOOLS_HPP
 #define TOOLS_HPP
 
-#include "Application.hpp"
+#include <lvgl/List.hpp>
+
+#include "Elements.hpp"
 
 class Tools : public Application {
 public:
@@ -11,6 +13,12 @@ public:
     static constexpr auto add_list_name = "AddList";
 
     static auto screen = Container::active_screen();
+
+    static const auto checklist_context = CheckList::Context("");
+    static const auto checklist_context_allow_multiple
+      = CheckList::Context("").set_allow_multiple();
+    static const auto formlist_context = FormList::Context("");
+    API_PRINTF_TRACE_LINE();
 
     container.add(E::Title("", "Tools"))
       .add(E::Spacer())
@@ -26,11 +34,57 @@ public:
                auto *button = screen.find(latest_name()).cast<Button>();
                button->set_width(100).set_height(200);
 
-
                notify_properties(button->object());
              }))
       .add(E::Spacer())
-      .add(E::AddButton(add_list_name).set_initial_text_static("List"));
+      .add(E::AddButton(add_list_name).set_initial_text_static("List"))
+#if 1
+      .add(CheckList(checklist_context).configure([](CheckList &check_list) {
+        check_list.set_width(100_percent)
+          .add_item("Banana", "Banana")
+          .add_item("Apple", "Apple")
+          .add_item("grapes", "grapes")
+          .add_item("nectar", "nectar")
+          .add_item("lemon", "lemon")
+          .add_item("lime", "lime")
+          .add_item("Orange", "Orange");
+      }))
+      .add(CheckList(checklist_context_allow_multiple)
+             .configure([](CheckList &check_list) {
+               check_list.set_width(100_percent)
+                 .add_item("Banana", "Banana")
+                 .add_item("Apple", "Apple")
+                 .add_item("grapes", "grapes")
+                 .add_item("nectar", "nectar")
+                 .add_item("lemon", "lemon")
+                 .add_item("lime", "lime")
+                 .add_item("Orange", "Orange");
+             }))
+      .add(FormList(formlist_context).configure([](FormList &form_list) {
+
+        static auto banana_check
+          = FormList::ItemContext("Banana").set_value("");
+
+        static auto select_file
+          = FormList::ItemContext("Path")
+              .set_type(FormList::ItemType::string)
+              .set_edit_callback(
+                [](FormList::ItemContext *c) {
+
+                  //open the keyboard -- and set the input
+                  //callback to assign the value using c->set_value()
+
+                  c->set_value("/Users/tgil");
+
+                });
+
+
+        form_list.set_width(100_percent)
+          .add_item(banana_check)
+          .add_item(select_file);
+      }))
+#endif
+      ;
   }
 };
 

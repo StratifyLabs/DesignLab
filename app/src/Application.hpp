@@ -11,8 +11,12 @@
 #include <printer.hpp>
 #include <var/Queue.hpp>
 #include <var/StackString.hpp>
-
-#include "Elements.hpp"
+#include <lvgl/Button.hpp>
+#include <lvgl/Container.hpp>
+#include <lvgl/ObjectAccess.hpp>
+#include <lvgl/TextArea.hpp>
+#include <lvgl/Group.hpp>
+#include <lvgl/Event.hpp>
 
 using namespace lvgl;
 
@@ -22,6 +26,17 @@ public:
   Application(lvgl::Group keyboard_group);
 
   static Printer &printer() { return private_model().printer; }
+
+  struct Model {
+  public:
+    API_SINGLETON(Model);
+    lvgl::Font title_font;
+    Style column_flow;
+    var::Queue<chrono::ClockTime::UniqueString> name_list;
+    lv_obj_t * selected_object = nullptr;
+  };
+
+  static Model &model() { return Model::instance(); }
 
 protected:
   static constexpr auto button_height = 10_percent;
@@ -66,17 +81,6 @@ protected:
     model().selected_object = selected;
     Event::send(Container::active_screen().find(properties_container_name), EventCode::notified, selected);
   }
-
-  struct Model {
-  public:
-    API_SINGLETON(Model);
-    lvgl::Font title_font;
-    Style column_flow;
-    var::Queue<chrono::ClockTime::UniqueString> name_list;
-    lv_obj_t * selected_object = nullptr;
-  };
-
-  static Model &model() { return Model::instance(); }
 
 private:
   struct PrivateModel {

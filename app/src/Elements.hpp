@@ -1,10 +1,7 @@
 #ifndef ELEMENTS_HPP
 #define ELEMENTS_HPP
 
-#include <lvgl/Button.hpp>
-#include <lvgl/Container.hpp>
-#include <lvgl/ObjectAccess.hpp>
-#include <lvgl/TextArea.hpp>
+#include "Application.hpp"
 
 #include "Icons.hpp"
 
@@ -14,6 +11,8 @@ OBJECT_ACCESS_FORWARD_FRIENDS();
 
 class Elements {
 public:
+  static Group keyboard_group;
+
   class AddButton : public lvgl::ObjectAccess<AddButton> {
   public:
     explicit AddButton(const char *name = "") : ObjectAccess(name) {}
@@ -118,8 +117,17 @@ public:
 
   class Property : public lvgl::ObjectAccess<Property> {
   public:
-    explicit Property(const char *name, const char *label)
-      : ObjectAccess(name), m_initial_label(label) {}
+    class Context : public Object::Context {
+    public:
+      Context(lvgl::Property value)
+        : Object::Context(Style::to_cstring(value)), m_property(value) {}
+
+    private:
+      API_AF(Context, lvgl::Property, property, lvgl::Property::invalid);
+    };
+
+    explicit Property(const Context &context)
+      : ObjectAccess(context.cast_as_name()) {}
 
     static constexpr auto label_name = "Label";
     static constexpr auto text_area_name = "TextArea";
@@ -127,18 +135,15 @@ public:
   private:
     OBJECT_ACCESS_FRIENDS();
 
-    API_AF(Property, const char *, initial_label, nullptr);
-
     Property(Object parent, const Property &options) {
       m_object = api()->label_create(parent.object());
 
       static constexpr lv_coord_t text_height = 50;
-      auto container = get<Container>();
-
       static const auto font = Font::find(50).get_font();
 
       cast<Label>()->set_text_static("");
 
+      auto container = get<Container>();
       container.set_width(100_percent)
         .set_height(text_height + 20)
         .add(Label(label_name).configure([](Label &label) {
@@ -154,12 +159,29 @@ public:
             .set_text_font(font)
             .set_text_alignment(TextAlignment::center)
             .set_alignment(Alignment::right_middle)
-            .set_height(text_height + 20);
+            .set_one_line_mode()
+            .set_height(text_height + 20)
+            .add_event_callback(EventCode::defocused, [](lv_event_t *e) {
+              const Event event(e);
+              const char *text = event.target().cast<TextArea>()->get_text();
+              if (Application::model().selected_object ) {
+                const Context *c
+                  = event.target().get_parent().context<Context>();
+                Container(Application::model().selected_object)
+                  .set_property(
+                    c->property(),
+                    PropertyValue(var::StringView(text).to_integer()));
+              }
+            });
+          keyboard_group.add(text_area);
         }));
+
+      const Context *c
+        = reinterpret_cast<const Context *>(options.initial_context());
 
       container.find(label_name)
         .cast<Label>()
-        ->set_text_static(options.initial_label());
+        ->set_text_static(Style::to_cstring(c->property()));
     }
   };
 
