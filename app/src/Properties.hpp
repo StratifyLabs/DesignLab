@@ -3,14 +3,11 @@
 
 #include <var/StackString.hpp>
 
-#include "Application.hpp"
+#include "Elements.hpp"
 
 class Properties : public Application {
 public:
   static void configure(Container &container) {
-    static constexpr auto add_button_name = "AddButton";
-    static constexpr auto add_list_name = "AddList";
-
     static auto screen = Container::active_screen();
 
     static auto set_property = [&](Property property, lv_coord_t value) {
@@ -27,8 +24,6 @@ public:
         EventCode::notified,
         [](lv_event_t *e) {
           const Event event(e);
-
-          const auto prop = Property::width;
           Container object(event.parameter<lv_obj_t*>());
 
           set_property(Property::width, object.get_property_value(Property::width).number());

@@ -25,11 +25,22 @@ public:
       .add(E::AddButton(add_button_name)
              .set_initial_text_static("Button")
              .set_initial_clicked([](lv_event_t *) {
-               printf("add button\n");
                fflush(stdout);
                screen.find(canvas_container_name)
                  .cast<Container>()
                  ->add(Button(generate_name()));
+
+               auto *button = screen.find(latest_name()).cast<Button>();
+               button->set_width(100).set_height(200);
+
+               notify_properties(button->object());
+             }))
+      .add(E::Spacer())
+      .add(E::AddButton("")
+             .set_initial_text_static("Label")
+             .set_initial_clicked([](lv_event_t *) {
+               fflush(stdout);
+               Container(model().selected_object).add(Label(generate_name()));
 
                auto *button = screen.find(latest_name()).cast<Button>();
                button->set_width(100).set_height(200);
@@ -69,7 +80,7 @@ public:
           = FormList::ItemContext("Path")
               .set_type(FormList::ItemType::string)
               .set_edit_callback(
-                [](FormList::ItemContext *c) {
+                [](FormList::ItemContext *c, lv_event_t*) {
 
                   //open the keyboard -- and set the input
                   //callback to assign the value using c->set_value()

@@ -31,7 +31,8 @@ public:
   public:
     API_SINGLETON(Model);
     lvgl::Font title_font;
-    Style column_flow;
+    Style column_flow_style;
+    Style fill_parent_style;
     var::Queue<chrono::ClockTime::UniqueString> name_list;
     lv_obj_t * selected_object = nullptr;
   };
@@ -43,7 +44,9 @@ protected:
 
   static constexpr auto tools_container_name = "ToolsContainer";
   static constexpr auto canvas_container_name = "CanvasContainer";
+  static constexpr auto right_tab_view_name = "RightTabView";
   static constexpr auto properties_container_name = "PropertiesContainer";
+  static constexpr auto tree_container_name = "TreeContainer";
 
   static lvgl::Container &set_column_flow(lvgl::Container &container) {
     return container.set_flex_layout()
