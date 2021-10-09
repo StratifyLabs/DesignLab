@@ -17,8 +17,8 @@ public:
         ->set_text(var::NumberString(value));
     };
 
-    static const auto width_context = E::Property::Context(Property::width);
-    static const auto height_context = E::Property::Context(Property::height);
+    static const auto width_context = E::Property::UserData(Property::width);
+    static const auto height_context = E::Property::UserData(Property::height);
     container
       .add_event_callback(
         EventCode::notified,

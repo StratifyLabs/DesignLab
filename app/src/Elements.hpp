@@ -117,17 +117,17 @@ public:
 
   class Property : public lvgl::ObjectAccess<Property> {
   public:
-    class Context : public Object::Context {
+    class UserData : public ::lvgl::UserData {
     public:
-      Context(lvgl::Property value)
-        : Object::Context(Style::to_cstring(value)), m_property(value) {}
+      UserData(lvgl::Property value)
+        : ::lvgl::UserData(Style::to_cstring(value)), m_property(value) {}
 
     private:
-      API_AF(Context, lvgl::Property, property, lvgl::Property::invalid);
+      API_AF(UserData, lvgl::Property, property, lvgl::Property::invalid);
     };
 
-    explicit Property(const Context &context)
-      : ObjectAccess(context.cast_as_name()) {}
+    explicit Property(const UserData &user_data)
+      : ObjectAccess(user_data.cast_as_name()) {}
 
     static constexpr auto label_name = "Label";
     static constexpr auto text_area_name = "TextArea";
@@ -165,8 +165,8 @@ public:
               const Event event(e);
               const char *text = event.target().cast<TextArea>()->get_text();
               if (Application::model().selected_object ) {
-                const Context *c
-                  = event.target().get_parent().context<Context>();
+                const auto *c
+                  = event.target().get_parent().user_data<UserData>();
                 Container(Application::model().selected_object)
                   .set_property(
                     c->property(),
@@ -176,8 +176,8 @@ public:
           keyboard_group.add(text_area);
         }));
 
-      const Context *c
-        = reinterpret_cast<const Context *>(options.initial_context());
+      const auto *c
+        = reinterpret_cast<const UserData *>(options.initial_context());
 
       container.find(label_name)
         .cast<Label>()

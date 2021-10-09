@@ -14,10 +14,10 @@ public:
 
     static auto screen = Container::active_screen();
 
-    static const auto checklist_context = CheckList::Context("");
+    static const auto checklist_context = CheckList::UserData("");
     static const auto checklist_context_allow_multiple
-      = CheckList::Context("").set_allow_multiple();
-    static const auto formlist_context = FormList::Context("");
+      = CheckList::UserData("").set_allow_multiple();
+    static const auto formlist_context = FormList::UserData("");
     API_PRINTF_TRACE_LINE();
 
     container.add(E::Title("", "Tools"))
@@ -36,17 +36,17 @@ public:
                notify_properties(button->object());
              }))
       .add(E::Spacer())
-      .add(E::AddButton("")
-             .set_initial_text_static("Label")
-             .set_initial_clicked([](lv_event_t *) {
-               fflush(stdout);
-               Container(model().selected_object).add(Label(generate_name()));
+      .add(
+        E::AddButton("").set_initial_text_static("Label").set_initial_clicked(
+          [](lv_event_t *) {
+            fflush(stdout);
+            Container(model().selected_object).add(Label(generate_name()));
 
-               auto *button = screen.find(latest_name()).cast<Button>();
-               button->set_width(100).set_height(200);
+            auto *button = screen.find(latest_name()).cast<Button>();
+            button->set_width(100).set_height(200);
 
-               notify_properties(button->object());
-             }))
+            notify_properties(button->object());
+          }))
       .add(E::Spacer())
       .add(E::AddButton(add_list_name).set_initial_text_static("List"))
 #if 1
@@ -73,26 +73,18 @@ public:
              }))
       .add(FormList(formlist_context).configure([](FormList &form_list) {
 
-        static auto banana_check
-          = FormList::ItemContext("Banana").set_value("");
-
-        static auto select_file
-          = FormList::ItemContext("Path")
-              .set_type(FormList::ItemType::string)
-              .set_edit_callback(
-                [](FormList::ItemContext *c, lv_event_t*) {
-
-                  //open the keyboard -- and set the input
-                  //callback to assign the value using c->set_value()
-
-                  c->set_value("/Users/tgil");
-
-                });
-
+        using ItemUserData = FormList::ItemUserData;
 
         form_list.set_width(100_percent)
-          .add_item(banana_check)
-          .add_item(select_file);
+          .add_item(ItemUserData::create("Banana"))
+          .add_item(
+            ItemUserData::create("Path")
+              .set_type(FormList::ItemType::string)
+              .set_edit_callback([](FormList::ItemUserData *c, lv_event_t *) {
+                // open the keyboard -- and set the input
+                // callback to assign the value using c->set_value()
+                c->set_value("/Users/tgil");
+              }));
       }))
 #endif
       ;

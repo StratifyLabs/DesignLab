@@ -15,6 +15,7 @@
 #include <lvgl/Container.hpp>
 #include <lvgl/ObjectAccess.hpp>
 #include <lvgl/TextArea.hpp>
+#include <lvgl/List.hpp>
 #include <lvgl/Group.hpp>
 #include <lvgl/Event.hpp>
 
@@ -35,6 +36,7 @@ public:
     Style fill_parent_style;
     var::Queue<chrono::ClockTime::UniqueString> name_list;
     lv_obj_t * selected_object = nullptr;
+    var::Queue<var::Vector<FormList::ItemUserData>> tree;
   };
 
   static Model &model() { return Model::instance(); }
@@ -53,21 +55,6 @@ protected:
       .set_flex_flow(FlexFlow::column)
       .set_column_padding(10)
       .set_flex_align(SetFlexAlign().set_main(FlexAlign::start));
-  }
-
-  static lvgl::Container &
-  add_column_spacer(lvgl::Container &container, lv_coord_t height) {
-    class SpacerContext : public Object::Context {
-      API_AF(SpacerContext, lv_coord_t, height, 0);
-    };
-
-    const SpacerContext spacer_context = SpacerContext().set_height(height);
-
-    return container.add(
-      Container(spacer_context).configure([](Container &object) {
-        auto *context = object.context<SpacerContext>();
-        object.set_width(100_percent).set_height(context->height());
-      }));
   }
 
   static const char * generate_name() {

@@ -27,14 +27,30 @@ public:
           });
       })).add_event_callback(EventCode::notified, [](lv_event_t*){
         //refresh all tile view items
+
+
       });
   }
 
 private:
   static void configure_list(List &list, lv_obj_t * object) {
+    class Branch : public UserDataAccess<Branch> {
+    public:
+      Branch(const char * name) : UserDataBase(name){}
+
+    private:
+      API_AC(Branch, var::KeyString, class_name);
+    };
+
+
     auto container = Container(object);
     for(u32 i=0; i < container.get_child_count(); i++){
-      list.add_button("", container.get_child(i).name());
+      list.add_button(Branch::create(""), "", container.get_child(i).name(), [](Button & button){
+        auto leaf = button.user_data<Branch>();
+
+
+
+      });
     }
 
 
