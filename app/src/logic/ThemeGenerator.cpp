@@ -441,6 +441,8 @@ void ThemeGenerator::generate_styles() {
 
         API_RETURN_IF_ERROR();
       }
+
+      entry.add_member(create_property_entry("LV_STYLE_PROP_INV", ".num = 0"));
     }
     m_code_printer.newline();
 
@@ -452,7 +454,7 @@ void ThemeGenerator::generate_styles() {
           "v_p",
           "{ .const_props = " | style_name.string_view() | "_const_list }")
         .add_member("prop1", "0")
-        .add_member("has_group", "0")
+        .add_member("has_group", "0xff")
         .add_member("is_const", "1")
         .add_member("prop_cnt", NumberString(entry_key_list.count()));
     }
@@ -1173,7 +1175,7 @@ ThemeGenerator::get_condition(var::StringView condition_value) {
           EINVAL);
       }
       return (
-        "((uint32_t*)(object->user_data))[0] == "
+        "object->user_data && ((uint32_t*)(object->user_data))[0] == "
         | NumberString(
           token.at(1) | token.at(2) << 8 | token.at(3) << 16
             | token.at(4) << 24,

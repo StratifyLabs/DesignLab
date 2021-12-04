@@ -10,6 +10,11 @@
     "$sizePaddingSmall": 4,
     "$sizePaddingLarge": 12,
     "$sizePaddingDefault": 4,
-    "$sizeOutlineWidth": 4
+    "$sizeGrow": 4,
+    "$sizeOutlineWidth": 4,
+    "$sizeArcWidth": 15,
+    "$sizeDropdownMax": 500,
+    "$sizeCheckboxRadius": 8,
+    "$sizeLineWidth": 1
   }
 }

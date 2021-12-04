@@ -5,8 +5,10 @@
   "$variables": {
     "$transitionPeriodMilliseconds": 100,
     "$radiusCircle": "0x7fff",
+    "$opacity20": 51,
     "$opacity40": 102,
     "$opacity50": 127,
+    "$opaque": 255,
     "$opacityCover": 255,
     "$transitionPropertyList": {
       "name": "transition_property_list",
@@ -120,7 +122,7 @@
     "button": {
       "radius": 12,
       "background_opacity": "cover",
-      "background_color": "blue_grey",
+      "background_color": "$colorPrimary",
       "text_color": "$colorWhite",
       "horizontal_padding": 5,
       "vertical_padding": 10,
@@ -134,9 +136,20 @@
     "background_color_secondary": {
       "background_color": "$colorSecondary"
     },
-    "background_color_secondary_muted": {},
-    "background_color_grey": {},
-    "background_color_white": {},
+    "background_color_secondary_muted": {
+      "background_color": "$colorSecondary",
+      "text_color": "$colorSecondary",
+      "opacity": "$opacity20"
+    },
+    "background_color_grey": {
+      "background_color": "$colorGrey",
+      "opacity": "$opaque",
+      "text_color": "$colorText"
+    },
+    "background_color_white": {
+      "background_color": "$colorWhite",
+      "text_color": "$colorText"
+    },
     "pressed": {
       "color_filter_descriptor": "$darkColorFilter",
       "color_filter_opacity": 35
@@ -179,18 +192,35 @@
     "clip_corner": {
       "clip_corner": true
     },
-    "grow": {},
+    "grow": {
+      "transform_width": "$sizeGrow",
+      "transform_height": "$sizeGrow"
+    },
     "transition_delayed": {
       "transition": "$transitionDelayed"
     },
     "transition_normal": {
       "transition": "$transitionNormal"
     },
-    "animation": {},
-    "knob": {},
-    "indicator": {},
-    "arc_indicator": {},
-    "arc_indicator_primary": {},
+    "animation": {
+      "animation_time": 200
+    },
+    "knob": {
+      "background_color": "$colorPrimary",
+      "background_opacity": "$opaque",
+      "padding": 6,
+      "radius": "$radiusCircle"
+    },
+    "indicator": {
+    },
+    "arc_indicator": {
+      "arc_color": "$colorGrey",
+      "arc_width": "$sizeArcWidth",
+      "arc_rounded": true
+    },
+    "arc_indicator_primary": {
+      "arc_color": "$colorPrimary"
+    },
     "chart_series": {
       "line_width": 3,
       "radius": 3,
@@ -211,11 +241,30 @@
       "column_padding": 10,
       "line_color": "grey"
     },
-    "dropdown_list": {},
-    "checkbox_marker": {},
-    "checkbox_marker_checked": {},
-    "switch_knob": {},
-    "line": {},
+    "dropdown_list": {
+      "maximum_height": "$sizeDropdownMax"
+    },
+    "checkbox_marker": {
+      "padding": "$sizePaddingNormal",
+      "border_width": "$sizeBorderWidth",
+      "border_color": "$colorPrimary",
+      "background_color": "$colorBackground",
+      "background_opacity": "$opaque",
+      "radius": "$sizeCheckboxRadius"
+    },
+    "checkbox_marker_checked": {
+      "background_image_source": "LV_SYMBOL_OK",
+      "text_color": "$colorWhite",
+      "text_font": "$fontBodySmall"
+    },
+    "switch_knob": {
+      "padding": "$sizePaddingSmall",
+      "background_color": "$colorWhite"
+    },
+    "line": {
+      "line_width": "$sizeLineWidth",
+      "line_color": "$colorText"
+    },
     "table_cell": {},
     "meter_marker": {},
     "meter_indicator": {},

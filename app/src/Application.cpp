@@ -1,3 +1,4 @@
+#include <design.hpp>
 #include <lvgl.hpp>
 
 #include "Application.hpp"
@@ -7,6 +8,8 @@
 #include "Tree.hpp"
 
 #include "fonts/fonts.h"
+#include "themes/themes.h"
+
 extern "C" const char data_assetfs[];
 
 void Application::run(sys::Cli &cli) {
@@ -16,7 +19,7 @@ void Application::run(sys::Cli &cli) {
     window::Point(),
     window::Size(320 * 4, 240 * 4),
     window::Window::Flags::shown | window::Window::Flags::highdpi
-      | window::Window::Flags::borderless);
+      | window::Window::Flags::resizeable);
 
   runtime.window().set_minimum_size(window::Size(480, 360));
 
@@ -32,75 +35,59 @@ void Application::run(sys::Cli &cli) {
   // load the PNG decoder
   lvgl_api_initialize_png_decoder();
 
+  auto theme
+    = Theme(lvgl_small_dark_theme_initialize(runtime.display(), nullptr));
+
+  printf("Theme is at %p\n", theme.native_value());
+
+  API_PRINTF_TRACE_LINE();
+  lv_disp_set_theme(runtime.display(), theme.native_value());
+  API_PRINTF_TRACE_LINE();
+  static const auto s = Style().set_background_color(Color::red());
+
+  screen()
+    .clear_flag(Flags::scrollable)
+    .add(Row()
+           .fill()
+           .set_padding(20)
+           .set_column_padding(20)
+           .add(Column()
+                  .set_padding(20)
+                  .set_width(50_percent)
+                  .fill_height()
+                  .set_row_padding(20)
+                  .add(Button("HelloButton")
+                         .add_style(s)
+                         .set_width(100)
+                         .set_height(20)
+                         .set_background_color(Color::blue())
+                         .add_label("Hello")))
+           .add(Column()
+                  .set_padding(20)
+                  .set_width(50_percent)
+                  .fill_height()
+                  .set_row_padding(20)
+                  .add(Button().add_label("World")))
+           .add(Column()));
+
+  auto button = screen().find<Button>("HelloButton");
+
+  button.update_layout();
+
+  printf("screen has %d styles\n", screen().object()->style_cnt);
+
+  printf("Button has %d styles\n", button.object()->style_cnt);
+  printf(
+    "bg opacity is %d\n",
+    button.get_property_value(Property::background_opacity).number());
+  printf(
+    "width is %d - %d\n",
+    button.get_property_value(Property::width).number(),
+    button.get_width());
+
   // model cannot be touched until all lvgl initialization is complete
   // it is initialized on first access
   model().runtime = &runtime;
-
-  static auto screen = Container::active_screen();
-
-  model().title_font = Font::find(72, Font::Style::semi_bold).get_font();
-
-  model()
-    .column_flow_style.set_flex_layout()
-    .set_flex_flow(FlexFlow::column)
-    .set_flex_align(SetFlexAlign().set_main(FlexAlign::start));
-
-  model().fill_parent_style.set_width(100_percent).set_height(100_percent);
-
-  model().selected_object = screen.object();
-
-  static const lv_coord_t tools_width = screen.get_width() / 6;
-  static const lv_coord_t properties_width = screen.get_width() / 4;
-  static const lv_coord_t canvas_width
-    = screen.get_width() - tools_width - properties_width - 20;
-
-  screen.set_padding(15)
-    .clear_flag(Container::Flags::scrollable)
-    .add(Container(tools_container_name).setup([](Container container) {
-      container.set_width(tools_width)
-        .set_height(100_percent)
-        .set_background_color(
-          Color::get_palette(Palette::grey, PaletteLevel::darken_x2))
-        .add_style(model().column_flow_style);
-      Tools::configure(container);
-    }))
-    .add(Container(canvas_container_name).setup([](Container container) {
-      container.set_width(canvas_width)
-        .set_x(tools_width)
-        .set_height(100_percent)
-        .set_background_color(
-          Color::get_palette(Palette::grey, PaletteLevel::lighten_x4));
-    }))
-    .add(
-      TabView(TabView::Construct()
-                .set_name(right_tab_view_name)
-                .set_direction(Direction::top)
-                .set_size(80))
-        .setup([](TabView tab_view) {
-          tab_view.set_width(properties_width)
-            .set_x(tools_width + canvas_width)
-            .set_height(100_percent)
-            .add_tab(
-              properties_container_name,
-              "Properties",
-              [](Container container) {
-                container.add_style(model().fill_parent_style)
-                  .set_background_color(
-                    Color::get_palette(Palette::grey, PaletteLevel::darken_x2))
-                  .add_style(model().column_flow_style);
-                Properties::configure(container);
-              })
-            .add_tab(tree_container_name, "Tree", [](Container container) {
-              container.add_style(model().fill_parent_style)
-                .set_background_color(
-                  Color::get_palette(Palette::grey, PaletteLevel::darken_x2))
-                .add_style(model().column_flow_style);
-              Tree::configure(container);
-            });
-        }));
-
-  private_model().periodic_timer
-    = lvgl::PeriodicTimer("applicationTimer", 20_milliseconds, handle_periodic);
 
   runtime.loop();
 }
