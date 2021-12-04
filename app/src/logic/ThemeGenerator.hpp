@@ -35,12 +35,48 @@ private:
     const fs::FileObject *m_output_file = nullptr;
   };
 
+  static constexpr auto lv_class_list = {
+    "arc",
+    "bar",
+    "btn",
+    "btnmatrix",
+    "canvas",
+    "checkbox",
+    "calendar_header_arrow",
+    "calendar_header_dropdown",
+    "dropdown",
+    "dropdownlist",
+    "img",
+    "label",
+    "line",
+    "roller",
+    "slider",
+    "switch",
+    "table",
+    "textarea",
+    "calendar",
+    "chart",
+    "colorwheel",
+    "keyboard",
+    "imgbtn",
+    "led",
+    "list",
+    "obj",
+    "list_text",
+    "list_btn",
+    "meter",
+    "msgbox",
+    "span",
+    "spinbox",
+    "spinner",
+    "tabview",
+    "tileview",
+    "tileview_tile",
+    "win"};
+
   const sys::Cli *m_cli;
-
   CodePrinter m_code_printer;
-
   printer::YamlPrinter m_printer;
-
   json::JsonObject m_variables_object;
   json::JsonObject m_styles_object;
   json::JsonObject m_classes_object;
@@ -62,6 +98,7 @@ private:
   var::GeneralString get_variable(const char *key);
   var::GeneralString get_json_value(const json::JsonValue value);
   var::GeneralString get_lv_state_part(var::StringView key_name);
+  var::GeneralString get_condition(var::StringView condition_value);
 
   const char *get_lv_path_animation_path(Animation::Path value);
 

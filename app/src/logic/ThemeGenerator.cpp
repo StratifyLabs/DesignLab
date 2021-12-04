@@ -101,7 +101,7 @@ void ThemeGenerator::generate_apply_callback() {
       CPrinter::Scope condition_scope(
         m_code_printer,
         CPrinter::Scope::Type::if_,
-        object.at("condition").to_string_view());
+        get_condition(object.at("condition").to_string_view()));
 
       const auto styles_object = object.at("styles").to_object();
       const auto key_list = styles_object.get_key_list();
@@ -114,13 +114,15 @@ void ThemeGenerator::generate_apply_callback() {
         if (json_value.is_array()) {
           for (const auto &value : json_value.to_array()) {
             m_code_printer.statement(
-              "lv_obj_add_style(object, (lv_style_t*)&" | value.to_string_view().pop_front()
-              | "_style, " | state_part | ")");
+              "lv_obj_add_style(object, (lv_style_t*)&"
+              | value.to_string_view().pop_front() | "_style, " | state_part
+              | ")");
           }
         } else {
           m_code_printer.statement(
             "lv_obj_add_style(object, (lv_style_t*)&"
-            | json_value.to_string_view().pop_front() | "_style, " | state_part | ")");
+            | json_value.to_string_view().pop_front() | "_style, " | state_part
+            | ")");
         }
       }
       m_code_printer.statement("return");
@@ -988,4 +990,68 @@ var::GeneralString ThemeGenerator::get_lv_state_part(var::StringView key_name) {
 
   result.pop_back();
   return result;
+}
+
+var::GeneralString
+ThemeGenerator::get_condition(var::StringView condition_value) {
+  // replace .btn || .Button -> (lv_obj_check_type(object, &lv_btn_class))
+  // replace #abcd (u32*)user_data == ('a' << 24 | 'b' << 16 | 'c' << 8 | 'd')
+
+  const auto token_list = condition_value.split(" ");
+
+  auto check_class_match = [](StringView token) -> GeneralString {
+    for (const auto *class_name : lv_class_list) {
+      {
+        const auto match = StringView(".") | class_name;
+        if (token == match.string_view()) {
+          return "(lv_obj_check_type(object, &lv_" | StringView(class_name)
+                 | "_class))";
+        }
+      }
+      {
+        const auto match = StringView(".parent(") | class_name | ")";
+        if (token == match.string_view()) {
+          return "(lv_obj_check_type(lv_obj_get_parent(object), &lv_"
+                 | StringView(class_name) | "_class))";
+        }
+      }
+      {
+        const auto match = StringView(".grandparent(") | class_name | ")";
+        if (token == match.string_view()) {
+          return "(lv_obj_check_type(lv_obj_get_parent(lv_obj_get_parent(object)), &lv_"
+                 | StringView(class_name) | "_class))";
+        }
+      }
+    }
+
+    // return the token unchanged if there is no match
+    return GeneralString(token);
+  };
+
+  auto check_id_match = [](StringView token) -> GeneralString {
+    if (token.at(0) == '#') {
+      return (
+        "(uint32_t*)(object->user_data) == "
+        | NumberString(
+          token.at(0) | token.at(1) << 8 | token.at(2) << 16
+          | token.at(3) << 24));
+    }
+    return GeneralString(token);
+  };
+
+  String condition = String(condition_value);
+  for (const auto &token : token_list) {
+    const auto class_match = check_class_match(token);
+    const auto screen_match
+      = class_match.string_view() == ".screen"
+          ? GeneralString("(lv_obj_get_parent(object) == NULL)")
+          : class_match;
+    const auto id_match = check_id_match(screen_match);
+    if (token != id_match.string_view()) {
+      condition.replace(
+        String::Replace().set_old_string(token).set_new_string(id_match));
+    }
+  }
+
+  return GeneralString(condition.string_view());
 }

@@ -208,7 +208,7 @@
   },
   "&classes": {
     "&Screen": {
-      "condition": "lv_obj_get_parent(object) == NULL",
+      "condition": ".screen",
       "styles": {
         "default": "#screen",
         "default | scrollbar": "#scrollbar",
@@ -216,11 +216,11 @@
       }
     },
     "&ObjectWithTabViewParent": {
-      "condition": "lv_obj_check_type(object, &lv_obj_class) && lv_obj_check_type(lv_obj_get_parent(object), &lv_tabview_class)",
+      "condition": ".obj && .parent(tabview)",
       "styles": {}
     },
     "&ObjectWithTabViewGrandparent": {
-      "condition": "lv_obj_check_type(object, &lv_obj_class) && lv_obj_check_type(lv_obj_get_parent(lv_obj_get_parent(object)), &lv_tabview_class)",
+      "condition": ".obj && .grandparent(tabview)",
       "styles": {
         "default": "#padding_normal",
         "default | scrollbar": "#scrollbar",
@@ -228,7 +228,7 @@
       }
     },
     "&WindowHeader": {
-      "condition": "lv_obj_get_child_id(object) == 0 && lv_obj_check_type(lv_obj_get_parent(object), &lv_win_class)",
+      "condition": "lv_obj_get_child_id(object) == 0 && .parent(win)",
       "styles": {
         "default": [
           "#background_color_grey",
@@ -237,7 +237,7 @@
       }
     },
     "&WindowContent": {
-      "condition": "lv_obj_get_child_id(object) == 0 && lv_obj_check_type(lv_obj_get_parent(object), &lv_win_class)",
+      "condition": "lv_obj_get_child_id(object) == 0 && .parent(win)",
       "styles": {
         "default": [
           "#screen",
@@ -248,7 +248,7 @@
       }
     },
     "&Object": {
-      "condition": "lv_obj_check_type(object, &lv_obj_class)",
+      "condition": ".obj",
       "styles": {
         "default": "#card",
         "default | scrollbar": "#scrollbar",
@@ -256,7 +256,7 @@
       }
     },
     "&Button": {
-      "condition": "lv_obj_check_type(object, &lv_btn_class)",
+      "condition": ".btn",
       "styles": {
         "default": [
           "#button",
@@ -272,10 +272,10 @@
       }
     },
     "&Line": {
-      "condition": "lv_obj_check_type(object, &lv_line_class)"
+      "condition": ".line"
     },
     "&ButtonMatrixWithMessageBoxParent": {
-      "condition": "lv_obj_check_type(object, &lv_btnmatrix_class) && lv_obj_check_type(lv_obj_get_parent(object), &lv_msgbox_class)",
+      "condition": ".btnmatrix && .parent(msgbox)",
       "styles": {
         "default | items": "#button",
         "pressed | items": "#pressed",
@@ -286,7 +286,7 @@
       }
     },
     "&ButtonMatrixWithTabViewParent": {
-      "condition": "lv_obj_check_type(object, &lv_btnmatrix_class) && lv_obj_check_type(lv_obj_get_parent(object), &lv_tabview_class)",
+      "condition": ".btnmatrix && .parent(tabview)",
       "styles": {
         "default": "#background_color_white",
         "focus_key": [
@@ -306,7 +306,7 @@
       }
     },
     "&ButtonMatrix": {
-      "condition": "lv_obj_check_type(object, &lv_btnmatrix_class)",
+      "condition": ".btnmatrix",
       "styles": {
         "default": "#card",
         "focus_key": "#outline_primary",
@@ -320,7 +320,7 @@
       }
     },
     "&Bar": {
-      "condition": "lv_obj_check_type(object, &lv_bar_class)",
+      "condition": ".bar",
       "styles": {
         "default": [
           "#background_color_primary_muted",
@@ -335,7 +335,7 @@
       }
     },
     "&Slider": {
-      "condition": "lv_obj_check_type(object, &lv_slider_class)",
+      "condition": ".slider",
       "styles": {
         "default": [
           "#background_color_primary_muted",
@@ -351,7 +351,7 @@
       }
     },
     "&Table": {
-      "condition": "lv_obj_check_type(object, &lv_table_class)",
+      "condition": ".table",
       "styles": {
         "default": [
           "#card",
@@ -373,7 +373,7 @@
       }
     },
     "&Checkbox": {
-      "condition": "lv_obj_check_type(object, &lv_checkbox_class)",
+      "condition": ".checkbox",
       "styles": {
         "default": "#padding_gap",
         "focus_key": "#outline_primary",
@@ -394,7 +394,7 @@
       }
     },
     "&Switch": {
-      "condition": "lv_obj_check_type(object, &lv_switch_class)",
+      "condition": ".switch",
       "styles": {
         "default": [
           "#background_color_grey",
@@ -414,7 +414,7 @@
       }
     },
     "&Chart": {
-      "condition": "lv_obj_check_type(object, &lv_chart_class)",
+      "condition": ".chart",
       "styles": {
         "default": [
           "#card",
@@ -429,7 +429,7 @@
       }
     },
     "&Roller": {
-      "condition": "lv_obj_check_type(object, &lv_roller_class)",
+      "condition": ".roller",
       "styles": {
         "default": [
           "#card",
@@ -443,7 +443,7 @@
       }
     },
     "&DropDown": {
-      "condition": "lv_obj_check_type(object, &lv_dropdown_class)",
+      "condition": ".dropdown",
       "styles": {
         "default": [
           "#card",
@@ -460,7 +460,7 @@
       }
     },
     "&DropDownList": {
-      "condition": "lv_obj_check_type(object, &lv_dropdownlist_class)",
+      "condition": ".dropdownlist",
       "styles": {
         "default": [
           "#card",
@@ -476,7 +476,7 @@
       }
     },
     "&Arc": {
-      "condition": "lv_obj_check_type(object, &lv_arc_class)",
+      "condition": ".arc",
       "styles": {
         "default": "#arc_indicator",
         "default | indicator": [
@@ -487,7 +487,7 @@
       }
     },
     "&Spinner": {
-      "condition": "lv_obj_check_type(object, &lv_spinner_class)",
+      "condition": ".spinner",
       "styles": {
         "default": "#arc_indicator",
         "default | indicator": [
@@ -497,7 +497,7 @@
       }
     },
     "&Meter": {
-      "condition": "lv_obj_check_type(object, &lv_meter_class)",
+      "condition": ".meter",
       "styles": {
         "default": [
           "#card",
@@ -507,7 +507,7 @@
       }
     },
     "&TextArea": {
-      "condition": "lv_obj_check_type(object, &lv_textarea_class)",
+      "condition": ".textarea",
       "styles": {
         "default": [
           "#card",
@@ -522,7 +522,7 @@
       }
     },
     "&Calendar": {
-      "condition": "lv_obj_check_type(object, &lv_calendar_class)",
+      "condition": ".calendar",
       "styles": {
         "default": [
           "#card",
@@ -536,19 +536,19 @@
       }
     },
     "&CalendarHeaderArrow": {
-      "condition": "lv_obj_check_type(object, &lv_calendar_header_arrow_class)",
+      "condition": ".calendar_header_arrow",
       "styles": {
         "default": "#card"
       }
     },
     "&CalendarHeaderDropDown": {
-      "condition": "lv_obj_check_type(object, &lv_calendar_header_dropdown_class)",
+      "condition": ".calendar_header_dropdown",
       "styles": {
         "default": "#card"
       }
     },
     "&Keyboard": {
-      "condition": "lv_obj_check_type(object, &lv_keyboard_class)",
+      "condition": ".keyboard",
       "styles": {
         "default": [
           "#card",
@@ -568,7 +568,7 @@
       }
     },
     "&List": {
-      "condition": "lv_obj_check_type(object, &lv_list_class)",
+      "condition": ".list",
       "styles": {
         "default": [
           "#card",
@@ -579,7 +579,7 @@
       }
     },
     "&ListText": {
-      "condition": "lv_obj_check_type(object, &lv_list_text_class)",
+      "condition": ".list_text",
       "styles": {
         "default": [
           "#background_color_grey",
@@ -588,7 +588,7 @@
       }
     },
     "&ListButton": {
-      "condition": "lv_obj_check_type(object, &lv_list_btn_class)",
+      "condition": ".list_btn",
       "styles": {
         "default": [
           "#background_color_white",
@@ -605,7 +605,7 @@
       }
     },
     "&MessageBox": {
-      "condition": "lv_obj_check_type(object, &lv_msgbox_class)",
+      "condition": ".msgbox)",
       "styles": {
         "default": [
           "#card",
@@ -614,7 +614,7 @@
       }
     },
     "&Spinbox": {
-      "condition": "lv_obj_check_type(object, &lv_spinbox_class)",
+      "condition": ".spinbox",
       "styles": {
         "default": [
           "#card",
