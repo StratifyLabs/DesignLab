@@ -1,4 +1,16 @@
 #include "themes.h"
+
+extern const lv_font_t montserrat_r_16;
+extern const lv_font_t montserrat_r_20;
+extern const lv_font_t montserrat_r_24;
+extern const lv_font_t montserrat_r_32;
+extern const lv_font_t montserrat_r_28;
+extern const lv_font_t montserrat_r_24;
+extern const lv_font_t montserrat_r_20;
+extern const lv_font_t sourcecode_r_12;
+extern const lv_font_t sourcecode_r_16;
+extern const lv_font_t sourcecode_r_20;
+
 static const lv_style_prop_t transition_property_list[] = {
    (lv_style_prop_t)0x0021 /* background_opacity */,
    (lv_style_prop_t)0x0020 /* background_color */,
@@ -117,7 +129,7 @@ static const lv_style_t btn_success_style = {
 };
 
 static const lv_style_const_prop_t btn_sm_const_list[] = {
-  { .prop = LV_STYLE_TEXT_FONT, .value = { .ptr = (void*)montserrat_r_18 } },
+  { .prop = LV_STYLE_TEXT_FONT, .value = { .ptr = (void*)&montserrat_r_16 } },
   { .prop = LV_STYLE_PAD_TOP, .value = {  } },
   { .prop = LV_STYLE_PAD_BOTTOM, .value = {  } },
   { .prop = LV_STYLE_PAD_LEFT, .value = {  } },
@@ -133,7 +145,7 @@ static const lv_style_t btn_sm_style = {
 };
 
 static const lv_style_const_prop_t btn_lg_const_list[] = {
-  { .prop = LV_STYLE_TEXT_FONT, .value = { .ptr = (void*)montserrat_r_22 } },
+  { .prop = LV_STYLE_TEXT_FONT, .value = { .ptr = (void*)&montserrat_r_24 } },
   { .prop = LV_STYLE_PAD_TOP, .value = {  } },
   { .prop = LV_STYLE_PAD_BOTTOM, .value = {  } },
   { .prop = LV_STYLE_PAD_LEFT, .value = {  } },
@@ -1261,16 +1273,24 @@ void lvgl_small_dark_apply_callback(lv_theme_t * theme, lv_obj_t * object){
   }
 }
 
+const lvgl_api_style_descriptor_t * lvgl_small_dark_get_style_callback(int offset){
+  const size_t size = sizeof(lvgl_small_dark_style_descriptor_list) / sizeof(lvgl_api_style_descriptor_t);
+  if(offset < size){
+    return &(lvgl_small_dark_style_descriptor_list[offset]);
+  }
+  return NULL;
+}
+
 lv_theme_t lvgl_small_dark_theme = {
   .apply_cb = lvgl_small_dark_apply_callback,
   .parent = NULL,
-  .user_data = NULL,
+  .user_data = (void*)lvgl_small_dark_get_style_callback,
   .disp = NULL,
   .color_primary = 0,
   .color_secondary = 0,
-  .font_small = NULL,
-  .font_normal = NULL,
-  .font_large = NULL,
+  .font_small = &montserrat_r_16,
+  .font_normal = &montserrat_r_20,
+  .font_large = &montserrat_r_24,
   .flags = 0
 };
 
@@ -1278,13 +1298,5 @@ lv_theme_t * lvgl_small_dark_theme_initialize(lv_disp_t * disp, lv_theme_t * par
   lvgl_small_dark_theme.disp = disp;
   lvgl_small_dark_theme.parent = parent;
   return &lvgl_small_dark_theme;
-}
-
-const lvgl_api_style_descriptor_t * lvgl_small_dark_get_style_callback(int offset){
-  const size_t size = sizeof(lvgl_small_dark_style_descriptor_list) / sizeof(lvgl_api_style_descriptor_t);
-  if(offset < size){
-    return &(lvgl_small_dark_style_descriptor_list[offset]);
-  }
-  return NULL;
 }
 

@@ -81,7 +81,7 @@ ThemeGenerator::ThemeGenerator(const sys::Cli &cli) : m_cli(&cli) {
 
   if (const auto header_value = m_theme_object.get_header();
       !header_value.is_empty()) {
-    m_code_printer.header(header_value);
+    m_code_printer.header(header_value).newline();
   }
 
   generate_descriptors();
@@ -214,39 +214,12 @@ void ThemeGenerator::generate_theme() {
   API_RETURN_IF_ERROR();
   const auto name = m_theme_object.get_name();
 
-  CPrinter::StructInitialization(
-    m_code_printer,
-    "lv_theme_t " | name | "_theme")
-    .add_member("apply_cb", name | "_apply_callback")
-    .add_member("parent", "NULL")
-    .add_member("user_data", "NULL")
-    .add_member("disp", "NULL")
-    .add_member("color_primary", "0")
-    .add_member("color_secondary", "0")
-    .add_member("font_small", "NULL")
-    .add_member("font_normal", "NULL")
-    .add_member("font_large", "NULL")
-    .add_member("flags", "0");
-  m_code_printer.newline();
-
-  {
-    CPrinter::Function initialize_function(
-      m_code_printer,
-      "lv_theme_t * " | name
-        | "_theme_initialize(lv_disp_t * disp, lv_theme_t * parent)");
-
-    m_code_printer.statement(name | "_theme.disp = disp")
-      .statement(name | "_theme.parent = parent")
-      .statement("return &" | name | "_theme");
-  }
-
-  m_code_printer.newline();
-
+  const auto get_style_callback_name = name | "_get_style_callback";
   {
     CPrinter::Function get_style_function(
       m_code_printer,
-      "const lvgl_api_style_descriptor_t * " | name
-        | "_get_style_callback(int offset)");
+      "const lvgl_api_style_descriptor_t * " | get_style_callback_name
+        | "(int offset)");
 
     const auto list_name = name | "_style_descriptor_list";
     m_code_printer.statement(
@@ -262,11 +235,51 @@ void ThemeGenerator::generate_theme() {
     m_code_printer.statement("return NULL");
   }
   m_code_printer.newline();
+
+  CPrinter::StructInitialization(
+    m_code_printer,
+    "lv_theme_t " | name | "_theme")
+    .add_member("apply_cb", name | "_apply_callback")
+    .add_member("parent", "NULL")
+    .add_member("user_data", "(void*)" | get_style_callback_name)
+    .add_member("disp", "NULL")
+    .add_member("color_primary", "0")
+    .add_member("color_secondary", "0")
+    .add_member("font_small", get_variable("$fontBodySmall"))
+    .add_member("font_normal", get_variable("$fontBodyMedium"))
+    .add_member("font_large", get_variable("$fontBodyLarge"))
+    .add_member("flags", "0");
+  m_code_printer.newline();
+
+  {
+    CPrinter::Function initialize_function(
+      m_code_printer,
+      "lv_theme_t * " | name
+        | "_theme_initialize(lv_disp_t * disp, lv_theme_t * parent)");
+
+    m_code_printer.statement(name | "_theme.disp = disp")
+      .statement(name | "_theme.parent = parent")
+      .statement("return &" | name | "_theme");
+  }
+
+  m_code_printer.newline();
 }
 
 void ThemeGenerator::generate_descriptors() {
 
-  const auto key_list = m_variables_object.get_key_list();
+  {
+    const auto key_list = m_variables_object.get_key_list();
+    for (const auto &key : key_list) {
+      if (key.find("$font") == 0) {
+        const auto font_variable_name
+          = m_variables_object.at(key).to_string_view().pop_front();
+        m_code_printer.statement(
+          "extern const lv_font_t " | font_variable_name);
+      }
+    }
+    m_code_printer.newline();
+  }
+
   for (const auto &variable : m_variables_object) {
     if (variable.is_object()) {
       const auto json_object = variable.to_object();

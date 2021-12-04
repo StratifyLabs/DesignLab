@@ -13,13 +13,7 @@ extern "C" {
 #include <lvgl_api.h>
 
 typedef struct {
-  const lv_font_t * font_header_extra_large;
-  const lv_font_t * font_header_large;
-  const lv_font_t * font_header_medium;
-  const lv_font_t * font_header_small;
-  const lv_font_t * font_code_large;
-  const lv_font_t * font_code_medium;
-  const lv_font_t * font_code_small;
+  const lvgl_api_style_descriptor_t  * (*get_style_callback)(int);
 } design_api_theme_user_data_t;
 
 lv_theme_t* lvgl_small_dark_theme_initialize(lv_disp_t * disp, lv_theme_t * parent);
