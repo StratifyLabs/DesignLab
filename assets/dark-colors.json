@@ -1,0 +1,17 @@
+{
+  "name": "dark",
+  "type": "colors",
+  "version": 0,
+  "$variables": {
+    "$colorPrimary": "0xffffff",
+    "$colorSecondary": "0xffffff",
+    "$colorInfo": "0xffffff",
+    "$colorWarning": "0xffffff",
+    "$colorDanger": "0xffffff",
+    "$colorWhite": "0xffffff",
+    "$colorGrey": "0xffffff",
+    "$colorSuccess": "0xffffff",
+    "$colorScreen": "0xffffff",
+    "$colorText": "0xffffff"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "type": "theme",
+  "version": 0,
+  "colors": "dark-colors.json",
+  "sizes": "small-sizes.json",
+  "style": "lvgl-style.json",
+  "name": "lvgl-small-dark",
+  "header": "lvgl_small_dark.h"
+}

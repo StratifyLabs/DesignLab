@@ -12,14 +12,13 @@ public:
 
     static constexpr auto tile_view_name = "TileView";
 
-    container.add(E::Title("", "Tree"))
-      .add(E::Spacer())
-      .add(E::PropertySectionTitle("Object"))
-      .add(TileView(tile_view_name).configure([](TileView &tile_view) {
+    container.add(Label("Tree"))
+      .add(Label("Object"))
+      .add(TileView(tile_view_name).setup([](TileView tile_view) {
         tile_view.set_width(100_percent)
           .set_height(80_percent)
-          .add_tile("", TileView::Location(), [](Container &container) {
-            container.add(List("").configure([](List &list) {
+          .add_tile("", TileView::Location(), [](Container container) {
+            container.add(List("").setup([](List list) {
               list.add_style(model().fill_parent_style);
               auto * canvas = Container::active_screen().find(canvas_container_name).object();
               configure_list(list, canvas);

@@ -3,3 +3,4 @@ cmake_link/
 SDK/dependencies/
 SDK/StratifyLabs-SDK/
 CMakeLists.txt.user
+.idea/

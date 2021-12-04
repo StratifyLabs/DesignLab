@@ -19,27 +19,21 @@
 #include <lvgl/Group.hpp>
 #include <lvgl/Event.hpp>
 
+#include <sys/Cli.hpp>
+#include <design.hpp>
+
+#include "GuiObject.hpp"
+
 using namespace lvgl;
 
-class Application {
+class Application : public GuiObject {
 
 public:
-  Application(lvgl::Group keyboard_group);
+  static void run(sys::Cli & cli);
 
   static Printer &printer() { return private_model().printer; }
 
-  struct Model {
-  public:
-    API_SINGLETON(Model);
-    lvgl::Font title_font;
-    Style column_flow_style;
-    Style fill_parent_style;
-    var::Queue<chrono::ClockTime::UniqueString> name_list;
-    lv_obj_t * selected_object = nullptr;
-    var::Queue<var::Vector<FormList::ItemUserData>> tree;
-  };
 
-  static Model &model() { return Model::instance(); }
 
 protected:
   static constexpr auto button_height = 10_percent;

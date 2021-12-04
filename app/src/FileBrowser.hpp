@@ -6,11 +6,11 @@
 class FileBrowser : public Application {
 public:
 
-  static void configure(lvgl::Container & container);
+  static void configure(lvgl::Container container);
 
 private:
 
-  static void configure_directory(lvgl::Container & container);
+  static void configure_directory(lvgl::Container container);
 };
 
 #endif // FILEBROWSER_HPP

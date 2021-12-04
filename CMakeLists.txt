@@ -3,7 +3,6 @@ cmake_minimum_required (VERSION 3.12)
 set(SDK_DIRECTORY ${CMAKE_SOURCE_DIR}/SDK)
 set(SOS_SDK_PATH ${SDK_DIRECTORY}/StratifyLabs-SDK)
 
-
 set(SOS_MACOS_VERSION_MIN 10.14 CACHE INTERNAL "Override default min OS for MacOS")
 
 set(CMAKE_MODULE_PATH ${SOS_SDK_PATH}/cmake)

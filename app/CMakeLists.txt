@@ -1,73 +1,69 @@
 
-
-
-find_package(QT
-	NAMES Qt6
-	COMPONENTS Core REQUIRED)
-
-find_package(Qt${QT_VERSION_MAJOR}
-	COMPONENTS
-	Quick
-	Widgets
-	REQUIRED
-	)
+set(DEPENDENCIES
+	DesignAPI
+	WindowAPI
+	CPrinterAPI
+	InetAPI
+	JsonAPI
+	TestAPI
+	SysAPI
+	FsAPI
+	VarAPI
+	ThreadAPI)
 
 set(LOCAL_NAME ${PROJECT_NAME})
 
-qt6_add_resources(QT_RESOURCES src/qml.qrc)
-
 sos_sdk_add_subdirectory(PRIVATE_SOURCELIST ${CMAKE_CURRENT_SOURCE_DIR}/src)
 sos_sdk_add_subdirectory(FONT_SOURCELIST ${CMAKE_CURRENT_SOURCE_DIR}/src/fonts)
+sos_sdk_add_subdirectory(THEME_SOURCELIST ${CMAKE_CURRENT_SOURCE_DIR}/src/themes)
+sos_sdk_add_subdirectory(ASSETFS_SOURCELIST ${CMAKE_CURRENT_SOURCE_DIR}/src/assetfs)
+
 sos_sdk_app_target(RELEASE ${LOCAL_NAME} "" release ${SOS_ARCH})
 
-set(RELEASE_TARGET_NAME DesignLab)
-add_executable(${RELEASE_TARGET_NAME} MACOSX_BUNDLE)
-target_sources(${RELEASE_TARGET_NAME}
+set(ICON_FILE  icon.icns)
+set(ICON_PATH  ${CMAKE_CURRENT_SOURCE_DIR}/../assets/${ICON_FILE})
+add_executable(${RELEASE_TARGET} MACOSX_BUNDLE ${ICON_PATH})
+target_sources(${RELEASE_TARGET}
 	PRIVATE
 	${PRIVATE_SOURCELIST}
 	${FONT_SOURCELIST}
-	${QT_RESOURCES}
+	${ASSETFS_SOURCELIST}
+	${THEME_SOURCELIST}
 	)
 
-target_compile_definitions(${RELEASE_TARGET_NAME}
+
+target_compile_definitions(${RELEASE_TARGET}
 	PRIVATE
 	-DVERSION=\"${CMAKE_PROJECT_VERSION}\"
 	)
 
-target_include_directories(${RELEASE_TARGET_NAME}
+target_include_directories(${RELEASE_TARGET}
 	PRIVATE
 	${CMAKE_CURRENT_SOURCE_DIR}/src
 	)
 
-target_compile_options(${RELEASE_TARGET_NAME}
+target_compile_options(${RELEASE_TARGET}
 	PRIVATE
 	-O3
 	)
 
-set_target_properties(${RELEASE_TARGET_NAME}
+set_property(TARGET ${RELEASE_TARGET} PROPERTY CXX_STANDARD 17)
+
+sos_sdk_app_add_arch_targets("${RELEASE_OPTIONS}" "${DEPENDENCIES}" 0)
+
+set_source_files_properties(${ICON_PATH} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
+set_target_properties(${RELEASE_TARGET}
 	PROPERTIES
-		BUNDLE TRUE
-		MACOSX_BUNDLE_GUI_IDENTIFIER stratifylabs.dev.style.identifier.${CUR_TARGET}
-		MACOSX_BUNDLE_BUNDLE_NAME ${PROJECT_NAME}
-		MACOSX_BUNDLE_BUNDLE_VERSION "0.1"
-		MACOSX_BUNDLE_SHORT_VERSION_STRING "0.1"
-		MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/MacOSXBundleInfo.plist.in
-)
-
-set_property(TARGET ${RELEASE_TARGET_NAME} PROPERTY CXX_STANDARD 17)
-
-
-target_link_libraries(${RELEASE_TARGET_NAME} PUBLIC
-	lvgl_qt
-	lvgl_release_link
-	JsonAPI_release_link
+	BUNDLE True
+	MACOSX_BUNDLE_GUI_IDENTIFIER stratifylabs.dev.style.identifier.${CUR_TARGET}
+	MACOSX_BUNDLE_BUNDLE_NAME gui
+	MACOSX_BUNDLE_BUNDLE_VERSION "0.1"
+	MACOSX_BUNDLE_SHORT_VERSION_STRING "0.1"
+	MACOSX_BUNDLE_ICON_FILE ${ICON_FILE}
+	MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/MacOSXBundleInfo.plist.in
 	)
 
-set(MAC_DEPLOY_QT ${CMAKE_PREFIX_PATH}/bin/macdeployqt)
 
-get_target_property(BUNDLE_DIRECTORY ${RELEASE_TARGET_NAME} BINARY_DIR)
-
-add_custom_target(deploy
-	COMMAND ${MAC_DEPLOY_QT} ${BUNDLE_DIRECTORY}/${RELEASE_TARGET_NAME}.app -codesign=4ZXQ5PR398)
-
-
+install(
+	PROGRAMS ${CMAKE_CURRENT_SOURCE_DIR}/build_release_link/${LOCAL_NAME}_release_link.elf${SOS_SDK_EXEC_SUFFIX}
+	DESTINATION ${SOS_SDK_PATH}/bin RENAME ${LOCAL_NAME}${SOS_SDK_EXEC_SUFFIX})

@@ -40,13 +40,21 @@ set(STRATIFYOS_LWIP_PATH
 sdk_add_subdirectory(API main)
 include(${BASE_DIRECTORY}/API/libraries/API.cmake)
 
-set(LVGL_API_IS_QT_SIMULATOR ON CACHE INTERNAL "Enable QT Simulator")
-set(LVGL_QT_PATH "/Users/tgil/Qt/6.1.0/clang_64/lib/cmake" CACHE INTERNAL "Enable QT Simulator")
+set(LODEPNG_DEFINITIONS "__lodepng;LODEPNG_NO_COMPILE_ENCODER=1;LODEPNG_NO_COMPILE_CPP=1;LODEPNG_NO_COMPILE_DISK=1" CACHE INTERNAL "Defintions for compiling lodepng")
+
+set(LVGL_API_IS_QT_SIMULATOR OFF CACHE INTERNAL "Disable QT Simulator")
 set(LVGL_CONFIG_PATH ${CMAKE_CURRENT_SOURCE_DIR}/config CACHE INTERNAL "LVGL config path")
 set(LVGL_NO_STRATIFY_OS ON CACHE INTERNAL "Do not include dependency on Stratify OS")
 set(MBEDTLS_CONFIG_FILE ${CMAKE_CURRENT_SOURCE_DIR}/config/mbedtls/config.h CACHE INTERNAL "MBEDTLS config file")
 
 add_subdirectory(dependencies/CMakeSDK CMakeSDK)
 
-sdk_add_subdirectory(JsonAPI v1.0)
+sdk_add_subdirectory(JsonAPI v1.2)
+sdk_add_subdirectory(InetAPI v1.2)
+
+sdk_add_subdirectory(WindowAPI main)
 sdk_add_subdirectory(LvglAPI main)
+sdk_add_subdirectory(DesignAPI main)
+
+sdk_add_subdirectory(CPrinterAPI main)
+

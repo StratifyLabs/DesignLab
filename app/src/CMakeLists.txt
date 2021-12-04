@@ -3,8 +3,13 @@ set(SOURCES
 	main.cpp
 	qml.qrc
 
+	logic/ThemeGenerator.hpp
+	logic/ThemeGenerator.cpp
+
 	Application.cpp
 	Application.hpp
+
+	GuiObject.hpp
 
 	Tree.hpp
 

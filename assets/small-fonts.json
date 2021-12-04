@@ -1,0 +1,16 @@
+{
+  "name": "small",
+  "type": "fonts",
+  "$variables": {
+    "$fontBodySmall": "montserrat-r-18",
+    "$fontBodyMedium": "montserrat-r-20",
+    "$fontBodyLarge": "montserrat-r-22",
+    "$fontHeaderExtraLarge": "montserrat-r-32",
+    "$fontHeaderLarge": "montserrat-r-28",
+    "$fontHeaderMedium": "montserrat-r-24",
+    "$fontHeaderSmall": "montserrat-r-20",
+    "$fontCodeSmall": "sourcecode-r-12",
+    "$fontCodeMedium": "sourcecode-r-16",
+    "$fontCodeLarge": "sourcecode-r-20"
+  }
+}
