@@ -1,0 +1,238 @@
+{
+  "name": "lvgl",
+  "type": "styles",
+  "version": 0,
+  "$variables": {
+    "$transitionPeriodMilliseconds": 100,
+    "$radiusCircle": "0x7fff",
+    "$opacity40": 102,
+    "$opacity50": 127,
+    "$opacityCover": 255,
+    "$transitionPropertyList": {
+      "name": "transition_property_list",
+      "type": "transitionPropertyList",
+      "properties": [
+        "background_opacity",
+        "background_color",
+        "transform_width",
+        "transform_height",
+        "translate_y",
+        "translate_x",
+        "transform_zoom",
+        "transform_angle",
+        "color_filter_opacity",
+        "color_filter_descriptor"
+      ]
+    },
+    "$transitionNormal": {
+      "name": "transition_normal",
+      "type": "transitionDescriptor",
+      "property_list": "transition_property_list",
+      "path": "linear",
+      "period": "$transitionPeriodMilliseconds",
+      "delay": 0
+    },
+    "$transitionDelayed": {
+      "name": "transition_delayed",
+      "type": "transitionDescriptor",
+      "property_list": "transition_property_list",
+      "path": "linear",
+      "period": "$transitionPeriodMilliseconds",
+      "delay": 70
+    },
+    "$darkColorFilter": {
+      "name": "dark_filter_callback",
+      "type": "colorFilterDescriptor",
+      "code": "LV_UNUSED(filter_descriptor);\n  return lv_color_darken(color, opacity);"
+    },
+    "$greyColorFilter": {
+      "name": "grey_filter_callback",
+      "type": "colorFilterDescriptor",
+      "code": "LV_UNUSED(filter_descriptor);\n  return lv_color_mix(lv_palette_lighten(LV_PALETTE_GREY, 2), color, opacity);"
+    }
+  },
+  "@styles": {
+    "@btn_primary": {
+      "background_color": "$colorPrimary",
+      "text_color": "$colorText"
+    },
+    "@btn_secondary": {
+      "background_color": "$colorSecondary",
+      "text_color": "$colorText"
+    },
+    "@btn_warning": {
+      "background_color": "$colorWarning",
+      "text_color": "$colorText"
+    },
+    "@btn_info": {
+      "background_color": "$colorInfo",
+      "text_color": "$colorText"
+    },
+    "@btn_danger": {
+      "background_color": "$colorDanger",
+      "text_color": "$colorText"
+    },
+    "@btn_success": {
+      "background_color": "$colorDanger",
+      "text_color": "$colorText"
+    },
+    "@btn_sm": {
+      "text_font": "$fontBodySmall",
+      "padding": "$sizePaddingSmall"
+    },
+    "@btn_lg": {
+      "text_font": "$fontBodyLarge",
+      "padding": "$sizePaddingLarge"
+    },
+    "screen": {
+      "background_opacity": "$opacityCover",
+      "background_color": "$colorScreen",
+      "text_color": "$colorText",
+      "row_padding": "$sizePaddingSmall",
+      "column_padding": "$sizePaddingSmall"
+    },
+    "scrollbar": {
+      "background_color": "grey",
+      "radius": "$radiusCircle",
+      "right_padding": "$sizeScrollbarPadding",
+      "top_padding": "$sizeScrollbarPadding",
+      "width": "$sizeScrollbar",
+      "height": "$sizeScrollbar",
+      "background_opacity": "$opacity40",
+      "transition": "$transitionNormal"
+    },
+    "scrollbar_scrolled": {
+      "background_opacity": "$opacityCover"
+    },
+    "card": {
+      "radius": 12,
+      "background_opacity": "$opacityCover",
+      "background_color": "blue_grey",
+      "border_color": "blue_grey",
+      "border_width": "$sizeBorderWidth",
+      "border_post": true,
+      "padding": "$sizePaddingDefault",
+      "row_padding": "$sizePaddingSmall",
+      "column_padding": "$sizePaddingSmall",
+      "line_color": "blue_grey",
+      "line_width": 1
+    },
+    "button": {
+      "radius": 12,
+      "background_opacity": "cover",
+      "background_color": "blue_grey",
+      "text_color": "$colorWhite",
+      "horizontal_padding": 5,
+      "vertical_padding": 10,
+      "column_padding": 3,
+      "row_padding": 3
+    },
+    "background_color_primary": {
+      "background_color": "$colorPrimary"
+    },
+    "background_color_primary_muted": {},
+    "background_color_secondary": {
+      "background_color": "$colorSecondary"
+    },
+    "background_color_secondary_muted": {},
+    "background_color_grey": {},
+    "background_color_white": {},
+    "pressed": {
+      "color_filter_descriptor": "$darkColorFilter",
+      "color_filter_opacity": 35
+    },
+    "disabled": {
+      "color_filter_descriptor": "$greyColorFilter",
+      "color_filter_opacity": 35
+    },
+    "padding_zero": {
+      "padding": 0
+    },
+    "padding_tiny": {
+      "padding": "$sizePaddingTiny"
+    },
+    "padding_small": {
+      "padding": "$sizePaddingSmall"
+    },
+    "padding_normal": {
+      "padding": "$sizePaddingNormal"
+    },
+    "padding_gap": {},
+    "line_space_large": {},
+    "text_align_center": {
+      "text_alignment": "center"
+    },
+    "outline_primary": {
+      "outline_color": "$colorPrimary",
+      "outline_width": "$sizeOutlineWidth",
+      "outline_padding": "$sizeOutlineWidth",
+      "outline_opacity": "$opacity50"
+    },
+    "outline_secondary": {
+      "outline_color": "$colorSecondary",
+      "outline_width": "$sizeOutlineWidth",
+      "outline_padding": "$sizeOutlineWidth",
+      "outline_opacity": "$opacity50"
+    },
+    "circle": {},
+    "radius_none": {},
+    "clip_corner": {
+      "clip_corner": true
+    },
+    "grow": {},
+    "transition_delayed": {
+      "transition": "$transitionDelayed"
+    },
+    "transition_normal": {
+      "transition": "$transitionNormal"
+    },
+    "animation": {},
+    "knob": {},
+    "indicator": {},
+    "arc_indicator": {},
+    "arc_indicator_primary": {},
+    "chart_series": {
+      "line_width": 3,
+      "radius": 3,
+      "width": 8,
+      "height": 8,
+      "column_padding": 2
+    },
+    "chart_indicator": {
+      "radius": "$radiusCircle",
+      "width": 8,
+      "height": 8,
+      "background_color": "$colorPrimary",
+      "background_opacity": "cover"
+    },
+    "chart_ticks": {},
+    "chart_background": {
+      "border_post": false,
+      "column_padding": 10,
+      "line_color": "grey"
+    },
+    "dropdown_list": {},
+    "checkbox_marker": {},
+    "checkbox_marker_checked": {},
+    "switch_knob": {},
+    "line": {},
+    "table_cell": {},
+    "meter_marker": {},
+    "meter_indicator": {},
+    "calendar_background": {},
+    "calendar_day": {},
+    "colorwheel_main": {},
+    "message_box_background": {},
+    "message_box_button_background": {},
+    "keyboard_button_background": {},
+    "list_background": {},
+    "list_button": {},
+    "list_item_grow": {},
+    "list_label": {},
+    "tab_background_focus": {},
+    "text_area_cursor": {},
+    "text_area_placeholder": {},
+    "tab_button": {},
+    "led": {}
+  }
+}

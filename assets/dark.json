@@ -68,15 +68,15 @@
       "code": "LV_UNUSED(filter_descriptor);\n  return lv_color_mix(lv_palette_lighten(LV_PALETTE_GREY, 2), color, opacity);"
     }
   },
-  "#styles": {
-    "#screen": {
+  "@styles": {
+    "@screen": {
       "background_opacity": "$opacityCover",
       "background_color": "$colorScreen",
       "text_color": "$colorText",
       "row_padding": "$paddingSmall",
       "column_padding": "$paddingSmall"
     },
-    "#scrollbar": {
+    "@scrollbar": {
       "background_color": "grey",
       "radius": "$radiusCircle",
       "right_padding": "$scrollbarPadding",
@@ -86,10 +86,10 @@
       "background_opacity": "$opacity40",
       "transition": "$transitionNormal"
     },
-    "#scrollbar_scrolled": {
+    "@scrollbar_scrolled": {
       "background_opacity": "$opacityCover"
     },
-    "#card": {
+    "@card": {
       "radius": 12,
       "background_opacity": "$opacityCover",
       "background_color": "blue_grey",
@@ -102,7 +102,7 @@
       "line_color": "blue_grey",
       "line_width": 1
     },
-    "#button": {
+    "@button": {
       "radius": 12,
       "background_opacity": "cover",
       "background_color": "blue_grey",
@@ -112,107 +112,107 @@
       "column_padding": 3,
       "row_padding": 3
     },
-    "#background_color_primary": {},
-    "#background_color_primary_muted": {},
-    "#background_color_secondary": {},
-    "#background_color_secondary_muted": {},
-    "#background_color_grey": {},
-    "#background_color_white": {},
-    "#pressed": {
+    "@background_color_primary": {},
+    "@background_color_primary_muted": {},
+    "@background_color_secondary": {},
+    "@background_color_secondary_muted": {},
+    "@background_color_grey": {},
+    "@background_color_white": {},
+    "@pressed": {
       "color_filter_descriptor": "$darkColorFilter",
       "color_filter_opacity": 35
     },
-    "#disabled": {
+    "@disabled": {
       "color_filter_descriptor": "$greyColorFilter",
       "color_filter_opacity": 35
     },
-    "#padding_zero": {},
-    "#padding_tiny": {},
-    "#padding_small": {},
-    "#padding_normal": {},
-    "#padding_gap": {},
-    "#line_space_large": {},
-    "#text_align_center": {},
-    "#outline_primary": {
+    "@padding_zero": {},
+    "@padding_tiny": {},
+    "@padding_small": {},
+    "@padding_normal": {},
+    "@padding_gap": {},
+    "@line_space_large": {},
+    "@text_align_center": {},
+    "@outline_primary": {
       "outline_color": "$colorPrimary",
       "outline_width": "$outlineWidth",
       "outline_padding": "$outlineWidth",
       "outline_opacity": "$opacity50"
     },
-    "#outline_secondary": {
+    "@outline_secondary": {
       "outline_color": "$colorSecondary",
       "outline_width": "$outlineWidth",
       "outline_padding": "$outlineWidth",
       "outline_opacity": "$opacity50"
     },
-    "#circle": {},
-    "#radius_none": {},
-    "#clip_corner": {
+    "@circle": {},
+    "@radius_none": {},
+    "@clip_corner": {
       "clip_corner": true
     },
-    "#grow": {},
-    "#transition_delayed": {
+    "@grow": {},
+    "@transition_delayed": {
       "transition": "$transitionDelayed"
     },
-    "#transition_normal": {
+    "@transition_normal": {
       "transition": "$transitionNormal"
     },
-    "#animation": {},
-    "#knob": {},
-    "#indicator": {},
-    "#arc_indicator": {},
-    "#arc_indicator_primary": {},
-    "#chart_series": {
+    "@animation": {},
+    "@knob": {},
+    "@indicator": {},
+    "@arc_indicator": {},
+    "@arc_indicator_primary": {},
+    "@chart_series": {
       "line_width": 3,
       "radius": 3,
       "width": 8,
       "height": 8,
       "column_padding": 2
     },
-    "#chart_indicator": {
+    "@chart_indicator": {
       "radius": "$radiusCircle",
       "width": 8,
       "height": 8,
       "background_color": "$colorPrimary",
       "background_opacity": "cover"
     },
-    "#chart_ticks": {},
-    "#chart_background": {
+    "@chart_ticks": {},
+    "@chart_background": {
       "border_post": false,
       "column_padding": 10,
       "line_color": "grey"
     },
-    "#dropdown_list": {},
-    "#checkbox_marker": {},
-    "#checkbox_marker_checked": {},
-    "#switch_knob": {},
-    "#line": {},
-    "#table_cell": {},
-    "#meter_marker": {},
-    "#meter_indicator": {},
-    "#calendar_background": {},
-    "#calendar_day": {},
-    "#colorwheel_main": {},
-    "#message_box_background": {},
-    "#message_box_button_background": {},
-    "#keyboard_button_background": {},
-    "#list_background": {},
-    "#list_button": {},
-    "#list_item_grow": {},
-    "#list_label": {},
-    "#tab_background_focus": {},
-    "#text_area_cursor": {},
-    "#text_area_placeholder": {},
-    "#tab_button": {},
-    "#led": {}
+    "@dropdown_list": {},
+    "@checkbox_marker": {},
+    "@checkbox_marker_checked": {},
+    "@switch_knob": {},
+    "@line": {},
+    "@table_cell": {},
+    "@meter_marker": {},
+    "@meter_indicator": {},
+    "@calendar_background": {},
+    "@calendar_day": {},
+    "@colorwheel_main": {},
+    "@message_box_background": {},
+    "@message_box_button_background": {},
+    "@keyboard_button_background": {},
+    "@list_background": {},
+    "@list_button": {},
+    "@list_item_grow": {},
+    "@list_label": {},
+    "@tab_background_focus": {},
+    "@text_area_cursor": {},
+    "@text_area_placeholder": {},
+    "@tab_button": {},
+    "@led": {}
   },
   "&classes": {
     "&Screen": {
       "condition": ".screen",
       "styles": {
-        "default": "#screen",
-        "default | scrollbar": "#scrollbar",
-        "scrolled | scrollbar": "#scrollbar_scrolled"
+        "default": "@screen",
+        "default | scrollbar": "@scrollbar",
+        "scrolled | scrollbar": "@scrollbar_scrolled"
       }
     },
     "&ObjectWithTabViewParent": {
@@ -222,17 +222,17 @@
     "&ObjectWithTabViewGrandparent": {
       "condition": ".obj && .grandparent(tabview)",
       "styles": {
-        "default": "#padding_normal",
-        "default | scrollbar": "#scrollbar",
-        "scrolled | scrollbar": "#scrollbar_scrolled"
+        "default": "@padding_normal",
+        "default | scrollbar": "@scrollbar",
+        "scrolled | scrollbar": "@scrollbar_scrolled"
       }
     },
     "&WindowHeader": {
       "condition": "lv_obj_get_child_id(object) == 0 && .parent(win)",
       "styles": {
         "default": [
-          "#background_color_grey",
-          "#padding_tiny"
+          "@background_color_grey",
+          "@padding_tiny"
         ]
       }
     },
@@ -240,35 +240,35 @@
       "condition": "lv_obj_get_child_id(object) == 0 && .parent(win)",
       "styles": {
         "default": [
-          "#screen",
-          "#padding_normal"
+          "@screen",
+          "@padding_normal"
         ],
-        "default | scrollbar": "#scrollbar",
-        "scrolled | scrollbar": "#scrollbar_scrolled"
+        "default | scrollbar": "@scrollbar",
+        "scrolled | scrollbar": "@scrollbar_scrolled"
       }
     },
     "&Object": {
       "condition": ".obj",
       "styles": {
-        "default": "#card",
-        "default | scrollbar": "#scrollbar",
-        "scrolled | scrollbar": "#scrollbar_scrolled"
+        "default": "@card",
+        "default | scrollbar": "@scrollbar",
+        "scrolled | scrollbar": "@scrollbar_scrolled"
       }
     },
     "&Button": {
       "condition": ".btn",
       "styles": {
         "default": [
-          "#button",
-          "#transition_delayed"
+          "@button",
+          "@transition_delayed"
         ],
         "pressed": [
-          "#pressed",
-          "#grow",
-          "#transition_normal"
+          "@pressed",
+          "@grow",
+          "@transition_normal"
         ],
-        "checked": "#background_color_secondary",
-        "disabled": "#disabled"
+        "checked": "@background_color_secondary",
+        "disabled": "@disabled"
       }
     },
     "&Line": {
@@ -277,60 +277,60 @@
     "&ButtonMatrixWithMessageBoxParent": {
       "condition": ".btnmatrix && .parent(msgbox)",
       "styles": {
-        "default | items": "#button",
-        "pressed | items": "#pressed",
-        "disabled | items": "#disabled",
-        "checked | items": "#background_color_primary",
-        "focus_key | items": "#background_color_primary_muted",
-        "edited | items": "#background_color_secondary_muted"
+        "default | items": "@button",
+        "pressed | items": "@pressed",
+        "disabled | items": "@disabled",
+        "checked | items": "@background_color_primary",
+        "focus_key | items": "@background_color_primary_muted",
+        "edited | items": "@background_color_secondary_muted"
       }
     },
     "&ButtonMatrixWithTabViewParent": {
       "condition": ".btnmatrix && .parent(tabview)",
       "styles": {
-        "default": "#background_color_white",
+        "default": "@background_color_white",
         "focus_key": [
-          "#outline_primary",
-          "#tab_background_focus"
+          "@outline_primary",
+          "@tab_background_focus"
         ],
-        "pressed | items": "#pressed",
+        "pressed | items": "@pressed",
         "checked | items": [
-          "#background_color_primary_muted",
-          "#tab_button"
+          "@background_color_primary_muted",
+          "@tab_button"
         ],
         "focus_key | items": [
-          "#outline_primary",
-          "#tab_background_focus"
+          "@outline_primary",
+          "@tab_background_focus"
         ],
-        "edited | items": "#outline_secondary"
+        "edited | items": "@outline_secondary"
       }
     },
     "&ButtonMatrix": {
       "condition": ".btnmatrix",
       "styles": {
-        "default": "#card",
-        "focus_key": "#outline_primary",
-        "edited": "#outline_primary",
-        "default | items": "#button",
-        "disabled | items": "#disabled",
-        "pressed | items ": "#pressed",
-        "checked | items": "#background_color_primary",
-        "focus_key | items": "#outline_primary",
-        "edited | items": "#outline_secondary"
+        "default": "@card",
+        "focus_key": "@outline_primary",
+        "edited": "@outline_primary",
+        "default | items": "@button",
+        "disabled | items": "@disabled",
+        "pressed | items ": "@pressed",
+        "checked | items": "@background_color_primary",
+        "focus_key | items": "@outline_primary",
+        "edited | items": "@outline_secondary"
       }
     },
     "&Bar": {
       "condition": ".bar",
       "styles": {
         "default": [
-          "#background_color_primary_muted",
-          "#circle"
+          "@background_color_primary_muted",
+          "@circle"
         ],
-        "focus_key": "#outline_primary",
-        "edited": "#outline_secondary",
+        "focus_key": "@outline_primary",
+        "edited": "@outline_secondary",
         "default | indicator": [
-          "#background_color_primary",
-          "#circle"
+          "@background_color_primary",
+          "@circle"
         ]
       }
     },
@@ -338,58 +338,58 @@
       "condition": ".slider",
       "styles": {
         "default": [
-          "#background_color_primary_muted",
-          "#circle"
+          "@background_color_primary_muted",
+          "@circle"
         ],
-        "focus_key": "#outline_primary",
-        "edited": "#outline_secondary",
+        "focus_key": "@outline_primary",
+        "edited": "@outline_secondary",
         "default | indicator": [
-          "#background_color_primary",
-          "#circle"
+          "@background_color_primary",
+          "@circle"
         ],
-        "default | knob": "#knob"
+        "default | knob": "@knob"
       }
     },
     "&Table": {
       "condition": ".table",
       "styles": {
         "default": [
-          "#card",
-          "#padding_zero",
-          "#radius_none"
+          "@card",
+          "@padding_zero",
+          "@radius_none"
         ],
-        "focus_key": "#outline_primary",
-        "edited": "#outline_secondary",
-        "default | scrollbar": "#scrollbar",
-        "scrolled | scrollbar": "#scrollbar_scrolled",
+        "focus_key": "@outline_primary",
+        "edited": "@outline_secondary",
+        "default | scrollbar": "@scrollbar",
+        "scrolled | scrollbar": "@scrollbar_scrolled",
         "default | items": [
-          "#background_color_white",
-          "#padding_normal",
-          "#table_cell"
+          "@background_color_white",
+          "@padding_normal",
+          "@table_cell"
         ],
-        "pressed | items": "#pressed",
-        "focus_key | items": "#background_color_primary",
-        "edited | items": "#background_color_secondary"
+        "pressed | items": "@pressed",
+        "focus_key | items": "@background_color_primary",
+        "edited | items": "@background_color_secondary"
       }
     },
     "&Checkbox": {
       "condition": ".checkbox",
       "styles": {
-        "default": "#padding_gap",
-        "focus_key": "#outline_primary",
-        "disabled | indicator": "#disabled",
+        "default": "@padding_gap",
+        "focus_key": "@outline_primary",
+        "disabled | indicator": "@disabled",
         "default | indicator": [
-          "#checkbox_marker",
-          "#transition_delayed"
+          "@checkbox_marker",
+          "@transition_delayed"
         ],
         "checked | indicator": [
-          "#background_color_primary",
-          "#checkbox_marker_checked"
+          "@background_color_primary",
+          "@checkbox_marker_checked"
         ],
         "pressed | indicator": [
-          "#pressed",
-          "#grow",
-          "#transition_normal"
+          "@pressed",
+          "@grow",
+          "@transition_normal"
         ]
       }
     },
@@ -397,102 +397,102 @@
       "condition": ".switch",
       "styles": {
         "default": [
-          "#background_color_grey",
-          "#circle"
+          "@background_color_grey",
+          "@circle"
         ],
-        "disabled": "#disabled",
-        "focus_key": "#outline_primary",
-        "checked | indicator": "#background_color_primary",
-        "default | indicator": "#circle",
-        "disabled | indicator": "#disabled",
+        "disabled": "@disabled",
+        "focus_key": "@outline_primary",
+        "checked | indicator": "@background_color_primary",
+        "default | indicator": "@circle",
+        "disabled | indicator": "@disabled",
         "default | knob": [
-          "#knob",
-          "#background_color_white",
-          "#switch_knob"
+          "@knob",
+          "@background_color_white",
+          "@switch_knob"
         ],
-        "disabled | knob": "#disabled"
+        "disabled | knob": "@disabled"
       }
     },
     "&Chart": {
       "condition": ".chart",
       "styles": {
         "default": [
-          "#card",
-          "#padding_small",
-          "#chart_background"
+          "@card",
+          "@padding_small",
+          "@chart_background"
         ],
-        "default | scrollbar": "#scrollbar",
-        "scrolled | scrollbar": "#scrollbar_scrolled",
-        "default | items": "#chart_series",
-        "default | indicator": "#chart_indicator",
-        "default | ticks": "#chart_ticks"
+        "default | scrollbar": "@scrollbar",
+        "scrolled | scrollbar": "@scrollbar_scrolled",
+        "default | items": "@chart_series",
+        "default | indicator": "@chart_indicator",
+        "default | ticks": "@chart_ticks"
       }
     },
     "&Roller": {
       "condition": ".roller",
       "styles": {
         "default": [
-          "#card",
-          "#animation",
-          "#line_space_large",
-          "#text_align_center"
+          "@card",
+          "@animation",
+          "@line_space_large",
+          "@text_align_center"
         ],
-        "focus_key": "#outline_primary",
-        "edited": "#background_color_secondary",
-        "default | selected": "#background_color_primary"
+        "focus_key": "@outline_primary",
+        "edited": "@background_color_secondary",
+        "default | selected": "@background_color_primary"
       }
     },
     "&DropDown": {
       "condition": ".dropdown",
       "styles": {
         "default": [
-          "#card",
-          "#padding_small",
-          "#transition_delayed"
+          "@card",
+          "@padding_small",
+          "@transition_delayed"
         ],
         "pressed": [
-          "#pressed",
-          "#transition_normal"
+          "@pressed",
+          "@transition_normal"
         ],
-        "focus_key": "#outline_primary",
-        "edited": "#background_color_secondary",
-        "default | indicator": "#transition_normal"
+        "focus_key": "@outline_primary",
+        "edited": "@background_color_secondary",
+        "default | indicator": "@transition_normal"
       }
     },
     "&DropDownList": {
       "condition": ".dropdownlist",
       "styles": {
         "default": [
-          "#card",
-          "#clip_corner",
-          "#line_space_large",
-          "#dropdown_list"
+          "@card",
+          "@clip_corner",
+          "@line_space_large",
+          "@dropdown_list"
         ],
-        "default | scrollbar": "#scrollbar",
-        "scrolled | scrollbar": "#scrollbar_scrolled",
-        "default | selected": "#background_color_white",
-        "checked | selected": "#background_color_primary",
-        "pressed | selected": "#pressed"
+        "default | scrollbar": "@scrollbar",
+        "scrolled | scrollbar": "@scrollbar_scrolled",
+        "default | selected": "@background_color_white",
+        "checked | selected": "@background_color_primary",
+        "pressed | selected": "@pressed"
       }
     },
     "&Arc": {
       "condition": ".arc",
       "styles": {
-        "default": "#arc_indicator",
+        "default": "@arc_indicator",
         "default | indicator": [
-          "#arc_indicator",
-          "#arc_indicator_primary"
+          "@arc_indicator",
+          "@arc_indicator_primary"
         ],
-        "default | knob": "#knob"
+        "default | knob": "@knob"
       }
     },
     "&Spinner": {
       "condition": ".spinner",
       "styles": {
-        "default": "#arc_indicator",
+        "default": "@arc_indicator",
         "default | indicator": [
-          "#arc_indicator",
-          "#arc_indicator_primary"
+          "@arc_indicator",
+          "@arc_indicator_primary"
         ]
       }
     },
@@ -500,90 +500,90 @@
       "condition": ".meter",
       "styles": {
         "default": [
-          "#card",
-          "#circle"
+          "@card",
+          "@circle"
         ],
-        "default | indicator": "#meter_indicator"
+        "default | indicator": "@meter_indicator"
       }
     },
     "&TextArea": {
       "condition": ".textarea",
       "styles": {
         "default": [
-          "#card",
-          "#padding_small"
+          "@card",
+          "@padding_small"
         ],
-        "focus_key": "#outline_primary",
-        "edited": "#background_color_secondary",
-        "default | scrollbar": "#scrollbar",
-        "scrolled | scrollbar": "#scrollbar_scrolled",
-        "focused | cursor": "#text_area_cursor",
-        "default | textarea_placeholder": "#text_area_placeholder"
+        "focus_key": "@outline_primary",
+        "edited": "@background_color_secondary",
+        "default | scrollbar": "@scrollbar",
+        "scrolled | scrollbar": "@scrollbar_scrolled",
+        "focused | cursor": "@text_area_cursor",
+        "default | textarea_placeholder": "@text_area_placeholder"
       }
     },
     "&Calendar": {
       "condition": ".calendar",
       "styles": {
         "default": [
-          "#card",
-          "#calendar_background"
+          "@card",
+          "@calendar_background"
         ],
-        "default | items": "#calendar_day",
-        "pressed | items": "#pressed",
-        "disabled | items": "#disabled",
-        "focus_key": "#outline_primary",
-        "edited": "#background_color_secondary"
+        "default | items": "@calendar_day",
+        "pressed | items": "@pressed",
+        "disabled | items": "@disabled",
+        "focus_key": "@outline_primary",
+        "edited": "@background_color_secondary"
       }
     },
     "&CalendarHeaderArrow": {
       "condition": ".calendar_header_arrow",
       "styles": {
-        "default": "#card"
+        "default": "@card"
       }
     },
     "&CalendarHeaderDropDown": {
       "condition": ".calendar_header_dropdown",
       "styles": {
-        "default": "#card"
+        "default": "@card"
       }
     },
     "&Keyboard": {
       "condition": ".keyboard",
       "styles": {
         "default": [
-          "#card",
-          "#padding_small"
+          "@card",
+          "@padding_small"
         ],
-        "focus_key": "#outline_primary",
-        "edited": "#background_color_secondary",
+        "focus_key": "@outline_primary",
+        "edited": "@background_color_secondary",
         "default | items": [
-          "#button",
-          "#background_color_white",
-          "#keyboard_button_background"
+          "@button",
+          "@background_color_white",
+          "@keyboard_button_background"
         ],
-        "disabled | items": "#disabled",
-        "checked | items": "#background_color_grey",
-        "focus_key | items": "#background_color_primary_muted",
-        "edited | items": "#background_color_secondary_muted"
+        "disabled | items": "@disabled",
+        "checked | items": "@background_color_grey",
+        "focus_key | items": "@background_color_primary_muted",
+        "edited | items": "@background_color_secondary_muted"
       }
     },
     "&List": {
       "condition": ".list",
       "styles": {
         "default": [
-          "#card",
-          "#list_background"
+          "@card",
+          "@list_background"
         ],
-        "default | scrollbar": "#scrollbar",
-        "scrolled | scrollbar": "#scrollbar_scrolled"
+        "default | scrollbar": "@scrollbar",
+        "scrolled | scrollbar": "@scrollbar_scrolled"
       }
     },
     "&ListText": {
       "condition": ".list_text",
       "styles": {
         "default": [
-          "#background_color_grey",
-          "#list_item_grow"
+          "@background_color_grey",
+          "@list_item_grow"
         ]
       }
     },
@@ -591,16 +591,16 @@
       "condition": ".list_btn",
       "styles": {
         "default": [
-          "#background_color_white",
-          "#list_button"
+          "@background_color_white",
+          "@list_button"
         ],
         "focus_key": [
-          "#background_color_primary",
-          "#list_item_grow"
+          "@background_color_primary",
+          "@list_item_grow"
         ],
         "pressed": [
-          "#pressed",
-          "#list_item_grow"
+          "@pressed",
+          "@list_item_grow"
         ]
       }
     },
@@ -608,8 +608,8 @@
       "condition": ".msgbox)",
       "styles": {
         "default": [
-          "#card",
-          "#message_box_background"
+          "@card",
+          "@message_box_background"
         ]
       }
     },
@@ -617,55 +617,55 @@
       "condition": ".spinbox",
       "styles": {
         "default": [
-          "#card",
-          "#padding_small"
+          "@card",
+          "@padding_small"
         ],
-        "checked | items": "#background_color_grey",
-        "focus_key | items": "#background_color_primary_muted",
-        "default | cursor": "#background_color_primary"
+        "checked | items": "@background_color_grey",
+        "focus_key | items": "@background_color_primary_muted",
+        "default | cursor": "@background_color_primary"
       }
     },
     "&TileView": {
-      "condition": "lv_obj_check_type(object, &lv_tileview_class)",
+      "condition": ".tileview",
       "styles": {
-        "default": "#screen",
-        "default | scrollbar": "#scrollbar",
-        "scrolled | scrollbar": "#scrollbar_scrolled"
+        "default": "@screen",
+        "default | scrollbar": "@scrollbar",
+        "scrolled | scrollbar": "@scrollbar_scrolled"
       }
     },
     "&TileViewTile": {
-      "condition": "lv_obj_check_type(object, &lv_tileview_tile_class)",
+      "condition": ".tileview_tile",
       "styles": {
-        "default | scrollbar": "#scrollbar",
-        "scrolled | scrollbar": "#scrollbar_scrolled"
+        "default | scrollbar": "@scrollbar",
+        "scrolled | scrollbar": "@scrollbar_scrolled"
       }
     },
     "&TabView": {
-      "condition": "lv_obj_check_type(object, &lv_tabview_class)",
+      "condition": ".tabview",
       "styles": {
         "default": [
-          "#screen",
-          "#padding_zero"
+          "@screen",
+          "@padding_zero"
         ]
       }
     },
     "&ColorWheel": {
-      "condition": "lv_obj_check_type(object, &lv_colorwheel_class)",
+      "condition": ".colorwheel",
       "styles": {
         "default": [
-          "#colorwheel_main",
-          "#padding_normal"
+          "@colorwheel_main",
+          "@padding_normal"
         ],
         "default | knob": [
-          "#background_color_white",
-          "#padding_normal"
+          "@background_color_white",
+          "@padding_normal"
         ]
       }
     },
     "&Led": {
-      "condition": "lv_obj_check_type(object, &lv_led_class)",
+      "condition": ".led",
       "styles": {
-        "default": "#led"
+        "default": "@led"
       }
     }
   }

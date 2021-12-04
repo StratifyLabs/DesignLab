@@ -15,9 +15,12 @@
 
 #include <cprinter/CPrinter.hpp>
 
+
+
 class ThemeGenerator : public api::ExecutionContext {
 public:
   ThemeGenerator(const sys::Cli &cli);
+  printer::Printer &printer() { return m_printer; }
 
 private:
   class CodePrinter : public cprinter::CPrinter {
@@ -33,6 +36,20 @@ private:
 
   private:
     const fs::FileObject *m_output_file = nullptr;
+  };
+
+  class ThemeObject : public json::JsonValue {
+  public:
+    JSON_ACCESS_CONSTRUCT_OBJECT(ThemeObject);
+    JSON_ACCESS_INTEGER(ThemeObject, version);
+    JSON_ACCESS_STRING(ThemeObject, type);
+    JSON_ACCESS_STRING(ThemeObject, colors);
+    JSON_ACCESS_STRING(ThemeObject, sizes);
+    JSON_ACCESS_STRING(ThemeObject, styles);
+    JSON_ACCESS_STRING(ThemeObject, rules);
+    JSON_ACCESS_STRING(ThemeObject, name);
+    JSON_ACCESS_STRING(ThemeObject, directory);
+    JSON_ACCESS_STRING(ThemeObject, header);
   };
 
   static constexpr auto lv_class_list = {
@@ -77,15 +94,17 @@ private:
   const sys::Cli *m_cli;
   CodePrinter m_code_printer;
   printer::YamlPrinter m_printer;
+  ThemeObject m_theme_object;
   json::JsonObject m_variables_object;
   json::JsonObject m_styles_object;
-  json::JsonObject m_classes_object;
+  json::JsonObject m_rules_object;
   fs::File m_output;
-  var::StringView m_name;
+  var::PathString m_theme_path;
 
-  printer::Printer &printer() { return m_printer; }
 
-  json::JsonObject load_json_file(const char *option_name, const char *key);
+  json::JsonObject load_reference_json_file(var::StringView key);
+  json::JsonObject load_json_file(var::StringView path);
+  void add_variables(var::StringView path);
 
   void generate_descriptors();
   void generate_styles();
@@ -99,6 +118,7 @@ private:
   var::GeneralString get_json_value(const json::JsonValue value);
   var::GeneralString get_lv_state_part(var::StringView key_name);
   var::GeneralString get_condition(var::StringView condition_value);
+  var::GeneralString get_effective_style(var::StringView value);
 
   const char *get_lv_path_animation_path(Animation::Path value);
 

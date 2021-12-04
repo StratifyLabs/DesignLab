@@ -16,44 +16,90 @@ ThemeGenerator::ThemeGenerator(const sys::Cli &cli) : m_cli(&cli) {
   printer().set_verbose_level(cli.get_option("verbose"));
   Printer::Array root_array(printer(), "guiThemeGenerator");
 
-  m_name = cli.get_option("name");
-  if (m_name.is_empty()) {
-    errno = EINVAL;
-    API_SYSTEM_CALL("`name` must be specified on the command line", -1);
+  m_theme_path = cli.get_option("theme");
+  if (m_theme_path.is_empty()) {
+    API_RETURN_ASSIGN_ERROR(
+      "`theme` must specify the path to the theme JSON file",
+      EINVAL);
   }
 
-  if (is_success()) {
-    m_variables_object = load_json_file("variables", "$variables");
-    m_styles_object = load_json_file("styles", "#styles");
-    m_classes_object = load_json_file("classes", "&classes");
+  if (!FileSystem().exists(m_theme_path)) {
+    API_RETURN_ASSIGN_ERROR(
+      "`theme` " | m_theme_path | " does not exist",
+      EINVAL);
   }
 
-  if (is_success()) {
-    const auto output_path = cli.get_option("output");
-    m_output = File(
-      File::IsOverwrite::yes,
-      output_path.is_empty() ? StringView("theme.c") : output_path);
+  m_theme_object = load_json_file(m_theme_path);
+  if (m_theme_object.get_name().is_empty()) {
+    API_RETURN_ASSIGN_ERROR(
+      "`name` must be specified in the theme file",
+      EINVAL);
   }
+
+  // load sizes, colors, and style variables
+  add_variables("sizes");
+  add_variables("colors");
+  add_variables("fonts");
+  add_variables("styles");
+  add_variables("rules");
+  API_RETURN_IF_ERROR();
+
+  {
+    const auto object = load_reference_json_file("styles");
+    m_styles_object = object.at("@styles").to_object();
+
+    if (!m_styles_object.is_valid()) {
+      API_RETURN_ASSIGN_ERROR(
+        "`@styles` not found in " | m_theme_object.get_styles(),
+        EINVAL);
+    }
+  }
+  API_RETURN_IF_ERROR();
+
+  {
+    const auto object = load_reference_json_file("rules");
+    m_rules_object = object.at("&rules").to_object();
+    if (!m_rules_object.is_valid()) {
+      API_RETURN_ASSIGN_ERROR(
+        "`&rules` not found in " | m_theme_object.get_styles(),
+        EINVAL);
+    }
+  }
+  API_RETURN_IF_ERROR();
+
+  const auto output_directory = m_theme_object.get_directory();
+  const auto output_path
+    = output_directory.is_empty()
+        ? m_theme_object.get_name() & ".c"
+        : output_directory / m_theme_object.get_name() & ".c";
+  printer().key("outputFile", output_path);
+  m_output = File(File::IsOverwrite::yes, output_path);
+
+  API_RETURN_IF_ERROR();
 
   m_code_printer = CodePrinter(m_output);
+
+  if (const auto header_value = m_theme_object.get_header();
+      !header_value.is_empty()) {
+    m_code_printer.header(header_value);
+  }
 
   generate_descriptors();
   generate_styles();
   generate_apply_callback();
   generate_theme();
-
-  if (is_error()) {
-    printer().object("error", error());
-    return;
-  }
 }
 
-json::JsonObject
-ThemeGenerator::load_json_file(const char *option_name, const char *key) {
-  Printer::Object po(printer(), option_name);
-  const auto json_path = m_cli->get_option(option_name);
-  const auto theme_path = m_cli->get_option("theme");
-  const auto path = json_path.is_empty() ? theme_path : json_path;
+json::JsonObject ThemeGenerator::load_reference_json_file(var::StringView key) {
+  const auto parent = Path::parent_directory(m_theme_path);
+  const auto filename = m_theme_object.to_object().at(key).to_string_view();
+  const auto path
+    = parent.is_empty() ? PathString(filename) : parent / filename;
+
+  return load_json_file(path);
+}
+
+json::JsonObject ThemeGenerator::load_json_file(var::StringView path) {
 
   if (FileSystem().exists(path)) {
     if (!FileSystem().get_info(path).is_file()) {
@@ -75,26 +121,52 @@ ThemeGenerator::load_json_file(const char *option_name, const char *key) {
       EINVAL);
   }
 
-  const auto result = object.at(key);
-  if (!result.is_object()) {
-    API_RETURN_VALUE_ASSIGN_ERROR(
-      JsonObject(),
-      "`" | path | "` does not have an entry for `" | key | "`",
-      EINVAL);
+  printer().object("json", object, Printer::Level::message);
+  return object;
+}
+
+void ThemeGenerator::add_variables(const StringView key) {
+
+  if (m_theme_object.to_object().at(key).is_string()) {
+    const auto filename = m_theme_object.to_object().at(key).to_string_view();
+    const auto parent = Path::parent_directory(m_theme_path);
+    const auto path
+      = parent.is_empty() ? PathString(filename) : parent / filename;
+
+    if (!FileSystem().exists(path)) {
+      API_RETURN_ASSIGN_ERROR(
+        "variables file " | path | " does not exist",
+        EINVAL);
+    }
+
+    JsonDocument document;
+    const auto object = document.load(File(path)).to_object();
+    if (document.is_error()) {
+      printer().object("jsonError", document.error());
+      API_RETURN_ASSIGN_ERROR("failed to parse json file " | path, EINVAL);
+    }
+
+    const auto list = object.at("$variables").to_object();
+    if (!list.is_object()) {
+      API_RETURN_ASSIGN_ERROR("did not find `$variables` in " | path, EINVAL);
+    }
+
+    const auto key_list = list.get_key_list();
+    for (const auto &list_key : key_list) {
+      m_variables_object.insert(list_key, list.at(list_key));
+    }
   }
-  printer().object(key, result, Printer::Level::message);
-  return result;
 }
 
 void ThemeGenerator::generate_apply_callback() {
   API_RETURN_IF_ERROR();
 
-  const auto key_list = m_classes_object.get_key_list();
+  const auto key_list = m_rules_object.get_key_list();
 
   {
     CPrinter::Function apply_callback_function(
       m_code_printer,
-      "void " | m_name
+      "void " | m_theme_object.get_name()
         | "_apply_callback(lv_theme_t * theme, lv_obj_t * object)");
 
     auto add_styles = [&](StringView class_name, JsonObject object) {
@@ -113,23 +185,25 @@ void ThemeGenerator::generate_apply_callback() {
         const auto json_value = styles_object.at(key);
         if (json_value.is_array()) {
           for (const auto &value : json_value.to_array()) {
+            const auto effective_style
+              = get_effective_style(value.to_string_view());
             m_code_printer.statement(
-              "lv_obj_add_style(object, (lv_style_t*)&"
-              | value.to_string_view().pop_front() | "_style, " | state_part
-              | ")");
+              "lv_obj_add_style(object, (lv_style_t*)&" | effective_style
+              | "_style, " | state_part | ")");
           }
         } else {
+          const auto effective_style
+            = get_effective_style(json_value.to_string_view());
           m_code_printer.statement(
-            "lv_obj_add_style(object, (lv_style_t*)&"
-            | json_value.to_string_view().pop_front() | "_style, " | state_part
-            | ")");
+            "lv_obj_add_style(object, (lv_style_t*)&" | effective_style
+            | "_style, " | state_part | ")");
         }
       }
       m_code_printer.statement("return");
     };
 
     for (const auto &key : key_list) {
-      add_styles(key, m_classes_object.at(key).to_object());
+      add_styles(key, m_rules_object.at(key).to_object());
     }
   }
 
@@ -138,7 +212,7 @@ void ThemeGenerator::generate_apply_callback() {
 
 void ThemeGenerator::generate_theme() {
   API_RETURN_IF_ERROR();
-  const auto name = m_name;
+  const auto name = m_theme_object.get_name();
 
   CPrinter::StructInitialization(
     m_code_printer,
@@ -165,12 +239,32 @@ void ThemeGenerator::generate_theme() {
       .statement(name | "_theme.parent = parent")
       .statement("return &" | name | "_theme");
   }
+
+  m_code_printer.newline();
+
+  {
+    CPrinter::Function get_style_function(
+      m_code_printer,
+      "const lvgl_api_style_descriptor_t * " | name
+        | "_get_style_callback(int offset)");
+
+    const auto list_name = name | "_style_descriptor_list";
+    m_code_printer.statement(
+      "const size_t size = sizeof(" | list_name
+      | ") / sizeof(lvgl_api_style_descriptor_t)");
+    {
+      CPrinter::Scope offset_ok_scope(
+        m_code_printer,
+        CPrinter::Scope::Type::if_,
+        "offset < size");
+      m_code_printer.statement("return &(" | list_name | "[offset])");
+    }
+    m_code_printer.statement("return NULL");
+  }
   m_code_printer.newline();
 }
 
 void ThemeGenerator::generate_descriptors() {
-
-  m_code_printer.header("themes.h");
 
   const auto key_list = m_variables_object.get_key_list();
   for (const auto &variable : m_variables_object) {
@@ -317,7 +411,7 @@ void ThemeGenerator::generate_styles() {
     const auto entry_object = m_styles_object.at(entry).to_object();
     const auto entry_key_list = entry_object.get_key_list();
     printer().object("keys", entry_key_list);
-    const auto style_name = KeyString(entry).pop_front();
+    const auto style_name = get_effective_style(entry);
 
     {
       CPrinter::StructInitialization entry(
@@ -351,6 +445,27 @@ void ThemeGenerator::generate_styles() {
     }
     m_code_printer.newline();
   }
+  {
+    CPrinter::StructInitialization style_descriptor_list(
+      m_code_printer,
+      "static const lvgl_api_style_descriptor_t " | m_theme_object.get_name()
+        | "_style_descriptor_list[]");
+
+    for (const auto &entry : key_list) {
+      Printer::Object po(printer(), "process " | entry);
+      const auto entry_object = m_styles_object.at(entry).to_object();
+      const auto entry_key_list = entry_object.get_key_list();
+      printer().object("keys", entry_key_list);
+      const auto style_name = KeyString(entry);
+      if (style_name.string_view().find("@") == 0) {
+        const auto effective_style_name = get_effective_style(style_name);
+        style_descriptor_list.add_member(
+          "{ .name = \"" | effective_style_name | "\", .style = &"
+          | effective_style_name | "_style }");
+      }
+    }
+  }
+  m_code_printer.newline();
 }
 
 var::GeneralString ThemeGenerator::get_variable(const char *key) {
@@ -992,6 +1107,13 @@ var::GeneralString ThemeGenerator::get_lv_state_part(var::StringView key_name) {
   return result;
 }
 
+var::GeneralString ThemeGenerator::get_effective_style(var::StringView value) {
+  if (value.find("@") == 0) {
+    return {value.pop_front()};
+  }
+  return {value};
+}
+
 var::GeneralString
 ThemeGenerator::get_condition(var::StringView condition_value) {
   // replace .btn || .Button -> (lv_obj_check_type(object, &lv_btn_class))
@@ -1018,7 +1140,8 @@ ThemeGenerator::get_condition(var::StringView condition_value) {
       {
         const auto match = StringView(".grandparent(") | class_name | ")";
         if (token == match.string_view()) {
-          return "(lv_obj_check_type(lv_obj_get_parent(lv_obj_get_parent(object)), &lv_"
+          return "(lv_obj_check_type(lv_obj_get_parent(lv_obj_get_parent("
+                 "object)), &lv_"
                  | StringView(class_name) | "_class))";
         }
       }
@@ -1030,11 +1153,18 @@ ThemeGenerator::get_condition(var::StringView condition_value) {
 
   auto check_id_match = [](StringView token) -> GeneralString {
     if (token.at(0) == '#') {
+      if (token.length() != 5) {
+        API_RETURN_VALUE_ASSIGN_ERROR(
+          "",
+          token | " must be of the format `#<abcd>`, e.g. `#seco`",
+          EINVAL);
+      }
       return (
-        "(uint32_t*)(object->user_data) == "
+        "((uint32_t*)(object->user_data))[0] == "
         | NumberString(
-          token.at(0) | token.at(1) << 8 | token.at(2) << 16
-          | token.at(3) << 24));
+          token.at(1) | token.at(2) << 8 | token.at(3) << 16
+            | token.at(4) << 24,
+          "0x%08X"));
     }
     return GeneralString(token);
   };

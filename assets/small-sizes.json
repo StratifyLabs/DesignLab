@@ -2,15 +2,14 @@
   "name": "small",
   "type": "sizes",
   "$variables": {
-    "$scrollbarSize": 7,
-    "$scrollbarPadding": 7,
-    "$opacity40": 102,
-    "$opacity50": 127,
-    "$opacityCover": 255,
-    "$borderWidth": 10,
-    "$paddingNormal": 8,
-    "$paddingSmall": 4,
-    "$paddingDefault": 4,
-    "$outlineWidth": 4
+    "$sizeScrollbar": 7,
+    "$sizeScrollbarPadding": 7,
+    "$sizeBorderWidth": 10,
+    "$sizePaddingNormal": 8,
+    "$sizePaddingTiny": 2,
+    "$sizePaddingSmall": 4,
+    "$sizePaddingLarge": 12,
+    "$sizePaddingDefault": 4,
+    "$sizeOutlineWidth": 4
   }
 }

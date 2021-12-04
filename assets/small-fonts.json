@@ -2,15 +2,15 @@
   "name": "small",
   "type": "fonts",
   "$variables": {
-    "$fontBodySmall": "montserrat-r-18",
-    "$fontBodyMedium": "montserrat-r-20",
-    "$fontBodyLarge": "montserrat-r-22",
-    "$fontHeaderExtraLarge": "montserrat-r-32",
-    "$fontHeaderLarge": "montserrat-r-28",
-    "$fontHeaderMedium": "montserrat-r-24",
-    "$fontHeaderSmall": "montserrat-r-20",
-    "$fontCodeSmall": "sourcecode-r-12",
-    "$fontCodeMedium": "sourcecode-r-16",
-    "$fontCodeLarge": "sourcecode-r-20"
+    "$fontBodySmall": "montserrat_r_18",
+    "$fontBodyMedium": "montserrat_r_20",
+    "$fontBodyLarge": "montserrat_r_22",
+    "$fontHeaderExtraLarge": "montserrat_r_32",
+    "$fontHeaderLarge": "montserrat_r_28",
+    "$fontHeaderMedium": "montserrat_r_24",
+    "$fontHeaderSmall": "montserrat_r_20",
+    "$fontCodeSmall": "sourcecode_r_12",
+    "$fontCodeMedium": "sourcecode_r_16",
+    "$fontCodeLarge": "sourcecode_r_20"
   }
 }

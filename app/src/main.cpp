@@ -18,7 +18,10 @@ int main(int argc, char *argv[]) {
 
 
   if( !cli.get_option("theme").is_empty() ){
-    (ThemeGenerator(cli));
+    ThemeGenerator tg(cli);
+    if (api::ExecutionContext::is_error()) {
+      tg.printer().object("error", api::ExecutionContext::error());
+    }
     exit(api::ExecutionContext::is_error() ? 1 : 0);
   }
 

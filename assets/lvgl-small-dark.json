@@ -3,7 +3,10 @@
   "version": 0,
   "colors": "dark-colors.json",
   "sizes": "small-sizes.json",
-  "style": "lvgl-style.json",
-  "name": "lvgl-small-dark",
-  "header": "lvgl_small_dark.h"
+  "styles": "lvgl-styles.json",
+  "fonts": "small-fonts.json",
+  "rules": "lvgl-rules.json",
+  "name": "lvgl_small_dark",
+  "directory": "../app/src/themes",
+  "header": "themes.h"
 }
