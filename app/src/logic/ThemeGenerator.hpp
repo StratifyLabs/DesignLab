@@ -114,7 +114,7 @@ private:
   const char *get_lv_style_from_name(const char *property_name);
   var::GeneralString
   get_property_value(lvgl::Property property, const char *value);
-  var::GeneralString get_variable(const char *key);
+  var::GeneralString get_variable(var::StringView key);
   var::GeneralString get_json_value(const json::JsonValue value);
   var::GeneralString get_lv_state_part(var::StringView key_name);
   var::GeneralString get_condition(var::StringView condition_value);

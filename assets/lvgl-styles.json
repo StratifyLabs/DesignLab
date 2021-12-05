@@ -54,6 +54,30 @@
     }
   },
   "@styles": {
+    "@h1": {
+      "text_font": "$fontHeaderExtraLarge",
+      "top_padding": "$sizePaddingLarge",
+      "bottom_padding": "$sizePaddingSmall",
+      "width": "LV_PCT(100)"
+    },
+    "@h2": {
+      "text_font": "$fontHeaderLarge",
+      "top_padding": "$sizePaddingLarge",
+      "bottom_padding": "$sizePaddingSmall",
+      "width": "LV_PCT(100)"
+    },
+    "@h3": {
+      "text_font": "$fontHeaderMedium",
+      "top_padding": "$sizePaddingMedium",
+      "bottom_padding": "$sizePaddingSmall",
+      "width": "LV_PCT(100)"
+    },
+    "@h4": {
+      "text_font": "$fontHeaderSmall",
+      "top_padding": "$sizePaddingSmall",
+      "bottom_padding": "$sizePaddingSmall",
+      "width": "LV_PCT(100)"
+    },
     "@primary": {
       "background_color": "$colorPrimary",
       "text_color": "$colorText"

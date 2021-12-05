@@ -10,12 +10,14 @@
 #include "fonts/fonts.h"
 #include "themes/themes.h"
 
+#include "screens/ThemePreview.hpp"
+
 extern "C" const char data_assetfs[];
 
 void Application::run(sys::Cli &cli) {
 
   lvgl::Runtime runtime(
-    "gui",
+    "Design Lab",
     window::Point(),
     window::Size(320 * 4, 240 * 4),
     window::Window::Flags::shown | window::Window::Flags::highdpi
@@ -43,6 +45,13 @@ void Application::run(sys::Cli &cli) {
   lv_disp_set_theme(runtime.display(), model().theme.native_value());
   static const auto s = Style().set_background_color(Color::red());
 
+  Screen theme_preview_screen(ThemePreview::screen_name);
+
+  ThemePreview::configure(theme_preview_screen.get<Container>());
+
+  theme_preview_screen.load();
+
+#if 0
   screen()
     .clear_flag(Flags::scrollable)
     .add(
@@ -73,6 +82,7 @@ void Application::run(sys::Cli &cli) {
                .add(Button().add_style("outline_danger").add_label("Outline Danger"))
                .add(Button().add_style("outline_success").add_label("Outline Success")))
         .add(Column()));
+#endif
 
 
   // model cannot be touched until all lvgl initialization is complete

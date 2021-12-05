@@ -487,15 +487,15 @@ void ThemeGenerator::generate_styles() {
   m_code_printer.newline();
 }
 
-var::GeneralString ThemeGenerator::get_variable(const char *key) {
+var::GeneralString ThemeGenerator::get_variable(const StringView key) {
+  if( key.find("$") == StringView::npos ){
+    return key;
+  }
+
   const auto key_list = m_variables_object.get_key_list();
   for (const auto &entry : key_list) {
     if (StringView(key) == entry) {
       const auto result = m_variables_object.at(entry);
-
-      if (result.is_string()) {
-        return result.to_cstring();
-      }
 
       if (result.is_integer()) {
         return GeneralString(NumberString(result.to_integer()).string_view());
@@ -517,7 +517,27 @@ var::GeneralString ThemeGenerator::get_variable(const char *key) {
         return result.to_object().at("name").to_cstring();
       }
 
-      return m_variables_object.at(entry).to_cstring();
+      if (result.is_string()) {
+        //check for recursive variables
+        GeneralString recursive_result;
+        if( result.to_string_view().find("$") != StringView::npos ) {
+          const auto token_list = result.to_string_view().split(" ");
+          for(const auto & token: token_list){
+            if( token.find("$") == 0 ){
+              recursive_result |= get_variable(token) | " ";
+            } else {
+              recursive_result |= token | " ";
+            }
+          }
+          return recursive_result.pop_back();
+        }
+
+
+
+        return result.to_string_view();
+      }
+
+      return m_variables_object.at(entry).to_string_view();
     }
   }
 
@@ -531,12 +551,18 @@ var::GeneralString ThemeGenerator::get_variable(const char *key) {
 var::GeneralString
 ThemeGenerator::get_json_value(const json::JsonValue json_value) {
   if (json_value.is_string()) {
-    const auto string_value = json_value.to_cstring();
-    if (string_value[0] == '$') {
-      return get_variable(string_value);
+
+    const auto string_value = json_value.to_string_view();
+    if (string_value.find("$") != StringView::npos) {
+      const auto list = string_value.split(" ");
+      var::GeneralString result;
+      for(const auto & part: list){
+        result |= get_variable(part) | " ";
+      }
+      return result.pop_back();
     }
 
-    return GeneralString(json_value.to_cstring());
+    return GeneralString(string_value);
   }
 
   if (json_value.is_integer()) {

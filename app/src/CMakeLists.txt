@@ -6,6 +6,9 @@ set(SOURCES
 	logic/ThemeGenerator.hpp
 	logic/ThemeGenerator.cpp
 
+	screens/ThemePreview.cpp
+	screens/ThemePreview.hpp
+
 	Application.cpp
 	Application.hpp
 

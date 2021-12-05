@@ -6,13 +6,29 @@
     "$sizeScrollbarPadding": 7,
     "$sizeBorderWidth": 4,
     "$sizeButtonRadius": 8,
+
+
+    "$sizeButtonPaddingX": 10,
+    "$sizeButtonPaddingY": 10,
+    "$sizeButtonBorderWidth": 10,
+    "$sizeButtonBorderRadius": 8,
+
+
+    "$sizeButtonPaddingXSmall": 10,
+    "$sizeButtonPaddingXLarge": 10,
+    "$sizeButtonPaddingYSmall": 10,
+    "$sizeButtonPaddingYLarge": 10,
+
+    "$sizeBorderRadiusSmall": 8,
+    "$sizeBorderRadius": "$sizeBorderRadiusSmall + 4",
+    "$sizeBorderRadiusLarge": "$sizeBorderRadiusSmall + 8",
     "$sizePaddingButtonHorizontal": 20,
     "$sizePaddingButtonVertical": 20,
     "$sizePaddingNormal": 8,
     "$sizePaddingTiny": 2,
     "$sizePaddingSmall": 10,
-    "$sizePaddingMedium": 20,
-    "$sizePaddingLarge": 40,
+    "$sizePaddingMedium": "$sizePaddingSmall *2",
+    "$sizePaddingLarge": "$sizePaddingSmall *4",
     "$sizePaddingDefault": 4,
     "$sizeGrow": 4,
     "$sizeShrink": "-4",
