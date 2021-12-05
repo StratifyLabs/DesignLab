@@ -332,17 +332,21 @@ void ThemeGenerator::generate_descriptors() {
               Animation::path_from_cstring(path_type))))
           .add_member("time", period)
           .add_member("delay", delay);
-        m_code_printer.newline();
 
       } else if (type == "colorFilterDescriptor") {
         const auto code = get_json_value(json_object.at("code"));
+        const auto effective_name = StringView(name).pop_front();
 
         {
-          CPrinter::Function color_function(m_code_printer, "static lv_color_t " | name
-                                                            | "(const lv_color_filter_dsc_t * filter_descriptor, "
+          CPrinter::Function color_function(m_code_printer, "static lv_color_t " | effective_name
+                                                            | "_callback(const lv_color_filter_dsc_t * filter_descriptor, "
                                                             "lv_color_t color, lv_opa_t opacity)");
           m_code_printer.statement(code);
         }
+        CPrinter::StructInitialization(
+          m_code_printer,
+          "static const lv_color_filter_dsc_t " | effective_name)
+          .add_member("filter_cb", effective_name | "_callback");
         m_code_printer.newline();
       }
     }
@@ -365,7 +369,9 @@ void ThemeGenerator::generate_styles() {
       if (StringView(key) == "padding") {
 
         const auto update_value
-          = get_property_value(Style::property_from_cstring(key), value);
+          = get_property_value(Property::top_padding, value);
+
+        printf("Set padding to %s (%s)\n", update_value.cstring(), value);
 
         return create_property_entry("LV_STYLE_PAD_TOP", update_value) | ",\n  "
                | create_property_entry("LV_STYLE_PAD_BOTTOM", update_value)
@@ -377,7 +383,7 @@ void ThemeGenerator::generate_styles() {
 
       if (StringView(key) == "horizontal_padding") {
         const auto update_value
-          = get_property_value(Style::property_from_cstring(key), value);
+          = get_property_value(Property::left_padding, value);
 
         return create_property_entry("LV_STYLE_PAD_LEFT", update_value)
                | ",\n  "
@@ -386,7 +392,7 @@ void ThemeGenerator::generate_styles() {
 
       if (StringView(key) == "vertical_padding") {
         const auto update_value
-          = get_property_value(Style::property_from_cstring(key), value);
+          = get_property_value(Property::top_padding, value);
         return create_property_entry("LV_STYLE_PAD_TOP", update_value) | ",\n  "
                | create_property_entry("LV_STYLE_PAD_BOTTOM", update_value);
       }
@@ -453,10 +459,8 @@ void ThemeGenerator::generate_styles() {
         .add_member(
           "v_p",
           "{ .const_props = " | style_name.string_view() | "_const_list }")
-        .add_member("prop1", "0")
         .add_member("has_group", "0xff")
-        .add_member("is_const", "1")
-        .add_member("prop_cnt", NumberString(entry_key_list.count()));
+        .add_member("is_const", "1");
     }
     m_code_printer.newline();
   }
@@ -516,6 +520,7 @@ var::GeneralString ThemeGenerator::get_variable(const char *key) {
       return m_variables_object.at(entry).to_cstring();
     }
   }
+
   API_RETURN_VALUE_ASSIGN_ERROR(
     "",
     "could not find variable `" | StringView(key) | "`",

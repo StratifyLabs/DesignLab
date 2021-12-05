@@ -61,7 +61,7 @@
         ],
         "pressed": [
           "pressed",
-          "grow",
+          "shrink",
           "transition_normal"
         ],
         "checked": "background_color_secondary",

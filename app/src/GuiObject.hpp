@@ -33,6 +33,7 @@ protected:
     lv_obj_t * selected_object = nullptr;
     var::Queue<var::Vector<FormList::ItemData>> tree;
     lvgl::Runtime * runtime;
+    lvgl::Theme theme;
   };
 
   static Model &model() { return Model::instance(); }

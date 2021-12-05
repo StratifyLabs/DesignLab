@@ -43,12 +43,12 @@
       "delay": 70
     },
     "$darkColorFilter": {
-      "name": "dark_filter_callback",
+      "name": "&dark_filter",
       "type": "colorFilterDescriptor",
       "code": "LV_UNUSED(filter_descriptor);\n  return lv_color_darken(color, opacity);"
     },
     "$greyColorFilter": {
-      "name": "grey_filter_callback",
+      "name": "&grey_filter",
       "type": "colorFilterDescriptor",
       "code": "LV_UNUSED(filter_descriptor);\n  return lv_color_mix(lv_palette_lighten(LV_PALETTE_GREY, 2), color, opacity);"
     }
@@ -75,7 +75,7 @@
       "text_color": "$colorText"
     },
     "@btn_success": {
-      "background_color": "$colorDanger",
+      "background_color": "$colorSuccess",
       "text_color": "$colorText"
     },
     "@btn_sm": {
@@ -88,7 +88,7 @@
     },
     "screen": {
       "background_opacity": "$opacityCover",
-      "background_color": "$colorScreen",
+      "background_color": "$colorBackground",
       "text_color": "$colorText",
       "row_padding": "$sizePaddingSmall",
       "column_padding": "$sizePaddingSmall"
@@ -120,12 +120,12 @@
       "line_width": 1
     },
     "button": {
-      "radius": 12,
+      "radius": 4,
       "background_opacity": "cover",
       "background_color": "$colorPrimary",
       "text_color": "$colorWhite",
-      "horizontal_padding": 5,
-      "vertical_padding": 10,
+      "horizontal_padding": "$sizePaddingButtonHorizontal",
+      "vertical_padding": "$sizePaddingButtonVertical",
       "column_padding": 3,
       "row_padding": 3
     },
@@ -195,6 +195,10 @@
     "grow": {
       "transform_width": "$sizeGrow",
       "transform_height": "$sizeGrow"
+    },
+    "shrink": {
+      "transform_width": "$sizeShrink",
+      "transform_height": "$sizeShrink"
     },
     "transition_delayed": {
       "transition": "$transitionDelayed"

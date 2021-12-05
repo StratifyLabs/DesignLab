@@ -3,15 +3,16 @@
   "type": "colors",
   "version": 0,
   "$variables": {
-    "$colorBackground": "0xffff0000",
-    "$colorPrimary": "0xff00ff00",
-    "$colorSecondary": "0xffffff",
-    "$colorInfo": "0xffffff",
-    "$colorWarning": "0xffffff",
-    "$colorDanger": "0xffffff",
+    "$colorBackground": "0xff222222",
+    "$colorForeground": "0xffffffff",
+    "$colorPrimary": "0xff244e99",
+    "$colorSecondary": "0xff303846",
+    "$colorInfo": "0xff0dcaf0",
+    "$colorWarning": "0xffffc107",
+    "$colorDanger": "0xffdc3545",
+    "$colorSuccess": "0xff198754",
     "$colorWhite": "0xffCCCCCC",
     "$colorGrey": "0xff444444",
-    "$colorSuccess": "0xffffffff",
     "$colorScreen": "0xffffffff",
     "$colorText": "0xffffffff"
   }
