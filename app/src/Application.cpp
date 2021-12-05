@@ -55,20 +55,25 @@ void Application::run(sys::Cli &cli) {
                .set_width(50_percent)
                .fill_height()
                .set_row_padding(20)
-               .add(Button().add_style("btn_primary").add_label("Primary"))
-               .add(Button().add_style("btn_secondary").add_label("Secondary"))
-               .add(Button().add_style("btn_info").add_label("Info"))
-               .add(Button().add_style("btn_warning").add_label("Warning"))
-               .add(Button().add_style("btn_danger").add_label("Danger"))
-               .add(Button().add_style("btn_success").add_label("Success")))
+               .add(Button().add_style("primary sm").add_label("Primary"))
+               .add(Button().add_style("secondary").add_label("Secondary"))
+               .add(Button().add_style("info").add_label("Info"))
+               .add(Button().add_style("warning").add_style("pill").add_label("Warning"))
+               .add(Button().add_style("danger lg pill").add_label("Danger"))
+               .add(Button().add_style("success").add_style("sm").add_label("Success")))
         .add(Column()
                .set_padding(20)
                .set_width(50_percent)
                .fill_height()
                .set_row_padding(20)
-               .add(Button().add_style("btn_success").add_label("World")))
+               .add(Button().add_style("outline_primary").add_label("Outline Primary"))
+               .add(Button().add_style("outline_secondary").add_label("Outline Secondary"))
+               .add(Button().add_style("outline_info").add_label("Outline Info"))
+               .add(Button().add_style("outline_warning").add_label("Outline Warning"))
+               .add(Button().add_style("outline_danger").add_label("Outline Danger"))
+               .add(Button().add_style("outline_success").add_label("Outline Success")))
         .add(Column()));
-  
+
 
   // model cannot be touched until all lvgl initialization is complete
   // it is initialized on first access

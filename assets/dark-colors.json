@@ -12,6 +12,8 @@
     "$colorDanger": "0xffdc3545",
     "$colorSuccess": "0xff198754",
     "$colorWhite": "0xffCCCCCC",
+    "$colorLight": "0xffaaaaaa",
+    "$colorDark": "0xff222222",
     "$colorGrey": "0xff444444",
     "$colorScreen": "0xffffffff",
     "$colorText": "0xffffffff"

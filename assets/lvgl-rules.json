@@ -87,7 +87,7 @@
       "styles": {
         "default": "background_color_white",
         "focus_key": [
-          "outline_primary",
+          "outline_border_primary",
           "tab_background_focus"
         ],
         "pressed | items": "pressed",
@@ -96,24 +96,24 @@
           "tab_button"
         ],
         "focus_key | items": [
-          "outline_primary",
+          "outline_border_primary",
           "tab_background_focus"
         ],
-        "edited | items": "outline_secondary"
+        "edited | items": "outline_border_secondary"
       }
     },
     "&ButtonMatrix": {
       "condition": ".btnmatrix",
       "styles": {
         "default": "card",
-        "focus_key": "outline_primary",
-        "edited": "outline_primary",
+        "focus_key": "outline_border_primary",
+        "edited": "outline_border_primary",
         "default | items": "button",
         "disabled | items": "disabled",
         "pressed | items ": "pressed",
         "checked | items": "background_color_primary",
-        "focus_key | items": "outline_primary",
-        "edited | items": "outline_secondary"
+        "focus_key | items": "outline_border_primary",
+        "edited | items": "outline_border_secondary"
       }
     },
     "&Bar": {
@@ -123,8 +123,8 @@
           "background_color_primary_muted",
           "circle"
         ],
-        "focus_key": "outline_primary",
-        "edited": "outline_secondary",
+        "focus_key": "outline_border_primary",
+        "edited": "outline_border_secondary",
         "default | indicator": [
           "background_color_primary",
           "circle"
@@ -138,8 +138,8 @@
           "background_color_primary_muted",
           "circle"
         ],
-        "focus_key": "outline_primary",
-        "edited": "outline_secondary",
+        "focus_key": "outline_border_primary",
+        "edited": "outline_border_secondary",
         "default | indicator": [
           "background_color_primary",
           "circle"
@@ -155,8 +155,8 @@
           "padding_zero",
           "radius_none"
         ],
-        "focus_key": "outline_primary",
-        "edited": "outline_secondary",
+        "focus_key": "outline_border_primary",
+        "edited": "outline_border_secondary",
         "default | scrollbar": "scrollbar",
         "scrolled | scrollbar": "scrollbar_scrolled",
         "default | items": [
@@ -173,7 +173,7 @@
       "condition": ".checkbox",
       "styles": {
         "default": "padding_gap",
-        "focus_key": "outline_primary",
+        "focus_key": "outline_border_primary",
         "disabled | indicator": "disabled",
         "default | indicator": [
           "checkbox_marker",
@@ -198,7 +198,7 @@
           "circle"
         ],
         "disabled": "disabled",
-        "focus_key": "outline_primary",
+        "focus_key": "outline_border_primary",
         "checked | indicator": "background_color_primary",
         "default | indicator": "circle",
         "disabled | indicator": "disabled",
@@ -234,7 +234,7 @@
           "line_space_large",
           "text_align_center"
         ],
-        "focus_key": "outline_primary",
+        "focus_key": "outline_border_primary",
         "edited": "background_color_secondary",
         "default | selected": "background_color_primary"
       }
@@ -251,7 +251,7 @@
           "pressed",
           "transition_normal"
         ],
-        "focus_key": "outline_primary",
+        "focus_key": "outline_border_primary",
         "edited": "background_color_secondary",
         "default | indicator": "transition_normal"
       }
@@ -310,7 +310,7 @@
           "card",
           "padding_small"
         ],
-        "focus_key": "outline_primary",
+        "focus_key": "outline_border_primary",
         "edited": "background_color_secondary",
         "default | scrollbar": "scrollbar",
         "scrolled | scrollbar": "scrollbar_scrolled",
@@ -328,7 +328,7 @@
         "default | items": "calendar_day",
         "pressed | items": "pressed",
         "disabled | items": "disabled",
-        "focus_key": "outline_primary",
+        "focus_key": "outline_border_primary",
         "edited": "background_color_secondary"
       }
     },
@@ -351,7 +351,7 @@
           "card",
           "padding_small"
         ],
-        "focus_key": "outline_primary",
+        "focus_key": "outline_border_primary",
         "edited": "background_color_secondary",
         "default | items": [
           "button",

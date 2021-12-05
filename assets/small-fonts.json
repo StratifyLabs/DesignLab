@@ -4,8 +4,8 @@
   "$variables": {
     "$fontBodySmall": "&montserrat_r_16",
     "$fontBodyMedium": "&montserrat_r_20",
-    "$fontBodyLarge": "&montserrat_r_24",
-    "$fontHeaderExtraLarge": "&montserrat_r_32",
+    "$fontBodyLarge": "&montserrat_sb_28",
+    "$fontHeaderExtraLarge": "&montserrat_r_44",
     "$fontHeaderLarge": "&montserrat_r_28",
     "$fontHeaderMedium": "&montserrat_r_24",
     "$fontHeaderSmall": "&montserrat_r_20",

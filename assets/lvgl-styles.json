@@ -54,37 +54,76 @@
     }
   },
   "@styles": {
-    "@btn_primary": {
+    "@primary": {
       "background_color": "$colorPrimary",
       "text_color": "$colorText"
     },
-    "@btn_secondary": {
+    "@secondary": {
       "background_color": "$colorSecondary",
       "text_color": "$colorText"
     },
-    "@btn_warning": {
+    "@warning": {
       "background_color": "$colorWarning",
       "text_color": "$colorText"
     },
-    "@btn_info": {
+    "@info": {
       "background_color": "$colorInfo",
       "text_color": "$colorText"
     },
-    "@btn_danger": {
+    "@danger": {
       "background_color": "$colorDanger",
       "text_color": "$colorText"
     },
-    "@btn_success": {
+    "@success": {
       "background_color": "$colorSuccess",
       "text_color": "$colorText"
     },
-    "@btn_sm": {
+    "@outline_primary": {
+      "background_color": "$colorBackground",
+      "border_color": "$colorPrimary",
+      "text_color": "$colorPrimary",
+      "border_width": "$sizeBorderWidth"
+    },
+    "@outline_secondary": {
+      "background_color": "$colorBackground",
+      "border_color": "$colorSecondary",
+      "text_color": "$colorSecondary",
+      "border_width": "$sizeBorderWidth"
+    },
+    "@outline_warning": {
+      "background_color": "$colorBackground",
+      "border_color": "$colorWarning",
+      "text_color": "$colorWarning",
+      "border_width": "$sizeBorderWidth"
+    },
+    "@outline_info": {
+      "background_color": "$colorBackground",
+      "border_color": "$colorInfo",
+      "text_color": "$colorInfo",
+      "border_width": "$sizeBorderWidth"
+    },
+    "@outline_danger": {
+      "background_color": "$colorBackground",
+      "border_color": "$colorDanger",
+      "text_color": "$colorDanger",
+      "border_width": "$sizeBorderWidth"
+    },
+    "@outline_success": {
+      "background_color": "$colorBackground",
+      "border_color": "$colorSuccess",
+      "text_color": "$colorSuccess",
+      "border_width": "$sizeBorderWidth"
+    },
+    "@sm": {
       "text_font": "$fontBodySmall",
       "padding": "$sizePaddingSmall"
     },
-    "@btn_lg": {
+    "@lg": {
       "text_font": "$fontBodyLarge",
       "padding": "$sizePaddingLarge"
+    },
+    "@pill": {
+      "radius": "$radiusCircle"
     },
     "screen": {
       "background_opacity": "$opacityCover",
@@ -120,7 +159,7 @@
       "line_width": 1
     },
     "button": {
-      "radius": 4,
+      "radius": "$sizeButtonRadius",
       "background_opacity": "cover",
       "background_color": "$colorPrimary",
       "text_color": "$colorWhite",
@@ -175,13 +214,13 @@
     "text_align_center": {
       "text_alignment": "center"
     },
-    "outline_primary": {
+    "outline_border_primary": {
       "outline_color": "$colorPrimary",
       "outline_width": "$sizeOutlineWidth",
       "outline_padding": "$sizeOutlineWidth",
       "outline_opacity": "$opacity50"
     },
-    "outline_secondary": {
+    "outline_border_secondary": {
       "outline_color": "$colorSecondary",
       "outline_width": "$sizeOutlineWidth",
       "outline_padding": "$sizeOutlineWidth",
