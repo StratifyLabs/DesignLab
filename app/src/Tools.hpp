@@ -7,12 +7,11 @@
 
 class Tools : public Application {
 public:
-  static void configure(Container &container) {
+  static void configure(Generic container) {
 
     static constexpr auto add_button_name = "AddButton";
     static constexpr auto add_list_name = "AddList";
 
-    static auto screen = Container::active_screen();
 
     static const auto checklist_context = CheckList::Data("");
     static const auto checklist_context_allow_multiple
@@ -27,10 +26,10 @@ public:
                EventCode::clicked,
                [](lv_event_t *) {
                  fflush(stdout);
-                 screen.find<Container>(canvas_container_name)
+                 screen().find<Generic>(canvas_container_name)
                    .add(Button(generate_name()));
 
-                 auto button = screen.find<Button>(latest_name());
+                 auto button = screen().find<Button>(latest_name());
                  button.set_width(100).set_height(200);
 
                  notify_properties(button.object());
@@ -39,9 +38,9 @@ public:
         EventCode::clicked,
         [](lv_event_t *) {
           fflush(stdout);
-          Container(model().selected_object).add(Label(generate_name()));
+          Generic(model().selected_object).add(Label(generate_name()));
 
-          auto button = screen.find<Button>(latest_name());
+          auto button = screen().find<Button>(latest_name());
           button.set_width(100).set_height(200);
 
           notify_properties(button.object());

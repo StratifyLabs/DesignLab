@@ -47,7 +47,6 @@
     "&Object": {
       "condition": ".obj",
       "styles": {
-        "default": "card",
         "default | scrollbar": "scrollbar",
         "scrolled | scrollbar": "scrollbar_scrolled"
       }

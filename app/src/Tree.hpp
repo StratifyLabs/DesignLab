@@ -8,7 +8,7 @@
 
 class Tree : public Application {
 public:
-  static void configure(Container &container) {
+  static void configure(Generic container) {
 
     static constexpr auto tile_view_name = "TileView";
 
@@ -17,10 +17,10 @@ public:
       .add(TileView(tile_view_name).setup([](TileView tile_view) {
         tile_view.set_width(100_percent)
           .set_height(80_percent)
-          .add_tile("", TileView::Location(), [](Container container) {
+          .add_tile("", TileView::Location(), [](Generic container) {
             container.add(List("").setup([](List list) {
               list.add_style(model().fill_parent_style);
-              auto * canvas = Container::active_screen().find(canvas_container_name).object();
+              auto * canvas = screen().find(canvas_container_name).object();
               configure_list(list, canvas);
             }));
           });
@@ -42,7 +42,7 @@ private:
     };
 
 
-    auto container = Container(object);
+    auto container = Generic(object);
     for(u32 i=0; i < container.get_child_count(); i++){
       list.add_button(Branch::create(""), "", container.get_child(i).name(), [](Button & button){
         auto leaf = button.user_data<Branch>();

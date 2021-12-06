@@ -47,6 +47,11 @@
       "type": "colorFilterDescriptor",
       "code": "LV_UNUSED(filter_descriptor);\n  return lv_color_darken(color, opacity);"
     },
+    "$lightColorFilter": {
+      "name": "&light_filter",
+      "type": "colorFilterDescriptor",
+      "code": "LV_UNUSED(filter_descriptor);\n  return lv_color_lighten(color, opacity);"
+    },
     "$greyColorFilter": {
       "name": "&grey_filter",
       "type": "colorFilterDescriptor",
@@ -56,13 +61,13 @@
   "@styles": {
     "@h1": {
       "text_font": "$fontHeaderExtraLarge",
-      "top_padding": "$sizePaddingLarge",
+      "top_padding": "$sizePaddingMedium",
       "bottom_padding": "$sizePaddingSmall",
       "width": "LV_PCT(100)"
     },
     "@h2": {
       "text_font": "$fontHeaderLarge",
-      "top_padding": "$sizePaddingLarge",
+      "top_padding": "$sizePaddingMedium",
       "bottom_padding": "$sizePaddingSmall",
       "width": "LV_PCT(100)"
     },
@@ -78,8 +83,28 @@
       "bottom_padding": "$sizePaddingSmall",
       "width": "LV_PCT(100)"
     },
+    "@container": {
+      "padding": "$sizePaddingMedium",
+      "background_color": "$colorBackground",
+      "border_width": 0,
+      "text_color": "$colorForeground",
+      "background_opacity": "$opacityCover"
+    },
+    "@naked": {
+      "padding": 0,
+      "background_color": "$colorBackground",
+      "border_width": 0,
+      "text_color": "$colorForeground"
+    },
+    "@row": {
+      "column_padding": "$sizePaddingMedium"
+    },
+    "@col": {
+      "row_padding": "$sizePaddingMedium"
+    },
     "@primary": {
       "background_color": "$colorPrimary",
+      "border_color": "$colorPrimary",
       "text_color": "$colorText"
     },
     "@secondary": {
@@ -169,18 +194,45 @@
     "scrollbar_scrolled": {
       "background_opacity": "$opacityCover"
     },
-    "card": {
-      "radius": 12,
+    "@card": {
+      "radius": "$sizeCardBorderRadius",
       "background_opacity": "$opacityCover",
-      "background_color": "blue_grey",
-      "border_color": "blue_grey",
+      "background_color": "$colorBackground",
+      "border_color": "$colorGrey",
       "border_width": "$sizeBorderWidth",
+      "text_color": "$colorForeground",
       "border_post": true,
-      "padding": "$sizePaddingDefault",
-      "row_padding": "$sizePaddingSmall",
-      "column_padding": "$sizePaddingSmall",
-      "line_color": "blue_grey",
-      "line_width": 1
+      "padding": 0,
+      "row_padding": "$sizePaddingMedium",
+      "column_padding": "$sizePaddingMedium",
+      "line_color": "$colorGrey",
+      "line_width": 1,
+      "height": "LV_SIZE_CONTENT",
+      "width": "LV_SIZE_CONTENT"
+    },
+    "@card_header": {
+      "padding": "$sizePaddingMedium",
+      "background_color": "$colorGrey",
+      "background_opacity": "$opacity20",
+      "border_width": "$sizeBorderWidth",
+      "border_side": "bottom",
+      "border_color": "$colorGrey",
+      "width": "LV_PCT(100)"
+    },
+    "@card_body": {
+      "padding": "$sizePaddingMedium",
+      "width": "LV_PCT(100)",
+      "background_color": "$colorBackground",
+      "background_opacity": "$opaque"
+    },
+    "@card_footer": {
+      "padding": "$sizePaddingMedium",
+      "background_color": "$colorGrey",
+      "background_opacity": "$opacity20",
+      "border_width": "$sizeBorderWidth",
+      "border_side": "top",
+      "border_color": "$colorGrey",
+      "width": "LV_PCT(100)"
     },
     "button": {
       "radius": "$sizeButtonRadius",

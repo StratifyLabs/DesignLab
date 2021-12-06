@@ -7,11 +7,10 @@
 
 class Properties : public Application {
 public:
-  static void configure(Container &container) {
-    static auto screen = Container::active_screen();
+  static void configure(Generic container) {
 
     static auto set_property = [&](Property property, lv_coord_t value) {
-      screen.find(Style::to_cstring(property))
+      screen().find(Style::to_cstring(property))
         .find<TextArea>("textAreaName")
         .set_text(var::NumberString(value));
     };
@@ -25,7 +24,7 @@ public:
         EventCode::notified,
         [](lv_event_t *e) {
           const Event event(e);
-          Container object(event.parameter<lv_obj_t *>());
+          Generic object(event.parameter<lv_obj_t *>());
 
           set_property(
             Property::width,

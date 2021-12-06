@@ -2,7 +2,7 @@
 #define NAVIGATION_HPP
 
 #include <lvgl/Button.hpp>
-#include <lvgl/Container.hpp>
+#include <lvgl/Generic.hpp>
 #include <lvgl/ObjectAccess.hpp>
 
 #include "Icons.hpp"

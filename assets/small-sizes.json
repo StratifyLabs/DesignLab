@@ -7,6 +7,8 @@
     "$sizeBorderWidth": 4,
     "$sizeButtonRadius": 8,
 
+    "$sizeCardBorderRadius": 8,
+
 
     "$sizeButtonPaddingX": 10,
     "$sizeButtonPaddingY": 10,

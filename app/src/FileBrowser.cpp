@@ -2,11 +2,11 @@
 
 #include "FileBrowser.hpp"
 
-void FileBrowser::configure(lvgl::Container container) {
+void FileBrowser::configure(lvgl::Generic container) {
   static constexpr auto folder_tile_view_name = "fbFolderTileView";
   static constexpr auto home_tile_name = "fbHomeTile";
 
-  static auto configure_folder = [](Container container){
+  static auto configure_folder = [](Generic container){
     container.add(Label("").setup([](Label object){
       object.set_text_static("Folder");
     }));
@@ -24,7 +24,7 @@ void FileBrowser::configure(lvgl::Container container) {
 }
 
 
-void FileBrowser::configure_directory(lvgl::Container container){
+void FileBrowser::configure_directory(lvgl::Generic container){
 
   container.add(List("").setup([](List list){
     list.set_width(90_percent).set_height(90_percent).add_event_callback(EventCode::notified, [](lv_event_t*e){

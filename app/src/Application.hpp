@@ -4,7 +4,7 @@
 #include <api/api.hpp>
 #include <chrono/ClockTime.hpp>
 #include <json/Json.hpp>
-#include <lvgl/Container.hpp>
+#include <lvgl/Generic.hpp>
 #include <lvgl/Event.hpp>
 #include <lvgl/Group.hpp>
 #include <lvgl/PeriodicTimer.hpp>
@@ -12,7 +12,7 @@
 #include <var/Queue.hpp>
 #include <var/StackString.hpp>
 #include <lvgl/Button.hpp>
-#include <lvgl/Container.hpp>
+#include <lvgl/Generic.hpp>
 #include <lvgl/ObjectAccess.hpp>
 #include <lvgl/TextArea.hpp>
 #include <lvgl/List.hpp>
@@ -38,13 +38,13 @@ public:
 protected:
   static constexpr auto button_height = 10_percent;
 
-  static constexpr auto tools_container_name = "ToolsContainer";
-  static constexpr auto canvas_container_name = "CanvasContainer";
+  static constexpr auto tools_container_name = "ToolsGeneric";
+  static constexpr auto canvas_container_name = "CanvasGeneric";
   static constexpr auto right_tab_view_name = "RightTabView";
-  static constexpr auto properties_container_name = "PropertiesContainer";
-  static constexpr auto tree_container_name = "TreeContainer";
+  static constexpr auto properties_container_name = "PropertiesGeneric";
+  static constexpr auto tree_container_name = "TreeGeneric";
 
-  static lvgl::Container &set_column_flow(lvgl::Container &container) {
+  static lvgl::Generic &set_column_flow(lvgl::Generic &container) {
     return container.set_flex_layout()
       .set_flex_flow(FlexFlow::column)
       .set_column_padding(10)
@@ -63,7 +63,7 @@ protected:
 
   static void notify_properties(lv_obj_t * selected){
     model().selected_object = selected;
-    Event::send(Container::active_screen().find(properties_container_name), EventCode::notified, selected);
+    Event::send(screen().find(properties_container_name), EventCode::notified, selected);
   }
 
 private:
@@ -85,8 +85,8 @@ private:
 
   static void handle_periodic(lv_timer_t *);
 
-  static void configure_splash(lvgl::Container &container);
-  static void configure_login(lvgl::Container &container);
+  static void configure_splash(lvgl::Generic &container);
+  static void configure_login(lvgl::Generic &container);
 };
 
 #endif // APPLICATION_HPP

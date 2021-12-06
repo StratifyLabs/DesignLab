@@ -14,7 +14,7 @@
     "$colorWhite": "0xffCCCCCC",
     "$colorLight": "0xffaaaaaa",
     "$colorDark": "0xff222222",
-    "$colorGrey": "0xff444444",
+    "$colorGrey": "0xff666666",
     "$colorScreen": "0xffffffff",
     "$colorText": "0xffffffff"
   }

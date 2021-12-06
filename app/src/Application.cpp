@@ -47,7 +47,7 @@ void Application::run(sys::Cli &cli) {
 
   Screen theme_preview_screen(ThemePreview::screen_name);
 
-  ThemePreview::configure(theme_preview_screen.get<Container>());
+  ThemePreview::configure(theme_preview_screen.get<Generic>());
 
   theme_preview_screen.load();
 

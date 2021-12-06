@@ -22,6 +22,10 @@ public:
 
 protected:
 
+  using ScreenHeading = Heading1;
+  using SectionHeading = Heading2;
+  using SubSectionHeading = Heading3;
+
   struct Model {
   public:
     API_SINGLETON(Model);
