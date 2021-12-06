@@ -11,6 +11,9 @@
 		},
 		{
 			"path": "dependencies/LvglAPI"
+		},
+		{
+			"path": "dependencies/DesignAPI"
 		}
 	],
 	"settings": {
