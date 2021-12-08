@@ -6,13 +6,17 @@ set(SOURCES
 	logic/ThemeGenerator.hpp
 	logic/ThemeGenerator.cpp
 
+	screens/Home.cpp
+	screens/Home.hpp
 	screens/ThemePreview.cpp
 	screens/ThemePreview.hpp
+	screens/ThemeMaker.cpp
+	screens/ThemeMaker.hpp
 
 	Application.cpp
 	Application.hpp
 
-	GuiObject.hpp
+	screens/ScreenObject.hpp
 
 	Tree.hpp
 
@@ -24,7 +28,5 @@ set(SOURCES
 	FileBrowser.hpp
 
 	Elements.hpp
-
-	Icons.hpp
 
 	PARENT_SCOPE)

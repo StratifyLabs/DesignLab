@@ -8,6 +8,7 @@
     "$opacity20": 51,
     "$opacity40": 102,
     "$opacity50": 127,
+    "$opacity60": 153,
     "$opaque": 255,
     "$opacityCover": 255,
     "$transitionPropertyList": {
@@ -41,6 +42,14 @@
       "path": "linear",
       "period": "$transitionPeriodMilliseconds",
       "delay": 70
+    },
+    "$transitionLongDelayed": {
+      "name": "transition_long_delayed",
+      "type": "transitionDescriptor",
+      "property_list": "transition_property_list",
+      "path": "linear",
+      "period": "$transitionPeriodMilliseconds",
+      "delay": 800
     },
     "$darkColorFilter": {
       "name": "&dark_filter",
@@ -97,10 +106,24 @@
       "text_color": "$colorForeground"
     },
     "@row": {
-      "column_padding": "$sizePaddingMedium"
+      "padding": 0,
+      "background_color": "$colorBackground",
+      "border_width": 0,
+      "text_color": "$colorForeground",
+      "background_opacity": "$opacityCover",
+      "column_padding": "$sizePaddingMedium",
+      "width": "LV_SIZE_CONTENT",
+      "height": "LV_SIZE_CONTENT"
     },
     "@col": {
-      "row_padding": "$sizePaddingMedium"
+      "padding": 0,
+      "background_color": "$colorBackground",
+      "border_width": 0,
+      "text_color": "$colorForeground",
+      "background_opacity": "$opacityCover",
+      "row_padding": "$sizePaddingMedium",
+      "width": "LV_SIZE_CONTENT",
+      "height": "LV_SIZE_CONTENT"
     },
     "@primary": {
       "background_color": "$colorPrimary",
@@ -167,6 +190,10 @@
       "text_font": "$fontBodySmall",
       "padding": "$sizePaddingSmall"
     },
+    "@md": {
+      "text_font": "$fontBodyMedium",
+      "padding": "$sizePaddingMedium"
+    },
     "@lg": {
       "text_font": "$fontBodyLarge",
       "padding": "$sizePaddingLarge"
@@ -182,17 +209,18 @@
       "column_padding": "$sizePaddingSmall"
     },
     "scrollbar": {
-      "background_color": "grey",
+      "background_color": "$colorGrey",
       "radius": "$radiusCircle",
       "right_padding": "$sizeScrollbarPadding",
       "top_padding": "$sizeScrollbarPadding",
       "width": "$sizeScrollbar",
       "height": "$sizeScrollbar",
-      "background_opacity": "$opacity40",
-      "transition": "$transitionNormal"
+      "background_opacity": 0,
+      "transition": "$transitionLongDelayed"
     },
     "scrollbar_scrolled": {
-      "background_opacity": "$opacityCover"
+      "background_opacity": "$opacity60",
+      "transition": "$transitionNormal"
     },
     "@card": {
       "radius": "$sizeCardBorderRadius",
@@ -219,6 +247,25 @@
       "border_color": "$colorGrey",
       "width": "LV_PCT(100)"
     },
+    "@primary_card": {
+      "border_color": "$colorPrimary",
+      "text_color": "$colorText"
+    },
+    "@primary_card_header": {
+      "background_color": "$colorPrimary",
+      "border_color": "$colorPrimary",
+      "background_opacity": "$opacity50"
+    },
+    "@primary_card_body": {
+      "background_opacity": "$opacity20",
+      "background_color": "$colorPrimary",
+      "border_color": "$colorPrimary"
+    },
+    "@primary_card_footer": {
+      "background_opacity": "$opacity50",
+      "background_color": "$colorPrimary",
+      "border_color": "$colorPrimary"
+    },
     "@card_body": {
       "padding": "$sizePaddingMedium",
       "width": "LV_PCT(100)",
@@ -233,6 +280,10 @@
       "border_side": "top",
       "border_color": "$colorGrey",
       "width": "LV_PCT(100)"
+    },
+    "@darker": {
+      "color_filter_descriptor": "$darkColorFilter",
+      "color_filter_opacity": 35
     },
     "button": {
       "radius": "$sizeButtonRadius",

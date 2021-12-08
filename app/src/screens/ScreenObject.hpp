@@ -2,21 +2,21 @@
 // Created by Tyler Gilbert on 12/2/21.
 //
 
-#ifndef DESIGNLAB_GUIOBJECT_HPP
-#define DESIGNLAB_GUIOBJECT_HPP
+#ifndef DESIGNLAB_SCREENOBJECT_HPP
+#define DESIGNLAB_SCREENOBJECT_HPP
 
-
-#include <printer/YamlPrinter.hpp>
-#include <thread/Mutex.hpp>
-#include <thread/Thread.hpp>
+#include "printer/YamlPrinter.hpp"
+#include "thread/Mutex.hpp"
+#include "thread/Thread.hpp"
 
 using namespace printer;
 
 #include <lvgl.hpp>
+#include <design.hpp>
 
 #include "fonts/Icons.hpp"
 
-class GuiObject : public api::ExecutionContext {
+class ScreenObject : public api::ExecutionContext {
 public:
   static Printer &printer() { return model().printer; }
 
@@ -29,9 +29,6 @@ protected:
   struct Model {
   public:
     API_SINGLETON(Model);
-    lvgl::Font title_font;
-    Style column_flow_style;
-    Style fill_parent_style;
     YamlPrinter printer;
     var::Queue<chrono::ClockTime::UniqueString> name_list;
     lv_obj_t * selected_object = nullptr;
@@ -48,4 +45,4 @@ protected:
 };
 
 
-#endif // DESIGNLAB_GUIOBJECT_HPP
+#endif // DESIGNLAB_SCREENOBJECT_HPP

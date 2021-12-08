@@ -38,6 +38,13 @@ static const lv_style_transition_dsc_t transition_delayed = {
   .time = 100,
   .delay = 70
 };
+static const lv_style_transition_dsc_t transition_long_delayed = {
+  .props = transition_property_list,
+  .user_data = NULL,
+  .path_xcb = lv_anim_path_linear,
+  .time = 100,
+  .delay = 800
+};
 static lv_color_t dark_filter_callback(const lv_color_filter_dsc_t * filter_descriptor, lv_color_t color, lv_opa_t opacity){
   LV_UNUSED(filter_descriptor);
   return lv_color_darken(color, opacity);;
@@ -154,7 +161,17 @@ static const lv_style_t naked_style = {
 };
 
 static const lv_style_const_prop_t row_const_list[] = {
+  { .prop = LV_STYLE_PAD_TOP, .value = { .num = 0 } },
+  { .prop = LV_STYLE_PAD_BOTTOM, .value = { .num = 0 } },
+  { .prop = LV_STYLE_PAD_LEFT, .value = { .num = 0 } },
+  { .prop = LV_STYLE_PAD_RIGHT, .value = { .num = 0 } },
+  { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full= 0xff222222 } } },
+  { .prop = LV_STYLE_BORDER_WIDTH, .value = { .num = 0 } },
+  { .prop = LV_STYLE_TEXT_COLOR, .value = { .color = { .full= 0xffffffff } } },
+  { .prop = LV_STYLE_BG_OPA, .value = { .num = 255 } },
   { .prop = LV_STYLE_PAD_COLUMN, .value = { .num = 10 *2 } },
+  { .prop = LV_STYLE_WIDTH, .value = { .num = LV_SIZE_CONTENT } },
+  { .prop = LV_STYLE_HEIGHT, .value = { .num = LV_SIZE_CONTENT } },
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
 
@@ -165,7 +182,17 @@ static const lv_style_t row_style = {
 };
 
 static const lv_style_const_prop_t col_const_list[] = {
+  { .prop = LV_STYLE_PAD_TOP, .value = { .num = 0 } },
+  { .prop = LV_STYLE_PAD_BOTTOM, .value = { .num = 0 } },
+  { .prop = LV_STYLE_PAD_LEFT, .value = { .num = 0 } },
+  { .prop = LV_STYLE_PAD_RIGHT, .value = { .num = 0 } },
+  { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full= 0xff222222 } } },
+  { .prop = LV_STYLE_BORDER_WIDTH, .value = { .num = 0 } },
+  { .prop = LV_STYLE_TEXT_COLOR, .value = { .color = { .full= 0xffffffff } } },
+  { .prop = LV_STYLE_BG_OPA, .value = { .num = 255 } },
   { .prop = LV_STYLE_PAD_ROW, .value = { .num = 10 *2 } },
+  { .prop = LV_STYLE_WIDTH, .value = { .num = LV_SIZE_CONTENT } },
+  { .prop = LV_STYLE_HEIGHT, .value = { .num = LV_SIZE_CONTENT } },
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
 
@@ -347,6 +374,21 @@ static const lv_style_t sm_style = {
   .is_const = 1
 };
 
+static const lv_style_const_prop_t md_const_list[] = {
+  { .prop = LV_STYLE_TEXT_FONT, .value = { .ptr = (void*)&montserrat_r_36 } },
+  { .prop = LV_STYLE_PAD_TOP, .value = { .num = 10 *2 } },
+  { .prop = LV_STYLE_PAD_BOTTOM, .value = { .num = 10 *2 } },
+  { .prop = LV_STYLE_PAD_LEFT, .value = { .num = 10 *2 } },
+  { .prop = LV_STYLE_PAD_RIGHT, .value = { .num = 10 *2 } },
+  { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
+};
+
+static const lv_style_t md_style = {
+  .v_p = { .const_props = md_const_list },
+  .has_group = 0xff,
+  .is_const = 1
+};
+
 static const lv_style_const_prop_t lg_const_list[] = {
   { .prop = LV_STYLE_TEXT_FONT, .value = { .ptr = (void*)&montserrat_sb_44 } },
   { .prop = LV_STYLE_PAD_TOP, .value = { .num = 10 *4 } },
@@ -389,14 +431,14 @@ static const lv_style_t screen_style = {
 };
 
 static const lv_style_const_prop_t scrollbar_const_list[] = {
-  { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full = 0xFF9E9E9E }  } },
+  { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full= 0xff666666 } } },
   { .prop = LV_STYLE_RADIUS, .value = { .num = 0x7fff } },
-  { .prop = LV_STYLE_PAD_RIGHT, .value = { .num = 7 } },
-  { .prop = LV_STYLE_PAD_TOP, .value = { .num = 7 } },
-  { .prop = LV_STYLE_WIDTH, .value = { .num = 7 } },
-  { .prop = LV_STYLE_HEIGHT, .value = { .num = 7 } },
-  { .prop = LV_STYLE_BG_OPA, .value = { .num = 102 } },
-  { .prop = LV_STYLE_TRANSITION, .value = { .ptr = (void*)&transition_normal } },
+  { .prop = LV_STYLE_PAD_RIGHT, .value = { .num = 4 } },
+  { .prop = LV_STYLE_PAD_TOP, .value = { .num = 4 } },
+  { .prop = LV_STYLE_WIDTH, .value = { .num = 12 } },
+  { .prop = LV_STYLE_HEIGHT, .value = { .num = 12 } },
+  { .prop = LV_STYLE_BG_OPA, .value = { .num = 0 } },
+  { .prop = LV_STYLE_TRANSITION, .value = { .ptr = (void*)&transition_long_delayed } },
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
 
@@ -407,7 +449,8 @@ static const lv_style_t scrollbar_style = {
 };
 
 static const lv_style_const_prop_t scrollbar_scrolled_const_list[] = {
-  { .prop = LV_STYLE_BG_OPA, .value = { .num = 255 } },
+  { .prop = LV_STYLE_BG_OPA, .value = { .num = 153 } },
+  { .prop = LV_STYLE_TRANSITION, .value = { .ptr = (void*)&transition_normal } },
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
 
@@ -464,6 +507,57 @@ static const lv_style_t card_header_style = {
   .is_const = 1
 };
 
+static const lv_style_const_prop_t primary_card_const_list[] = {
+  { .prop = LV_STYLE_BORDER_COLOR, .value = { .color = { .full= 0xff244e99 } } },
+  { .prop = LV_STYLE_TEXT_COLOR, .value = { .color = { .full= 0xffffffff } } },
+  { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
+};
+
+static const lv_style_t primary_card_style = {
+  .v_p = { .const_props = primary_card_const_list },
+  .has_group = 0xff,
+  .is_const = 1
+};
+
+static const lv_style_const_prop_t primary_card_header_const_list[] = {
+  { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full= 0xff244e99 } } },
+  { .prop = LV_STYLE_BORDER_COLOR, .value = { .color = { .full= 0xff244e99 } } },
+  { .prop = LV_STYLE_BG_OPA, .value = { .num = 127 } },
+  { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
+};
+
+static const lv_style_t primary_card_header_style = {
+  .v_p = { .const_props = primary_card_header_const_list },
+  .has_group = 0xff,
+  .is_const = 1
+};
+
+static const lv_style_const_prop_t primary_card_body_const_list[] = {
+  { .prop = LV_STYLE_BG_OPA, .value = { .num = 51 } },
+  { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full= 0xff244e99 } } },
+  { .prop = LV_STYLE_BORDER_COLOR, .value = { .color = { .full= 0xff244e99 } } },
+  { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
+};
+
+static const lv_style_t primary_card_body_style = {
+  .v_p = { .const_props = primary_card_body_const_list },
+  .has_group = 0xff,
+  .is_const = 1
+};
+
+static const lv_style_const_prop_t primary_card_footer_const_list[] = {
+  { .prop = LV_STYLE_BG_OPA, .value = { .num = 127 } },
+  { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full= 0xff244e99 } } },
+  { .prop = LV_STYLE_BORDER_COLOR, .value = { .color = { .full= 0xff244e99 } } },
+  { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
+};
+
+static const lv_style_t primary_card_footer_style = {
+  .v_p = { .const_props = primary_card_footer_const_list },
+  .has_group = 0xff,
+  .is_const = 1
+};
+
 static const lv_style_const_prop_t card_body_const_list[] = {
   { .prop = LV_STYLE_PAD_TOP, .value = { .num = 10 *2 } },
   { .prop = LV_STYLE_PAD_BOTTOM, .value = { .num = 10 *2 } },
@@ -497,6 +591,18 @@ static const lv_style_const_prop_t card_footer_const_list[] = {
 
 static const lv_style_t card_footer_style = {
   .v_p = { .const_props = card_footer_const_list },
+  .has_group = 0xff,
+  .is_const = 1
+};
+
+static const lv_style_const_prop_t darker_const_list[] = {
+  { .prop = LV_STYLE_COLOR_FILTER_DSC, .value = { .ptr = (void*)&dark_filter } },
+  { .prop = LV_STYLE_COLOR_FILTER_OPA, .value = { .num = 35 } },
+  { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
+};
+
+static const lv_style_t darker_style = {
+  .v_p = { .const_props = darker_const_list },
   .has_group = 0xff,
   .is_const = 1
 };
@@ -1194,12 +1300,18 @@ static const lvgl_api_style_descriptor_t lvgl_small_dark_style_descriptor_list[]
   { .name = "outline_danger", .style = &outline_danger_style },
   { .name = "outline_success", .style = &outline_success_style },
   { .name = "sm", .style = &sm_style },
+  { .name = "md", .style = &md_style },
   { .name = "lg", .style = &lg_style },
   { .name = "pill", .style = &pill_style },
   { .name = "card", .style = &card_style },
   { .name = "card_header", .style = &card_header_style },
+  { .name = "primary_card", .style = &primary_card_style },
+  { .name = "primary_card_header", .style = &primary_card_header_style },
+  { .name = "primary_card_body", .style = &primary_card_body_style },
+  { .name = "primary_card_footer", .style = &primary_card_footer_style },
   { .name = "card_body", .style = &card_body_style },
-  { .name = "card_footer", .style = &card_footer_style }
+  { .name = "card_footer", .style = &card_footer_style },
+  { .name = "darker", .style = &darker_style }
 };
 
 void lvgl_small_dark_apply_callback(lv_theme_t * theme, lv_obj_t * object){

@@ -2,15 +2,12 @@
 #include <lvgl.hpp>
 
 #include "Application.hpp"
-#include "Icons.hpp"
-#include "Properties.hpp"
-#include "Tools.hpp"
-#include "Tree.hpp"
 
 #include "fonts/fonts.h"
 #include "themes/themes.h"
 
 #include "screens/ThemePreview.hpp"
+#include "screens/Home.hpp"
 
 extern "C" const char data_assetfs[];
 
@@ -38,7 +35,6 @@ void Application::run(sys::Cli &cli) {
   lvgl_api_initialize_png_decoder();
 
   model().runtime = &runtime;
-
   model().theme
     = Theme(lvgl_small_dark_theme_initialize(runtime.display(), nullptr));
 
@@ -46,43 +42,13 @@ void Application::run(sys::Cli &cli) {
   static const auto s = Style().set_background_color(Color::red());
 
   Screen theme_preview_screen(ThemePreview::screen_name);
-
   ThemePreview::configure(theme_preview_screen.get<Generic>());
 
-  theme_preview_screen.load();
+  //theme_preview_screen.load();
 
-#if 0
-  screen()
-    .clear_flag(Flags::scrollable)
-    .add(
-      Row()
-        .fill()
-        .set_padding(20)
-        .set_column_padding(20)
-        .add(Column()
-               .set_padding(20)
-               .set_width(50_percent)
-               .fill_height()
-               .set_row_padding(20)
-               .add(Button().add_style("primary sm").add_label("Primary"))
-               .add(Button().add_style("secondary").add_label("Secondary"))
-               .add(Button().add_style("info").add_label("Info"))
-               .add(Button().add_style("warning").add_style("pill").add_label("Warning"))
-               .add(Button().add_style("danger lg pill").add_label("Danger"))
-               .add(Button().add_style("success").add_style("sm").add_label("Success")))
-        .add(Column()
-               .set_padding(20)
-               .set_width(50_percent)
-               .fill_height()
-               .set_row_padding(20)
-               .add(Button().add_style("outline_primary").add_label("Outline Primary"))
-               .add(Button().add_style("outline_secondary").add_label("Outline Secondary"))
-               .add(Button().add_style("outline_info").add_label("Outline Info"))
-               .add(Button().add_style("outline_warning").add_label("Outline Warning"))
-               .add(Button().add_style("outline_danger").add_label("Outline Danger"))
-               .add(Button().add_style("outline_success").add_label("Outline Success")))
-        .add(Column()));
-#endif
+  Home::configure(screen().get<Generic>());
+
+  //screen().add(Container().fill());
 
 
   // model cannot be touched until all lvgl initialization is complete

@@ -1,32 +1,13 @@
 #ifndef APPLICATION_HPP
 #define APPLICATION_HPP
 
-#include <api/api.hpp>
-#include <chrono/ClockTime.hpp>
-#include <json/Json.hpp>
-#include <lvgl/Generic.hpp>
-#include <lvgl/Event.hpp>
-#include <lvgl/Group.hpp>
-#include <lvgl/PeriodicTimer.hpp>
-#include <printer.hpp>
-#include <var/Queue.hpp>
-#include <var/StackString.hpp>
-#include <lvgl/Button.hpp>
-#include <lvgl/Generic.hpp>
-#include <lvgl/ObjectAccess.hpp>
-#include <lvgl/TextArea.hpp>
-#include <lvgl/List.hpp>
-#include <lvgl/Group.hpp>
-#include <lvgl/Event.hpp>
-
 #include <sys/Cli.hpp>
-#include <design.hpp>
 
-#include "GuiObject.hpp"
+#include "screens/ScreenObject.hpp"
 
 using namespace lvgl;
 
-class Application : public GuiObject {
+class Application : public ScreenObject {
 
 public:
   static void run(sys::Cli & cli);
@@ -36,20 +17,12 @@ public:
 
 
 protected:
-  static constexpr auto button_height = 10_percent;
-
   static constexpr auto tools_container_name = "ToolsGeneric";
   static constexpr auto canvas_container_name = "CanvasGeneric";
   static constexpr auto right_tab_view_name = "RightTabView";
   static constexpr auto properties_container_name = "PropertiesGeneric";
   static constexpr auto tree_container_name = "TreeGeneric";
 
-  static lvgl::Generic &set_column_flow(lvgl::Generic &container) {
-    return container.set_flex_layout()
-      .set_flex_flow(FlexFlow::column)
-      .set_column_padding(10)
-      .set_flex_align(SetFlexAlign().set_main(FlexAlign::start));
-  }
 
   static const char * generate_name() {
     return model()
