@@ -161,7 +161,97 @@ void ThemeGenerator::add_variables(const StringView key) {
 void ThemeGenerator::generate_apply_callback() {
   API_RETURN_IF_ERROR();
 
-  const auto key_list = m_rules_object.get_key_list();
+  const auto rule_key_list = m_rules_object.get_key_list();
+
+  /*
+   * The idea here is to make the theme loadable from a regular
+   * file. This can't be done easily because
+   * the themes rely on callback (checking condition,
+   * applying color filters).
+   *
+   * The theme would have to load executable code which is a bit
+   * problematic.
+   *
+   */
+#if USE_STANDARDIZED_APPLY_CALLBACK
+  // generate the code for the conditions
+  m_code_printer.inline_comment("Condition callbacks");
+
+  auto get_condition_callback_name = [](StringView rule_name) {
+    return rule_name.pop_front() | "_condition_callback";
+  };
+
+  auto get_style_selector_pair_name
+    = [](StringView state_selector, StringView style) {
+        //"default | items": "button"
+        const auto state_selector_list = state_selector.split("|");
+        GeneralString result;
+        for (const auto &item : state_selector_list) {
+          result |= String(item).replace(
+            String::Replace().set_old_string(" ").set_new_string(""));
+          result |= "_";
+        }
+        if (result.length()) {
+          result.pop_back();
+        }
+        return result | "_" | style;
+      };
+
+  for (const auto &key : rule_key_list) {
+    const RuleObject rule(m_rules_object.at(key));
+    {
+      CPrinter::Function apply_callback_function(
+        m_code_printer,
+        "static int " | get_condition_callback_name(key)
+          | "(lv_theme_t * theme, lv_obj_t * object)");
+
+      {
+        CPrinter::Scope condition_scope(
+          m_code_printer,
+          CPrinter::Scope::Type::if_,
+          get_condition(rule.get_condition()));
+        m_code_printer.statement("return 1");
+      }
+
+      m_code_printer.statement("return 0");
+    }
+    m_code_printer.newline();
+  }
+  m_code_printer.newline();
+
+  Queue<GeneralString> style_selector_pair_list;
+  for (const auto &key : rule_key_list) {
+    const RuleObject rule(m_rules_object.at(key));
+    const auto styles_object = rule.get_styles();
+    const auto style_key_list = styles_object.get_key_list();
+    for (const auto &style_key : style_key_list) {
+      const auto style_value = styles_object.at(style_key);
+      const auto style_value_string
+        = style_value.is_string() ? GeneralString(style_value.to_string_view())
+                                  : [&](){
+                                      GeneralString result;
+                                      for(const auto & entry: style_value.to_array()){
+                                        result |= entry.to_string_view() | "_";
+                                      }
+                                      if( result.length() ){
+                                        result.pop_back();
+                                      }
+                                      return result;
+                                    }();
+      const auto variable_name
+        = get_style_selector_pair_name(style_key, style_value_string);
+      const auto existing = style_selector_pair_list.find(variable_name, GeneralString());
+      if (existing.is_empty()) {
+        style_selector_pair_list.push(variable_name);
+        CPrinter::StructInitialization(
+          m_code_printer,
+          "const lvgl_api_apply_style_with_selector_t " | variable_name)
+          .add_member("style", "&" | variable_name)
+          .add_member("selector", get_lv_state_part(style_key));
+      }
+    }
+  }
+#endif
 
   {
     CPrinter::Function apply_callback_function(
@@ -176,8 +266,8 @@ void ThemeGenerator::generate_apply_callback() {
         get_condition(object.at("condition").to_string_view()));
 
       const auto styles_object = object.at("styles").to_object();
-      const auto key_list = styles_object.get_key_list();
-      for (const auto &key : key_list) {
+      const auto style_key_list = styles_object.get_key_list();
+      for (const auto &key : style_key_list) {
         //"default"
         GeneralString line;
         const auto state_part = get_lv_state_part(key);
@@ -202,7 +292,7 @@ void ThemeGenerator::generate_apply_callback() {
       m_code_printer.statement("return");
     };
 
-    for (const auto &key : key_list) {
+    for (const auto &key : rule_key_list) {
       add_styles(key, m_rules_object.at(key).to_object());
     }
   }
@@ -488,7 +578,7 @@ void ThemeGenerator::generate_styles() {
 }
 
 var::GeneralString ThemeGenerator::get_variable(const StringView key) {
-  if( key.find("$") == StringView::npos ){
+  if (key.find("$") == StringView::npos) {
     return key;
   }
 
@@ -518,12 +608,12 @@ var::GeneralString ThemeGenerator::get_variable(const StringView key) {
       }
 
       if (result.is_string()) {
-        //check for recursive variables
+        // check for recursive variables
         GeneralString recursive_result;
-        if( result.to_string_view().find("$") != StringView::npos ) {
+        if (result.to_string_view().find("$") != StringView::npos) {
           const auto token_list = result.to_string_view().split(" ");
-          for(const auto & token: token_list){
-            if( token.find("$") == 0 ){
+          for (const auto &token : token_list) {
+            if (token.find("$") == 0) {
               recursive_result |= get_variable(token) | " ";
             } else {
               recursive_result |= token | " ";
@@ -531,8 +621,6 @@ var::GeneralString ThemeGenerator::get_variable(const StringView key) {
           }
           return recursive_result.pop_back();
         }
-
-
 
         return result.to_string_view();
       }
@@ -556,7 +644,7 @@ ThemeGenerator::get_json_value(const json::JsonValue json_value) {
     if (string_value.find("$") != StringView::npos) {
       const auto list = string_value.split(" ");
       var::GeneralString result;
-      for(const auto & part: list){
+      for (const auto &part : list) {
         result |= get_variable(part) | " ";
       }
       return result.pop_back();

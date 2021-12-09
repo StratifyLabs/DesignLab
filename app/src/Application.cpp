@@ -44,9 +44,9 @@ void Application::run(sys::Cli &cli) {
   Screen theme_preview_screen(ThemePreview::screen_name);
   ThemePreview::configure(theme_preview_screen.get<Generic>());
 
-  //theme_preview_screen.load();
+  theme_preview_screen.load();
 
-  Home::configure(screen().get<Generic>());
+  //Home::configure(screen().get<Generic>());
 
   //screen().add(Container().fill());
 

@@ -12,14 +12,13 @@ void ThemePreview::configure(lvgl::Generic generic) {
   generic.add(Container()
                 .set_scroll_mode(ScrollBarMode::auto_)
                 .fill()
-                .add(Column()
-                       .fill_width()
-                       .setup([](Column column) {
-                         column.add(ScreenHeading("Theme Preview"));
-                         configure_headings(column);
-                         configure_buttons(column);
-                         configure_cards(column);
-                       })));
+                .add(Column().fill_width().setup([](Column column) {
+                  column.add(ScreenHeading("Theme Preview"));
+                  configure_headings(column);
+                  configure_buttons(column);
+                  configure_badges(column);
+                  configure_cards(column);
+                })));
 }
 
 void ThemePreview::configure_headings(design::Column column) {
@@ -33,28 +32,73 @@ void ThemePreview::configure_headings(design::Column column) {
 
 void ThemePreview::configure_buttons(design::Column column) {
 
-#if 1
-  column.add(SectionHeading("Button Styles"))
+  column.add(SectionHeading("Buttons"))
+    .add(SectionHeading("Styles"))
     .add(Row().fill_width().setup([](Row row) {
       for (const auto *color : color_list) {
-        row.add(Button().add_style(color).add_static_label(color));
+        row.add(Button()
+                  .add_style(StringView("btn_") | color)
+                  .add_static_label(color));
       }
     }))
     .add(Row().fill_width().setup([](Row row) {
       for (const auto *color : outline_color_list) {
         const auto label = var::KeyString(color).replace(
           KeyString::Replace().set_old_character('_').set_new_character(' '));
-        row.add(Button().add_style(color).add_label(label));
+        row.add(
+          Button().add_style(StringView("btn_") | color).add_label(label));
       }
     }));
-#endif
 
-  column.add(SectionHeading("Button Sizes"))
+  column.add(SectionHeading("Sizes"))
     .add(Row()
            .fill_width()
-           .add(Button().add_style("sm").add_label("Small"))
-           .add(Button().add_style("md").add_label("Medium"))
-           .add(Button().add_style("lg").add_label("Large")));
+           .add(Button().add_style("btn_sm").add_label("Small"))
+           .add(Button().add_style("btn_md").add_label("Medium"))
+           .add(Button().add_style("btn_lg").add_label("Large")));
+}
+
+void ThemePreview::configure_badges(design::Column column) {
+  column.add(SectionHeading("Badges"))
+    .add(SectionHeading("Styles"))
+    .add(Row().fill_width().setup([](Row row) {
+      for (const auto *color : color_list) {
+        row.add(
+          Badge().add_style(StringView("bg_") | color).add_static_label(color));
+      }
+    }))
+    .add(SectionHeading("Pills"))
+    .add(Row().fill_width().setup([](Row row) {
+      for (const auto *color : color_list) {
+        const auto label = var::KeyString(color).replace(
+          KeyString::Replace().set_old_character('_').set_new_character(' '));
+        row.add(Badge()
+                  .add_style(StringView("rounded_pill bg_") | color)
+                  .add_label(label));
+      }
+    }));
+
+  column.add(SectionHeading("Sizes"))
+    .add(Row()
+           .fill_width()
+           .add(Badge().add_style("badge_sm").add_label("Small"))
+           .add(Badge().add_style("badge_md").add_label("Medium"))
+           .add(Badge().add_style("badge_lg").add_label("Large"))
+           .add(Badge().add_style("badge_sm rounded_pill").add_label("Small"))
+           .add(Badge().add_style("badge_md rounded_pill").add_label("Medium"))
+           .add(Badge().add_style("badge_lg rounded_pill").add_label("Large")));
+
+  column.add(SectionHeading("Examples"))
+    .add(Row()
+           .fill_width()
+           .add(Button()
+                  .add_style(Row::get_style())
+                  .add_style("btn_lg")
+                  .set_column_padding(10)
+                  .add(Label().set_text_static("Inbox"))
+                  .add(Badge()
+                         .add_style("bg_danger rounded_pill badge_sm")
+                         .add_static_label("99+"))));
 }
 
 void ThemePreview::configure_cards(design::Column column) {

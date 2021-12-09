@@ -125,81 +125,156 @@
       "width": "LV_SIZE_CONTENT",
       "height": "LV_SIZE_CONTENT"
     },
-    "@primary": {
+    "@bg_primary": {
+      "background_color": "$colorPrimary"
+    },
+    "@bg_secondary": {
+      "background_color": "$colorSecondary"
+    },
+    "@bg_warning": {
+      "background_color": "$colorWarning"
+    },
+    "@bg_info": {
+      "background_color": "$colorInfo"
+    },
+    "@bg_danger": {
+      "background_color": "$colorDanger"
+    },
+    "@bg_success": {
+      "background_color": "$colorSuccess"
+    },
+    "@bg_light": {
+      "background_color": "$colorLight"
+    },
+    "@bg_dark": {
+      "background_color": "$colorDark"
+    },
+    "@btn_primary": {
       "background_color": "$colorPrimary",
       "border_color": "$colorPrimary",
       "text_color": "$colorText"
     },
-    "@secondary": {
+    "@btn_secondary": {
       "background_color": "$colorSecondary",
       "text_color": "$colorText"
     },
-    "@warning": {
+    "@btn_warning": {
       "background_color": "$colorWarning",
       "text_color": "$colorText"
     },
-    "@info": {
+    "@btn_info": {
       "background_color": "$colorInfo",
       "text_color": "$colorText"
     },
-    "@danger": {
+    "@btn_danger": {
       "background_color": "$colorDanger",
       "text_color": "$colorText"
     },
-    "@success": {
+    "@btn_success": {
       "background_color": "$colorSuccess",
       "text_color": "$colorText"
     },
-    "@outline_primary": {
+    "@btn_light": {
+      "background_color": "$colorLight",
+      "text_color": "$colorGrey"
+    },
+    "@btn_dark": {
+      "background_color": "$colorDark",
+      "text_color": "$colorGrey"
+    },
+    "@btn_outline_default": {
       "background_color": "$colorBackground",
       "border_color": "$colorPrimary",
       "text_color": "$colorPrimary",
       "border_width": "$sizeBorderWidth"
     },
-    "@outline_secondary": {
+    "@btn_outline_primary": {
+      "background_color": "$colorBackground",
+      "border_color": "$colorPrimary",
+      "text_color": "$colorPrimary",
+      "border_width": "$sizeBorderWidth"
+    },
+    "@btn_outline_secondary": {
       "background_color": "$colorBackground",
       "border_color": "$colorSecondary",
       "text_color": "$colorSecondary",
       "border_width": "$sizeBorderWidth"
     },
-    "@outline_warning": {
+    "@btn_outline_warning": {
       "background_color": "$colorBackground",
       "border_color": "$colorWarning",
       "text_color": "$colorWarning",
       "border_width": "$sizeBorderWidth"
     },
-    "@outline_info": {
+    "@btn_outline_info": {
       "background_color": "$colorBackground",
       "border_color": "$colorInfo",
       "text_color": "$colorInfo",
       "border_width": "$sizeBorderWidth"
     },
-    "@outline_danger": {
+    "@btn_outline_danger": {
       "background_color": "$colorBackground",
       "border_color": "$colorDanger",
       "text_color": "$colorDanger",
       "border_width": "$sizeBorderWidth"
     },
-    "@outline_success": {
+    "@btn_outline_success": {
       "background_color": "$colorBackground",
       "border_color": "$colorSuccess",
       "text_color": "$colorSuccess",
       "border_width": "$sizeBorderWidth"
     },
-    "@sm": {
-      "text_font": "$fontBodySmall",
+    "@btn_outline_light": {
+      "background_color": "$colorBackground",
+      "border_color": "$colorLight",
+      "text_color": "$colorGrey",
+      "border_width": "$sizeBorderWidth"
+    },
+    "@btn_outline_dark": {
+      "background_color": "$colorBackground",
+      "border_color": "$colorDark",
+      "text_color": "$colorGrey",
+      "border_width": "$sizeBorderWidth"
+    },
+    "@text_light": {
+      "text_color": "$colorLight"
+    },
+    "@text_dark": {
+      "text_color": "$colorDark"
+    },
+    "@btn_sm": {
+      "text_font": "$fontButtonSmall",
       "padding": "$sizePaddingSmall"
     },
-    "@md": {
-      "text_font": "$fontBodyMedium",
+    "@btn_md": {
+      "text_font": "$fontButtonMedium",
       "padding": "$sizePaddingMedium"
     },
-    "@lg": {
-      "text_font": "$fontBodyLarge",
+    "@btn_lg": {
+      "text_font": "$fontButtonLarge",
       "padding": "$sizePaddingLarge"
     },
-    "@pill": {
+    "@badge": {
+      "background_opacity": "$opaque",
+      "background_color": "$colorPrimary",
+      "text_color": "$colorText",
+      "horizontal_padding": "$sizeBadgePaddingX",
+      "vertical_padding": "$sizeBadgePaddingY",
+      "radius": "$sizeBadgeBorderRadius",
+      "height": "LV_SIZE_CONTENT",
+      "width": "LV_SIZE_CONTENT"
+    },
+    "@rounded_pill": {
       "radius": "$radiusCircle"
+    },
+    "@badge_sm": {
+      "text_font": "$fontBadgeSmall"
+    },
+    "@badge_md": {
+      "text_font": "$fontBadgeMedium"
+    },
+    "@badge_lg": {
+      "text_font": "$fontBadgeLarge"
     },
     "screen": {
       "background_opacity": "$opacityCover",
@@ -290,8 +365,9 @@
       "background_opacity": "cover",
       "background_color": "$colorPrimary",
       "text_color": "$colorWhite",
-      "horizontal_padding": "$sizePaddingButtonHorizontal",
-      "vertical_padding": "$sizePaddingButtonVertical",
+      "text_font": "$fontButtonDefault",
+      "horizontal_padding": "$sizeButtonPaddingX",
+      "vertical_padding": "$sizeButtonPaddingY",
       "column_padding": 3,
       "row_padding": 3
     },

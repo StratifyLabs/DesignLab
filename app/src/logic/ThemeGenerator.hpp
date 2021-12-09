@@ -52,6 +52,13 @@ private:
     JSON_ACCESS_STRING(ThemeObject, header);
   };
 
+  class RuleObject : public json::JsonValue {
+  public:
+    JSON_ACCESS_CONSTRUCT_OBJECT(RuleObject);
+    JSON_ACCESS_STRING(RuleObject, condition);
+    JSON_ACCESS_OBJECT(RuleObject,json::JsonObject,styles);
+  };
+
   static constexpr auto lv_class_list = {
     "arc",
     "bar",

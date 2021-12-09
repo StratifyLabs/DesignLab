@@ -9,10 +9,15 @@
 
     "$sizeCardBorderRadius": 8,
 
-    "$sizeButtonPaddingX": 10,
-    "$sizeButtonPaddingY": 10,
+    "$sizeButtonPaddingX": 8,
+    "$sizeButtonPaddingY": 16,
     "$sizeButtonBorderWidth": 10,
     "$sizeButtonBorderRadius": 8,
+
+    "$sizeBadgePaddingX": 12,
+    "$sizeBadgePaddingY": 8,
+    "$sizeBadgeBorderWidth": 0,
+    "$sizeBadgeBorderRadius": 4,
 
 
     "$sizeButtonPaddingXSmall": 10,
@@ -23,6 +28,7 @@
     "$sizeBorderRadiusSmall": 8,
     "$sizeBorderRadius": "$sizeBorderRadiusSmall +4",
     "$sizeBorderRadiusLarge": "$sizeBorderRadiusSmall +8",
+
     "$sizePaddingButtonHorizontal": 20,
     "$sizePaddingButtonVertical": 20,
     "$sizePaddingNormal": 8,

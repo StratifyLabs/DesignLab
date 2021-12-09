@@ -3,6 +3,13 @@
 extern const lv_font_t montserrat_r_28;
 extern const lv_font_t montserrat_r_36;
 extern const lv_font_t montserrat_sb_44;
+extern const lv_font_t montserrat_sb_28;
+extern const lv_font_t montserrat_sb_36;
+extern const lv_font_t montserrat_sb_36;
+extern const lv_font_t montserrat_sb_44;
+extern const lv_font_t montserrat_sb_28;
+extern const lv_font_t montserrat_sb_36;
+extern const lv_font_t montserrat_sb_44;
 extern const lv_font_t montserrat_sb_64;
 extern const lv_font_t montserrat_sb_52;
 extern const lv_font_t montserrat_sb_44;
@@ -202,80 +209,192 @@ static const lv_style_t col_style = {
   .is_const = 1
 };
 
-static const lv_style_const_prop_t primary_const_list[] = {
+static const lv_style_const_prop_t bg_primary_const_list[] = {
+  { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full= 0xff244e99 } } },
+  { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
+};
+
+static const lv_style_t bg_primary_style = {
+  .v_p = { .const_props = bg_primary_const_list },
+  .has_group = 0xff,
+  .is_const = 1
+};
+
+static const lv_style_const_prop_t bg_secondary_const_list[] = {
+  { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full= 0xff303846 } } },
+  { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
+};
+
+static const lv_style_t bg_secondary_style = {
+  .v_p = { .const_props = bg_secondary_const_list },
+  .has_group = 0xff,
+  .is_const = 1
+};
+
+static const lv_style_const_prop_t bg_warning_const_list[] = {
+  { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full= 0xffffc107 } } },
+  { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
+};
+
+static const lv_style_t bg_warning_style = {
+  .v_p = { .const_props = bg_warning_const_list },
+  .has_group = 0xff,
+  .is_const = 1
+};
+
+static const lv_style_const_prop_t bg_info_const_list[] = {
+  { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full= 0xff0dcaf0 } } },
+  { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
+};
+
+static const lv_style_t bg_info_style = {
+  .v_p = { .const_props = bg_info_const_list },
+  .has_group = 0xff,
+  .is_const = 1
+};
+
+static const lv_style_const_prop_t bg_danger_const_list[] = {
+  { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full= 0xffdc3545 } } },
+  { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
+};
+
+static const lv_style_t bg_danger_style = {
+  .v_p = { .const_props = bg_danger_const_list },
+  .has_group = 0xff,
+  .is_const = 1
+};
+
+static const lv_style_const_prop_t bg_success_const_list[] = {
+  { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full= 0xff198754 } } },
+  { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
+};
+
+static const lv_style_t bg_success_style = {
+  .v_p = { .const_props = bg_success_const_list },
+  .has_group = 0xff,
+  .is_const = 1
+};
+
+static const lv_style_const_prop_t bg_light_const_list[] = {
+  { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full= 0xffaaaaaa } } },
+  { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
+};
+
+static const lv_style_t bg_light_style = {
+  .v_p = { .const_props = bg_light_const_list },
+  .has_group = 0xff,
+  .is_const = 1
+};
+
+static const lv_style_const_prop_t bg_dark_const_list[] = {
+  { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full= 0xff222222 } } },
+  { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
+};
+
+static const lv_style_t bg_dark_style = {
+  .v_p = { .const_props = bg_dark_const_list },
+  .has_group = 0xff,
+  .is_const = 1
+};
+
+static const lv_style_const_prop_t btn_primary_const_list[] = {
   { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full= 0xff244e99 } } },
   { .prop = LV_STYLE_BORDER_COLOR, .value = { .color = { .full= 0xff244e99 } } },
   { .prop = LV_STYLE_TEXT_COLOR, .value = { .color = { .full= 0xffffffff } } },
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
 
-static const lv_style_t primary_style = {
-  .v_p = { .const_props = primary_const_list },
+static const lv_style_t btn_primary_style = {
+  .v_p = { .const_props = btn_primary_const_list },
   .has_group = 0xff,
   .is_const = 1
 };
 
-static const lv_style_const_prop_t secondary_const_list[] = {
+static const lv_style_const_prop_t btn_secondary_const_list[] = {
   { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full= 0xff303846 } } },
   { .prop = LV_STYLE_TEXT_COLOR, .value = { .color = { .full= 0xffffffff } } },
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
 
-static const lv_style_t secondary_style = {
-  .v_p = { .const_props = secondary_const_list },
+static const lv_style_t btn_secondary_style = {
+  .v_p = { .const_props = btn_secondary_const_list },
   .has_group = 0xff,
   .is_const = 1
 };
 
-static const lv_style_const_prop_t warning_const_list[] = {
+static const lv_style_const_prop_t btn_warning_const_list[] = {
   { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full= 0xffffc107 } } },
   { .prop = LV_STYLE_TEXT_COLOR, .value = { .color = { .full= 0xffffffff } } },
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
 
-static const lv_style_t warning_style = {
-  .v_p = { .const_props = warning_const_list },
+static const lv_style_t btn_warning_style = {
+  .v_p = { .const_props = btn_warning_const_list },
   .has_group = 0xff,
   .is_const = 1
 };
 
-static const lv_style_const_prop_t info_const_list[] = {
+static const lv_style_const_prop_t btn_info_const_list[] = {
   { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full= 0xff0dcaf0 } } },
   { .prop = LV_STYLE_TEXT_COLOR, .value = { .color = { .full= 0xffffffff } } },
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
 
-static const lv_style_t info_style = {
-  .v_p = { .const_props = info_const_list },
+static const lv_style_t btn_info_style = {
+  .v_p = { .const_props = btn_info_const_list },
   .has_group = 0xff,
   .is_const = 1
 };
 
-static const lv_style_const_prop_t danger_const_list[] = {
+static const lv_style_const_prop_t btn_danger_const_list[] = {
   { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full= 0xffdc3545 } } },
   { .prop = LV_STYLE_TEXT_COLOR, .value = { .color = { .full= 0xffffffff } } },
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
 
-static const lv_style_t danger_style = {
-  .v_p = { .const_props = danger_const_list },
+static const lv_style_t btn_danger_style = {
+  .v_p = { .const_props = btn_danger_const_list },
   .has_group = 0xff,
   .is_const = 1
 };
 
-static const lv_style_const_prop_t success_const_list[] = {
+static const lv_style_const_prop_t btn_success_const_list[] = {
   { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full= 0xff198754 } } },
   { .prop = LV_STYLE_TEXT_COLOR, .value = { .color = { .full= 0xffffffff } } },
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
 
-static const lv_style_t success_style = {
-  .v_p = { .const_props = success_const_list },
+static const lv_style_t btn_success_style = {
+  .v_p = { .const_props = btn_success_const_list },
   .has_group = 0xff,
   .is_const = 1
 };
 
-static const lv_style_const_prop_t outline_primary_const_list[] = {
+static const lv_style_const_prop_t btn_light_const_list[] = {
+  { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full= 0xffaaaaaa } } },
+  { .prop = LV_STYLE_TEXT_COLOR, .value = { .color = { .full= 0xff666666 } } },
+  { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
+};
+
+static const lv_style_t btn_light_style = {
+  .v_p = { .const_props = btn_light_const_list },
+  .has_group = 0xff,
+  .is_const = 1
+};
+
+static const lv_style_const_prop_t btn_dark_const_list[] = {
+  { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full= 0xff222222 } } },
+  { .prop = LV_STYLE_TEXT_COLOR, .value = { .color = { .full= 0xff666666 } } },
+  { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
+};
+
+static const lv_style_t btn_dark_style = {
+  .v_p = { .const_props = btn_dark_const_list },
+  .has_group = 0xff,
+  .is_const = 1
+};
+
+static const lv_style_const_prop_t btn_outline_default_const_list[] = {
   { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full= 0xff222222 } } },
   { .prop = LV_STYLE_BORDER_COLOR, .value = { .color = { .full= 0xff244e99 } } },
   { .prop = LV_STYLE_TEXT_COLOR, .value = { .color = { .full= 0xff244e99 } } },
@@ -283,13 +402,27 @@ static const lv_style_const_prop_t outline_primary_const_list[] = {
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
 
-static const lv_style_t outline_primary_style = {
-  .v_p = { .const_props = outline_primary_const_list },
+static const lv_style_t btn_outline_default_style = {
+  .v_p = { .const_props = btn_outline_default_const_list },
   .has_group = 0xff,
   .is_const = 1
 };
 
-static const lv_style_const_prop_t outline_secondary_const_list[] = {
+static const lv_style_const_prop_t btn_outline_primary_const_list[] = {
+  { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full= 0xff222222 } } },
+  { .prop = LV_STYLE_BORDER_COLOR, .value = { .color = { .full= 0xff244e99 } } },
+  { .prop = LV_STYLE_TEXT_COLOR, .value = { .color = { .full= 0xff244e99 } } },
+  { .prop = LV_STYLE_BORDER_WIDTH, .value = { .num = 4 } },
+  { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
+};
+
+static const lv_style_t btn_outline_primary_style = {
+  .v_p = { .const_props = btn_outline_primary_const_list },
+  .has_group = 0xff,
+  .is_const = 1
+};
+
+static const lv_style_const_prop_t btn_outline_secondary_const_list[] = {
   { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full= 0xff222222 } } },
   { .prop = LV_STYLE_BORDER_COLOR, .value = { .color = { .full= 0xff303846 } } },
   { .prop = LV_STYLE_TEXT_COLOR, .value = { .color = { .full= 0xff303846 } } },
@@ -297,13 +430,13 @@ static const lv_style_const_prop_t outline_secondary_const_list[] = {
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
 
-static const lv_style_t outline_secondary_style = {
-  .v_p = { .const_props = outline_secondary_const_list },
+static const lv_style_t btn_outline_secondary_style = {
+  .v_p = { .const_props = btn_outline_secondary_const_list },
   .has_group = 0xff,
   .is_const = 1
 };
 
-static const lv_style_const_prop_t outline_warning_const_list[] = {
+static const lv_style_const_prop_t btn_outline_warning_const_list[] = {
   { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full= 0xff222222 } } },
   { .prop = LV_STYLE_BORDER_COLOR, .value = { .color = { .full= 0xffffc107 } } },
   { .prop = LV_STYLE_TEXT_COLOR, .value = { .color = { .full= 0xffffc107 } } },
@@ -311,13 +444,13 @@ static const lv_style_const_prop_t outline_warning_const_list[] = {
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
 
-static const lv_style_t outline_warning_style = {
-  .v_p = { .const_props = outline_warning_const_list },
+static const lv_style_t btn_outline_warning_style = {
+  .v_p = { .const_props = btn_outline_warning_const_list },
   .has_group = 0xff,
   .is_const = 1
 };
 
-static const lv_style_const_prop_t outline_info_const_list[] = {
+static const lv_style_const_prop_t btn_outline_info_const_list[] = {
   { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full= 0xff222222 } } },
   { .prop = LV_STYLE_BORDER_COLOR, .value = { .color = { .full= 0xff0dcaf0 } } },
   { .prop = LV_STYLE_TEXT_COLOR, .value = { .color = { .full= 0xff0dcaf0 } } },
@@ -325,13 +458,13 @@ static const lv_style_const_prop_t outline_info_const_list[] = {
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
 
-static const lv_style_t outline_info_style = {
-  .v_p = { .const_props = outline_info_const_list },
+static const lv_style_t btn_outline_info_style = {
+  .v_p = { .const_props = btn_outline_info_const_list },
   .has_group = 0xff,
   .is_const = 1
 };
 
-static const lv_style_const_prop_t outline_danger_const_list[] = {
+static const lv_style_const_prop_t btn_outline_danger_const_list[] = {
   { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full= 0xff222222 } } },
   { .prop = LV_STYLE_BORDER_COLOR, .value = { .color = { .full= 0xffdc3545 } } },
   { .prop = LV_STYLE_TEXT_COLOR, .value = { .color = { .full= 0xffdc3545 } } },
@@ -339,13 +472,13 @@ static const lv_style_const_prop_t outline_danger_const_list[] = {
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
 
-static const lv_style_t outline_danger_style = {
-  .v_p = { .const_props = outline_danger_const_list },
+static const lv_style_t btn_outline_danger_style = {
+  .v_p = { .const_props = btn_outline_danger_const_list },
   .has_group = 0xff,
   .is_const = 1
 };
 
-static const lv_style_const_prop_t outline_success_const_list[] = {
+static const lv_style_const_prop_t btn_outline_success_const_list[] = {
   { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full= 0xff222222 } } },
   { .prop = LV_STYLE_BORDER_COLOR, .value = { .color = { .full= 0xff198754 } } },
   { .prop = LV_STYLE_TEXT_COLOR, .value = { .color = { .full= 0xff198754 } } },
@@ -353,14 +486,64 @@ static const lv_style_const_prop_t outline_success_const_list[] = {
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
 
-static const lv_style_t outline_success_style = {
-  .v_p = { .const_props = outline_success_const_list },
+static const lv_style_t btn_outline_success_style = {
+  .v_p = { .const_props = btn_outline_success_const_list },
   .has_group = 0xff,
   .is_const = 1
 };
 
-static const lv_style_const_prop_t sm_const_list[] = {
-  { .prop = LV_STYLE_TEXT_FONT, .value = { .ptr = (void*)&montserrat_r_28 } },
+static const lv_style_const_prop_t btn_outline_light_const_list[] = {
+  { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full= 0xff222222 } } },
+  { .prop = LV_STYLE_BORDER_COLOR, .value = { .color = { .full= 0xffaaaaaa } } },
+  { .prop = LV_STYLE_TEXT_COLOR, .value = { .color = { .full= 0xff666666 } } },
+  { .prop = LV_STYLE_BORDER_WIDTH, .value = { .num = 4 } },
+  { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
+};
+
+static const lv_style_t btn_outline_light_style = {
+  .v_p = { .const_props = btn_outline_light_const_list },
+  .has_group = 0xff,
+  .is_const = 1
+};
+
+static const lv_style_const_prop_t btn_outline_dark_const_list[] = {
+  { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full= 0xff222222 } } },
+  { .prop = LV_STYLE_BORDER_COLOR, .value = { .color = { .full= 0xff222222 } } },
+  { .prop = LV_STYLE_TEXT_COLOR, .value = { .color = { .full= 0xff666666 } } },
+  { .prop = LV_STYLE_BORDER_WIDTH, .value = { .num = 4 } },
+  { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
+};
+
+static const lv_style_t btn_outline_dark_style = {
+  .v_p = { .const_props = btn_outline_dark_const_list },
+  .has_group = 0xff,
+  .is_const = 1
+};
+
+static const lv_style_const_prop_t text_light_const_list[] = {
+  { .prop = LV_STYLE_TEXT_COLOR, .value = { .color = { .full= 0xffaaaaaa } } },
+  { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
+};
+
+static const lv_style_t text_light_style = {
+  .v_p = { .const_props = text_light_const_list },
+  .has_group = 0xff,
+  .is_const = 1
+};
+
+static const lv_style_const_prop_t text_dark_const_list[] = {
+  { .prop = LV_STYLE_TEXT_COLOR, .value = { .color = { .full= 0xff222222 } } },
+  { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
+};
+
+static const lv_style_t text_dark_style = {
+  .v_p = { .const_props = text_dark_const_list },
+  .has_group = 0xff,
+  .is_const = 1
+};
+
+static const lv_style_const_prop_t btn_sm_const_list[] = {
+  { .prop = LV_STYLE_TEXT_FONT, .value = { .ptr = (void*)&montserrat_sb_28 } },
   { .prop = LV_STYLE_PAD_TOP, .value = { .num = 10 } },
   { .prop = LV_STYLE_PAD_BOTTOM, .value = { .num = 10 } },
   { .prop = LV_STYLE_PAD_LEFT, .value = { .num = 10 } },
@@ -368,14 +551,14 @@ static const lv_style_const_prop_t sm_const_list[] = {
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
 
-static const lv_style_t sm_style = {
-  .v_p = { .const_props = sm_const_list },
+static const lv_style_t btn_sm_style = {
+  .v_p = { .const_props = btn_sm_const_list },
   .has_group = 0xff,
   .is_const = 1
 };
 
-static const lv_style_const_prop_t md_const_list[] = {
-  { .prop = LV_STYLE_TEXT_FONT, .value = { .ptr = (void*)&montserrat_r_36 } },
+static const lv_style_const_prop_t btn_md_const_list[] = {
+  { .prop = LV_STYLE_TEXT_FONT, .value = { .ptr = (void*)&montserrat_sb_36 } },
   { .prop = LV_STYLE_PAD_TOP, .value = { .num = 10 *2 } },
   { .prop = LV_STYLE_PAD_BOTTOM, .value = { .num = 10 *2 } },
   { .prop = LV_STYLE_PAD_LEFT, .value = { .num = 10 *2 } },
@@ -383,13 +566,13 @@ static const lv_style_const_prop_t md_const_list[] = {
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
 
-static const lv_style_t md_style = {
-  .v_p = { .const_props = md_const_list },
+static const lv_style_t btn_md_style = {
+  .v_p = { .const_props = btn_md_const_list },
   .has_group = 0xff,
   .is_const = 1
 };
 
-static const lv_style_const_prop_t lg_const_list[] = {
+static const lv_style_const_prop_t btn_lg_const_list[] = {
   { .prop = LV_STYLE_TEXT_FONT, .value = { .ptr = (void*)&montserrat_sb_44 } },
   { .prop = LV_STYLE_PAD_TOP, .value = { .num = 10 *4 } },
   { .prop = LV_STYLE_PAD_BOTTOM, .value = { .num = 10 *4 } },
@@ -398,19 +581,72 @@ static const lv_style_const_prop_t lg_const_list[] = {
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
 
-static const lv_style_t lg_style = {
-  .v_p = { .const_props = lg_const_list },
+static const lv_style_t btn_lg_style = {
+  .v_p = { .const_props = btn_lg_const_list },
   .has_group = 0xff,
   .is_const = 1
 };
 
-static const lv_style_const_prop_t pill_const_list[] = {
+static const lv_style_const_prop_t badge_const_list[] = {
+  { .prop = LV_STYLE_BG_OPA, .value = { .num = 255 } },
+  { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full= 0xff244e99 } } },
+  { .prop = LV_STYLE_TEXT_COLOR, .value = { .color = { .full= 0xffffffff } } },
+  { .prop = LV_STYLE_PAD_LEFT, .value = { .num = 12 } },
+  { .prop = LV_STYLE_PAD_RIGHT, .value = { .num = 12 } },
+  { .prop = LV_STYLE_PAD_TOP, .value = { .num = 8 } },
+  { .prop = LV_STYLE_PAD_BOTTOM, .value = { .num = 8 } },
+  { .prop = LV_STYLE_RADIUS, .value = { .num = 4 } },
+  { .prop = LV_STYLE_HEIGHT, .value = { .num = LV_SIZE_CONTENT } },
+  { .prop = LV_STYLE_WIDTH, .value = { .num = LV_SIZE_CONTENT } },
+  { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
+};
+
+static const lv_style_t badge_style = {
+  .v_p = { .const_props = badge_const_list },
+  .has_group = 0xff,
+  .is_const = 1
+};
+
+static const lv_style_const_prop_t rounded_pill_const_list[] = {
   { .prop = LV_STYLE_RADIUS, .value = { .num = 0x7fff } },
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
 
-static const lv_style_t pill_style = {
-  .v_p = { .const_props = pill_const_list },
+static const lv_style_t rounded_pill_style = {
+  .v_p = { .const_props = rounded_pill_const_list },
+  .has_group = 0xff,
+  .is_const = 1
+};
+
+static const lv_style_const_prop_t badge_sm_const_list[] = {
+  { .prop = LV_STYLE_TEXT_FONT, .value = { .ptr = (void*)&montserrat_sb_28 } },
+  { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
+};
+
+static const lv_style_t badge_sm_style = {
+  .v_p = { .const_props = badge_sm_const_list },
+  .has_group = 0xff,
+  .is_const = 1
+};
+
+static const lv_style_const_prop_t badge_md_const_list[] = {
+  { .prop = LV_STYLE_TEXT_FONT, .value = { .ptr = (void*)&montserrat_sb_36 } },
+  { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
+};
+
+static const lv_style_t badge_md_style = {
+  .v_p = { .const_props = badge_md_const_list },
+  .has_group = 0xff,
+  .is_const = 1
+};
+
+static const lv_style_const_prop_t badge_lg_const_list[] = {
+  { .prop = LV_STYLE_TEXT_FONT, .value = { .ptr = (void*)&montserrat_sb_44 } },
+  { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
+};
+
+static const lv_style_t badge_lg_style = {
+  .v_p = { .const_props = badge_lg_const_list },
   .has_group = 0xff,
   .is_const = 1
 };
@@ -612,10 +848,11 @@ static const lv_style_const_prop_t button_const_list[] = {
   { .prop = LV_STYLE_BG_OPA, .value = { .num = 0xFF } },
   { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full= 0xff244e99 } } },
   { .prop = LV_STYLE_TEXT_COLOR, .value = { .color = { .full= 0xffCCCCCC } } },
-  { .prop = LV_STYLE_PAD_LEFT, .value = { .num = 20 } },
-  { .prop = LV_STYLE_PAD_RIGHT, .value = { .num = 20 } },
-  { .prop = LV_STYLE_PAD_TOP, .value = { .num = 20 } },
-  { .prop = LV_STYLE_PAD_BOTTOM, .value = { .num = 20 } },
+  { .prop = LV_STYLE_TEXT_FONT, .value = { .ptr = (void*)&montserrat_sb_36 } },
+  { .prop = LV_STYLE_PAD_LEFT, .value = { .num = 8 } },
+  { .prop = LV_STYLE_PAD_RIGHT, .value = { .num = 8 } },
+  { .prop = LV_STYLE_PAD_TOP, .value = { .num = 16 } },
+  { .prop = LV_STYLE_PAD_BOTTOM, .value = { .num = 16 } },
   { .prop = LV_STYLE_PAD_COLUMN, .value = { .num = 3 } },
   { .prop = LV_STYLE_PAD_ROW, .value = { .num = 3 } },
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
@@ -1287,22 +1524,41 @@ static const lvgl_api_style_descriptor_t lvgl_small_dark_style_descriptor_list[]
   { .name = "naked", .style = &naked_style },
   { .name = "row", .style = &row_style },
   { .name = "col", .style = &col_style },
-  { .name = "primary", .style = &primary_style },
-  { .name = "secondary", .style = &secondary_style },
-  { .name = "warning", .style = &warning_style },
-  { .name = "info", .style = &info_style },
-  { .name = "danger", .style = &danger_style },
-  { .name = "success", .style = &success_style },
-  { .name = "outline_primary", .style = &outline_primary_style },
-  { .name = "outline_secondary", .style = &outline_secondary_style },
-  { .name = "outline_warning", .style = &outline_warning_style },
-  { .name = "outline_info", .style = &outline_info_style },
-  { .name = "outline_danger", .style = &outline_danger_style },
-  { .name = "outline_success", .style = &outline_success_style },
-  { .name = "sm", .style = &sm_style },
-  { .name = "md", .style = &md_style },
-  { .name = "lg", .style = &lg_style },
-  { .name = "pill", .style = &pill_style },
+  { .name = "bg_primary", .style = &bg_primary_style },
+  { .name = "bg_secondary", .style = &bg_secondary_style },
+  { .name = "bg_warning", .style = &bg_warning_style },
+  { .name = "bg_info", .style = &bg_info_style },
+  { .name = "bg_danger", .style = &bg_danger_style },
+  { .name = "bg_success", .style = &bg_success_style },
+  { .name = "bg_light", .style = &bg_light_style },
+  { .name = "bg_dark", .style = &bg_dark_style },
+  { .name = "btn_primary", .style = &btn_primary_style },
+  { .name = "btn_secondary", .style = &btn_secondary_style },
+  { .name = "btn_warning", .style = &btn_warning_style },
+  { .name = "btn_info", .style = &btn_info_style },
+  { .name = "btn_danger", .style = &btn_danger_style },
+  { .name = "btn_success", .style = &btn_success_style },
+  { .name = "btn_light", .style = &btn_light_style },
+  { .name = "btn_dark", .style = &btn_dark_style },
+  { .name = "btn_outline_default", .style = &btn_outline_default_style },
+  { .name = "btn_outline_primary", .style = &btn_outline_primary_style },
+  { .name = "btn_outline_secondary", .style = &btn_outline_secondary_style },
+  { .name = "btn_outline_warning", .style = &btn_outline_warning_style },
+  { .name = "btn_outline_info", .style = &btn_outline_info_style },
+  { .name = "btn_outline_danger", .style = &btn_outline_danger_style },
+  { .name = "btn_outline_success", .style = &btn_outline_success_style },
+  { .name = "btn_outline_light", .style = &btn_outline_light_style },
+  { .name = "btn_outline_dark", .style = &btn_outline_dark_style },
+  { .name = "text_light", .style = &text_light_style },
+  { .name = "text_dark", .style = &text_dark_style },
+  { .name = "btn_sm", .style = &btn_sm_style },
+  { .name = "btn_md", .style = &btn_md_style },
+  { .name = "btn_lg", .style = &btn_lg_style },
+  { .name = "badge", .style = &badge_style },
+  { .name = "rounded_pill", .style = &rounded_pill_style },
+  { .name = "badge_sm", .style = &badge_sm_style },
+  { .name = "badge_md", .style = &badge_md_style },
+  { .name = "badge_lg", .style = &badge_lg_style },
   { .name = "card", .style = &card_style },
   { .name = "card_header", .style = &card_header_style },
   { .name = "primary_card", .style = &primary_card_style },
