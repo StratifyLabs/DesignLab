@@ -16,6 +16,15 @@
     "$colorDark": "0xff222222",
     "$colorGrey": "0xff666666",
     "$colorScreen": "0xffffffff",
-    "$colorText": "0xffffffff"
+    "$colorText": "0xffffffff",
+
+    "$colorPrimaryText": "$colorBackground",
+    "$colorSecondaryText": "$colorBackground",
+    "$colorInfoText": "$colorBackground",
+    "$colorWarningText": "$colorBackground",
+    "$colorDangerText": "$colorBackground",
+    "$colorSuccessText": "$colorBackground",
+    "$colorDarkText": "$colorForeground",
+    "$colorLightText": "$colorBackground"
   }
 }

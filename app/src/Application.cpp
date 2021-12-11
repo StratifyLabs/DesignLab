@@ -36,7 +36,7 @@ void Application::run(sys::Cli &cli) {
 
   model().runtime = &runtime;
   model().theme
-    = Theme(lvgl_small_dark_theme_initialize(runtime.display(), nullptr));
+    = Theme(lvgl_small_light_theme_initialize(runtime.display(), nullptr));
 
   lv_disp_set_theme(runtime.display(), model().theme.native_value());
   static const auto s = Style().set_background_color(Color::red());

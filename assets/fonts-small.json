@@ -4,7 +4,7 @@
   "$variables": {
     "$fontBodySmall": "&montserrat_r_28",
     "$fontBodyMedium": "&montserrat_r_36",
-    "$fontBodyLarge": "&montserrat_sb_44",
+    "$fontBodyLarge": "&montserrat_r_44",
     "$fontButtonSmall": "&montserrat_sb_28",
     "$fontButtonMedium": "&montserrat_sb_36",
     "$fontButtonDefault": "&montserrat_sb_36",

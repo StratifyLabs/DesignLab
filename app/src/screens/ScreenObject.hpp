@@ -14,6 +14,8 @@ using namespace printer;
 #include <lvgl.hpp>
 #include <design.hpp>
 
+#include <design/extras/FormList.hpp>
+
 #include "fonts/Icons.hpp"
 
 class ScreenObject : public api::ExecutionContext {

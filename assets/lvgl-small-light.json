@@ -1,12 +1,12 @@
 {
   "type": "theme",
   "version": 0,
-  "colors": "colors-dark.json",
+  "colors": "colors-light.json",
   "sizes": "sizes-small.json",
   "styles": "styles-lvgl.json",
   "fonts": "fonts-small.json",
   "rules": "rules-lvgl.json",
-  "name": "lvgl_small_dark",
+  "name": "lvgl_small_light",
   "directory": "../app/src/themes",
   "header": "themes.h"
 }

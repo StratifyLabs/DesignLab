@@ -25,7 +25,7 @@
       }
     },
     "&WindowHeader": {
-      "condition": "lv_obj_get_child_id(object) == 0 && .parent(win)",
+      "condition": "lv_obj_get_index(object) == 0 && .parent(win)",
       "styles": {
         "default": [
           "background_color_grey",
@@ -34,7 +34,7 @@
       }
     },
     "&WindowContent": {
-      "condition": "lv_obj_get_child_id(object) == 0 && .parent(win)",
+      "condition": "lv_obj_get_index(object) == 0 && .parent(win)",
       "styles": {
         "default": [
           "screen",
@@ -367,7 +367,6 @@
       "condition": ".list",
       "styles": {
         "default": [
-          "card",
           "list_background"
         ],
         "default | scrollbar": "scrollbar",
@@ -387,7 +386,6 @@
       "condition": ".list_btn",
       "styles": {
         "default": [
-          "background_color_white",
           "list_button"
         ],
         "focus_key": [

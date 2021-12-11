@@ -228,7 +228,7 @@
       }
     },
     "&WindowHeader": {
-      "condition": "lv_obj_get_child_id(object) == 0 && .parent(win)",
+      "condition": "lv_obj_get_index(object) == 0 && .parent(win)",
       "styles": {
         "default": [
           "@background_color_grey",
@@ -237,7 +237,7 @@
       }
     },
     "&WindowContent": {
-      "condition": "lv_obj_get_child_id(object) == 0 && .parent(win)",
+      "condition": "lv_obj_get_index(object) == 0 && .parent(win)",
       "styles": {
         "default": [
           "@screen",

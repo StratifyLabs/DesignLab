@@ -15,7 +15,6 @@ public:
   static Printer &printer() { return private_model().printer; }
 
 
-
 protected:
   static constexpr auto tools_container_name = "ToolsGeneric";
   static constexpr auto canvas_container_name = "CanvasGeneric";

@@ -38,6 +38,7 @@ private:
   static void configure_buttons(design::Column column);
   static void configure_badges(design::Column column);
   static void configure_cards(design::Column column);
+  static void configure_checklists(design::Column column);
 };
 
 #endif // DESIGNLAB_THEMEPREVIEW_HPP

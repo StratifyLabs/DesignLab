@@ -6,6 +6,8 @@
 #include <lvgl.hpp>
 #include <var.hpp>
 
+#include <design/extras/CheckList.hpp>
+
 #include "ThemePreview.hpp"
 
 void ThemePreview::configure(lvgl::Generic generic) {
@@ -18,6 +20,7 @@ void ThemePreview::configure(lvgl::Generic generic) {
                   configure_buttons(column);
                   configure_badges(column);
                   configure_cards(column);
+                  configure_checklists(column);
                 })));
 }
 
@@ -37,6 +40,9 @@ void ThemePreview::configure_buttons(design::Column column) {
     .add(Row().fill_width().setup([](Row row) {
       for (const auto *color : color_list) {
         row.add(Button()
+                  .add_event_callback(
+                    EventCode::clicked,
+                    [](lv_event_t *) { printf("clicked\n"); })
                   .add_style(StringView("btn_") | color)
                   .add_static_label(color));
       }
@@ -89,16 +95,15 @@ void ThemePreview::configure_badges(design::Column column) {
            .add(Badge().add_style("badge_lg rounded_pill").add_label("Large")));
 
   column.add(SectionHeading("Examples"))
-    .add(Row()
-           .fill_width()
-           .add(Button()
-                  .add_style(Row::get_style())
-                  .add_style("btn_lg")
-                  .set_column_padding(10)
-                  .add(Label().set_text_static("Inbox"))
-                  .add(Badge()
-                         .add_style("bg_danger rounded_pill badge_sm")
-                         .add_static_label("99+"))));
+    .add(Row().fill_width().add(
+      Button()
+        .add_style(Row::get_style())
+        .add_style("btn_md")
+        .set_column_padding(10)
+        .add(Label().set_text_static("Inbox"))
+        .add(Badge()
+               .add_style("bg_danger rounded_pill badge_sm")
+               .add_static_label("99+"))));
 }
 
 void ThemePreview::configure_cards(design::Column column) {
@@ -123,4 +128,58 @@ void ThemePreview::configure_cards(design::Column column) {
         [](Card card) { populate_card(card, card.name()); }));
     }
   }));
+}
+
+void ThemePreview::configure_checklists(design::Column column) {
+  column.add(SectionHeading("Lists")).add(SubSectionHeading("Standard Lists"));
+
+  column.add(Row()
+               .fill_width()
+               .justify_space_around()
+               .add_style("text_font_large")
+               .add(List()
+                      .set_width(40_percent)
+                      .add_style("list_group")
+                      .setup([](List list) {
+                        list.add_text("Directions")
+                          .add_button(Icons::arrow_left, "Left")
+                          .add_button(Icons::arrow_right, "Right")
+                          .add_button(Icons::arrow_up, "Up")
+                          .add_button(Icons::arrow_down, "Down");
+                      }))
+               .add(List()
+                      .set_width(40_percent)
+                      .add_style("list_group_flush")
+                      .setup([](List list) {
+                        list.add_text("Fruit")
+                          .add_button("", "Bananas")
+                          .add_button("", "Apples")
+                          .add_button("", "Oranges")
+                          .add_text("Vehicles")
+                          .add_button(Icons::bolt, "Truck")
+                          .add_button(Icons::chevron_up, "SUVs");
+                      })));
+
+  column.add(SubSectionHeading("CheckLists"));
+
+  static const auto fruit_list_name = "FruitList";
+
+  column.add(Row()
+               .fill_width()
+               .justify_space_around()
+               .add_style("text_font_large")
+               .add(CheckList(CheckList::Data::create(fruit_list_name)
+                                .set_checked_symbol(Icons::check))
+                      .add_style("list_group")
+                      .add_item("1", "Bananas")
+                      .add_item("2", "Apples")
+                      .add_item("3", "Oranges"))
+
+               .add(CheckList(CheckList::Data::create()
+                                .set_checked_symbol(Icons::check)
+                                .set_allow_multiple())
+                      .add_style("list_group_flush")
+                      .add_item("1", "Cars")
+                      .add_item("2", "Truck")
+                      .add_item("3", "SUVs")));
 }

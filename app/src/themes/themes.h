@@ -17,6 +17,7 @@ typedef struct {
 } design_api_theme_user_data_t;
 
 lv_theme_t* lvgl_small_dark_theme_initialize(lv_disp_t * disp, lv_theme_t * parent);
+lv_theme_t* lvgl_small_light_theme_initialize(lv_disp_t * disp, lv_theme_t * parent);
 
 
 #if defined __cplusplus
