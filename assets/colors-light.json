@@ -3,7 +3,7 @@
   "type": "colors",
   "version": 0,
   "$variables": {
-    "$colorBackground": "0xffffffff",
+    "$colorBackground": "0xffeeeeee",
     "$colorForeground": "0xff222222",
     "$colorPrimary": "0xff244e99",
     "$colorSecondary": "0xff303846",
@@ -11,11 +11,10 @@
     "$colorWarning": "0xffffc107",
     "$colorDanger": "0xffdc3545",
     "$colorSuccess": "0xff198754",
-    "$colorWhite": "0xffCCCCCC",
-    "$colorLight": "0xffaaaaaa",
+    "$colorWhite": "0xffffffff",
+    "$colorLight": "0xffbbbbbb",
     "$colorDark": "0xff222222",
-    "$colorGrey": "0xff666666",
-    "$colorScreen": "0xffffffff",
+    "$colorGrey": "0xff888888",
     "$colorText": "0xffffffff",
 
     "$colorPrimaryText": "$colorBackground",
@@ -25,6 +24,8 @@
     "$colorDangerText": "$colorBackground",
     "$colorSuccessText": "$colorBackground",
     "$colorDarkText": "$colorBackground",
-    "$colorLightText": "$colorForeground"
+    "$colorLightText": "$colorForeground",
+    "$colorGreyText": "$colorDark",
+    "$colorWhiteText": "$colorDark"
   }
 }

@@ -413,6 +413,12 @@
       "color_filter_descriptor": "$darkColorFilter",
       "color_filter_opacity": 35
     },
+    "@hline": {
+      "background_color": "$colorGrey",
+      "background_opacity": "$opaque",
+      "height": "$sizeHorizontalLine",
+      "width": "LV_PCT(100)"
+    },
     "button": {
       "radius": "$sizeButtonBorderRadius",
       "background_opacity": "cover",
@@ -438,12 +444,14 @@
     },
     "background_color_grey": {
       "background_color": "$colorGrey",
-      "opacity": "$opaque",
-      "text_color": "$colorText"
+      "background_opacity": "$opaque",
+      "text_color": "$colorGreyText",
+      "padding": "$sizePaddingSmall"
     },
     "background_color_white": {
       "background_color": "$colorWhite",
-      "text_color": "$colorText"
+      "opacity": "$opaque",
+      "text_color": "$colorWhiteText"
     },
     "pressed": {
       "color_filter_descriptor": "$darkColorFilter",

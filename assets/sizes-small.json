@@ -10,6 +10,7 @@
     "$sizeLineWidth": 1,
     "$sizeBorderWidth": 4,
     "$sizeBorderRadius": 8,
+    "$sizeHorizontalLine": 2,
 
     "$sizePaddingTiny": "$sizePadding / 3",
     "$sizePaddingSmall": "$sizePadding / 2",

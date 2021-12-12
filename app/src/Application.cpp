@@ -6,8 +6,8 @@
 #include "fonts/fonts.h"
 #include "themes/themes.h"
 
-#include "screens/ThemePreview.hpp"
 #include "screens/Home.hpp"
+#include "screens/ThemePreview.hpp"
 
 extern "C" const char data_assetfs[];
 
@@ -44,12 +44,11 @@ void Application::run(sys::Cli &cli) {
   Screen theme_preview_screen(ThemePreview::screen_name);
   ThemePreview::configure(theme_preview_screen.get<Generic>());
 
-  theme_preview_screen.load();
+  // theme_preview_screen.load();
 
-  //Home::configure(screen().get<Generic>());
+  Home::configure(screen().get<Generic>());
 
-  //screen().add(Container().fill());
-
+  // screen().add(Container().fill());
 
   // model cannot be touched until all lvgl initialization is complete
   // it is initialized on first access

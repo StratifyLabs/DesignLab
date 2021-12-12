@@ -11,17 +11,22 @@
 #include "ThemePreview.hpp"
 
 void ThemePreview::configure(lvgl::Generic generic) {
-  generic.add(Container()
-                .set_scroll_mode(ScrollBarMode::auto_)
-                .fill()
-                .add(Column().fill_width().setup([](Column column) {
-                  column.add(ScreenHeading("Theme Preview"));
-                  configure_headings(column);
-                  configure_buttons(column);
-                  configure_badges(column);
-                  configure_cards(column);
-                  configure_checklists(column);
-                })));
+  generic.add(
+    Container()
+      .set_scroll_mode(ScrollBarMode::auto_)
+      .fill()
+      .add(Column().fill_width().setup([](Column column) {
+        column.add(ScreenHeading("Theme Preview")).add(HorizontalLine());
+        configure_headings(column);
+        column.add(HorizontalLine());
+        configure_buttons(column);
+        column.add(HorizontalLine());
+        configure_badges(column);
+        column.add(HorizontalLine());
+        configure_cards(column);
+        column.add(HorizontalLine());
+        configure_checklists(column);
+      })));
 }
 
 void ThemePreview::configure_headings(design::Column column) {
