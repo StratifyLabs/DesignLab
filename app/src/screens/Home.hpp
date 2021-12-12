@@ -12,7 +12,10 @@ public:
   static void configure(Generic generic);
 
 private:
-  static constexpr auto content_area = "HomeContentArea";
+  struct Names {
+    static constexpr auto button_area = "HomeButtonArea";
+    static constexpr auto content_area = "HomeContentArea";
+  };
 
   static void add_side_button(
     Column column,
