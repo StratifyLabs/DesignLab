@@ -349,14 +349,16 @@
       "background_color": "$colorForeground",
       "width": "LV_PCT(100)",
       "height": "LV_PCT(100)",
-      "background_opacity": 0
+      "background_opacity": 0,
+      "transition": "$transitionNormal"
     },
     "@modal_enabled": {
       "background_opacity": "$opacity80",
       "transition": "$transitionDelayed"
     },
     "@modal_content": {
-      "opacity": 0
+      "opacity": 0,
+      "transition": "$transitionNormal"
     },
     "@modal_content_enabled": {
       "opacity": "$opaque",
@@ -517,7 +519,10 @@
     "padding_normal": {
       "padding": "$sizePadding"
     },
-    "padding_gap": {},
+    "padding_gap": {
+      "padding": "$sizePadding",
+      "column_padding": "$sizePadding"
+    },
     "line_space_large": {},
     "text_align_center": {
       "text_alignment": "center"

@@ -184,7 +184,7 @@
         ],
         "pressed | indicator": [
           "pressed",
-          "grow",
+          "shrink",
           "transition_normal"
         ]
       }

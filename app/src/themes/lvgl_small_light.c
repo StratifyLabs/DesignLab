@@ -826,6 +826,7 @@ static const lv_style_const_prop_t modal_const_list[] = {
   { .prop = LV_STYLE_WIDTH, .value = { .num = LV_PCT(100) } },
   { .prop = LV_STYLE_HEIGHT, .value = { .num = LV_PCT(100) } },
   { .prop = LV_STYLE_BG_OPA, .value = { .num = 0 } },
+  { .prop = LV_STYLE_TRANSITION, .value = { .ptr = (void*)&transition_normal } },
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
 
@@ -849,6 +850,7 @@ static const lv_style_t modal_enabled_style = {
 
 static const lv_style_const_prop_t modal_content_const_list[] = {
   { .prop = LV_STYLE_OPA, .value = { .num = 0 } },
+  { .prop = LV_STYLE_TRANSITION, .value = { .ptr = (void*)&transition_normal } },
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
 
@@ -1260,6 +1262,11 @@ static const lv_style_t padding_normal_style = {
 };
 
 static const lv_style_const_prop_t padding_gap_const_list[] = {
+  { .prop = LV_STYLE_PAD_TOP, .value = { .num = 10 } },
+  { .prop = LV_STYLE_PAD_BOTTOM, .value = { .num = 10 } },
+  { .prop = LV_STYLE_PAD_LEFT, .value = { .num = 10 } },
+  { .prop = LV_STYLE_PAD_RIGHT, .value = { .num = 10 } },
+  { .prop = LV_STYLE_PAD_COLUMN, .value = { .num = 10 } },
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
 
@@ -1973,7 +1980,7 @@ void lvgl_small_light_apply_callback(lv_theme_t * theme, lv_obj_t * object){
     lv_obj_add_style(object, (lv_style_t*)&background_color_primary_style, LV_STATE_CHECKED|LV_PART_INDICATOR);
     lv_obj_add_style(object, (lv_style_t*)&checkbox_marker_checked_style, LV_STATE_CHECKED|LV_PART_INDICATOR);
     lv_obj_add_style(object, (lv_style_t*)&pressed_style, LV_STATE_PRESSED|LV_PART_INDICATOR);
-    lv_obj_add_style(object, (lv_style_t*)&grow_style, LV_STATE_PRESSED|LV_PART_INDICATOR);
+    lv_obj_add_style(object, (lv_style_t*)&shrink_style, LV_STATE_PRESSED|LV_PART_INDICATOR);
     lv_obj_add_style(object, (lv_style_t*)&transition_normal_style, LV_STATE_PRESSED|LV_PART_INDICATOR);
     return;
   }

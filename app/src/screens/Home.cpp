@@ -29,7 +29,7 @@ void Home::configure(Generic generic) {
 void Home::configure_button_column(Column column) {
   column.add_style("darker").fill().add(SectionHeading("Design Lab"));
 
-  add_side_button(column, "", "Theme", ThemeMaker::configure);
+  add_side_button(column, "", "Themes", ThemeMaker::configure);
   add_side_button(column, "", "Assets", AssetMaker::configure);
   add_side_button(column, "", "Fonts", FontMaker::configure);
   add_side_button(column, "", "Icons", IconMaker::configure);

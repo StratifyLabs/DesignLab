@@ -5,9 +5,8 @@
 #include "FontMaker.hpp"
 
 void FontMaker::configure(Generic generic) {
-
   generic.add(Container().fill().add(Column().fill().setup([](Column column) {
-    column.add(ScreenHeading("Font")).add(HorizontalLine());
+    column.add(ScreenHeading("Fonts")).add(HorizontalLine());
 
     column.add(Form().setup(configure_form_input));
   })));
@@ -20,23 +19,10 @@ void FontMaker::configure_form_input(Form form) {
   static constexpr auto bits_per_pixel_name = "Bpp";
   static constexpr auto sizes_name = "sizes";
 
-  static auto select_file_data = Form::SelectFile::Data(select_file_name)
-                                   .set_base_path("/")
-                                   .set_select_file(true);
-
   form
     .add(Form::SelectFile(Form::SelectFile::Data::create(select_file_name)
                             .set_base_path("/")
-                            .set_select_file(true))
-           .add_event_callback(
-             EventCode::notified,
-             [](lv_event_t *e) {
-               const auto event = Event(e);
-               auto *select_file_data
-                 = event.target().user_data<Form::SelectFile::Data>();
-
-               printf("event target %p\n", event.target().object());
-             }))
+                            .set_select_file(true)))
     .add(Form::LineField(range_name)
            .set_label_as_static("Range")
            .set_value("0x20-0x7f"))
