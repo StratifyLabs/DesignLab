@@ -3,6 +3,10 @@
 extern const lv_font_t montserrat_r_28;
 extern const lv_font_t montserrat_r_36;
 extern const lv_font_t montserrat_r_44;
+extern const lv_font_t montserrat_sb_36;
+extern const lv_font_t montserrat_sb_28;
+extern const lv_font_t montserrat_r_36;
+extern const lv_font_t montserrat_r_36;
 extern const lv_font_t montserrat_sb_28;
 extern const lv_font_t montserrat_sb_36;
 extern const lv_font_t montserrat_sb_36;
@@ -28,7 +32,8 @@ static const lv_style_prop_t transition_property_list[] = {
    (lv_style_prop_t)0x380E /* transform_zoom */,
    (lv_style_prop_t)0x380F /* transform_angle */,
    (lv_style_prop_t)0x0064 /* color_filter_opacity */,
-   (lv_style_prop_t)0x0063 /* color_filter_descriptor */
+   (lv_style_prop_t)0x0063 /* color_filter_descriptor */,
+   (lv_style_prop_t)0x0462 /* opacity */
 };
 
 static const lv_style_transition_dsc_t transition_normal = {
@@ -549,6 +554,85 @@ static const lv_style_t btn_outline_dark_style = {
   .is_const = 1
 };
 
+static const lv_style_const_prop_t form_const_list[] = {
+  { .prop = LV_STYLE_PAD_ROW, .value = { .num = 10 *2 } },
+  { .prop = LV_STYLE_PAD_LEFT, .value = { .num = 10 } },
+  { .prop = LV_STYLE_PAD_RIGHT, .value = { .num = 10 *4 } },
+  { .prop = LV_STYLE_PAD_TOP, .value = { .num = 10 } },
+  { .prop = LV_STYLE_PAD_BOTTOM, .value = { .num = 10 } },
+  { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
+};
+
+static const lv_style_t form_style = {
+  .v_p = { .const_props = form_const_list },
+  .has_group = 0xff,
+  .is_const = 1
+};
+
+static const lv_style_const_prop_t form_row_const_list[] = {
+  { .prop = LV_STYLE_PAD_COLUMN, .value = { .num = 10 } },
+  { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
+};
+
+static const lv_style_t form_row_style = {
+  .v_p = { .const_props = form_row_const_list },
+  .has_group = 0xff,
+  .is_const = 1
+};
+
+static const lv_style_const_prop_t form_label_const_list[] = {
+  { .prop = LV_STYLE_TEXT_FONT, .value = { .ptr = (void*)&montserrat_sb_36 } },
+  { .prop = LV_STYLE_PAD_TOP, .value = { .num = 10 } },
+  { .prop = LV_STYLE_PAD_BOTTOM, .value = { .num = 10 } },
+  { .prop = LV_STYLE_PAD_LEFT, .value = { .num = 10 } },
+  { .prop = LV_STYLE_PAD_RIGHT, .value = { .num = 10 } },
+  { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
+};
+
+static const lv_style_t form_label_style = {
+  .v_p = { .const_props = form_label_const_list },
+  .has_group = 0xff,
+  .is_const = 1
+};
+
+static const lv_style_const_prop_t form_field_const_list[] = {
+  { .prop = LV_STYLE_TEXT_FONT, .value = { .ptr = (void*)&montserrat_r_36 } },
+  { .prop = LV_STYLE_PAD_TOP, .value = { .num = 10 *2 } },
+  { .prop = LV_STYLE_PAD_BOTTOM, .value = { .num = 10 *2 } },
+  { .prop = LV_STYLE_PAD_LEFT, .value = { .num = 10 *2 } },
+  { .prop = LV_STYLE_PAD_RIGHT, .value = { .num = 10 *2 } },
+  { .prop = LV_STYLE_BORDER_WIDTH, .value = { .num = 4 /2 } },
+  { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
+};
+
+static const lv_style_t form_field_style = {
+  .v_p = { .const_props = form_field_const_list },
+  .has_group = 0xff,
+  .is_const = 1
+};
+
+static const lv_style_const_prop_t form_hint_const_list[] = {
+  { .prop = LV_STYLE_TEXT_FONT, .value = { .ptr = (void*)&montserrat_sb_28 } },
+  { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
+};
+
+static const lv_style_t form_hint_style = {
+  .v_p = { .const_props = form_hint_const_list },
+  .has_group = 0xff,
+  .is_const = 1
+};
+
+static const lv_style_const_prop_t form_filesystem_const_list[] = {
+  { .prop = LV_STYLE_TEXT_FONT, .value = { .ptr = (void*)&montserrat_r_36 } },
+  { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
+};
+
+static const lv_style_t form_filesystem_style = {
+  .v_p = { .const_props = form_filesystem_const_list },
+  .has_group = 0xff,
+  .is_const = 1
+};
+
 static const lv_style_const_prop_t text_light_const_list[] = {
   { .prop = LV_STYLE_TEXT_COLOR, .value = { .color = { .full= 0xffbbbbbb } } },
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
@@ -733,6 +817,56 @@ static const lv_style_const_prop_t scrollbar_scrolled_const_list[] = {
 
 static const lv_style_t scrollbar_scrolled_style = {
   .v_p = { .const_props = scrollbar_scrolled_const_list },
+  .has_group = 0xff,
+  .is_const = 1
+};
+
+static const lv_style_const_prop_t modal_const_list[] = {
+  { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full= 0xff222222 } } },
+  { .prop = LV_STYLE_WIDTH, .value = { .num = LV_PCT(100) } },
+  { .prop = LV_STYLE_HEIGHT, .value = { .num = LV_PCT(100) } },
+  { .prop = LV_STYLE_BG_OPA, .value = { .num = 0 } },
+  { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
+};
+
+static const lv_style_t modal_style = {
+  .v_p = { .const_props = modal_const_list },
+  .has_group = 0xff,
+  .is_const = 1
+};
+
+static const lv_style_const_prop_t modal_enabled_const_list[] = {
+  { .prop = LV_STYLE_BG_OPA, .value = { .num = 204 } },
+  { .prop = LV_STYLE_TRANSITION, .value = { .ptr = (void*)&transition_delayed } },
+  { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
+};
+
+static const lv_style_t modal_enabled_style = {
+  .v_p = { .const_props = modal_enabled_const_list },
+  .has_group = 0xff,
+  .is_const = 1
+};
+
+static const lv_style_const_prop_t modal_content_const_list[] = {
+  { .prop = LV_STYLE_OPA, .value = { .num = 0 } },
+  { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
+};
+
+static const lv_style_t modal_content_style = {
+  .v_p = { .const_props = modal_content_const_list },
+  .has_group = 0xff,
+  .is_const = 1
+};
+
+static const lv_style_const_prop_t modal_content_enabled_const_list[] = {
+  { .prop = LV_STYLE_OPA, .value = { .num = 255 } },
+  { .prop = LV_STYLE_TRANSLATE_Y, .value = { .num = 50 } },
+  { .prop = LV_STYLE_TRANSITION, .value = { .ptr = (void*)&transition_delayed } },
+  { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
+};
+
+static const lv_style_t modal_content_enabled_style = {
+  .v_p = { .const_props = modal_content_enabled_const_list },
   .has_group = 0xff,
   .is_const = 1
 };
@@ -1157,10 +1291,7 @@ static const lv_style_t text_align_center_style = {
 };
 
 static const lv_style_const_prop_t outline_border_primary_const_list[] = {
-  { .prop = LV_STYLE_OUTLINE_COLOR, .value = { .color = { .full= 0xff244e99 } } },
-  { .prop = LV_STYLE_OUTLINE_WIDTH, .value = { .num = 4 } },
-  { .prop = LV_STYLE_OUTLINE_PAD, .value = { .num = 4 } },
-  { .prop = LV_STYLE_OUTLINE_OPA, .value = { .num = 127 } },
+  { .prop = LV_STYLE_BORDER_COLOR, .value = { .color = { .full= 0xff244e99 } } },
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
 
@@ -1554,6 +1685,8 @@ static const lv_style_const_prop_t list_button_const_list[] = {
   { .prop = LV_STYLE_BORDER_COLOR, .value = { .color = { .full= 0xff888888 } } },
   { .prop = LV_STYLE_BORDER_SIDE, .value = { .num = 0x1 } },
   { .prop = LV_STYLE_BORDER_WIDTH, .value = { .num = 4 } },
+  { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full= 0xffeeeeee } } },
+  { .prop = LV_STYLE_BG_OPA, .value = { .num = 255 } },
   { .prop = LV_STYLE_PAD_TOP, .value = { .num = 10 } },
   { .prop = LV_STYLE_PAD_BOTTOM, .value = { .num = 10 } },
   { .prop = LV_STYLE_PAD_LEFT, .value = { .num = 10 } },
@@ -1600,6 +1733,14 @@ static const lv_style_t tab_background_focus_style = {
 };
 
 static const lv_style_const_prop_t text_area_cursor_const_list[] = {
+  { .prop = LV_STYLE_BORDER_COLOR, .value = { .color = { .full= 0xff222222 } } },
+  { .prop = LV_STYLE_BORDER_SIDE, .value = { .num = LV_BORDER_SIDE_BOTTOM } },
+  { .prop = LV_STYLE_BORDER_OPA, .value = { .num = 255 } },
+  { .prop = LV_STYLE_BORDER_WIDTH, .value = { .num = 4 /2 } },
+  { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full= 0xff222222 } } },
+  { .prop = LV_STYLE_BG_OPA, .value = { .num = 20 } },
+  { .prop = LV_STYLE_PAD_LEFT, .value = { .num = -1 } },
+  { .prop = LV_STYLE_ANIM_TIME, .value = { .num = 400 } },
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
 
@@ -1675,6 +1816,12 @@ static const lvgl_api_style_descriptor_t lvgl_small_light_style_descriptor_list[
   { .name = "btn_outline_success", .style = &btn_outline_success_style },
   { .name = "btn_outline_light", .style = &btn_outline_light_style },
   { .name = "btn_outline_dark", .style = &btn_outline_dark_style },
+  { .name = "form", .style = &form_style },
+  { .name = "form_row", .style = &form_row_style },
+  { .name = "form_label", .style = &form_label_style },
+  { .name = "form_field", .style = &form_field_style },
+  { .name = "form_hint", .style = &form_hint_style },
+  { .name = "form_filesystem", .style = &form_filesystem_style },
   { .name = "text_light", .style = &text_light_style },
   { .name = "text_dark", .style = &text_dark_style },
   { .name = "btn_sm", .style = &btn_sm_style },
@@ -1685,6 +1832,10 @@ static const lvgl_api_style_descriptor_t lvgl_small_light_style_descriptor_list[
   { .name = "badge_sm", .style = &badge_sm_style },
   { .name = "badge_md", .style = &badge_md_style },
   { .name = "badge_lg", .style = &badge_lg_style },
+  { .name = "modal", .style = &modal_style },
+  { .name = "modal_enabled", .style = &modal_enabled_style },
+  { .name = "modal_content", .style = &modal_content_style },
+  { .name = "modal_content_enabled", .style = &modal_content_enabled_style },
   { .name = "card", .style = &card_style },
   { .name = "list_group", .style = &list_group_style },
   { .name = "list_group_flush", .style = &list_group_flush_style },
@@ -1907,6 +2058,7 @@ void lvgl_small_light_apply_callback(lv_theme_t * theme, lv_obj_t * object){
     lv_obj_add_style(object, (lv_style_t*)&card_style, LV_STATE_DEFAULT);
     lv_obj_add_style(object, (lv_style_t*)&padding_small_style, LV_STATE_DEFAULT);
     lv_obj_add_style(object, (lv_style_t*)&outline_border_primary_style, LV_STATE_FOCUS_KEY);
+    lv_obj_add_style(object, (lv_style_t*)&outline_border_primary_style, LV_STATE_FOCUSED);
     lv_obj_add_style(object, (lv_style_t*)&background_color_secondary_style, LV_STATE_EDITED);
     lv_obj_add_style(object, (lv_style_t*)&scrollbar_style, LV_STATE_DEFAULT|LV_PART_SCROLLBAR);
     lv_obj_add_style(object, (lv_style_t*)&scrollbar_scrolled_style, LV_STATE_SCROLLED|LV_PART_SCROLLBAR);
@@ -1963,6 +2115,7 @@ void lvgl_small_light_apply_callback(lv_theme_t * theme, lv_obj_t * object){
     lv_obj_add_style(object, (lv_style_t*)&list_item_grow_style, LV_STATE_FOCUS_KEY);
     lv_obj_add_style(object, (lv_style_t*)&pressed_style, LV_STATE_PRESSED);
     lv_obj_add_style(object, (lv_style_t*)&list_item_grow_style, LV_STATE_PRESSED);
+    lv_obj_add_style(object, (lv_style_t*)&pressed_style, LV_STATE_CHECKED);
     return;
   }
   if((lv_obj_check_type(object, &lv_msgbox_class))){

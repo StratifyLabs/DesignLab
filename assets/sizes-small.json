@@ -23,6 +23,8 @@
     "$sizeArcWidth": 15,
     "$sizeDropdownMax": 500,
 
+    "$sizeModalTranslateY": 50,
+
     "$sizeCardBorderRadius": "$sizeBorderRadius",
     "$sizeCardBorderWidth": "$sizeBorderWidth",
     "$sizeCardPadding": "$sizePadding",
@@ -53,7 +55,9 @@
     "$sizeBadgePaddingXLarge": "$sizeBadgePaddingX *2",
     "$sizeBadgePaddingYSmall": "$sizeBadgePaddingY /2",
     "$sizeBadgePaddingYMedium": "$sizeBadgePaddingY",
-    "$sizeBadgePaddingYLarge": "$sizeBadgePaddingY *3/2"
-    
+    "$sizeBadgePaddingYLarge": "$sizeBadgePaddingY *3/2",
+
+    "$sizeFormLabelPadding": "$sizePadding",
+    "$sizeFormFieldBorderWidth": "$sizeBorderWidth /2"
   }
 }

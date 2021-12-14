@@ -9,7 +9,8 @@
 
 #include "Application.hpp"
 
-#include "logic/ThemeGenerator.hpp"
+#include "logic/ThemeManager.hpp"
+#include "logic/BootstrapIconManager.hpp"
 
 #include <cprinter.hpp>
 
@@ -18,9 +19,17 @@ int main(int argc, char *argv[]) {
 
 
   if( !cli.get_option("theme").is_empty() ){
-    ThemeGenerator tg(cli);
+    ThemeManager manager(cli);
     if (api::ExecutionContext::is_error()) {
-      tg.printer().object("error", api::ExecutionContext::error());
+      manager.printer().object("error", api::ExecutionContext::error());
+    }
+    exit(api::ExecutionContext::is_error() ? 1 : 0);
+  }
+
+  if( !cli.get_option("icons").is_empty() ){
+    BootstrapIconManager manager(cli);
+    if (api::ExecutionContext::is_error()) {
+      manager.printer().object("error", api::ExecutionContext::error());
     }
     exit(api::ExecutionContext::is_error() ? 1 : 0);
   }

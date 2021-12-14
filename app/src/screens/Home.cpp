@@ -4,6 +4,9 @@
 
 #include "ThemeMaker.hpp"
 #include "ThemePreview.hpp"
+#include "IconMaker.hpp"
+#include "FontMaker.hpp"
+#include "AssetMaker.hpp"
 
 #include "Home.hpp"
 
@@ -26,12 +29,15 @@ void Home::configure(Generic generic) {
 void Home::configure_button_column(Column column) {
   column.add_style("darker").fill().add(SectionHeading("Design Lab"));
 
-  add_side_button(column, "", "Theme Maker", ThemeMaker::configure);
-  add_side_button(column, "", "Theme Preview", ThemePreview::configure);
-  add_side_button(column, "", "Icons", nullptr);
+  add_side_button(column, "", "Theme", ThemeMaker::configure);
+  add_side_button(column, "", "Assets", AssetMaker::configure);
+  add_side_button(column, "", "Fonts", FontMaker::configure);
+  add_side_button(column, "", "Icons", IconMaker::configure);
+  add_side_button(column, "", "Export", nullptr);
 
-  column.add(NakedContainer().set_flex_grow())
-    .add(Label().set_text_static("Account"));
+  column.add(NakedContainer().set_flex_grow());
+  add_side_button(column, "", "Theme Preview", ThemePreview::configure);
+  column.add(Label().set_text_static("Account"));
 }
 
 void Home::add_side_button(

@@ -12,7 +12,6 @@ public:
     static constexpr auto add_button_name = "AddButton";
     static constexpr auto add_list_name = "AddList";
 
-
     static const auto checklist_context = CheckList::Data("");
     static const auto checklist_context_allow_multiple
       = CheckList::Data("").set_allow_multiple();
@@ -26,7 +25,8 @@ public:
                EventCode::clicked,
                [](lv_event_t *) {
                  fflush(stdout);
-                 screen().find<Generic>(canvas_container_name)
+                 screen()
+                   .find<Generic>(canvas_container_name)
                    .add(Button(generate_name()));
 
                  auto button = screen().find<Button>(latest_name());

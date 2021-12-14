@@ -9,14 +9,17 @@
 #include <printer.hpp>
 #include <var.hpp>
 
-#include "ThemeGenerator.hpp"
+#include "ThemeManager.hpp"
 
-ThemeGenerator::ThemeGenerator(const sys::Cli &cli) : m_cli(&cli) {
-
+ThemeManager::ThemeManager(const sys::Cli &cli) : m_cli(&cli) {
   printer().set_verbose_level(cli.get_option("verbose"));
-  Printer::Array root_array(printer(), "guiThemeGenerator");
+  construct({.input_path = cli.get_option("theme")});
+}
 
-  m_theme_path = cli.get_option("theme");
+void ThemeManager::construct(const Construct &options) {
+  Printer::Array root_array(printer(), "DesignLabThemeGenerator");
+
+  m_theme_path = options.input_path;
   if (m_theme_path.is_empty()) {
     API_RETURN_ASSIGN_ERROR(
       "`theme` must specify the path to the theme JSON file",
@@ -90,7 +93,7 @@ ThemeGenerator::ThemeGenerator(const sys::Cli &cli) : m_cli(&cli) {
   generate_theme();
 }
 
-json::JsonObject ThemeGenerator::load_reference_json_file(var::StringView key) {
+json::JsonObject ThemeManager::load_reference_json_file(var::StringView key) {
   const auto parent = Path::parent_directory(m_theme_path);
   const auto filename = m_theme_object.to_object().at(key).to_string_view();
   const auto path
@@ -99,33 +102,8 @@ json::JsonObject ThemeGenerator::load_reference_json_file(var::StringView key) {
   return load_json_file(path);
 }
 
-json::JsonObject ThemeGenerator::load_json_file(var::StringView path) {
 
-  if (FileSystem().exists(path)) {
-    if (!FileSystem().get_info(path).is_file()) {
-      API_RETURN_VALUE_ASSIGN_ERROR(
-        JsonObject(),
-        "path `" | path | "` is not an existing file",
-        EINVAL);
-    }
-  }
-
-  JsonDocument document;
-  printer().key("path", path);
-  const auto object = document.load(File(path)).to_object();
-  if (document.is_error()) {
-    printer().object("jsonError", document.error());
-    API_RETURN_VALUE_ASSIGN_ERROR(
-      JsonObject(),
-      "failed to parse `" | path | "`",
-      EINVAL);
-  }
-
-  printer().object("json", object, Printer::Level::message);
-  return object;
-}
-
-void ThemeGenerator::add_variables(const StringView key) {
+void ThemeManager::add_variables(const StringView key) {
 
   if (m_theme_object.to_object().at(key).is_string()) {
     const auto filename = m_theme_object.to_object().at(key).to_string_view();
@@ -158,7 +136,7 @@ void ThemeGenerator::add_variables(const StringView key) {
   }
 }
 
-void ThemeGenerator::generate_apply_callback() {
+void ThemeManager::generate_apply_callback() {
   API_RETURN_IF_ERROR();
 
   const auto rule_key_list = m_rules_object.get_key_list();
@@ -227,20 +205,22 @@ void ThemeGenerator::generate_apply_callback() {
     for (const auto &style_key : style_key_list) {
       const auto style_value = styles_object.at(style_key);
       const auto style_value_string
-        = style_value.is_string() ? GeneralString(style_value.to_string_view())
-                                  : [&](){
-                                      GeneralString result;
-                                      for(const auto & entry: style_value.to_array()){
-                                        result |= entry.to_string_view() | "_";
-                                      }
-                                      if( result.length() ){
-                                        result.pop_back();
-                                      }
-                                      return result;
-                                    }();
+        = style_value.is_string()
+            ? GeneralString(style_value.to_string_view())
+            : [&]() {
+                GeneralString result;
+                for (const auto &entry : style_value.to_array()) {
+                  result |= entry.to_string_view() | "_";
+                }
+                if (result.length()) {
+                  result.pop_back();
+                }
+                return result;
+              }();
       const auto variable_name
         = get_style_selector_pair_name(style_key, style_value_string);
-      const auto existing = style_selector_pair_list.find(variable_name, GeneralString());
+      const auto existing
+        = style_selector_pair_list.find(variable_name, GeneralString());
       if (existing.is_empty()) {
         style_selector_pair_list.push(variable_name);
         CPrinter::StructInitialization(
@@ -300,7 +280,7 @@ void ThemeGenerator::generate_apply_callback() {
   m_code_printer.newline();
 }
 
-void ThemeGenerator::generate_theme() {
+void ThemeManager::generate_theme() {
   API_RETURN_IF_ERROR();
   const auto name = m_theme_object.get_name();
 
@@ -355,7 +335,7 @@ void ThemeGenerator::generate_theme() {
   m_code_printer.newline();
 }
 
-void ThemeGenerator::generate_descriptors() {
+void ThemeManager::generate_descriptors() {
 
   {
     const auto key_list = m_variables_object.get_key_list();
@@ -443,7 +423,7 @@ void ThemeGenerator::generate_descriptors() {
   }
 }
 
-void ThemeGenerator::generate_styles() {
+void ThemeManager::generate_styles() {
   API_RETURN_IF_ERROR();
 
   static auto create_property_entry = [](StringView key, StringView value) {
@@ -577,7 +557,7 @@ void ThemeGenerator::generate_styles() {
   m_code_printer.newline();
 }
 
-var::GeneralString ThemeGenerator::get_variable(const StringView key) {
+var::GeneralString ThemeManager::get_variable(const StringView key) {
   if (key.find("$") == StringView::npos) {
     return key;
   }
@@ -637,7 +617,7 @@ var::GeneralString ThemeGenerator::get_variable(const StringView key) {
 }
 
 var::GeneralString
-ThemeGenerator::get_json_value(const json::JsonValue json_value) {
+ThemeManager::get_json_value(const json::JsonValue json_value) {
   if (json_value.is_string()) {
 
     const auto string_value = json_value.to_string_view();
@@ -673,7 +653,7 @@ ThemeGenerator::get_json_value(const json::JsonValue json_value) {
 }
 
 var::GeneralString
-ThemeGenerator::get_property_value(Property property, const char *value) {
+ThemeManager::get_property_value(Property property, const char *value) {
 
   printf("variable %s\n", value);
 
@@ -883,7 +863,7 @@ ThemeGenerator::get_property_value(Property property, const char *value) {
   return {};
 }
 
-const char *ThemeGenerator::get_lv_path_animation_path(Animation::Path value) {
+const char *ThemeManager::get_lv_path_animation_path(Animation::Path value) {
   switch (value) {
   case Animation::Path::linear:
     return "lv_anim_path_linear";
@@ -905,7 +885,7 @@ const char *ThemeGenerator::get_lv_path_animation_path(Animation::Path value) {
   return "NULL";
 }
 
-const char *ThemeGenerator::get_lv_style_from_name(const char *property_name) {
+const char *ThemeManager::get_lv_style_from_name(const char *property_name) {
   const var::StringView property = property_name;
   if (property == "invalid") {
     return "LV_STYLE_PROP_INV";
@@ -1190,7 +1170,7 @@ const char *ThemeGenerator::get_lv_style_from_name(const char *property_name) {
   return "unknown";
 }
 
-var::GeneralString ThemeGenerator::get_lv_state_part(var::StringView key_name) {
+var::GeneralString ThemeManager::get_lv_state_part(var::StringView key_name) {
   GeneralString result;
   const auto modifier_list = key_name.split("|");
   for (const auto &item : modifier_list) {
@@ -1241,7 +1221,7 @@ var::GeneralString ThemeGenerator::get_lv_state_part(var::StringView key_name) {
   return result;
 }
 
-var::GeneralString ThemeGenerator::get_effective_style(var::StringView value) {
+var::GeneralString ThemeManager::get_effective_style(var::StringView value) {
   if (value.find("@") == 0) {
     return {value.pop_front()};
   }
@@ -1249,7 +1229,7 @@ var::GeneralString ThemeGenerator::get_effective_style(var::StringView value) {
 }
 
 var::GeneralString
-ThemeGenerator::get_condition(var::StringView condition_value) {
+ThemeManager::get_condition(var::StringView condition_value) {
   // replace .btn || .Button -> (lv_obj_check_type(object, &lv_btn_class))
   // replace #abcd (u32*)user_data == ('a' << 24 | 'b' << 16 | 'c' << 8 | 'd')
 

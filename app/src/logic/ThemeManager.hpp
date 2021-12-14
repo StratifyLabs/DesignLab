@@ -2,8 +2,8 @@
 // Created by Tyler Gilbert on 11/27/21.
 //
 
-#ifndef GUI_THEMEGENERATOR_HPP
-#define GUI_THEMEGENERATOR_HPP
+#ifndef DESIGNLAB_LOGIC_THEMEMANAGER_HPP
+#define DESIGNLAB_LOGIC_THEMEMANAGER_HPP
 
 #include <fs/File.hpp>
 #include <json/Json.hpp>
@@ -13,30 +13,24 @@
 #include <var/StackString.hpp>
 #include <var/Vector.hpp>
 
-#include <cprinter/CPrinter.hpp>
+#include "Manager.hpp"
 
-
-
-class ThemeGenerator : public api::ExecutionContext {
+class ThemeManager : public Manager {
 public:
-  ThemeGenerator(const sys::Cli &cli);
+  explicit ThemeManager(const sys::Cli &cli);
+
+  struct Construct {
+    API_PMAZ(input_path,Construct,var::PathString,{});
+    API_PMAZ(output_path,Construct,var::PathString,{});
+  };
+
+  explicit ThemeManager(const Construct & options){
+    construct(options);
+  }
+
   printer::Printer &printer() { return m_printer; }
 
 private:
-  class CodePrinter : public cprinter::CPrinter {
-  public:
-    CodePrinter() = default;
-    CodePrinter(const fs::FileObject &output_file)
-      : m_output_file(&output_file) {}
-
-    void interface_print_final(var::StringView value) override {
-      API_ASSERT(m_output_file);
-      m_output_file->write(value);
-    }
-
-  private:
-    const fs::FileObject *m_output_file = nullptr;
-  };
 
   class ThemeObject : public json::JsonValue {
   public:
@@ -109,8 +103,8 @@ private:
   var::PathString m_theme_path;
 
 
+  void construct(const Construct & options);
   json::JsonObject load_reference_json_file(var::StringView key);
-  json::JsonObject load_json_file(var::StringView path);
   void add_variables(var::StringView path);
 
   void generate_descriptors();
@@ -134,4 +128,4 @@ private:
   }
 };
 
-#endif // GUI_THEMEGENERATOR_HPP
+#endif // DESIGNLAB_LOGIC_THEMEMANAGER_HPP

@@ -9,6 +9,7 @@
     "$opacity40": 102,
     "$opacity50": 127,
     "$opacity60": 153,
+    "$opacity80": 204,
     "$opaque": 255,
     "$opacityCover": 255,
     "$transitionPropertyList": {
@@ -24,7 +25,8 @@
         "transform_zoom",
         "transform_angle",
         "color_filter_opacity",
-        "color_filter_descriptor"
+        "color_filter_descriptor",
+        "opacity"
       ]
     },
     "$transitionNormal": {
@@ -249,6 +251,30 @@
       "text_color": "$colorGrey",
       "border_width": "$sizeButtonBorderWidth"
     },
+    "@form": {
+      "row_padding": "$sizePadding *2",
+      "left_padding": "$sizePadding",
+      "right_padding": "$sizePadding *4",
+      "vertical_padding": "$sizePadding"
+    },
+    "@form_row": {
+      "column_padding": "$sizePadding"
+    },
+    "@form_label": {
+      "text_font": "$fontFormLabel",
+      "padding": "$sizePadding"
+    },
+    "@form_field": {
+      "text_font": "$fontFormField",
+      "padding": "$sizePadding *2",
+      "border_width": "$sizeFormFieldBorderWidth"
+    },
+    "@form_hint": {
+      "text_font": "$fontFormHint"
+    },
+    "@form_filesystem": {
+      "text_font": "$fontFormFileSystem"
+    },
     "@text_light": {
       "text_color": "$colorLight"
     },
@@ -318,6 +344,24 @@
     "scrollbar_scrolled": {
       "background_opacity": "$opacity60",
       "transition": "$transitionNormal"
+    },
+    "@modal": {
+      "background_color": "$colorForeground",
+      "width": "LV_PCT(100)",
+      "height": "LV_PCT(100)",
+      "background_opacity": 0
+    },
+    "@modal_enabled": {
+      "background_opacity": "$opacity80",
+      "transition": "$transitionDelayed"
+    },
+    "@modal_content": {
+      "opacity": 0
+    },
+    "@modal_content_enabled": {
+      "opacity": "$opaque",
+      "translate_y": "$sizeModalTranslateY",
+      "transition": "$transitionDelayed"
     },
     "@card": {
       "radius": "$sizeCardBorderRadius",
@@ -479,10 +523,7 @@
       "text_alignment": "center"
     },
     "outline_border_primary": {
-      "outline_color": "$colorPrimary",
-      "outline_width": "$sizeOutlineWidth",
-      "outline_padding": "$sizeOutlineWidth",
-      "outline_opacity": "$opacity50"
+      "border_color": "$colorPrimary"
     },
     "outline_border_secondary": {
       "outline_color": "$colorSecondary",
@@ -588,6 +629,8 @@
       "border_color": "$colorGrey",
       "border_side": "bottom",
       "border_width": "$sizeBorderWidth",
+      "background_color": "$colorBackground",
+      "background_opacity": "$opaque",
       "padding": "$sizePadding",
       "column_padding": "$sizePadding"
     },
@@ -596,8 +639,19 @@
       "width": 80
     },
     "tab_background_focus": {},
-    "text_area_cursor": {},
-    "text_area_placeholder": {},
+    "text_area_cursor": {
+      "border_color": "$colorForeground",
+      "border_side": "LV_BORDER_SIDE_BOTTOM",
+      "border_opacity": "$opaque",
+      "border_width": "$sizeBorderWidth /2",
+      "background_color": "$colorForeground",
+      "background_opacity": 20,
+      "left_padding": "-1",
+      "animation_time": 400
+    },
+    "text_area_placeholder": {
+
+    },
     "tab_button": {},
     "led": {}
   }

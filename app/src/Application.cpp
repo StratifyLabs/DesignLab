@@ -29,6 +29,7 @@ void Application::run(sys::Cli &cli) {
   // this file is distributed with the binary rather than as a separate file
   static lv_fs_drv_t drive;
   lvgl_api_mount_asset_filesystem(data_assetfs, &drive, 'd');
+
   // Icon is at d:icon256x256.png
 
   // load the PNG decoder

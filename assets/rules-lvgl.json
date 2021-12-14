@@ -310,6 +310,7 @@
           "padding_small"
         ],
         "focus_key": "outline_border_primary",
+        "focused": "outline_border_primary",
         "edited": "background_color_secondary",
         "default | scrollbar": "scrollbar",
         "scrolled | scrollbar": "scrollbar_scrolled",
@@ -395,7 +396,8 @@
         "pressed": [
           "pressed",
           "list_item_grow"
-        ]
+        ],
+        "checked": "pressed"
       }
     },
     "&MessageBox": {

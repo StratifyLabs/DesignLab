@@ -3,15 +3,28 @@ set(SOURCES
 	main.cpp
 	qml.qrc
 
-	logic/ThemeGenerator.hpp
-	logic/ThemeGenerator.cpp
+	logic/Manager.hpp
+	logic/ThemeManager.hpp
+	logic/ThemeManager.cpp
+	logic/FontAwesomeManager.cpp
+	logic/FontAwesomeManager.hpp
+	logic/BootstrapIconManager.cpp
+	logic/BootstrapIconManager.hpp
+	logic/CodePrinter.hpp
+	logic/StringPrinter.hpp
 
+	screens/AssetMaker.cpp
+	screens/AssetMaker.hpp
+	screens/FontMaker.cpp
+	screens/FontMaker.hpp
 	screens/Home.cpp
 	screens/Home.hpp
-	screens/ThemePreview.cpp
-	screens/ThemePreview.hpp
+	screens/IconMaker.cpp
+	screens/IconMaker.hpp
 	screens/ThemeMaker.cpp
 	screens/ThemeMaker.hpp
+	screens/ThemePreview.cpp
+	screens/ThemePreview.hpp
 
 	Application.cpp
 	Application.hpp
@@ -26,7 +39,5 @@ set(SOURCES
 
 	FileBrowser.cpp
 	FileBrowser.hpp
-
-	Elements.hpp
 
 	PARENT_SCOPE)
