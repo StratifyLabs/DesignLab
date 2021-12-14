@@ -25,7 +25,7 @@
 
     "$sizeModalTranslateY": 50,
 
-    "$sizeCardBorderRadius": "$sizeBorderRadius",
+    "$sizeCardBorderRadius": "$sizeBorderRadius *2",
     "$sizeCardBorderWidth": "$sizeBorderWidth",
     "$sizeCardPadding": "$sizePadding",
 

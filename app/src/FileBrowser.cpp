@@ -7,8 +7,7 @@ void FileBrowser::configure(lvgl::Generic container) {
   static constexpr auto home_tile_name = "fbHomeTile";
 
   static auto configure_folder = [](Generic container){
-    container.add(Label("").setup([](Label object){
-      object.set_text_static("Folder");
+    container.add(Label("").setup([](Label object){ object.set_text_as_static("Folder");
     }));
   };
 

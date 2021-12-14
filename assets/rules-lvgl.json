@@ -262,12 +262,12 @@
           "card",
           "clip_corner",
           "line_space_large",
-          "dropdown_list"
+          "form_dropdown_list"
         ],
         "default | scrollbar": "scrollbar",
         "scrolled | scrollbar": "scrollbar_scrolled",
         "default | selected": "background_color_white",
-        "checked | selected": "background_color_primary",
+        "checked | selected": ["background_color_primary", "text_primary"],
         "pressed | selected": "pressed"
       }
     },

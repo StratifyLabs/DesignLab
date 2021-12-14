@@ -3,8 +3,8 @@
   "type": "fonts",
   "$variables": {
     "$fontBodySmall": "&montserrat_r_28",
-    "$fontBodyMedium": "&montserrat_r_36",
-    "$fontBodyLarge": "&montserrat_r_44",
+    "$fontBodyMedium": "&montserrat_r_32",
+    "$fontBodyLarge": "&montserrat_r_36",
     "$fontFormLabel": "&montserrat_sb_36",
     "$fontFormHint": "&montserrat_sb_28",
     "$fontFormField": "&montserrat_r_36",

@@ -49,7 +49,7 @@ void ThemePreview::configure_buttons(design::Column column) {
                     EventCode::clicked,
                     [](lv_event_t *) { printf("clicked\n"); })
                   .add_style(StringView("btn_") | color)
-                  .add_static_label(color));
+                  .add_label_as_static(color));
       }
     }))
     .add(Row().fill_width().setup([](Row row) {
@@ -75,7 +75,7 @@ void ThemePreview::configure_badges(design::Column column) {
     .add(Row().fill_width().setup([](Row row) {
       for (const auto *color : color_list) {
         row.add(
-          Badge().add_style(StringView("bg_") | color).add_static_label(color));
+          Badge().add_style(StringView("bg_") | color).add_label_as_static(color));
       }
     }))
     .add(SectionHeading("Pills"))
@@ -105,10 +105,10 @@ void ThemePreview::configure_badges(design::Column column) {
         .add_style(Row::get_style())
         .add_style("btn_md")
         .set_column_padding(10)
-        .add(Label().set_text_static("Inbox"))
+        .add(Label().set_text_as_static("Inbox"))
         .add(Badge()
                .add_style("bg_danger rounded_pill badge_sm")
-               .add_static_label("99+"))));
+               .add_label_as_static("99+"))));
 }
 
 void ThemePreview::configure_cards(design::Column column) {

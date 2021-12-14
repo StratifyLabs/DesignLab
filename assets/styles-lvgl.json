@@ -201,55 +201,69 @@
       "background_color": "$colorBackground",
       "border_color": "$colorPrimary",
       "text_color": "$colorPrimary",
-      "border_width": "$sizeButtonBorderWidth"
+      "border_width": "$sizeButtonBorderWidth",
+      "vertical_padding": "$sizeButtonPaddingY - $sizeButtonBorderWidth"
     },
     "@btn_outline_primary": {
       "background_color": "$colorBackground",
       "border_color": "$colorPrimary",
       "text_color": "$colorPrimary",
-      "border_width": "$sizeButtonBorderWidth"
+      "border_width": "$sizeButtonBorderWidth",
+      "vertical_padding": "$sizeButtonPaddingY - $sizeButtonBorderWidth"
     },
     "@btn_outline_secondary": {
       "background_color": "$colorBackground",
       "border_color": "$colorSecondary",
       "text_color": "$colorSecondary",
-      "border_width": "$sizeButtonBorderWidth"
+      "border_width": "$sizeButtonBorderWidth",
+      "vertical_padding": "$sizeButtonPaddingY - $sizeButtonBorderWidth"
     },
     "@btn_outline_warning": {
       "background_color": "$colorBackground",
       "border_color": "$colorWarning",
       "text_color": "$colorWarning",
-      "border_width": "$sizeButtonBorderWidth"
+      "border_width": "$sizeButtonBorderWidth",
+      "vertical_padding": "$sizeButtonPaddingY - $sizeButtonBorderWidth"
     },
     "@btn_outline_info": {
       "background_color": "$colorBackground",
       "border_color": "$colorInfo",
       "text_color": "$colorInfo",
-      "border_width": "$sizeButtonBorderWidth"
+      "border_width": "$sizeButtonBorderWidth",
+      "vertical_padding": "$sizeButtonPaddingY - $sizeButtonBorderWidth"
     },
     "@btn_outline_danger": {
       "background_color": "$colorBackground",
       "border_color": "$colorDanger",
       "text_color": "$colorDanger",
-      "border_width": "$sizeButtonBorderWidth"
+      "border_width": "$sizeButtonBorderWidth",
+      "vertical_padding": "$sizeButtonPaddingY - $sizeButtonBorderWidth"
     },
     "@btn_outline_success": {
       "background_color": "$colorBackground",
       "border_color": "$colorSuccess",
       "text_color": "$colorSuccess",
-      "border_width": "$sizeButtonBorderWidth"
+      "border_width": "$sizeButtonBorderWidth",
+      "vertical_padding": "$sizeButtonPaddingY - $sizeButtonBorderWidth"
     },
     "@btn_outline_light": {
       "background_color": "$colorBackground",
       "border_color": "$colorLight",
       "text_color": "$colorGrey",
-      "border_width": "$sizeButtonBorderWidth"
+      "border_width": "$sizeButtonBorderWidth",
+      "vertical_padding": "$sizeButtonPaddingY - $sizeButtonBorderWidth"
     },
     "@btn_outline_dark": {
       "background_color": "$colorBackground",
       "border_color": "$colorDark",
       "text_color": "$colorGrey",
-      "border_width": "$sizeButtonBorderWidth"
+      "border_width": "$sizeButtonBorderWidth",
+      "vertical_padding": "$sizeButtonPaddingY - $sizeButtonBorderWidth"
+    },
+    "@paragraph": {
+      "text_font": "$fontBodyMedium",
+      "width": "LV_PCT(100)",
+      "bottom_padding": "$sizePadding"
     },
     "@form": {
       "row_padding": "$sizePadding *2",
@@ -258,7 +272,12 @@
       "vertical_padding": "$sizePadding"
     },
     "@form_row": {
-      "column_padding": "$sizePadding"
+      "column_padding": "$sizePadding",
+      "width": "LV_PCT(100)"
+    },
+    "@form_col": {
+      "row_padding": "$sizePadding",
+      "width": "LV_PCT(80)"
     },
     "@form_label": {
       "text_font": "$fontFormLabel",
@@ -270,16 +289,48 @@
       "border_width": "$sizeFormFieldBorderWidth"
     },
     "@form_hint": {
-      "text_font": "$fontFormHint"
+      "text_font": "$fontFormHint",
+      "padding": "$sizePaddingSmall",
+      "text_color": "$colorGrey"
     },
     "@form_filesystem": {
       "text_font": "$fontFormFileSystem"
+    },
+    "@form_dropdown": {
+      "text_font": "$fontFormField",
+      "border_width": "$sizeFormFieldBorderWidth",
+      "padding": "$sizePadding *2"
+    },
+    "@form_dropdown_list": {
+      "text_font": "$fontFormField",
+      "border_width": "$sizeFormFieldBorderWidth",
+      "maximum_height": "$sizeDropdownMax",
+      "row_padding": "$sizePadding",
+      "padding": "$sizePadding *2"
     },
     "@text_light": {
       "text_color": "$colorLight"
     },
     "@text_dark": {
       "text_color": "$colorDark"
+    },
+    "@text_primary": {
+      "text_color": "$colorPrimaryText"
+    },
+    "@text_secondary": {
+      "text_color": "$colorSecondaryText"
+    },
+    "@text_info": {
+      "text_color": "$colorInfoText"
+    },
+    "@text_warning": {
+      "text_color": "$colorWarningText"
+    },
+    "@text_danger": {
+      "text_color": "$colorDangerText"
+    },
+    "@text_success": {
+      "text_color": "$colorSuccessText"
     },
     "@btn_sm": {
       "text_font": "$fontButtonSmall",
@@ -477,11 +528,13 @@
       "row_padding": 3
     },
     "background_color_primary": {
-      "background_color": "$colorPrimary"
+      "background_color": "$colorPrimary",
+      "background_opacity": "$opaque"
     },
     "background_color_primary_muted": {},
     "background_color_secondary": {
-      "background_color": "$colorSecondary"
+      "background_color": "$colorSecondary",
+      "background_opacity": "$opaque"
     },
     "background_color_secondary_muted": {
       "background_color": "$colorSecondary",
@@ -636,7 +689,7 @@
       "border_width": "$sizeBorderWidth",
       "background_color": "$colorBackground",
       "background_opacity": "$opaque",
-      "padding": "$sizePadding",
+      "padding": "$sizePadding * 2",
       "column_padding": "$sizePadding"
     },
     "list_item_grow": {},

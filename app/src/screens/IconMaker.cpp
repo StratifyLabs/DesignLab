@@ -14,7 +14,7 @@ void IconMaker::configure(Generic generic) {
     column.add(SectionHeading("Bootstrap Icons"));
     column.add(SectionHeading("Font Awesome Icons"));
 
-    column.add(Checkbox("").set_text_static("Icon Name"));
+    column.add(CheckBox("").set_text_static("Icon Name"));
    // column.add(Form().setup(configure_form_input));
   })));
 }

@@ -37,7 +37,7 @@ void Home::configure_button_column(Column column) {
 
   column.add(NakedContainer().set_flex_grow());
   add_side_button(column, "", "Theme Preview", ThemePreview::configure);
-  column.add(Label().set_text_static("Account"));
+  column.add(Label().set_text_as_static("Account"));
 }
 
 void Home::add_side_button(
@@ -49,7 +49,7 @@ void Home::add_side_button(
                .add_flag(Flags::checkable)
                .clear_state(State::checked)
                .fill_width()
-               .add_static_label(name)
+               .add_label_as_static(name)
                .add_event_callback(
                  EventCode::clicked,
                  (void *)callback,
