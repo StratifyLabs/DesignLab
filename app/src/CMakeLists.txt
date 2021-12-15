@@ -3,6 +3,7 @@ set(SOURCES
 	main.cpp
 	qml.qrc
 
+	logic/Manager.cpp
 	logic/Manager.hpp
 	logic/ThemeManager.hpp
 	logic/ThemeManager.cpp
@@ -25,6 +26,9 @@ set(SOURCES
 	screens/ThemeMaker.hpp
 	screens/ThemePreview.cpp
 	screens/ThemePreview.hpp
+
+	extras/Extras.cpp
+	extras/Extras.hpp
 
 	Application.cpp
 	Application.hpp

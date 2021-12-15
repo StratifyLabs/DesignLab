@@ -16,9 +16,9 @@ void Application::run(sys::Cli &cli) {
   lvgl::Runtime runtime(
     "Design Lab",
     window::Point(),
-    window::Size(320 * 4, 240 * 4),
+    window::Size(320 * 6, 240 * 6),
     window::Window::Flags::shown | window::Window::Flags::highdpi
-      | window::Window::Flags::resizeable);
+      /*| window::Window::Flags::resizeable*/);
 
   runtime.window().set_minimum_size(window::Size(480, 360));
 

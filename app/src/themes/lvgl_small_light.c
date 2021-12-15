@@ -43,12 +43,26 @@ static const lv_style_transition_dsc_t transition_normal = {
   .time = 100,
   .delay = 0
 };
+static const lv_style_transition_dsc_t transition_slide_in = {
+  .props = transition_property_list,
+  .user_data = NULL,
+  .path_xcb = lv_anim_path_ease_out,
+  .time = 250,
+  .delay = 0
+};
+static const lv_style_transition_dsc_t transition_slide_out = {
+  .props = transition_property_list,
+  .user_data = NULL,
+  .path_xcb = lv_anim_path_ease_in,
+  .time = 250,
+  .delay = 0
+};
 static const lv_style_transition_dsc_t transition_delayed = {
   .props = transition_property_list,
   .user_data = NULL,
   .path_xcb = lv_anim_path_linear,
   .time = 100,
-  .delay = 70
+  .delay = 50
 };
 static const lv_style_transition_dsc_t transition_long_delayed = {
   .props = transition_property_list,
@@ -966,6 +980,30 @@ static const lv_style_const_prop_t scrollbar_scrolled_const_list[] = {
 
 static const lv_style_t scrollbar_scrolled_style = {
   .v_p = { .const_props = scrollbar_scrolled_const_list },
+  .has_group = 0xff,
+  .is_const = 1
+};
+
+static const lv_style_const_prop_t slide_over_from_right_hidden_const_list[] = {
+  { .prop = LV_STYLE_TRANSITION, .value = { .ptr = (void*)&transition_slide_out } },
+  { .prop = LV_STYLE_TRANSLATE_X, .value = { .num = LV_PCT(100) } },
+  { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
+};
+
+static const lv_style_t slide_over_from_right_hidden_style = {
+  .v_p = { .const_props = slide_over_from_right_hidden_const_list },
+  .has_group = 0xff,
+  .is_const = 1
+};
+
+static const lv_style_const_prop_t slide_over_from_right_const_list[] = {
+  { .prop = LV_STYLE_TRANSITION, .value = { .ptr = (void*)&transition_slide_in } },
+  { .prop = LV_STYLE_TRANSLATE_X, .value = { .num = 0 } },
+  { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
+};
+
+static const lv_style_t slide_over_from_right_style = {
+  .v_p = { .const_props = slide_over_from_right_const_list },
   .has_group = 0xff,
   .is_const = 1
 };
@@ -2000,6 +2038,8 @@ static const lvgl_api_style_descriptor_t lvgl_small_light_style_descriptor_list[
   { .name = "badge_sm", .style = &badge_sm_style },
   { .name = "badge_md", .style = &badge_md_style },
   { .name = "badge_lg", .style = &badge_lg_style },
+  { .name = "slide_over_from_right_hidden", .style = &slide_over_from_right_hidden_style },
+  { .name = "slide_over_from_right", .style = &slide_over_from_right_style },
   { .name = "modal", .style = &modal_style },
   { .name = "modal_enabled", .style = &modal_enabled_style },
   { .name = "modal_content", .style = &modal_content_style },
