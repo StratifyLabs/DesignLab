@@ -4,7 +4,7 @@
 
 #include "extras/Extras.hpp"
 
-#include "logic/ExportWork.hpp"
+#include "logic/ExportWorker.hpp"
 
 #include "Project.hpp"
 
@@ -37,7 +37,7 @@ void Project::export_project(lv_event_t *) {
   if (model().export_worker.is_running()) {
     printf("Can't export right now\n");
   } else {
-    model().export_worker = Worker(model().runtime, ExportWork::work);
+    model().export_worker = ExportWorker(model().runtime);
     model().export_worker.start();
   }
 }

@@ -8,6 +8,7 @@
 
 #include <design/extras/CheckList.hpp>
 
+#include "extras/Extras.hpp"
 #include "ThemePreview.hpp"
 
 void ThemePreview::configure(lvgl::Generic generic) {

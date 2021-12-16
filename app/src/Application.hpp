@@ -16,27 +16,6 @@ public:
 
 
 protected:
-  static constexpr auto tools_container_name = "ToolsGeneric";
-  static constexpr auto canvas_container_name = "CanvasGeneric";
-  static constexpr auto right_tab_view_name = "RightTabView";
-  static constexpr auto properties_container_name = "PropertiesGeneric";
-  static constexpr auto tree_container_name = "TreeGeneric";
-
-
-  static const char * generate_name() {
-    return model()
-      .name_list.push(chrono::ClockTime::get_system_time().to_unique_string())
-      .back().cstring();
-  }
-
-  static const char * latest_name() {
-    return model().name_list.back().cstring();
-  }
-
-  static void notify_properties(lv_obj_t * selected){
-    model().selected_object = selected;
-    Event::send(screen().find(properties_container_name), EventCode::notified, selected);
-  }
 
 private:
   struct PrivateModel {

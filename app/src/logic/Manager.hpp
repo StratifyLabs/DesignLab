@@ -17,8 +17,10 @@
 
 #include "CodePrinter.hpp"
 
+#include "model/Model.hpp"
 
-class Manager : public api::ExecutionContext {
+
+class Manager : public ModelAccess {
 public:
 
 

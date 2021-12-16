@@ -15,10 +15,8 @@ set(SOURCES
 	logic/BootstrapIconManager.hpp
 	logic/CodePrinter.hpp
 	logic/StringPrinter.hpp
-	logic/Settings.cpp
-	logic/Settings.hpp
-	logic/ExportWork.cpp
-	logic/ExportWork.hpp
+  logic/ExportWorker.cpp
+  logic/ExportWorker.hpp
 
 	screens/AssetMaker.cpp
 	screens/AssetMaker.hpp
@@ -35,6 +33,10 @@ set(SOURCES
 	screens/ThemePreview.cpp
 	screens/ThemePreview.hpp
 
+	model/Model.hpp
+	model/Settings.cpp
+	model/Settings.hpp
+
 	extras/Extras.cpp
 	extras/Extras.hpp
 
@@ -43,13 +45,5 @@ set(SOURCES
 
 	screens/ScreenObject.hpp
 
-	Tree.hpp
-
-	Canvas.hpp
-	Tools.hpp
-	Properties.hpp
-
-	FileBrowser.cpp
-	FileBrowser.hpp
 
 	PARENT_SCOPE)

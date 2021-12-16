@@ -8,7 +8,7 @@
 #include "Manager.hpp"
 
 #include "screens/ScreenObject.hpp"
-#include "Settings.hpp"
+#include "model/Settings.hpp"
 
 Settings &
 Settings::import_form_schema(const design::Form form) {
