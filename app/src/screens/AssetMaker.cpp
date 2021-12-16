@@ -25,6 +25,7 @@ void AssetMaker::configure(Generic generic) {
 }
 
 void AssetMaker::configure_form_input(Generic generic) {
+  Model::Scope model_scope;
   generic.add(
     Container(Maker::Names::input_form_container)
       .fill()
@@ -42,6 +43,7 @@ void AssetMaker::configure_form_input(Generic generic) {
 }
 
 void AssetMaker::handle_add(lv_event_t *e) {
+  Model::Scope model_scope;
   api::ErrorScope error_scope;
   const auto form = screen().find<Form>(Settings::assets_key());
   API_ASSERT(form.is_valid());
@@ -57,6 +59,7 @@ void AssetMaker::handle_add(lv_event_t *e) {
 }
 
 AssetMaker::InputSchema::InputSchema() {
+  Model::Scope model_scope;
   push_back(Form::SelectFile::Schema()
               .set_name(Settings::Asset::path_key())
               .set_base_path(model().session_settings.get_project())
@@ -65,6 +68,7 @@ AssetMaker::InputSchema::InputSchema() {
 }
 
 void AssetMaker::show_assets(Column column) {
+  Model::Scope model_scope;
 
   column.clean();
   const auto asset_array = model().project_settings.get_assets();

@@ -15,7 +15,8 @@ void FontMaker::configure(Generic generic) {
       column.add(HeaderRow("Fonts", Icons::plus, "Add Font", show_form))
         .add(HorizontalLine());
 
-      column.add(Column(Maker::Names::show_column).fill_width().set_flex_grow());
+      column.add(
+        Column(Maker::Names::show_column).fill_width().set_flex_grow());
       show_fonts(column.find<Column>(Maker::Names::show_column));
     })));
 
@@ -24,6 +25,7 @@ void FontMaker::configure(Generic generic) {
 }
 
 void FontMaker::show_fonts(Column column) {
+  Model::Scope model_scope;
 
   column.clean();
   const auto font_array = model().project_settings.get_fonts();
@@ -35,21 +37,21 @@ void FontMaker::show_fonts(Column column) {
   }
 
   for (const auto &font : font_array) {
-    auto & info_card_data = InfoCard::Data::create();
+    auto &info_card_data = InfoCard::Data::create();
 
     const auto title = KeyString(font.get_name());
     info_card_data.set_title(title);
 
-    const auto size_list = [&](){
+    const auto size_list = [&]() {
       auto start = font.get_sizes_start().to_integer();
       const auto step_list = font.get_sizes_steps().split(",");
       const auto total = font.get_sizes_total().to_integer();
       KeyString result;
 
       int step = 0;
-      for(const auto i: api::Index(total)){
+      for (const auto i : api::Index(total)) {
         result.append(NumberString(start, "%d,").string_view());
-        if( i < step_list.count() ){
+        if (i < step_list.count()) {
           step = step_list.at(i).to_integer();
         }
         start += step;
@@ -59,13 +61,19 @@ void FontMaker::show_fonts(Column column) {
 
     info_card_data
       .push_feature(
-        {.icon = Icons::memory, .label = "Bits Per Pixel", .value = font.get_bits_per_pixel() })
+        {.icon = Icons::memory,
+         .label = "Bits Per Pixel",
+         .value = font.get_bits_per_pixel()})
       .push_feature(
-        {.icon = Icons::file_signature, .label = "File", .value = font.get_path() })
+        {.icon = Icons::file_signature,
+         .label = "File",
+         .value = font.get_path()})
       .push_feature(
         {.icon = Icons::stream, .label = "Style", .value = font.get_style()})
       .push_feature(
-        {.icon = Icons::chart_area, .label = "Range", .value = font.get_range()})
+        {.icon = Icons::chart_area,
+         .label = "Range",
+         .value = font.get_range()})
       .push_feature(
         {.icon = Icons::exchange_alt, .label = "Sizes", .value = size_list});
 
@@ -74,23 +82,26 @@ void FontMaker::show_fonts(Column column) {
 }
 
 void FontMaker::configure_form_input(Generic generic) {
+  Model::Scope model_scope;
   generic.add(
     Container(Maker::Names::input_form_container)
       .fill()
-      .add(Column(Maker::Names::input_form_column).fill().setup([](Column column) {
-        column.add(FormHeaderRow("Add New Font", hide_form))
-          .add(HorizontalLine());
+      .add(
+        Column(Maker::Names::input_form_column).fill().setup([](Column column) {
+          column.add(FormHeaderRow("Add New Font", hide_form))
+            .add(HorizontalLine());
 
-        model().font_input_form_schema = InputSchema::get_form_schema();
+          model().font_input_form_schema = InputSchema::get_form_schema();
 
-        column.add(Form(
-                     Settings::fonts_key(),
-                     model().font_input_form_schema.to_object())
-                     .add(AddButtonRow("Add", handle_add)));
-      })));
+          column.add(Form(
+                       Settings::fonts_key(),
+                       model().font_input_form_schema.to_object())
+                       .add(AddButtonRow("Add", handle_add)));
+        })));
 }
 
 void FontMaker::handle_add(lv_event_t *e) {
+  Model::Scope model_scope;
   api::ErrorScope error_scope;
   const auto form = screen().find<Form>(Settings::fonts_key());
   API_ASSERT(form.is_valid());
@@ -106,6 +117,7 @@ void FontMaker::handle_add(lv_event_t *e) {
 }
 
 FontMaker::InputSchema::InputSchema() {
+  Model::Scope model_scope;
   push_back(Form::SelectFile::Schema()
               .set_name(Settings::Font::path_key())
               .set_base_path(model().session_settings.get_project())

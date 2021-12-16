@@ -25,6 +25,7 @@ void Project::configure(Generic generic) {
 }
 
 void Project::handle_exited(lv_event_t *) {
+  Model::Scope model_scope;
   model().session_settings.set_project(
     screen().find<Form::SelectFile>(Names::directory_select_file).get_value());
 
@@ -33,7 +34,7 @@ void Project::handle_exited(lv_event_t *) {
 }
 
 void Project::export_project(lv_event_t *) {
-
+  Model::Scope model_scope;
   if (model().export_worker.is_running()) {
     printf("Can't export right now\n");
   } else {
@@ -43,6 +44,7 @@ void Project::export_project(lv_event_t *) {
 }
 
 void Project::configure_form(Form form) {
+  Model::Scope model_scope;
   form.add(
     Form::SelectFile(
       Form::SelectFile::Data::create(Names::directory_select_file)

@@ -22,6 +22,7 @@ void ThemeMaker::configure(lvgl::Generic generic) {
 }
 
 void ThemeMaker::configure_form_input(Generic generic) {
+  Model::Scope model_scope;
   generic.add(
     Container(Maker::Names::input_form_container)
       .fill()
@@ -39,6 +40,7 @@ void ThemeMaker::configure_form_input(Generic generic) {
 
 
 void ThemeMaker::handle_add(lv_event_t*e){
+  Model::Scope model_scope;
   api::ErrorScope error_scope;
   const auto form = screen().find<Form>(Settings::themes_key());
   API_ASSERT(form.is_valid());
@@ -55,6 +57,7 @@ void ThemeMaker::handle_add(lv_event_t*e){
 
 
 ThemeMaker::InputSchema::InputSchema() {
+  Model::Scope model_scope;
   push_back(Form::SelectFile::Schema()
               .set_name(Settings::Asset::path_key())
               .set_base_path(model().session_settings.get_project())
@@ -64,6 +67,7 @@ ThemeMaker::InputSchema::InputSchema() {
 }
 
 void ThemeMaker::show_themes(Column column) {
+  Model::Scope model_scope;
 
   column.clean();
   const auto array = model().project_settings.get_themes();

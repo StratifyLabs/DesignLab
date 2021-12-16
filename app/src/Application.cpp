@@ -34,12 +34,14 @@ void Application::run(sys::Cli &cli) {
 
   // load the PNG decoder
   lvgl_api_initialize_png_decoder();
+  {
+    Model::Scope model_scope;
+    model().runtime = &runtime;
+    model().theme
+      = Theme(lvgl_small_light_theme_initialize(runtime.display(), nullptr));
 
-  model().runtime = &runtime;
-  model().theme
-    = Theme(lvgl_small_light_theme_initialize(runtime.display(), nullptr));
-
-  lv_disp_set_theme(runtime.display(), model().theme.native_value());
+    lv_disp_set_theme(runtime.display(), model().theme.native_value());
+  }
   static const auto s = Style().set_background_color(Color::red());
 
   Screen theme_preview_screen(ThemePreview::screen_name);
