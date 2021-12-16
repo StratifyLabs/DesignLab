@@ -4,6 +4,8 @@
 
 #include "extras/Extras.hpp"
 
+#include "logic/ExportWork.hpp"
+
 #include "Project.hpp"
 
 void Project::configure(Generic generic) {
@@ -30,7 +32,15 @@ void Project::handle_exited(lv_event_t *) {
     screen().find<Form::SelectFile>(Names::source_select_file).get_value());
 }
 
-void Project::export_project(lv_event_t *) {}
+void Project::export_project(lv_event_t *) {
+
+  if (model().export_worker.is_running()) {
+    printf("Can't export right now\n");
+  } else {
+    model().export_worker = Worker(model().runtime, ExportWork::work);
+    model().export_worker.start();
+  }
+}
 
 void Project::configure_form(Form form) {
   form.add(

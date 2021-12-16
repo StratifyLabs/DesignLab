@@ -17,6 +17,8 @@ set(SOURCES
 	logic/StringPrinter.hpp
 	logic/Settings.cpp
 	logic/Settings.hpp
+	logic/ExportWork.cpp
+	logic/ExportWork.hpp
 
 	screens/AssetMaker.cpp
 	screens/AssetMaker.hpp

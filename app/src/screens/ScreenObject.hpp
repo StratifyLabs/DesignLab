@@ -38,6 +38,7 @@ protected:
     var::Queue<var::Vector<FormList::ItemData>> tree;
     lvgl::Runtime *runtime;
     lvgl::Theme theme;
+    Worker export_worker;
     SessionSettings session_settings;
     Settings project_settings;
     Form::Schema font_input_form_schema;

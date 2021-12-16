@@ -20,8 +20,13 @@ private:
   };
 
   static void export_project(lv_event_t*);
+
+  static void export_work(Worker * worker);
+
   static void configure_form(Form form);
   static void handle_exited(lv_event_t*);
+
+
 };
 
 #endif // DESIGNLAB_PROJECT_HPP
