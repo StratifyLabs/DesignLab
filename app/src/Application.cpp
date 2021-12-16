@@ -3,8 +3,8 @@
 
 #include "Application.hpp"
 
-#include "fonts/fonts.h"
-#include "themes/themes.h"
+#include "designlab/fonts/fonts.h"
+#include "designlab/themes/themes.h"
 
 #include "screens/Home.hpp"
 #include "screens/ThemePreview.hpp"

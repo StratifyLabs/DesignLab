@@ -24,7 +24,7 @@ private:
 
     static Form::Schema get_form_schema() {
       Form::Schema result;
-      result.set_name(Manager::Settings::fonts_key())
+      result.set_name(Settings::fonts_key())
         .set_type(Form::Schema::schema_type)
         .set_input(InputSchema());
       return result;
@@ -33,6 +33,8 @@ private:
 
   static void configure_form_input(Generic generic);
   static void handle_add(lv_event_t*e);
+  static void show_fonts(Column column);
+
 };
 
 #endif // DESIGNLAB_FONTMAKER_HPP

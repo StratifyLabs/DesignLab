@@ -8,9 +8,10 @@
 #include "Manager.hpp"
 
 #include "screens/ScreenObject.hpp"
+#include "Settings.hpp"
 
-Manager::Settings &
-Manager::Settings::import_form_schema(const design::Form form) {
+Settings &
+Settings::import_form_schema(const design::Form form) {
 
   auto &printer = ScreenObject::printer();
   // pull in the form values to the project settings
@@ -48,3 +49,4 @@ Manager::Settings::import_form_schema(const design::Form form) {
   json_array.append(object);
   return *this;
 }
+

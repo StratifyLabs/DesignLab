@@ -12,7 +12,7 @@
     "$colorDanger": "0xffdc3545",
     "$colorSuccess": "0xff198754",
     "$colorWhite": "0xffffffff",
-    "$colorLight": "0xffbbbbbb",
+    "$colorLight": "0xffe0e0e0",
     "$colorDark": "0xff222222",
     "$colorGrey": "0xff888888",
     "$colorText": "0xffffffff",

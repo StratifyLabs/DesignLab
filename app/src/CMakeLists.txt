@@ -5,6 +5,8 @@ set(SOURCES
 
 	logic/Manager.cpp
 	logic/Manager.hpp
+	logic/AssetManager.hpp
+	logic/AssetManager.cpp
 	logic/ThemeManager.hpp
 	logic/ThemeManager.cpp
 	logic/FontAwesomeManager.cpp
@@ -13,6 +15,8 @@ set(SOURCES
 	logic/BootstrapIconManager.hpp
 	logic/CodePrinter.hpp
 	logic/StringPrinter.hpp
+	logic/Settings.cpp
+	logic/Settings.hpp
 
 	screens/AssetMaker.cpp
 	screens/AssetMaker.hpp
@@ -22,6 +26,8 @@ set(SOURCES
 	screens/Home.hpp
 	screens/IconMaker.cpp
 	screens/IconMaker.hpp
+	screens/Project.cpp
+	screens/Project.hpp
 	screens/ThemeMaker.cpp
 	screens/ThemeMaker.hpp
 	screens/ThemePreview.cpp

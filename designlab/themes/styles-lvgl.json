@@ -493,7 +493,8 @@
       "border_width": "$sizeCardBorderWidth",
       "border_side": "bottom",
       "border_color": "$colorGrey",
-      "width": "LV_PCT(100)"
+      "width": "LV_PCT(100)",
+      "text_font": "$fontHeaderMedium"
     },
     "@primary_card": {
       "border_color": "$colorPrimary",
@@ -520,7 +521,8 @@
       "padding": "$sizePaddingMedium",
       "width": "LV_PCT(100)",
       "background_color": "$colorBackground",
-      "background_opacity": "$opaque"
+      "background_opacity": "$opaque",
+      "text_font": "$fontBodyMedium"
     },
     "@card_footer": {
       "padding": "$sizePaddingMedium",
@@ -533,7 +535,7 @@
     },
     "@darker": {
       "color_filter_descriptor": "$darkColorFilter",
-      "color_filter_opacity": 35
+      "color_filter_opacity": 100
     },
     "@hline": {
       "background_color": "$colorGrey",
@@ -579,11 +581,11 @@
     },
     "pressed": {
       "color_filter_descriptor": "$darkColorFilter",
-      "color_filter_opacity": 35
+      "color_filter_opacity": 60
     },
     "disabled": {
-      "color_filter_descriptor": "$greyColorFilter",
-      "color_filter_opacity": 35
+      "color_filter_descriptor": "$lightColorFilter",
+      "color_filter_opacity": 127
     },
     "padding_zero": {
       "padding": 0

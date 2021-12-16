@@ -317,7 +317,7 @@ static const lv_style_t bg_success_style = {
 };
 
 static const lv_style_const_prop_t bg_light_const_list[] = {
-  { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full= 0xffbbbbbb } } },
+  { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full= 0xffe0e0e0 } } },
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
 
@@ -417,8 +417,8 @@ static const lv_style_t btn_success_style = {
 };
 
 static const lv_style_const_prop_t btn_light_const_list[] = {
-  { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full= 0xffbbbbbb } } },
-  { .prop = LV_STYLE_BORDER_COLOR, .value = { .color = { .full= 0xffbbbbbb } } },
+  { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full= 0xffe0e0e0 } } },
+  { .prop = LV_STYLE_BORDER_COLOR, .value = { .color = { .full= 0xffe0e0e0 } } },
   { .prop = LV_STYLE_TEXT_COLOR, .value = { .color = { .full= 0xff222222 } } },
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
@@ -556,7 +556,7 @@ static const lv_style_t btn_outline_success_style = {
 
 static const lv_style_const_prop_t btn_outline_light_const_list[] = {
   { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full= 0xffeeeeee } } },
-  { .prop = LV_STYLE_BORDER_COLOR, .value = { .color = { .full= 0xffbbbbbb } } },
+  { .prop = LV_STYLE_BORDER_COLOR, .value = { .color = { .full= 0xffe0e0e0 } } },
   { .prop = LV_STYLE_TEXT_COLOR, .value = { .color = { .full= 0xff888888 } } },
   { .prop = LV_STYLE_BORDER_WIDTH, .value = { .num = 4 } },
   { .prop = LV_STYLE_PAD_TOP, .value = { .num = 10 *4 - 4 } },
@@ -731,7 +731,7 @@ static const lv_style_t form_dropdown_list_style = {
 };
 
 static const lv_style_const_prop_t text_light_const_list[] = {
-  { .prop = LV_STYLE_TEXT_COLOR, .value = { .color = { .full= 0xffbbbbbb } } },
+  { .prop = LV_STYLE_TEXT_COLOR, .value = { .color = { .full= 0xffe0e0e0 } } },
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
 
@@ -1147,6 +1147,7 @@ static const lv_style_const_prop_t card_header_const_list[] = {
   { .prop = LV_STYLE_BORDER_SIDE, .value = { .num = 0x1 } },
   { .prop = LV_STYLE_BORDER_COLOR, .value = { .color = { .full= 0xff888888 } } },
   { .prop = LV_STYLE_WIDTH, .value = { .num = LV_PCT(100) } },
+  { .prop = LV_STYLE_TEXT_FONT, .value = { .ptr = (void*)&montserrat_sb_44 } },
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
 
@@ -1217,6 +1218,7 @@ static const lv_style_const_prop_t card_body_const_list[] = {
   { .prop = LV_STYLE_WIDTH, .value = { .num = LV_PCT(100) } },
   { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full= 0xffeeeeee } } },
   { .prop = LV_STYLE_BG_OPA, .value = { .num = 255 } },
+  { .prop = LV_STYLE_TEXT_FONT, .value = { .ptr = (void*)&montserrat_r_32 } },
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
 
@@ -1248,7 +1250,7 @@ static const lv_style_t card_footer_style = {
 
 static const lv_style_const_prop_t darker_const_list[] = {
   { .prop = LV_STYLE_COLOR_FILTER_DSC, .value = { .ptr = (void*)&dark_filter } },
-  { .prop = LV_STYLE_COLOR_FILTER_OPA, .value = { .num = 35 } },
+  { .prop = LV_STYLE_COLOR_FILTER_OPA, .value = { .num = 100 } },
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
 
@@ -1372,7 +1374,7 @@ static const lv_style_t background_color_white_style = {
 
 static const lv_style_const_prop_t pressed_const_list[] = {
   { .prop = LV_STYLE_COLOR_FILTER_DSC, .value = { .ptr = (void*)&dark_filter } },
-  { .prop = LV_STYLE_COLOR_FILTER_OPA, .value = { .num = 35 } },
+  { .prop = LV_STYLE_COLOR_FILTER_OPA, .value = { .num = 60 } },
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
 
@@ -1383,8 +1385,8 @@ static const lv_style_t pressed_style = {
 };
 
 static const lv_style_const_prop_t disabled_const_list[] = {
-  { .prop = LV_STYLE_COLOR_FILTER_DSC, .value = { .ptr = (void*)&grey_filter } },
-  { .prop = LV_STYLE_COLOR_FILTER_OPA, .value = { .num = 35 } },
+  { .prop = LV_STYLE_COLOR_FILTER_DSC, .value = { .ptr = (void*)&light_filter } },
+  { .prop = LV_STYLE_COLOR_FILTER_OPA, .value = { .num = 127 } },
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
 
@@ -2097,7 +2099,7 @@ void lvgl_small_light_apply_callback(lv_theme_t * theme, lv_obj_t * object){
     lv_obj_add_style(object, (lv_style_t*)&pressed_style, LV_STATE_PRESSED);
     lv_obj_add_style(object, (lv_style_t*)&shrink_style, LV_STATE_PRESSED);
     lv_obj_add_style(object, (lv_style_t*)&transition_normal_style, LV_STATE_PRESSED);
-    lv_obj_add_style(object, (lv_style_t*)&background_color_secondary_style, LV_STATE_CHECKED);
+    lv_obj_add_style(object, (lv_style_t*)&darker_style, LV_STATE_CHECKED);
     lv_obj_add_style(object, (lv_style_t*)&disabled_style, LV_STATE_DISABLED);
     return;
   }

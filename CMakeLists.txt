@@ -24,7 +24,7 @@ add_custom_target(pull
 set(SOS_SDK_PULL_TARGET pull)
 
 add_subdirectory(SDK SDK EXCLUDE_FROM_ALL)
-add_subdirectory(fonts)
+add_subdirectory(designlab/fonts)
 add_subdirectory(app)
 #add_subdirectory(tests tests)
 
