@@ -366,7 +366,7 @@ void ThemeManager::generate_descriptors() {
           for (const auto &property : property_list) {
             struct_init.add_member_with_comment(
               var::NumberString(
-                u32(Style::property_from_cstring(property.to_cstring())),
+                u32(Style::property_from_string(property.to_cstring())),
                 " (lv_style_prop_t)0x%04X"),
               property.to_string_view());
           }
@@ -399,7 +399,7 @@ void ThemeManager::generate_descriptors() {
           .add_member(
             "path_xcb",
             StringView(get_lv_path_animation_path(
-              Animation::path_from_cstring(path_type))))
+              Animation::path_from_string(path_type))))
           .add_member("time", period)
           .add_member("delay", delay);
 
@@ -473,7 +473,7 @@ void ThemeManager::generate_styles() {
 
     return create_property_entry(
       property_name,
-      get_property_value(Style::property_from_cstring(key), value));
+      get_property_value(Style::property_from_string(key), value));
   };
 
   const auto key_list = m_styles_object.get_key_list();
@@ -654,7 +654,7 @@ var::GeneralString
 ThemeManager::get_property_value(Property property, const char *value) {
 
   auto get_color = [&](const char *value) {
-    if (const auto number_value = Color::palette_from_cstring(value);
+    if (const auto number_value = Color::palette_from_string(value);
         number_value != Palette::invalid) {
       return var::GeneralString().format(
         ".color = { .full = 0x%08X } ",
@@ -665,72 +665,72 @@ ThemeManager::get_property_value(Property property, const char *value) {
   };
 
   auto get_number = [&](const char *value) {
-    if (const auto number_value = Style::text_decoration_from_cstring(value);
+    if (const auto number_value = Style::text_decoration_from_string(value);
         number_value != TextDecoration::invalid) {
       return var::GeneralString().format(".num = 0x%X", u32(number_value));
     }
 
-    if (const auto number_value = Style::text_alignment_from_cstring(value);
+    if (const auto number_value = Style::text_alignment_from_string(value);
         number_value != TextAlignment::invalid) {
       return var::GeneralString().format(".num = 0x%X", u32(number_value));
     }
 
-    if (const auto number_value = Style::border_side_from_cstring(value);
+    if (const auto number_value = Style::border_side_from_string(value);
         number_value != BorderSide::invalid) {
       return var::GeneralString().format(".num = 0x%X", u32(number_value));
     }
 
-    if (const auto number_value = Style::gradient_direction_from_cstring(value);
+    if (const auto number_value = Style::gradient_direction_from_string(value);
         number_value != GradientDirection::invalid) {
       return var::GeneralString().format(".num = 0x%X", u32(number_value));
     }
 
-    if (const auto number_value = Style::base_direction_from_cstring(value);
+    if (const auto number_value = Style::base_direction_from_string(value);
         number_value != BaseDirection::invalid) {
       return var::GeneralString().format(".num = 0x%X", u32(number_value));
     }
 
-    if (const auto number_value = Style::direction_from_cstring(value);
+    if (const auto number_value = Style::direction_from_string(value);
         number_value != Direction::invalid) {
       return var::GeneralString().format(".num = 0x%X", u32(number_value));
     }
 
-    if (const auto number_value = Style::alignment_from_cstring(value);
+    if (const auto number_value = Style::alignment_from_string(value);
         number_value != Alignment::invalid) {
       return var::GeneralString().format(".num = 0x%X", u32(number_value));
     }
 
-    if (const auto number_value = Style::flex_flow_from_cstring(value);
+    if (const auto number_value = Style::flex_flow_from_string(value);
         number_value != FlexFlow::invalid) {
       return var::GeneralString().format(".num = 0x%X", u32(number_value));
     }
 
-    if (const auto number_value = Style::flex_align_from_cstring(value);
+    if (const auto number_value = Style::flex_align_from_string(value);
         number_value != FlexAlign::invalid) {
       return var::GeneralString().format(".num = 0x%X", u32(number_value));
     }
 
-    if (const auto number_value = Style::scroll_bar_mode_from_cstring(value);
+    if (const auto number_value = Style::scroll_bar_mode_from_string(value);
         number_value != ScrollBarMode::invalid) {
       return var::GeneralString().format(".num = 0x%X", u32(number_value));
     }
 
-    if (const auto number_value = Style::scroll_snap_mode_from_cstring(value);
+    if (const auto number_value = Style::scroll_snap_mode_from_string(value);
         number_value != ScrollSnap::invalid) {
       return var::GeneralString().format(".num = 0x%X", u32(number_value));
     }
 
-    if (const auto number_value = Style::is_animate_mode_from_cstring(value);
+    if (const auto number_value = Style::is_animate_mode_from_string(value);
         number_value != IsAnimate::invalid) {
       return var::GeneralString().format(".num = 0x%X", u32(number_value));
     }
 
-    if (const auto number_value = Style::blend_mode_from_cstring(value);
+    if (const auto number_value = Style::blend_mode_from_string(value);
         number_value != BlendMode::invalid) {
       return var::GeneralString().format(".num = 0x%X", u32(number_value));
     }
 
-    if (const auto number_value = Style::opacity_from_cstring(value);
+    if (const auto number_value = Style::opacity_from_string(value);
         number_value != Opacity::invalid) {
       return var::GeneralString().format(".num = 0x%X", u32(number_value));
     }
