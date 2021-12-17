@@ -25,6 +25,8 @@
     "$colorDangerText": "$colorBackground",
     "$colorSuccessText": "$colorBackground",
     "$colorDarkText": "$colorForeground",
-    "$colorLightText": "$colorBackground"
+    "$colorLightText": "$colorBackground",
+    "$colorGreyText": "$colorDark",
+    "$colorWhiteText": "$colorDark"
   }
 }

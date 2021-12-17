@@ -3,18 +3,20 @@ set(SOURCES
 	main.cpp
 	qml.qrc
 
-	logic/Manager.cpp
-	logic/Manager.hpp
-	logic/AssetManager.hpp
 	logic/AssetManager.cpp
-	logic/ThemeManager.hpp
-	logic/ThemeManager.cpp
-	logic/FontAwesomeManager.cpp
-	logic/FontAwesomeManager.hpp
+	logic/AssetManager.hpp
 	logic/BootstrapIconManager.cpp
 	logic/BootstrapIconManager.hpp
 	logic/CodePrinter.hpp
+	logic/FontAwesomeManager.cpp
+	logic/FontAwesomeManager.hpp
+	logic/FontManager.cpp
+	logic/FontManager.hpp
+	logic/Manager.cpp
+	logic/Manager.hpp
 	logic/StringPrinter.hpp
+	logic/ThemeManager.cpp
+	logic/ThemeManager.hpp
   logic/ExportWorker.cpp
   logic/ExportWorker.hpp
 

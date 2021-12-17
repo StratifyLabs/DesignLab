@@ -6,6 +6,8 @@
 
 #include "extras/Extras.hpp"
 
+#include "logic/FontManager.hpp"
+
 #include "FontMaker.hpp"
 
 void FontMaker::configure(Generic generic) {
@@ -42,22 +44,7 @@ void FontMaker::show_fonts(Column column) {
     const auto title = KeyString(font.get_name());
     info_card_data.set_title(title);
 
-    const auto size_list = [&]() {
-      auto start = font.get_sizes_start().to_integer();
-      const auto step_list = font.get_sizes_steps().split(",");
-      const auto total = font.get_sizes_total().to_integer();
-      KeyString result;
-
-      int step = 0;
-      for (const auto i : api::Index(total)) {
-        result.append(NumberString(start, "%d,").string_view());
-        if (i < step_list.count()) {
-          step = step_list.at(i).to_integer();
-        }
-        start += step;
-      }
-      return result.pop_back();
-    }();
+    const auto size_list = FontManager::get_size_list(font);
 
     info_card_data
       .push_feature(
@@ -75,7 +62,9 @@ void FontMaker::show_fonts(Column column) {
          .label = "Range",
          .value = font.get_range()})
       .push_feature(
-        {.icon = Icons::exchange_alt, .label = "Sizes", .value = size_list});
+        {.icon = Icons::exchange_alt,
+         .label = "Sizes",
+         .value = size_list.string_view()});
 
     column.add(InfoCard(info_card_data));
   }

@@ -13,13 +13,13 @@
 
 ThemeManager::ThemeManager(const sys::Cli &cli) : m_cli(&cli) {
   printer().set_verbose_level(cli.get_option("verbose"));
-  construct({.input_path = cli.get_option("theme")});
+  construct({.input_path = cli.get_option("theme"), .project_path = "./"});
 }
 
 void ThemeManager::construct(const Construct &options) {
   Printer::Array root_array(printer(), "DesignLabThemeGenerator");
 
-  m_theme_path = options.input_path;
+  m_theme_path = options.project_path / options.input_path;
   if (m_theme_path.is_empty()) {
     API_RETURN_ASSIGN_ERROR(
       "`theme` must specify the path to the theme JSON file",
@@ -28,7 +28,7 @@ void ThemeManager::construct(const Construct &options) {
 
   if (!FileSystem().exists(m_theme_path)) {
     API_RETURN_ASSIGN_ERROR(
-      "`theme` " | m_theme_path | " does not exist",
+      "theme `" | m_theme_path | "` does not exist",
       EINVAL);
   }
 
@@ -441,8 +441,6 @@ void ThemeManager::generate_styles() {
         const auto update_value
           = get_property_value(Property::top_padding, value);
 
-        printf("Set padding to %s (%s)\n", update_value.cstring(), value);
-
         return create_property_entry("LV_STYLE_PAD_TOP", update_value) | ",\n  "
                | create_property_entry("LV_STYLE_PAD_BOTTOM", update_value)
                | ",\n  "
@@ -654,8 +652,6 @@ ThemeManager::get_json_value(const json::JsonValue json_value) {
 
 var::GeneralString
 ThemeManager::get_property_value(Property property, const char *value) {
-
-  printf("variable %s\n", value);
 
   auto get_color = [&](const char *value) {
     if (const auto number_value = Color::palette_from_cstring(value);

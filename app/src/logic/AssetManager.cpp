@@ -16,7 +16,7 @@ AssetManager::AssetManager(const sys::Cli &cli) {
 }
 
 void AssetManager::construct(const AssetManager::Construct &options) {
-  const auto input_object = load_json_file(options.input_path);
+  const auto input_object = load_json_file(options.project_path / options.input_path);
   API_RETURN_IF_ERROR();
 
   const auto settings = Settings(input_object);
@@ -74,7 +74,7 @@ void AssetManager::construct(const AssetManager::Construct &options) {
       const auto remaining = data.size() - offset;
       const auto page_size = remaining > line_size ? line_size : remaining;
       for (const auto i : api::Index(page_size)) {
-        line |= NumberString(data.data_u8()[offset + i], "%02x,");
+        line |= NumberString(data.data_u8()[offset + i], "0x%02x,");
       }
       if( offset + page_size >= data.size() ){
         line.pop_back();

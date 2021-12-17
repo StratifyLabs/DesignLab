@@ -2,23 +2,23 @@
    "source": "app/src",
    "themes": [
       {
-         "path": "assets/lvgl-small-dark.json"
+         "path": "designlab/themes/lvgl-small-dark.json"
       },
       {
-         "path": "assets/lvgl-small-light.json"
+         "path": "designlab/themes/lvgl-small-light.json"
       }
    ],
    "assets": [
       {
-         "path": "fonts/icons-1.7.2/font/bootstrap-icons.json"
+         "path": "designlab/fonts/icons-1.7.2/font/bootstrap-icons.json"
       },
       {
-         "path": "fonts/icons-1.7.2/font/fonts/bootstrap-icons.woff"
+         "path": "designlab/fonts/icons-1.7.2/font/fonts/bootstrap-icons.woff"
       }
    ],
    "fonts": [
       {
-         "path": "fonts/Montserrat/Montserrat-Regular.ttf",
+         "path": "designlab/fonts/Montserrat/Montserrat-Regular.ttf",
          "name": "montserrat",
          "style": "regular",
          "range": "0x20-0x7F",
@@ -28,7 +28,7 @@
          "sizesTotal": "12"
       },
       {
-         "path": "fonts/SourceCode/SourceCodePro-Regular.ttf",
+         "path": "designlab/fonts/SourceCode/SourceCodePro-Regular.ttf",
          "name": "sourcecode",
          "style": "regular",
          "range": "0x20-0x7F",

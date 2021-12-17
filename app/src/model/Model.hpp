@@ -53,7 +53,6 @@ private:
   thread::Mutex m_mutex;
   pthread_t m_pthread_scoped = pthread_t{};
   size_t m_lock_count = 0;
-  API_SINGLETON_CUSTOM_CONSTRUCTOR(Model);
 
   Model()
     : project_settings(
@@ -61,6 +60,11 @@ private:
       Settings::IsOverwrite::yes),
       m_mutex(
         thread::Mutex::Attributes().set_type(thread::Mutex::Type::recursive)) {}
+
+  static Model & instance(){
+    static Model model;
+    return model;
+  }
 };
 
 class ModelAccess : public api::ExecutionContext {

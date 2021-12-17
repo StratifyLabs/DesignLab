@@ -8,6 +8,7 @@
 #include <fs/File.hpp>
 #include <json/Json.hpp>
 #include <lvgl/Types.hpp>
+#include <lvgl/Animation.hpp>
 #include <printer/YamlPrinter.hpp>
 #include <sys/Cli.hpp>
 #include <var/StackString.hpp>
@@ -21,7 +22,7 @@ public:
 
   struct Construct {
     API_PMAZ(input_path,Construct,var::PathString,{});
-    API_PMAZ(output_path,Construct,var::PathString,{});
+    API_PMAZ(project_path,Construct,var::PathString,{});
   };
 
   explicit ThemeManager(const Construct & options){
@@ -121,7 +122,7 @@ private:
   var::GeneralString get_condition(var::StringView condition_value);
   var::GeneralString get_effective_style(var::StringView value);
 
-  const char *get_lv_path_animation_path(Animation::Path value);
+  const char *get_lv_path_animation_path(lvgl::Animation::Path value);
 
   void write_output(const var::GeneralString &value) {
     m_output.write(value.string_view());

@@ -13,8 +13,12 @@ public:
   ExportWorker(lvgl::Runtime * runtime);
 protected:
 
+  var::PathString m_project_path;
 
   void interface_work();
+
+  void export_assets(const Settings & settings);
+  void export_themes(const Settings & settings);
 };
 
 #endif // DESIGNLAB_EXPORTWORKER_HPP
