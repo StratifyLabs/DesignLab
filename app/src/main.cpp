@@ -9,8 +9,8 @@
 
 #include "Application.hpp"
 
-#include "logic/ThemeManager.hpp"
-#include "logic/BootstrapIconManager.hpp"
+#include "controller/ThemeManager.hpp"
+#include "controller/BootstrapIconManager.hpp"
 
 #include <cprinter.hpp>
 

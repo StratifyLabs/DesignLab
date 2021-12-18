@@ -151,22 +151,28 @@
       "height": "LV_SIZE_CONTENT"
     },
     "@bg_primary": {
-      "background_color": "$colorPrimary"
+      "background_color": "$colorPrimary",
+      "background_opacity": "$opaque"
     },
     "@bg_secondary": {
-      "background_color": "$colorSecondary"
+      "background_color": "$colorSecondary",
+      "background_opacity": "$opaque"
     },
     "@bg_warning": {
-      "background_color": "$colorWarning"
+      "background_color": "$colorWarning",
+      "background_opacity": "$opaque"
     },
     "@bg_info": {
-      "background_color": "$colorInfo"
+      "background_color": "$colorInfo",
+      "background_opacity": "$opaque"
     },
     "@bg_danger": {
-      "background_color": "$colorDanger"
+      "background_color": "$colorDanger",
+      "background_opacity": "$opaque"
     },
     "@bg_success": {
-      "background_color": "$colorSuccess"
+      "background_color": "$colorSuccess",
+      "background_opacity": "$opaque"
     },
     "@bg_light": {
       "background_color": "$colorLight"
@@ -304,6 +310,12 @@
       "text_font": "$fontFormField",
       "padding": "$sizePadding *2",
       "border_width": "$sizeFormFieldBorderWidth"
+    },
+    "@form_switch": {
+      "border_width": "$sizeFormSwitchBorderWidth",
+      "radius": "$sizeFormSwitchBorderRadius",
+      "width": "$sizeFormSwitchWidth",
+      "height": "$sizeFormSwitchHeight"
     },
     "@form_hint": {
       "text_font": "$fontFormHint",
@@ -535,7 +547,7 @@
     },
     "@darker": {
       "color_filter_descriptor": "$darkColorFilter",
-      "color_filter_opacity": 100
+      "color_filter_opacity": 40
     },
     "@hline": {
       "background_color": "$colorGrey",
@@ -616,7 +628,9 @@
       "outline_padding": "$sizeOutlineWidth",
       "outline_opacity": "$opacity50"
     },
-    "circle": {},
+    "@circle": {
+      "radius": "LV_RADIUS_CIRCLE"
+    },
     "radius_none": {},
     "clip_corner": {
       "clip_corner": true
@@ -641,7 +655,7 @@
     "knob": {
       "background_color": "$colorPrimary",
       "background_opacity": "$opaque",
-      "padding": 6,
+      "padding": 12,
       "radius": "$radiusCircle"
     },
     "indicator": {
@@ -691,8 +705,7 @@
       "text_font": "$fontBodySmall"
     },
     "switch_knob": {
-      "padding": "$sizePaddingSmall",
-      "background_color": "$colorWhite"
+      "background_color": "$colorPrimary"
     },
     "line": {
       "line_width": "$sizeLineWidth",

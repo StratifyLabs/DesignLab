@@ -92,6 +92,8 @@ extern const lv_font_t sourcecode_r_64;
 extern const lv_font_t sourcecode_r_68;
 extern const lv_font_t sourcecode_r_72;
 
+extern const lv_font_t bootstrap;
+
 static const lvgl_api_font_descriptor_t lvgl_font_list[] = {
   {.name = "montserrat-r-8", .font = &montserrat_r_8},
   {.name = "montserrat-r-12", .font = &montserrat_r_12},
@@ -178,6 +180,7 @@ static const lvgl_api_font_descriptor_t lvgl_font_list[] = {
   {.name = "sourcecode-r-64", .font = &sourcecode_r_64},
   {.name = "sourcecode-r-68", .font = &sourcecode_r_68},
   {.name = "sourcecode-r-72", .font = &sourcecode_r_72},
+  {.name = "bootstrap-r-48", .font = &bootstrap},
 
 };
 

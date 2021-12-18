@@ -1,51 +1,48 @@
 
 set(SOURCES
 	main.cpp
-	qml.qrc
-
-	logic/AssetManager.cpp
-	logic/AssetManager.hpp
-	logic/BootstrapIconManager.cpp
-	logic/BootstrapIconManager.hpp
-	logic/CodePrinter.hpp
-	logic/FontAwesomeManager.cpp
-	logic/FontAwesomeManager.hpp
-	logic/FontManager.cpp
-	logic/FontManager.hpp
-	logic/Manager.cpp
-	logic/Manager.hpp
-	logic/StringPrinter.hpp
-	logic/ThemeManager.cpp
-	logic/ThemeManager.hpp
-  logic/ExportWorker.cpp
-  logic/ExportWorker.hpp
-
-	screens/AssetMaker.cpp
-	screens/AssetMaker.hpp
-	screens/FontMaker.cpp
-	screens/FontMaker.hpp
-	screens/Home.cpp
-	screens/Home.hpp
-	screens/IconMaker.cpp
-	screens/IconMaker.hpp
-	screens/Project.cpp
-	screens/Project.hpp
-	screens/ThemeMaker.cpp
-	screens/ThemeMaker.hpp
-	screens/ThemePreview.cpp
-	screens/ThemePreview.hpp
+	Application.cpp
+	Application.hpp
 
 	model/Model.hpp
 	model/Settings.cpp
 	model/Settings.hpp
 
-	extras/Extras.cpp
-	extras/Extras.hpp
+	view/AssetMaker.cpp
+	view/AssetMaker.hpp
+	view/FontMaker.cpp
+	view/FontMaker.hpp
+	view/Editor.cpp
+	view/Editor.hpp
+	view/Home.cpp
+	view/Home.hpp
+	view/IconMaker.cpp
+	view/IconMaker.hpp
+	view/Project.cpp
+	view/Project.hpp
+	view/ThemeMaker.cpp
+	view/ThemeMaker.hpp
+	view/ThemePreview.cpp
+	view/ThemePreview.hpp
+	view/ViewObject.hpp
+	view/extras/Extras.cpp
+	view/extras/Extras.hpp
 
-	Application.cpp
-	Application.hpp
-
-	screens/ScreenObject.hpp
-
+	controller/AssetManager.cpp
+	controller/AssetManager.hpp
+	controller/BootstrapIconManager.cpp
+	controller/BootstrapIconManager.hpp
+	controller/CodePrinter.hpp
+	controller/FontAwesomeManager.cpp
+	controller/FontAwesomeManager.hpp
+	controller/FontManager.cpp
+	controller/FontManager.hpp
+	controller/Manager.cpp
+	controller/Manager.hpp
+	controller/StringPrinter.hpp
+	controller/ThemeManager.cpp
+	controller/ThemeManager.hpp
+  controller/ExportWorker.cpp
+  controller/ExportWorker.hpp
 
 	PARENT_SCOPE)

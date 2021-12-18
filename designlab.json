@@ -14,6 +14,9 @@
       },
       {
          "path": "designlab/fonts/icons-1.7.2/font/fonts/bootstrap-icons.woff"
+      },
+      {
+         "path": "README.md"
       }
    ],
    "fonts": [
@@ -25,7 +28,7 @@
          "bitsPerPixel": "8",
          "sizesStart": "12",
          "sizesSteps": "4",
-         "sizesTotal": "12"
+         "sizesTotal": "20"
       },
       {
          "path": "designlab/fonts/SourceCode/SourceCodePro-Regular.ttf",
@@ -35,7 +38,8 @@
          "bitsPerPixel": "8",
          "sizesStart": "12",
          "sizesSteps": "4",
-         "sizesTotal": "4"
+         "sizesTotal": "4",
+         "icons": "true"
       }
    ]
 }

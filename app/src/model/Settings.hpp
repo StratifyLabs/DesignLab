@@ -23,6 +23,7 @@ public:
 
   JSON_ACCESS_STRING(SessionSettings,project);
   JSON_ACCESS_STRING(SessionSettings,theme);
+  JSON_ACCESS_INTEGER(SessionSettings,offset);
 
 private:
   static var::PathString get_file_path(){
@@ -97,7 +98,8 @@ public:
 
   }
 
-  Settings& import_form_schema(design::Form form);
+  Settings&append_form_entry(design::Form form);
+  Settings&edit_from_form_entry(size_t offset, design::Form form);
 
   ~Settings(){
     if( bool(m_is_overwrite) ){
@@ -121,6 +123,8 @@ private:
   API_AC(Settings,var::KeyString,bad_key);
   var::PathString m_path;
   IsOverwrite m_is_overwrite = IsOverwrite::no;
+
+
 };
 
 

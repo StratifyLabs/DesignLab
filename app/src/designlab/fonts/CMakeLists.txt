@@ -4,6 +4,7 @@ set(SOURCES
 
 	fonts.h
 	fonts.c
+	../bootstrap.c
 	montserrat_i_12.c
 	montserrat_i_16.c
 	montserrat_i_20.c

@@ -12,6 +12,11 @@
     "$sizeBorderRadius": 8,
     "$sizeHorizontalLine": 2,
 
+    "$sizeFormSwitchHeight": 64,
+    "$sizeFormSwitchWidth": "$sizeFormSwitchHeight *2",
+    "$sizeFormSwitchBorderWidth": "$sizeBorderWidth",
+    "$sizeFormSwitchBorderRadius": "LV_RADIUS_CIRCLE",
+
     "$sizePaddingTiny": "$sizePadding / 3",
     "$sizePaddingSmall": "$sizePadding / 2",
     "$sizePaddingMedium": "$sizePadding",

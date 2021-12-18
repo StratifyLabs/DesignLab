@@ -194,16 +194,16 @@
       "styles": {
         "default": [
           "background_color_grey",
-          "circle"
+          "circle",
+          "transition_normal"
         ],
         "disabled": "disabled",
         "focus_key": "outline_border_primary",
-        "checked | indicator": "background_color_primary",
+        "checked | indicator": ["bg_success", "circle", "transition_normal"],
         "default | indicator": "circle",
         "disabled | indicator": "disabled",
         "default | knob": [
           "knob",
-          "background_color_white",
           "switch_knob"
         ],
         "disabled | knob": "disabled"
