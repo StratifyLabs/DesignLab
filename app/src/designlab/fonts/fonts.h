@@ -1,5 +1,6 @@
-#ifndef FONTS_H
-#define FONTS_H
+#ifndef DESIGNLAB_FONTS_H_
+#define DESIGNLAB_FONTS_H_
+
 
 #if defined __cplusplus
 extern "C" {
@@ -11,4 +12,5 @@ void fonts_initialize();
 }
 #endif
 
-#endif // FONTS_H
+#endif // DESIGNLAB_FONTS_H_
+

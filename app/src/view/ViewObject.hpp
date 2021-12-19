@@ -17,7 +17,7 @@ using namespace printer;
 #include <design/extras/Form.hpp>
 #include <design/extras/FormList.hpp>
 
-#include "designlab/fonts/Icons.hpp"
+#include "designlab/fonts/FontAwesomeIcons.hpp"
 #include "model/Model.hpp"
 
 class ViewObject : public ModelAccess {

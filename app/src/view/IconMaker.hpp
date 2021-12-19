@@ -13,8 +13,9 @@ public:
   static void configure(Generic generic);
 
 private:
+  using RangeList = var::Vector<Settings::Icon>;
+
   struct Names {
-    static constexpr auto first_child_container = "FirstChildContainer";
     static constexpr auto control_row = "ControlRow";
     static constexpr auto select_all_button = "SelectAllButton";
     static constexpr auto icon_container_row = "IconContainerRow";
@@ -23,20 +24,38 @@ private:
     static constexpr auto input_form_column = "InputFormColumn";
   };
 
-  static void add_icons(
+  static u32 add_icons(
     IconGrid icon_grid,
     u32 offset,
-    json::JsonObject bootstrap_icons,
-    const var::StringViewList &key_list);
+    const var::Vector<Settings::Icon> &icon_list);
 
   static void select_all(lv_event_t *);
-  static void deselect_all(lv_event_t *);
   static void select_page(lv_event_t *e);
 
   static Container get_top_container(lv_event_t *e) {
     return Event(e).target().find_parent<Container>(
-      Names::first_child_container);
+      ViewObject::Names::content_container);
   }
+
+  template <class Context>
+  static void update_icons(
+    Container self,
+    Context &context,
+    void (*callback)(IconCheck, Context &)) {
+    const auto row = self.find(Names::icon_container_row);
+    for (auto container : row) {
+      auto grid = container.get<IconGridContainer>().get_icon_grid();
+      for (auto icon : grid) {
+        callback(icon.get<IconCheck>(), context);
+      }
+    }
+  }
+
+  static void handle_exited(lv_event_t *);
+
+  static var::Vector<InfoCard::Data::Feature>
+    get_feature_list(json::JsonObject);
+  static var::StringView get_info_title(json::JsonObject object);
 };
 
 #endif // DESIGNLAB_ICONMAKER_HPP

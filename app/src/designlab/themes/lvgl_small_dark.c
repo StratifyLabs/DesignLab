@@ -14,7 +14,7 @@ extern const lv_font_t montserrat_sb_44;
 extern const lv_font_t montserrat_sb_28;
 extern const lv_font_t montserrat_sb_36;
 extern const lv_font_t montserrat_sb_44;
-extern const lv_font_t montserrat_sb_64;
+extern const lv_font_t montserrat_sb_60;
 extern const lv_font_t montserrat_sb_52;
 extern const lv_font_t montserrat_sb_44;
 extern const lv_font_t montserrat_sb_36;
@@ -96,7 +96,7 @@ static const lv_color_filter_dsc_t grey_filter = {
 };
 
 static const lv_style_const_prop_t h1_const_list[] = {
-  { .prop = LV_STYLE_TEXT_FONT, .value = { .ptr = (void*)&montserrat_sb_64 } },
+  { .prop = LV_STYLE_TEXT_FONT, .value = { .ptr = (void*)&montserrat_sb_60 } },
   { .prop = LV_STYLE_PAD_TOP, .value = { .num = 10 } },
   { .prop = LV_STYLE_PAD_BOTTOM, .value = { .num = 10 / 2 } },
   { .prop = LV_STYLE_WIDTH, .value = { .num = LV_PCT(100) } },
@@ -252,6 +252,7 @@ static const lv_style_t col_style = {
 
 static const lv_style_const_prop_t bg_primary_const_list[] = {
   { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full= 0xff244e99 } } },
+  { .prop = LV_STYLE_BG_OPA, .value = { .num = 255 } },
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
 
@@ -263,6 +264,7 @@ static const lv_style_t bg_primary_style = {
 
 static const lv_style_const_prop_t bg_secondary_const_list[] = {
   { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full= 0xff303846 } } },
+  { .prop = LV_STYLE_BG_OPA, .value = { .num = 255 } },
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
 
@@ -274,6 +276,7 @@ static const lv_style_t bg_secondary_style = {
 
 static const lv_style_const_prop_t bg_warning_const_list[] = {
   { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full= 0xffffc107 } } },
+  { .prop = LV_STYLE_BG_OPA, .value = { .num = 255 } },
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
 
@@ -285,6 +288,7 @@ static const lv_style_t bg_warning_style = {
 
 static const lv_style_const_prop_t bg_info_const_list[] = {
   { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full= 0xff0dcaf0 } } },
+  { .prop = LV_STYLE_BG_OPA, .value = { .num = 255 } },
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
 
@@ -296,6 +300,7 @@ static const lv_style_t bg_info_style = {
 
 static const lv_style_const_prop_t bg_danger_const_list[] = {
   { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full= 0xffdc3545 } } },
+  { .prop = LV_STYLE_BG_OPA, .value = { .num = 255 } },
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
 
@@ -307,6 +312,7 @@ static const lv_style_t bg_danger_style = {
 
 static const lv_style_const_prop_t bg_success_const_list[] = {
   { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full= 0xff198754 } } },
+  { .prop = LV_STYLE_BG_OPA, .value = { .num = 255 } },
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
 
@@ -665,6 +671,20 @@ static const lv_style_const_prop_t form_field_const_list[] = {
 
 static const lv_style_t form_field_style = {
   .v_p = { .const_props = form_field_const_list },
+  .has_group = 0xff,
+  .is_const = 1
+};
+
+static const lv_style_const_prop_t form_switch_const_list[] = {
+  { .prop = LV_STYLE_BORDER_WIDTH, .value = { .num = 4 } },
+  { .prop = LV_STYLE_RADIUS, .value = { .num = LV_RADIUS_CIRCLE } },
+  { .prop = LV_STYLE_WIDTH, .value = { .num = 64 *2 } },
+  { .prop = LV_STYLE_HEIGHT, .value = { .num = 64 } },
+  { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
+};
+
+static const lv_style_t form_switch_style = {
+  .v_p = { .const_props = form_switch_const_list },
   .has_group = 0xff,
   .is_const = 1
 };
@@ -1250,7 +1270,7 @@ static const lv_style_t card_footer_style = {
 
 static const lv_style_const_prop_t darker_const_list[] = {
   { .prop = LV_STYLE_COLOR_FILTER_DSC, .value = { .ptr = (void*)&dark_filter } },
-  { .prop = LV_STYLE_COLOR_FILTER_OPA, .value = { .num = 100 } },
+  { .prop = LV_STYLE_COLOR_FILTER_OPA, .value = { .num = 40 } },
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
 
@@ -1514,6 +1534,7 @@ static const lv_style_t outline_border_secondary_style = {
 };
 
 static const lv_style_const_prop_t circle_const_list[] = {
+  { .prop = LV_STYLE_RADIUS, .value = { .num = LV_RADIUS_CIRCLE } },
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
 
@@ -1604,10 +1625,10 @@ static const lv_style_t animation_style = {
 static const lv_style_const_prop_t knob_const_list[] = {
   { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full= 0xff244e99 } } },
   { .prop = LV_STYLE_BG_OPA, .value = { .num = 255 } },
-  { .prop = LV_STYLE_PAD_TOP, .value = { .num = 6 } },
-  { .prop = LV_STYLE_PAD_BOTTOM, .value = { .num = 6 } },
-  { .prop = LV_STYLE_PAD_LEFT, .value = { .num = 6 } },
-  { .prop = LV_STYLE_PAD_RIGHT, .value = { .num = 6 } },
+  { .prop = LV_STYLE_PAD_TOP, .value = { .num = 12 } },
+  { .prop = LV_STYLE_PAD_BOTTOM, .value = { .num = 12 } },
+  { .prop = LV_STYLE_PAD_LEFT, .value = { .num = 12 } },
+  { .prop = LV_STYLE_PAD_RIGHT, .value = { .num = 12 } },
   { .prop = LV_STYLE_RADIUS, .value = { .num = 0x7fff } },
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
@@ -1749,11 +1770,7 @@ static const lv_style_t checkbox_marker_checked_style = {
 };
 
 static const lv_style_const_prop_t switch_knob_const_list[] = {
-  { .prop = LV_STYLE_PAD_TOP, .value = { .num = 10 / 2 } },
-  { .prop = LV_STYLE_PAD_BOTTOM, .value = { .num = 10 / 2 } },
-  { .prop = LV_STYLE_PAD_LEFT, .value = { .num = 10 / 2 } },
-  { .prop = LV_STYLE_PAD_RIGHT, .value = { .num = 10 / 2 } },
-  { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full= 0xffCCCCCC } } },
+  { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full= 0xff244e99 } } },
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
 
@@ -2020,6 +2037,7 @@ static const lvgl_api_style_descriptor_t lvgl_small_dark_style_descriptor_list[]
   { .name = "form_col", .style = &form_col_style },
   { .name = "form_label", .style = &form_label_style },
   { .name = "form_field", .style = &form_field_style },
+  { .name = "form_switch", .style = &form_switch_style },
   { .name = "form_hint", .style = &form_hint_style },
   { .name = "form_filesystem", .style = &form_filesystem_style },
   { .name = "form_dropdown", .style = &form_dropdown_style },
@@ -2057,7 +2075,8 @@ static const lvgl_api_style_descriptor_t lvgl_small_dark_style_descriptor_list[]
   { .name = "card_body", .style = &card_body_style },
   { .name = "card_footer", .style = &card_footer_style },
   { .name = "darker", .style = &darker_style },
-  { .name = "hline", .style = &hline_style }
+  { .name = "hline", .style = &hline_style },
+  { .name = "circle", .style = &circle_style }
 };
 
 void lvgl_small_dark_apply_callback(lv_theme_t * theme, lv_obj_t * object){
@@ -2190,13 +2209,15 @@ void lvgl_small_dark_apply_callback(lv_theme_t * theme, lv_obj_t * object){
   if((lv_obj_check_type(object, &lv_switch_class))){
     lv_obj_add_style(object, (lv_style_t*)&background_color_grey_style, LV_STATE_DEFAULT);
     lv_obj_add_style(object, (lv_style_t*)&circle_style, LV_STATE_DEFAULT);
+    lv_obj_add_style(object, (lv_style_t*)&transition_normal_style, LV_STATE_DEFAULT);
     lv_obj_add_style(object, (lv_style_t*)&disabled_style, LV_STATE_DISABLED);
     lv_obj_add_style(object, (lv_style_t*)&outline_border_primary_style, LV_STATE_FOCUS_KEY);
-    lv_obj_add_style(object, (lv_style_t*)&background_color_primary_style, LV_STATE_CHECKED|LV_PART_INDICATOR);
+    lv_obj_add_style(object, (lv_style_t*)&bg_success_style, LV_STATE_CHECKED|LV_PART_INDICATOR);
+    lv_obj_add_style(object, (lv_style_t*)&circle_style, LV_STATE_CHECKED|LV_PART_INDICATOR);
+    lv_obj_add_style(object, (lv_style_t*)&transition_normal_style, LV_STATE_CHECKED|LV_PART_INDICATOR);
     lv_obj_add_style(object, (lv_style_t*)&circle_style, LV_STATE_DEFAULT|LV_PART_INDICATOR);
     lv_obj_add_style(object, (lv_style_t*)&disabled_style, LV_STATE_DISABLED|LV_PART_INDICATOR);
     lv_obj_add_style(object, (lv_style_t*)&knob_style, LV_STATE_DEFAULT|LV_PART_KNOB);
-    lv_obj_add_style(object, (lv_style_t*)&background_color_white_style, LV_STATE_DEFAULT|LV_PART_KNOB);
     lv_obj_add_style(object, (lv_style_t*)&switch_knob_style, LV_STATE_DEFAULT|LV_PART_KNOB);
     lv_obj_add_style(object, (lv_style_t*)&disabled_style, LV_STATE_DISABLED|LV_PART_KNOB);
     return;

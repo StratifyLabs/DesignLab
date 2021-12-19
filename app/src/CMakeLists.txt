@@ -45,4 +45,10 @@ set(SOURCES
   controller/ExportWorker.cpp
   controller/ExportWorker.hpp
 
+	designlab/bootstrap.c
+	designlab/fontawesome_brands_regular.c
+	designlab/fontawesome_regular.c
+	designlab/fontawesome_solid.c
+	designlab/icon_fonts.h
+
 	PARENT_SCOPE)

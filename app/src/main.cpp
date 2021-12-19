@@ -11,12 +11,21 @@
 
 #include "controller/ThemeManager.hpp"
 #include "controller/BootstrapIconManager.hpp"
+#include "controller/FontAwesomeManager.hpp"
 
 #include <cprinter.hpp>
 
 int main(int argc, char *argv[]) {
   sys::Cli cli(argc, argv);
 
+
+  if( !cli.get_option("fa").is_empty() ){
+    FontAwesomeManager manager(cli);
+    if (api::ExecutionContext::is_error()) {
+      manager.printer().object("error", api::ExecutionContext::error());
+    }
+    exit(api::ExecutionContext::is_error() ? 1 : 0);
+  }
 
   if( !cli.get_option("theme").is_empty() ){
     ThemeManager manager(cli);

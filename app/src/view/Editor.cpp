@@ -5,7 +5,7 @@
 #include <design.hpp>
 
 #include "Editor.hpp"
-#include "designlab/fonts/Icons.hpp"
+#include "designlab/fonts/FontAwesomeIcons.hpp"
 #include "extras/Extras.hpp"
 
 Editor::Editor(Data &data) {
@@ -16,16 +16,12 @@ Editor::Editor(Data &data) {
            .fill()
            .add(HeaderRow(
              data.title,
-             Icons::plus,
+             icons::fa::plus_solid,
              data.add_button_text,
              show_add_form))
            .add(HorizontalLine())
            .add(Column(Names::show_column).fill_width().set_flex_grow()));
 
-  printf(
-    "First child is %p -> %p\n",
-    object(),
-    find(Names::first_child_column).object());
   show_values(data);
   configure_form_input(data);
 }
@@ -80,9 +76,9 @@ void Editor::configure_form_input(Data &data) {
     .add(Form(data.form_name, data.input_form_schema.to_object()));
 
   input_form_column.find<Form>(data.form_name)
-    .add(AddButtonRow(Names::add_button, Icons::plus, "Add", submit_form_add))
+    .add(AddButtonRow(Names::add_button, icons::fa::plus_solid, "Add", submit_form_add))
     .add(
-      AddButtonRow(Names::edit_button, Icons::pen, "Edit", submit_form_edit));
+      AddButtonRow(Names::edit_button, icons::fa::edit_solid, "Edit", submit_form_edit));
 
   find<Container>(Names::input_form_container)
     .add_style("slide_over_from_right_hidden")
@@ -91,16 +87,11 @@ void Editor::configure_form_input(Data &data) {
 
 void Editor::submit_form_add(lv_event_t *e) {
   Model::Scope model_scope;
-  API_PRINTF_TRACE_LINE();
   auto *data = get_data(e);
-  API_PRINTF_TRACE_LINE();
   auto self = get_self(e);
-  API_PRINTF_TRACE_LINE();
 
   api::ErrorScope error_scope;
-  API_PRINTF_TRACE_LINE();
   const auto form = self.find<Form>(data->form_name);
-  API_PRINTF_TRACE_LINE();
   API_ASSERT(form.is_valid());
   model().project_settings.append_form_entry(form);
   if (is_error()) {

@@ -18,7 +18,7 @@ void Project::configure(Generic generic) {
   auto column = generic.find<Column>(Names::project_column);
   column.fill()
     .add(
-      HeaderRow("Project", Icons::external_link_alt, "Export", export_project))
+      HeaderRow("Project", icons::fa::external_link_alt_solid, "Export", export_project))
     .add(HorizontalLine())
     .add(Paragraph("", "Add theme source files."))
     .add(Form(Names::project_form).setup(configure_form));

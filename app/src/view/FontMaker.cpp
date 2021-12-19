@@ -4,6 +4,7 @@
 
 #include <var.hpp>
 
+#include "designlab/fonts/FontAwesomeIcons.hpp"
 #include "controller/FontManager.hpp"
 #include "Editor.hpp"
 
@@ -31,23 +32,27 @@ FontMaker::get_feature_list(json::JsonObject object) {
   const auto size_list = FontManager::get_size_list(item);
   result
     .push_back(
-      {.icon = Icons::memory,
+      {.icon = icons::fa::check_solid,
        .label = "Bits Per Pixel",
        .value = item.get_bits_per_pixel()})
     .push_back(
-      {.icon = Icons::file_signature,
+      {.icon = icons::fa::file_alt_solid,
        .label = "File",
        .value = item.get_path()})
     .push_back(
-      {.icon = Icons::stream, .label = "Style", .value = item.get_style()})
+      {.icon = icons::fa::bold_solid, .label = "Style", .value = item.get_style()})
     .push_back(
-      {.icon = Icons::chart_area,
+      {.icon = icons::fa::info_solid,
        .label = "Range",
        .value = item.get_range()})
     .push_back(
-      {.icon = Icons::exchange_alt,
+      {.icon = icons::fa::info_solid,
        .label = "Sizes",
-       .value = size_list.string_view()});
+       .value = size_list.string_view()})
+    .push_back(
+      {.icon = icons::fa::icons_solid,
+       .label = "Icons",
+       .value = item.is_icons() ? "Yes" : "No"});
   return result;
 }
 

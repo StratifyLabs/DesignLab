@@ -148,10 +148,10 @@ void ThemePreview::configure_checklists(design::Column column) {
                       .add_style("list_group")
                       .setup([](List list) {
                         list.add_text("Directions")
-                          .add_button(Icons::arrow_left, "Left")
-                          .add_button(Icons::arrow_right, "Right")
-                          .add_button(Icons::arrow_up, "Up")
-                          .add_button(Icons::arrow_down, "Down");
+                          .add_button(icons::fa::chevron_left_solid, "Left")
+                          .add_button(icons::fa::chevron_right_solid, "Right")
+                          .add_button(icons::fa::chevron_up_solid, "Up")
+                          .add_button(icons::fa::chevron_down_solid, "Down");
                       }))
                .add(List()
                       .set_width(40_percent)
@@ -162,8 +162,8 @@ void ThemePreview::configure_checklists(design::Column column) {
                           .add_button("", "Apples")
                           .add_button("", "Oranges")
                           .add_text("Vehicles")
-                          .add_button(Icons::bolt, "Truck")
-                          .add_button(Icons::chevron_up, "SUVs");
+                          .add_button(icons::fa::chevron_left_solid, "Truck")
+                          .add_button(icons::fa::chevron_right_solid, "SUVs");
                       })));
 
   column.add(SubSectionHeading("CheckLists"));
@@ -175,14 +175,14 @@ void ThemePreview::configure_checklists(design::Column column) {
                .justify_space_around()
                .add_style("text_font_large")
                .add(CheckList(CheckList::Data::create(fruit_list_name)
-                                .set_checked_symbol(Icons::check))
+                                .set_checked_symbol(icons::fa::check_solid))
                       .add_style("list_group")
                       .add_item("1", "Bananas")
                       .add_item("2", "Apples")
                       .add_item("3", "Oranges"))
 
                .add(CheckList(CheckList::Data::create()
-                                .set_checked_symbol(Icons::check)
+                                .set_checked_symbol(icons::fa::check_double_solid)
                                 .set_allow_multiple())
                       .add_style("list_group_flush")
                       .add_item("1", "Cars")

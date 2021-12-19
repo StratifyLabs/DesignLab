@@ -9,6 +9,8 @@
 #include "ThemeMaker.hpp"
 #include "ThemePreview.hpp"
 
+#include "designlab/fonts/FontAwesomeIcons.hpp"
+
 #include "Home.hpp"
 
 void Home::configure(Generic generic) {
@@ -32,14 +34,14 @@ void Home::configure(Generic generic) {
 void Home::configure_button_column(Column column) {
   column.add_style("darker").fill().add(SectionHeading("Design Lab"));
 
-  add_side_button(column, "", Names::project_button, Project::configure);
-  add_side_button(column, "", Names::theme_button, ThemeMaker::configure);
-  add_side_button(column, "", Names::asset_button, AssetMaker::configure);
-  add_side_button(column, "", Names::font_button, FontMaker::configure);
-  add_side_button(column, "", Names::icon_button, IconMaker::configure);
+  add_side_button(column, icons::fa::folder_open_solid, Names::project_button, Project::configure);
+  add_side_button(column, icons::fa::th_list_solid, Names::theme_button, ThemeMaker::configure);
+  add_side_button(column, icons::fa::images_solid, Names::asset_button, AssetMaker::configure);
+  add_side_button(column, icons::fa::font_solid, Names::font_button, FontMaker::configure);
+  add_side_button(column, icons::fa::icons_solid, Names::icon_button, IconMaker::configure);
 
   column.add(NakedContainer().set_flex_grow());
-  add_side_button(column, "", "Theme Preview", ThemePreview::configure);
+  add_side_button(column, icons::fa::th_list_solid, "Theme Preview", ThemePreview::configure);
   column.add(Label().set_text_as_static("Account"));
 }
 
@@ -52,6 +54,10 @@ void Home::add_side_button(
                .add_flag(Flags::checkable)
                .clear_state(State::checked)
                .fill_width()
+               .add_style(Row::get_style())
+               .set_height(Button::size_from_content)
+               .set_column_padding(20)
+               .add_label_as_static(icon)
                .add_label_as_static(name)
                .add_event_callback(
                  EventCode::clicked,

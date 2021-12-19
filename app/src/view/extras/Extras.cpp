@@ -4,7 +4,7 @@
 
 #include "Extras.hpp"
 
-#include "designlab/fonts/Icons.hpp"
+#include "designlab/fonts/FontAwesomeIcons.hpp"
 
 #include <design.hpp>
 
@@ -31,7 +31,7 @@ FormHeaderRow::FormHeaderRow(const char *title, Event::Callback callback) {
     .add_style("row")
     .fill_width()
     .add(Button()
-           .add_label_as_static(Icons::times)
+           .add_label_as_static(icons::fa::times_solid)
            .add_style("btn_outline_primary circle")
            .add_event_callback(EventCode::clicked, callback))
     .add(
@@ -87,13 +87,21 @@ InfoCard::InfoCard(Data &data) {
           .fill_width()
           .set_height(size_from_content)
           .add(Button(Names::edit_button)
+                 .add_style(Row::get_style())
+                 .set_column_padding(12)
+                 .set_padding(16)
+                 .add_label(icons::fa::edit_solid)
                  .add_label("Edit")
-                 .add_style("btn_outline_primary")
+                 .add_style("btn_outline_primary btn_md")
                  .add_event_callback(EventCode::clicked, data.edit_callback))
           .add(
             Button(Names::remove_button)
+              .add_style(Row::get_style())
+              .set_column_padding(12)
+              .set_padding(16)
+              .add_label(icons::fa::trash_alt_solid)
               .add_label("Delete")
-              .add_style("btn_outline_danger")
+              .add_style("btn_outline_danger btn_md")
               .add_event_callback(EventCode::clicked, data.remove_callback))));
 
   if (data.edit_callback == nullptr) {
@@ -120,21 +128,49 @@ InfoCard::InfoCard(Data &data) {
   }
 }
 
-IconCheck::IconCheck(
-  u16 icon_unicode,
-  const var::StringView name,
-  const var::StringView unicode) {
+IconCheck::IconCheck(u16 icon_unicode, const var::StringView name, const var::StringView family, Font font) {
   construct_object("");
   add_style(Column::get_style())
     .add_style("col")
     .set_width(24_percent)
     .set_height(size_from_content)
     .add(Button(Names::checkable_button)
-           .add_label(Font::Utf8Character(icon_unicode).cstring())
+           .add(Label()
+                  .set_text_font(font)
+                  .set_text(Font::Utf8Character(icon_unicode).cstring()))
            .add_style("btn_light btn_lg")
-           .add_flag(Flags::checkable)
-           .set_text_font(Font::find("bootstrap", 48)))
-    .add(Label().set_text(var::KeyString(name)));
+           .add_flag(Flags::checkable))
+    .add(Label(Names::name_label).set_text(var::KeyString(name)))
+    .add(Label(Names::family_label).set_text(var::KeyString(family)))
+    .add(Label(Names::unicode_label)
+           .set_text(var::NumberString(icon_unicode, "u%04x")));
+}
+
+const char *IconCheck::get_name() const {
+  return find<Label>(Names::name_label).get_text();
+}
+
+const char *IconCheck::get_family() const {
+  return find<Label>(Names::family_label).get_text();
+}
+
+IconCheck &IconCheck::set_checked(bool value) {
+  auto button = find<lvgl::Button>(Names::checkable_button);
+  if (value) {
+    button.add_state(State::checked);
+  } else {
+    button.clear_state(State::checked);
+  }
+  return *this;
+}
+
+const char *IconCheck::get_unicode() const {
+  return find<Label>(Names::unicode_label).get_text();
+}
+
+bool IconCheck::is_checked() const {
+  auto button = find<lvgl::Button>(Names::checkable_button);
+  return button.has_state(State::checked);
 }
 
 IconGrid::IconGrid(const char *name) {

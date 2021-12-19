@@ -14,7 +14,7 @@ extern const lv_font_t montserrat_sb_44;
 extern const lv_font_t montserrat_sb_28;
 extern const lv_font_t montserrat_sb_36;
 extern const lv_font_t montserrat_sb_44;
-extern const lv_font_t montserrat_sb_64;
+extern const lv_font_t montserrat_sb_60;
 extern const lv_font_t montserrat_sb_52;
 extern const lv_font_t montserrat_sb_44;
 extern const lv_font_t montserrat_sb_36;
@@ -96,7 +96,7 @@ static const lv_color_filter_dsc_t grey_filter = {
 };
 
 static const lv_style_const_prop_t h1_const_list[] = {
-  { .prop = LV_STYLE_TEXT_FONT, .value = { .ptr = (void*)&montserrat_sb_64 } },
+  { .prop = LV_STYLE_TEXT_FONT, .value = { .ptr = (void*)&montserrat_sb_60 } },
   { .prop = LV_STYLE_PAD_TOP, .value = { .num = 10 } },
   { .prop = LV_STYLE_PAD_BOTTOM, .value = { .num = 10 / 2 } },
   { .prop = LV_STYLE_WIDTH, .value = { .num = LV_PCT(100) } },

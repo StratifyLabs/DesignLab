@@ -44,9 +44,7 @@ public:
   explicit Editor(Data &data);
   explicit Editor(lv_obj_t*object){ m_object = object; }
 
-private:
-  enum class Action { add, edit };
-
+protected:
   struct Names {
     static constexpr auto first_child_column = "EditorFirstChildColumn";
     static constexpr auto input_form_container = "InputFormContainer";
@@ -56,8 +54,12 @@ private:
     static constexpr auto add_button = "addButton";
   };
 
-  void show_values(Data &data);
   void configure_form_input(Data &data);
+
+private:
+  enum class Action { add, edit };
+
+  void show_values(Data &data);
 
   static void hide_form(lv_event_t *) {
     screen()

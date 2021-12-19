@@ -57,12 +57,21 @@ public:
     JSON_ACCESS_STRING(Asset,path);
   };
 
+  class Icon : public json::JsonValue {
+  public:
+    JSON_ACCESS_CONSTRUCT_OBJECT(Icon);
+    JSON_ACCESS_STRING(Icon,family);
+    JSON_ACCESS_STRING(Icon,name);
+    JSON_ACCESS_STRING(Icon,unicode);
+
+  };
+
   class Icons : public json::JsonValue {
   public:
     JSON_ACCESS_CONSTRUCT_OBJECT(Icons);
     JSON_ACCESS_STRING(Icons,name);
     JSON_ACCESS_STRING(Icons,path);
-    JSON_ACCESS_STRING_ARRAY(Icons,unicode);
+    JSON_ACCESS_ARRAY(Icons,Icon,range);
   };
 
   class Theme : public json::JsonValue {
@@ -112,7 +121,7 @@ public:
   JSON_ACCESS_ARRAY(Settings,Font,fonts);
   JSON_ACCESS_ARRAY(Settings,Asset,assets);
   JSON_ACCESS_ARRAY(Settings,Theme,themes);
-  JSON_ACCESS_ARRAY(Settings,Icons,icons);
+  JSON_ACCESS_OBJECT(Settings,Icons,icons);
 
   var::PathString get_output_directory() const {
     return get_source() / "designlab";

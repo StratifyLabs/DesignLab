@@ -42,10 +42,33 @@ public:
            & "_" & size & ".c";
   }
 
-  fs::PathList get_source_list(var::StringView project_path, const Settings & settings) override;
+  fs::PathList get_source_list(
+    var::StringView project_path,
+    const Settings &settings) override;
 
+  template <class Context>
+  void for_each_font(
+    const var::Vector<Settings::Font> &font_list,
+    Context &context,
+    void (*callback)(const Settings::Font &, var::StringView, Context &)) {
+    for (const auto &font : font_list) {
+      const auto sizes = get_size_list(font);
+      for (const auto font_size : sizes.string_view().split(",")) {
+        callback(font, font_size, context);
+      }
+    }
+  }
 
 private:
+  var::String
+  get_icon_font_range(Settings::Icons icons, var::StringView family);
+  void generate_bootstrap_icons_hpp(var::StringView directory);
+  void generate_fontawesome_icons_hpp(var::StringView directory);
+  void generate_fonts_source(
+    var::StringView directory,
+    const var::Vector<Settings::Font> &font_list);
+
+  var::PathString get_temporary_font_path(var::StringView filename);
 };
 
 #endif // DESIGNLAB_FONTMANAGER_HPP

@@ -90,22 +90,22 @@ private:
 
 class IconCheck : public ObjectAccess<IconCheck> {
 public:
-  IconCheck(u16 icon, var::StringView name, var::StringView unicode);
+  IconCheck(u16 icon_unicode, const var::StringView name, var::StringView family, Font font);
   IconCheck(lv_obj_t*object){ m_object = object; }
 
-  IconCheck& set_checked(bool value = true){
-    auto button = find<lvgl::Button>(Names::checkable_button);
-    if( value ){
-      button.add_state(State::checked);
-    } else {
-      button.clear_state(State::checked);
-    }
-    return *this;
-  }
+  const char * get_name() const;
+  const char *get_unicode() const;
+  const char *get_family() const;
+
+  IconCheck& set_checked(bool value = true);
+  bool is_checked() const;
 
 private:
   struct Names {
     static constexpr auto checkable_button = "CheckButton";
+    static constexpr auto name_label = "NameLabel";
+    static constexpr auto family_label = "FamilyLabel";
+    static constexpr auto unicode_label = "UnicodeLabel";
   };
 
 };
@@ -119,7 +119,7 @@ class IconGridContainer : public ObjectAccess<IconGridContainer> {
 public:
   LVGL_OBJECT_ACCESS_DECLARE_CONSTRUCTOR(IconGridContainer);
 
-  static constexpr size_t max_icon_count = 100;
+  static constexpr size_t max_icon_count = 88;
 
   IconGrid get_icon_grid() const {
     return find<IconGrid>(Names::icon_grid);

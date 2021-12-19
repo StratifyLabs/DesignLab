@@ -19,7 +19,7 @@
 extern "C" {
 #endif
 struct _lv_font_t;
-extern const struct _lv_font_t montserrat_r_24;
+extern const struct _lv_font_t montserrat_r_28;
 #if defined __cplusplus
 }
 #endif
@@ -314,12 +314,12 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h"*/
 #define LV_FONT_CUSTOM_DECLARE
 
 /*Always set a default font*/
-#define LV_FONT_DEFAULT &montserrat_r_24
+#define LV_FONT_DEFAULT &montserrat_r_28
 
 /*Enable handling large font and/or fonts with a lot of characters.
 *The limit depends on the font size, font face and bpp.
 *Compiler error will be triggered if a font needs it.*/
-#define LV_FONT_FMT_TXT_LARGE   0
+#define LV_FONT_FMT_TXT_LARGE   1
 
 /*Enables/disables support for compressed fonts.*/
 #define LV_USE_FONT_COMPRESSED  1
