@@ -12,6 +12,8 @@
     "$sizeBorderRadius": 8,
     "$sizeHorizontalLine": 2,
 
+    "$sizeColorWheelArcWidth": 20,
+
     "$sizeFormSwitchHeight": 64,
     "$sizeFormSwitchWidth": "$sizeFormSwitchHeight *2",
     "$sizeFormSwitchBorderWidth": "$sizeBorderWidth",

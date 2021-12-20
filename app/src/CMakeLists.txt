@@ -12,6 +12,8 @@ set(SOURCES
 	view/AssetMaker.hpp
 	view/FontMaker.cpp
 	view/FontMaker.hpp
+	view/ColorPreview.cpp
+	view/ColorPreview.hpp
 	view/Editor.cpp
 	view/Editor.hpp
 	view/Home.cpp

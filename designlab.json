@@ -278,6 +278,11 @@
          },
          {
             "family": "solid",
+            "name": "palette",
+            "unicode": "uf53f"
+         },
+         {
+            "family": "solid",
             "name": "pencil-alt",
             "unicode": "uf303"
          },

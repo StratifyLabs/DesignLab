@@ -3,6 +3,7 @@
 //
 
 #include "AssetMaker.hpp"
+#include "ColorPreview.hpp"
 #include "FontMaker.hpp"
 #include "IconMaker.hpp"
 #include "Project.hpp"
@@ -34,14 +35,43 @@ void Home::configure(Generic generic) {
 void Home::configure_button_column(Column column) {
   column.add_style("darker").fill().add(SectionHeading("Design Lab"));
 
-  add_side_button(column, icons::fa::folder_open_solid, Names::project_button, Project::configure);
-  add_side_button(column, icons::fa::th_list_solid, Names::theme_button, ThemeMaker::configure);
-  add_side_button(column, icons::fa::images_solid, Names::asset_button, AssetMaker::configure);
-  add_side_button(column, icons::fa::font_solid, Names::font_button, FontMaker::configure);
-  add_side_button(column, icons::fa::icons_solid, Names::icon_button, IconMaker::configure);
+  add_side_button(
+    column,
+    icons::fa::folder_open_solid,
+    Names::project_button,
+    Project::configure);
+  add_side_button(
+    column,
+    icons::fa::th_list_solid,
+    Names::theme_button,
+    ThemeMaker::configure);
+  add_side_button(
+    column,
+    icons::fa::images_solid,
+    Names::asset_button,
+    AssetMaker::configure);
+  add_side_button(
+    column,
+    icons::fa::font_solid,
+    Names::font_button,
+    FontMaker::configure);
+  add_side_button(
+    column,
+    icons::fa::icons_solid,
+    Names::icon_button,
+    IconMaker::configure);
 
   column.add(NakedContainer().set_flex_grow());
-  add_side_button(column, icons::fa::th_list_solid, "Theme Preview", ThemePreview::configure);
+  add_side_button(
+    column,
+    icons::fa::palette_solid,
+    "Colors",
+    ColorPreview::configure);
+  add_side_button(
+    column,
+    icons::fa::th_list_solid,
+    "Theme Preview",
+    ThemePreview::configure);
   column.add(Label().set_text_as_static("Account"));
 }
 
@@ -50,19 +80,25 @@ void Home::add_side_button(
   const char *icon,
   const char *name,
   void (*callback)(Generic)) {
-  column.add(Button(name)
-               .add_flag(Flags::checkable)
-               .clear_state(State::checked)
-               .fill_width()
-               .add_style(Row::get_style())
-               .set_height(Button::size_from_content)
-               .set_column_padding(20)
-               .add_label_as_static(icon)
-               .add_label_as_static(name)
-               .add_event_callback(
-                 EventCode::clicked,
-                 (void *)callback,
-                 update_buttons));
+  column.add(
+    Button(name)
+      .add_flag(Flags::checkable)
+      .clear_state(State::checked)
+      .fill_width()
+      .add_style(Row::get_style())
+      .set_height(Button::size_from_content)
+      .set_column_padding(20)
+      .set_padding(16)
+      .add(Label().set_text_as_static(icon).add_style("text_color_primary"))
+      .add_label_as_static(name)
+      .add_style("btn_light")
+      .set_background_opacity(Opacity::transparent)
+      .set_background_opacity(Opacity::x70, State::checked)
+      .set_background_color(Color::white(), State::checked)
+      .add_event_callback(
+        EventCode::clicked,
+        (void *)callback,
+        update_buttons));
 };
 
 void Home::update_buttons(lv_event_t *e) {
@@ -82,7 +118,7 @@ void Home::update_buttons(lv_event_t *e) {
     if (self.has_state(State::checked)) {
       auto container = screen().find<Generic, IsAssertOnFail::no>(
         ViewObject::Names::content_container);
-      if(container.is_valid() ){
+      if (container.is_valid()) {
         Event::send(container, EventCode::exited);
       }
       callback(screen().find<Generic>(Names::content_area).clean());

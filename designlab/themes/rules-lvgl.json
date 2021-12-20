@@ -453,7 +453,7 @@
           "padding_normal"
         ],
         "default | knob": [
-          "background_color_white",
+          "background_color_primary",
           "padding_normal"
         ]
       }

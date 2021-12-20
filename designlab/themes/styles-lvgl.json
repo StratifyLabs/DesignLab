@@ -361,6 +361,24 @@
     "@text_success": {
       "text_color": "$colorSuccessText"
     },
+    "@text_color_primary": {
+      "text_color": "$colorPrimary"
+    },
+    "@text_color_secondary": {
+      "text_color": "$colorSecondary"
+    },
+    "@text_color_info": {
+      "text_color": "$colorInfo"
+    },
+    "@text_color_warning": {
+      "text_color": "$colorWarning"
+    },
+    "@text_color_danger": {
+      "text_color": "$colorDanger"
+    },
+    "@text_color_success": {
+      "text_color": "$colorSuccess"
+    },
     "@btn_sm": {
       "text_font": "$fontButtonSmall",
       "horizontal_padding": "$sizeButtonPaddingXSmall",
@@ -716,7 +734,9 @@
     "meter_indicator": {},
     "calendar_background": {},
     "calendar_day": {},
-    "colorwheel_main": {},
+    "colorwheel_main": {
+      "arc_width": "$sizeColorWheelArcWidth"
+    },
     "message_box_background": {},
     "message_box_button_background": {},
     "keyboard_button_background": {},

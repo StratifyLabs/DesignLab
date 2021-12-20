@@ -838,6 +838,72 @@ static const lv_style_t text_success_style = {
   .is_const = 1
 };
 
+static const lv_style_const_prop_t text_color_primary_const_list[] = {
+  { .prop = LV_STYLE_TEXT_COLOR, .value = { .color = { .full= 0xff244e99 } } },
+  { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
+};
+
+static const lv_style_t text_color_primary_style = {
+  .v_p = { .const_props = text_color_primary_const_list },
+  .has_group = 0xff,
+  .is_const = 1
+};
+
+static const lv_style_const_prop_t text_color_secondary_const_list[] = {
+  { .prop = LV_STYLE_TEXT_COLOR, .value = { .color = { .full= 0xff303846 } } },
+  { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
+};
+
+static const lv_style_t text_color_secondary_style = {
+  .v_p = { .const_props = text_color_secondary_const_list },
+  .has_group = 0xff,
+  .is_const = 1
+};
+
+static const lv_style_const_prop_t text_color_info_const_list[] = {
+  { .prop = LV_STYLE_TEXT_COLOR, .value = { .color = { .full= 0xff0dcaf0 } } },
+  { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
+};
+
+static const lv_style_t text_color_info_style = {
+  .v_p = { .const_props = text_color_info_const_list },
+  .has_group = 0xff,
+  .is_const = 1
+};
+
+static const lv_style_const_prop_t text_color_warning_const_list[] = {
+  { .prop = LV_STYLE_TEXT_COLOR, .value = { .color = { .full= 0xffffc107 } } },
+  { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
+};
+
+static const lv_style_t text_color_warning_style = {
+  .v_p = { .const_props = text_color_warning_const_list },
+  .has_group = 0xff,
+  .is_const = 1
+};
+
+static const lv_style_const_prop_t text_color_danger_const_list[] = {
+  { .prop = LV_STYLE_TEXT_COLOR, .value = { .color = { .full= 0xffdc3545 } } },
+  { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
+};
+
+static const lv_style_t text_color_danger_style = {
+  .v_p = { .const_props = text_color_danger_const_list },
+  .has_group = 0xff,
+  .is_const = 1
+};
+
+static const lv_style_const_prop_t text_color_success_const_list[] = {
+  { .prop = LV_STYLE_TEXT_COLOR, .value = { .color = { .full= 0xff198754 } } },
+  { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
+};
+
+static const lv_style_t text_color_success_style = {
+  .v_p = { .const_props = text_color_success_const_list },
+  .has_group = 0xff,
+  .is_const = 1
+};
+
 static const lv_style_const_prop_t btn_sm_const_list[] = {
   { .prop = LV_STYLE_TEXT_FONT, .value = { .ptr = (void*)&montserrat_sb_28 } },
   { .prop = LV_STYLE_PAD_LEFT, .value = { .num = 10 *4 /2 } },
@@ -1843,6 +1909,7 @@ static const lv_style_t calendar_day_style = {
 };
 
 static const lv_style_const_prop_t colorwheel_main_const_list[] = {
+  { .prop = LV_STYLE_ARC_WIDTH, .value = { .num = 20 } },
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
 
@@ -2050,6 +2117,12 @@ static const lvgl_api_style_descriptor_t lvgl_small_light_style_descriptor_list[
   { .name = "text_warning", .style = &text_warning_style },
   { .name = "text_danger", .style = &text_danger_style },
   { .name = "text_success", .style = &text_success_style },
+  { .name = "text_color_primary", .style = &text_color_primary_style },
+  { .name = "text_color_secondary", .style = &text_color_secondary_style },
+  { .name = "text_color_info", .style = &text_color_info_style },
+  { .name = "text_color_warning", .style = &text_color_warning_style },
+  { .name = "text_color_danger", .style = &text_color_danger_style },
+  { .name = "text_color_success", .style = &text_color_success_style },
   { .name = "btn_sm", .style = &btn_sm_style },
   { .name = "btn_md", .style = &btn_md_style },
   { .name = "btn_lg", .style = &btn_lg_style },
@@ -2382,7 +2455,7 @@ void lvgl_small_light_apply_callback(lv_theme_t * theme, lv_obj_t * object){
   if((lv_obj_check_type(object, &lv_colorwheel_class))){
     lv_obj_add_style(object, (lv_style_t*)&colorwheel_main_style, LV_STATE_DEFAULT);
     lv_obj_add_style(object, (lv_style_t*)&padding_normal_style, LV_STATE_DEFAULT);
-    lv_obj_add_style(object, (lv_style_t*)&background_color_white_style, LV_STATE_DEFAULT|LV_PART_KNOB);
+    lv_obj_add_style(object, (lv_style_t*)&background_color_primary_style, LV_STATE_DEFAULT|LV_PART_KNOB);
     lv_obj_add_style(object, (lv_style_t*)&padding_normal_style, LV_STATE_DEFAULT|LV_PART_KNOB);
     return;
   }

@@ -20,7 +20,7 @@ HeaderRow::HeaderRow(
     .add(ScreenHeading(title).set_flex_grow())
     .add(
       Button()
-        .add_style("btn_outline_primary")
+        .add_style("btn_success")
         .add_label(var::KeyString(button_icon).append(" ").append(button_text))
         .add_event_callback(EventCode::clicked, callback));
 }

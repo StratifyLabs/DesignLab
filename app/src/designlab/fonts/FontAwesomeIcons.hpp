@@ -45,6 +45,7 @@ namespace icons {
     static constexpr auto lock_solid = "\uf023";
     static constexpr auto lock_open_solid = "\uf3c1";
     static constexpr auto minus_solid = "\uf068";
+    static constexpr auto palette_solid = "\uf53f";
     static constexpr auto pencil_alt_solid = "\uf303";
     static constexpr auto plus_solid = "\uf067";
     static constexpr auto quote_left_solid = "\uf10d";
