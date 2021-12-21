@@ -60,6 +60,11 @@ if(SOS_SDK_IS_LINUX)
 	target_link_libraries(${RELEASE_TARGET} PRIVATE pthread)
 endif()
 
+set(BINARY_OUTPUT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/build_release)
+
+set_target_properties(${RELEASE_TARGET}
+	PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${BINARY_OUTPUT_DIR})
+
 set_source_files_properties(${ICON_PATH} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
 set_target_properties(${RELEASE_TARGET}
 	PROPERTIES
