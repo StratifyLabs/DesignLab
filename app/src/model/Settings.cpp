@@ -26,7 +26,6 @@ var::PathString SessionSettings::get_application_directory() {
 SessionSettings::SessionSettings() {
   const auto path = get_file_path();
   if (!FileSystem().exists(path)) {
-    printf("Session settings don't exist\n");
     to_object() = JsonObject();
     return;
   }
@@ -35,11 +34,25 @@ SessionSettings::SessionSettings() {
 
 SessionSettings::~SessionSettings() {
   api::ErrorScope error_scope;
-  printf("Save session settings to %s\n", get_file_path().cstring());
   JsonDocument().save(
     to_object(),
     File(File::IsOverwrite::yes, get_file_path()));
 }
+
+Settings::Settings(var::StringView path, Settings::IsOverwrite is_overwrite)
+  : m_path(path), m_is_overwrite(is_overwrite) {
+  if (!fs::FileSystem().exists(path)) {
+    return;
+  }
+
+  api::ErrorScope error_scope;
+  to_object() = json::JsonDocument().load(fs::File(path));
+  if (is_error()) {
+    reset_error();
+    to_object() = json::JsonObject();
+  }
+}
+
 
 Settings &Settings::append_form_entry(const design::Form form) {
 
@@ -77,7 +90,6 @@ Settings::edit_from_form_entry(size_t offset, const design::Form form) {
 
 Settings &Settings::save() {
   if (bool(m_is_overwrite)) {
-    printf("Save project settings to %s\n", m_path.cstring());
     json::JsonDocument().save(to_object(), fs::File(m_is_overwrite, m_path));
   }
   return *this;

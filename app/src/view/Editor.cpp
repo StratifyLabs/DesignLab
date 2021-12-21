@@ -101,7 +101,8 @@ void Editor::submit_form_add(lv_event_t *e) {
   const auto form = self.find<Form>(data->form_name);
   API_ASSERT(form.is_valid());
   model().project_settings.append_form_entry(form).update_dirty_bits(
-    data->form_name);
+    data->form_name).save();
+
   if (is_error()) {
     printer().object("error", error());
     printer().key("badInput", model().project_settings.bad_key());
@@ -123,7 +124,8 @@ void Editor::submit_form_edit(lv_event_t *e) {
     Model::Scope model_scope;
     model()
       .project_settings.edit_from_form_entry(data->edit_offset, form)
-      .update_dirty_bits(data->form_name);
+      .update_dirty_bits(data->form_name)
+      .save();
   }
 
   hide_form(e);
@@ -161,4 +163,24 @@ void Editor::show_add_form(lv_event_t *e) {
   auto self = get_self(e);
   self.set_action(Action::add);
   self.show_form();
+}
+
+void Editor::remove_entry(const char *key_name, u32 offset) {
+  Model::Scope model_scope;
+  auto array = model().project_settings.to_object().at(key_name).to_array();
+  if (offset < array.count()) {
+    array.remove(offset);
+  }
+  printf("Update dirty bits for %s\n", key_name);
+  model().project_settings.update_dirty_bits(key_name).save();
+}
+
+Editor Editor::get_self(lv_event_t *e) {
+  const auto target = Event(e).target();
+  auto column_parent = target.find_parent<Column>(Names::first_child_column);
+  auto form_container_parent
+    = target.find_parent<Column>(Names::input_form_container);
+  auto editor = column_parent.is_valid() ? column_parent.get_parent()
+                                         : form_container_parent.get_parent();
+  return editor.get<Editor>();
 }

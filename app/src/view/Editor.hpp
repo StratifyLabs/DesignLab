@@ -70,22 +70,9 @@ private:
   static void show_add_form(lv_event_t *e);
 
 
-  static void remove_entry(const char *key_name, u32 offset) {
-    Model::Scope model_scope;
-    auto array = model().project_settings.to_object().at(key_name).to_array();
-    if (offset < array.count()) {
-      array.remove(offset);
-    }
-    model().project_settings.update_dirty_bits(key_name);
-  }
+  static void remove_entry(const char *key_name, u32 offset);
 
-  static Editor get_self(lv_event_t *e) {
-    const auto target = Event(e).target();
-    auto column_parent = target.find_parent<Column>(Names::first_child_column);
-    auto form_container_parent = target.find_parent<Column>(Names::input_form_container);
-    auto editor = column_parent.is_valid() ?  column_parent.get_parent() : form_container_parent.get_parent();
-    return editor.get<Editor>();
-  }
+  static Editor get_self(lv_event_t *e);
 
   static Data *get_data(lv_event_t *e) {
     return get_self(e).user_data<Data>();

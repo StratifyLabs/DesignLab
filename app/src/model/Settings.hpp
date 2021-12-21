@@ -97,22 +97,7 @@ public:
     return path / "designlab.json";
   }
 
-  Settings(var::StringView path, IsOverwrite is_overwrite = IsOverwrite::no)
-    : m_path(path), m_is_overwrite(is_overwrite) {
-    printf("load project %s\n", var::PathString(path).cstring());
-    if (!fs::FileSystem().exists(path)) {
-      printf("doesn't exist\n");
-      return;
-    }
-
-    api::ErrorScope error_scope;
-    to_object() = json::JsonDocument().load(fs::File(path));
-    if (is_error()) {
-      printf("Couldn't load\n");
-      reset_error();
-      to_object() = json::JsonObject();
-    }
-  }
+  Settings(var::StringView path, IsOverwrite is_overwrite = IsOverwrite::no);
 
   Settings &append_form_entry(design::Form form);
   Settings &edit_from_form_entry(size_t offset, design::Form form);
@@ -136,12 +121,13 @@ public:
     return get_source() / "designlab";
   }
 
-  void update_dirty_bits(const var::StringView form_name) {
+  Settings& update_dirty_bits(const var::StringView form_name) {
     if (form_name == fonts_key()) {
       set_font_dirty(true);
     } else if (form_name == assets_key()) {
       set_assets_dirty(true);
     }
+    return *this;
   }
 
 private:

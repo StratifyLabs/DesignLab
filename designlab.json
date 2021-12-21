@@ -10,37 +10,7 @@
    ],
    "assets": [
       {
-         "path": "designlab/fonts/icons-1.7.2/font/bootstrap-icons.json"
-      },
-      {
-         "path": "designlab/fonts/icons-1.7.2/font/fonts/bootstrap-icons.woff"
-      },
-      {
-         "path": "designlab/fonts/fontawesome/fa-icons.json"
-      },
-      {
-         "path": "designlab/fonts/fontawesome/fa-solid.json"
-      },
-      {
-         "path": "designlab/fonts/fontawesome/fa-regular.json"
-      },
-      {
-         "path": "designlab/fonts/fontawesome/fa-brands.json"
-      },
-      {
-         "path": "designlab/fonts/fontawesome/Font Awesome 5 Free-Solid-900.otf"
-      },
-      {
-         "path": "designlab/fonts/fontawesome/Font Awesome 5 Brands-Regular-400.otf"
-      },
-      {
-         "path": "designlab/fonts/fontawesome/Font Awesome 5 Free-Regular-400.otf"
-      },
-      {
-         "path": "designlab/assets/StratifyLabs-400px.png"
-      },
-      {
-         "path": "designlab/assets/Stratify-Icon-250px.png"
+         "path": "designlab/assets/UCAP-Logo-200x100.png"
       }
    ],
    "fonts": [
@@ -149,11 +119,6 @@
          },
          {
             "family": "solid",
-            "name": "copyright",
-            "unicode": "uf1f9"
-         },
-         {
-            "family": "solid",
             "name": "download",
             "unicode": "uf019"
          },
@@ -229,11 +194,6 @@
          },
          {
             "family": "solid",
-            "name": "hat-wizard",
-            "unicode": "uf6e8"
-         },
-         {
-            "family": "solid",
             "name": "icons",
             "unicode": "uf86d"
          },
@@ -256,11 +216,6 @@
             "family": "solid",
             "name": "info",
             "unicode": "uf129"
-         },
-         {
-            "family": "solid",
-            "name": "info-circle",
-            "unicode": "uf05a"
          },
          {
             "family": "solid",
@@ -324,11 +279,6 @@
          },
          {
             "family": "solid",
-            "name": "sliders-h",
-            "unicode": "uf1de"
-         },
-         {
-            "family": "solid",
             "name": "sort-down",
             "unicode": "uf0dd"
          },
@@ -339,18 +289,8 @@
          },
          {
             "family": "solid",
-            "name": "stream",
-            "unicode": "uf550"
-         },
-         {
-            "family": "solid",
             "name": "terminal",
             "unicode": "uf120"
-         },
-         {
-            "family": "solid",
-            "name": "th",
-            "unicode": "uf00a"
          },
          {
             "family": "solid",
@@ -398,7 +338,5 @@
             "unicode": "uf092"
          }
       ]
-   },
-   "fontDirty": true,
-   "assetsDirty": false
+   }
 }

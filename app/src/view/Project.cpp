@@ -18,8 +18,11 @@ void Project::configure(Generic generic) {
 
   auto column = generic.find<Column>(Names::project_column);
   column.fill()
-    .add(
-      HeaderRow("Project", icons::fa::external_link_alt_solid, "Export", export_project))
+    .add(HeaderRow(
+      "Project",
+      icons::fa::external_link_alt_solid,
+      "Export",
+      export_project))
     .add(HorizontalLine())
     .add(Paragraph("", "Add theme source files."))
     .add(Form(Names::project_form).setup(configure_form));
@@ -27,11 +30,21 @@ void Project::configure(Generic generic) {
 
 void Project::handle_exited(lv_event_t *) {
   Model::Scope model_scope;
+
+  if (!model().session_settings.get_project().is_empty()) {
+    api::ErrorScope error_scope;
+    model().project_settings.save();
+  }
+
   model().session_settings.set_project(
     screen().find<Form::SelectFile>(Names::directory_select_file).get_value());
 
   model().project_settings.set_source(
     screen().find<Form::SelectFile>(Names::source_select_file).get_value());
+
+  model().project_settings = Settings(
+    Settings::get_file_path(model().session_settings.get_project()),
+    Settings::IsOverwrite::yes);
 }
 
 void Project::export_project(lv_event_t *) {
