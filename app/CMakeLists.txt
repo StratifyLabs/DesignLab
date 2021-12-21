@@ -16,7 +16,7 @@ set(LOCAL_NAME ${PROJECT_NAME})
 sos_sdk_add_subdirectory(PRIVATE_SOURCELIST ${CMAKE_CURRENT_SOURCE_DIR}/src)
 sos_sdk_add_subdirectory(DESIGNLAB_SOURCELIST ${CMAKE_CURRENT_SOURCE_DIR}/src/designlab)
 
-sos_sdk_app_target(RELEASE ${LOCAL_NAME} "" release ${SOS_ARCH})
+set(RELEASE_TARGET DesignLab)
 
 set(ICON_FILE  icon.icns)
 set(ICON_PATH  ${CMAKE_CURRENT_SOURCE_DIR}/../designlab/assets/${ICON_FILE})
@@ -31,6 +31,7 @@ target_sources(${RELEASE_TARGET}
 target_compile_definitions(${RELEASE_TARGET}
 	PRIVATE
 	-DVERSION=\"${CMAKE_PROJECT_VERSION}\"
+	__link
 	)
 
 target_include_directories(${RELEASE_TARGET}
@@ -45,7 +46,19 @@ target_compile_options(${RELEASE_TARGET}
 
 set_property(TARGET ${RELEASE_TARGET} PROPERTY CXX_STANDARD 17)
 
-sos_sdk_app_add_arch_targets("${RELEASE_OPTIONS}" "${DEPENDENCIES}" 0)
+#sos_sdk_app_add_arch_targets("${RELEASE_OPTIONS}" "${DEPENDENCIES}" 0)
+foreach(DEPENDENCY ${DEPENDENCIES})
+	message(STATUS "SOS SDK Adding dependency ${DEPENDENCY}_release_link to ${RELEASE_TARGET}")
+
+	target_link_libraries(${RELEASE_TARGET}
+		PRIVATE
+		${DEPENDENCY}_release_link
+		)
+endforeach()
+
+if(SOS_SDK_IS_LINUX)
+	target_link_libraries(${RELEASE_TARGET} PRIVATE pthread)
+endif()
 
 set_source_files_properties(${ICON_PATH} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
 set_target_properties(${RELEASE_TARGET}
