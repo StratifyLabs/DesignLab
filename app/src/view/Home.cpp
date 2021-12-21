@@ -33,7 +33,12 @@ void Home::configure(Generic generic) {
 }
 
 void Home::configure_button_column(Column column) {
-  column.add_style("darker").fill().add(SectionHeading("Design Lab"));
+  column.add_style("darker").fill();
+
+  column.add(Image().set_source("a:Stratify-Icon-250px.png"));
+  column
+    .add(SectionHeading("Design Lab").set_text_alignment(TextAlignment::center))
+    .add(HorizontalLine());
 
   add_side_button(
     column,

@@ -16,7 +16,8 @@ AssetManager::AssetManager(const sys::Cli &cli) {
 }
 
 void AssetManager::construct(const AssetManager::Construct &options) {
-  const auto input_object = load_json_file(options.project_path / options.input_path);
+  const auto input_object
+    = load_json_file(options.project_path / options.input_path);
   API_RETURN_IF_ERROR();
 
   const auto settings = Settings(input_object);
@@ -57,45 +58,13 @@ void AssetManager::construct(const AssetManager::Construct &options) {
     data_file.write(asset_file);
   }
 
-  // convert the data to a .c file
-  auto output_file
-    = File(File::IsOverwrite::yes, output_directory / "assets.c");
-
-  m_code_printer = CodePrinter(output_file);
-
-  m_code_printer.inline_comment("// Use the following code to mount the data asset filesystem");
-  m_code_printer.inline_comment("// extern extern \"C\" const char data_assetfs[];");
-  m_code_printer.inline_comment("// static lv_fs_drv_t drive;");
-  m_code_printer.inline_comment("// lvgl_api_mount_asset_filesystem(data_assetfs, &drive, 'd');");
-  m_code_printer.inline_comment("// If you are not using the LvglAPI library, you can port the lvgl_api_mount_asset_filesystem functions");
-
-  m_code_printer.newline();
-  m_code_printer.newline();
-  m_code_printer.newline();
-
-  {
-    CodePrinter::StructInitialization asset_data(
-      m_code_printer,
-      "const char assets[]");
-    const auto &data = data_file.data();
-    static constexpr size_t line_size = 64;
-    for (size_t offset = 0; offset < data.size(); offset += line_size) {
-      GeneralString line;
-      const auto remaining = data.size() - offset;
-      const auto page_size = remaining > line_size ? line_size : remaining;
-      for (const auto i : api::Index(page_size)) {
-        line |= NumberString(data.data_u8()[offset + i], "0x%02x,");
-      }
-      if( offset + page_size >= data.size() ){
-        line.pop_back();
-      }
-      m_code_printer.line(line);
-    }
-  }
+  // save the binary output
+  File(File::IsOverwrite::yes, output_directory / "assets.assetfs")
+    .write(data_file.seek(0));
 
 }
 
 fs::PathList
 AssetManager::get_source_list(const var::StringView, const Settings &settings) {
-  return fs::PathList().push_back("assets/assets.c");
+  return {};
 }

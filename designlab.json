@@ -35,6 +35,12 @@
       },
       {
          "path": "designlab/fonts/fontawesome/Font Awesome 5 Free-Regular-400.otf"
+      },
+      {
+         "path": "designlab/assets/StratifyLabs-400px.png"
+      },
+      {
+         "path": "designlab/assets/Stratify-Icon-250px.png"
       }
    ],
    "fonts": [
@@ -393,6 +399,6 @@
          }
       ]
    },
-   "fontDirty": false,
+   "fontDirty": true,
    "assetsDirty": false
 }
