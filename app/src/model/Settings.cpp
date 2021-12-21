@@ -2,11 +2,11 @@
 // Created by Tyler Gilbert on 12/15/21.
 //
 
+#include <design/extras/Form.hpp>
 #include <fs.hpp>
 #include <json.hpp>
 #include <sys/System.hpp>
 #include <var.hpp>
-#include <design/extras/Form.hpp>
 
 #include <printer/Printer.hpp>
 
@@ -41,8 +41,7 @@ SessionSettings::~SessionSettings() {
     File(File::IsOverwrite::yes, get_file_path()));
 }
 
-Settings &
-Settings::append_form_entry(const design::Form form) {
+Settings &Settings::append_form_entry(const design::Form form) {
 
   // pull in the form values to the project settings
   const auto form_name = form.name();
@@ -58,19 +57,28 @@ Settings::append_form_entry(const design::Form form) {
   return *this;
 }
 
-Settings &Settings::edit_from_form_entry(size_t offset, const design::Form form) {
+Settings &
+Settings::edit_from_form_entry(size_t offset, const design::Form form) {
   const auto form_name = form.name();
   auto json_value = to_object().at(form_name);
   printer::Printer().object("modify", json_value);
 
   API_ASSERT(json_value.is_valid());
   auto json_array = json_value.to_array();
-  if( offset < json_array.count() ){
+  if (offset < json_array.count()) {
     auto form_object = form.get_json_object();
     printer::Printer().object("formObject", form_object);
     json_array.remove(offset).insert(offset, form.get_json_object());
   }
   printer::Printer().object("modified", json_array);
 
+  return *this;
+}
+
+Settings &Settings::save() {
+  if (bool(m_is_overwrite)) {
+    printf("Save project settings to %s\n", m_path.cstring());
+    json::JsonDocument().save(to_object(), fs::File(m_is_overwrite, m_path));
+  }
   return *this;
 }

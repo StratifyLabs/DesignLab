@@ -19,34 +19,41 @@
 ExportWorker::ExportWorker(lvgl::Runtime *runtime) : WorkerObject(runtime) {}
 
 void ExportWorker::interface_work() {
-  const auto settings = [&]() {
+  const auto save_settings = [&]() {
     Model::Scope model_scope;
     auto &model = ModelAccess::model();
     // this will reload the project saving the changes
     m_project_path = model.session_settings.get_project();
     const auto settings_path = Settings::get_file_path(m_project_path);
-    model.project_settings
+
+    model.printer.object("Settings", model.project_settings);
+
+    model.project_settings.save()
       = Settings(settings_path, Settings::IsOverwrite::yes);
 
     // grab a read-only copy
     return Settings(settings_path);
-  }();
+  };
+
+  const auto settings = save_settings();
 
   update_message("Exporting Assets");
-  update_progress(0,4);
+  update_progress(0, 4);
   export_assets(settings);
   update_message("Exporting Themee");
-  update_progress(1,4);
+  update_progress(1, 4);
   export_themes(settings);
   update_message("Exporting Fonts");
-  update_progress(2,4);
+  update_progress(2, 4);
   export_fonts(settings);
-  update_progress(3,4);
+  update_progress(3, 4);
   update_message("Finalizing");
   export_cmake_sourcelist(settings);
-  update_progress(4,4);
+  update_progress(4, 4);
   update_message(Model::worker_done_message);
   wait_runtime_task();
+
+  save_settings();
 }
 
 void ExportWorker::export_assets(const Settings &settings) {
@@ -63,12 +70,12 @@ void ExportWorker::export_assets(const Settings &settings) {
   m_asset_path_list
     = AssetManager(options).get_source_list(m_project_path, settings);
 
-  const auto is_assets_dirty = [](){
+  const auto is_assets_dirty = []() {
     Model::Scope model_scope;
     return ModelAccess::model().project_settings.is_assets_dirty();
   }();
 
-  if( !is_assets_dirty ){
+  if (!is_assets_dirty) {
     return;
   }
 
@@ -135,8 +142,7 @@ void ExportWorker::export_cmake_sourcelist(const Settings &settings) {
   const auto output_path = [&]() {
     Model::Scope model_scope;
     auto &model = ModelAccess::model();
-    return m_project_path / settings.get_source()
-           / "designlab/CMakeLists.txt";
+    return m_project_path / settings.get_source() / "designlab/CMakeLists.txt";
   }();
 
   File file(File::IsOverwrite::yes, output_path);

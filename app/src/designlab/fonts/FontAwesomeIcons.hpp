@@ -18,6 +18,7 @@ namespace icons {
     static constexpr auto chevron_right_solid = "\uf054";
     static constexpr auto chevron_up_solid = "\uf077";
     static constexpr auto code_solid = "\uf121";
+    static constexpr auto copyright_solid = "\uf1f9";
     static constexpr auto download_solid = "\uf019";
     static constexpr auto edit_solid = "\uf044";
     static constexpr auto ellipsis_h_solid = "\uf141";
@@ -39,6 +40,7 @@ namespace icons {
     static constexpr auto images_solid = "\uf302";
     static constexpr auto inbox_solid = "\uf01c";
     static constexpr auto info_solid = "\uf129";
+    static constexpr auto info_circle_solid = "\uf05a";
     static constexpr auto italic_solid = "\uf033";
     static constexpr auto keyboard_solid = "\uf11c";
     static constexpr auto list_solid = "\uf03a";
@@ -51,9 +53,12 @@ namespace icons {
     static constexpr auto plus_solid = "\uf067";
     static constexpr auto quote_left_solid = "\uf10d";
     static constexpr auto quote_right_solid = "\uf10e";
+    static constexpr auto sliders_h_solid = "\uf1de";
     static constexpr auto sort_down_solid = "\uf0dd";
     static constexpr auto sort_up_solid = "\uf0de";
+    static constexpr auto stream_solid = "\uf550";
     static constexpr auto terminal_solid = "\uf120";
+    static constexpr auto th_solid = "\uf00a";
     static constexpr auto th_large_solid = "\uf009";
     static constexpr auto th_list_solid = "\uf00b";
     static constexpr auto times_solid = "\uf00d";

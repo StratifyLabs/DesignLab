@@ -42,9 +42,9 @@ AssetMaker::get_feature_list(json::JsonObject object) {
   Settings::Asset asset(object);
   const auto name = fs::Path::name(asset.get_path());
   result
-    .push_back({.icon = icons::fa::folder_solid, .label = "Name", .value = name})
+    .push_back({.icon = icons::fa::image_solid, .label = "Name", .value = name})
     .push_back(
-      {.icon = icons::fa::file_image_solid, .label = "Path", .value = asset.get_path()});
+      {.icon = icons::fa::folder_open_solid, .label = "Path", .value = asset.get_path()});
   return result;
 }
 

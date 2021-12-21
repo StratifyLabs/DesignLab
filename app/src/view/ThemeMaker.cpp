@@ -41,7 +41,7 @@ ThemeMaker::get_feature_list(json::JsonObject object) {
   result
     .push_back({.icon = icons::fa::th_list_solid, .label = "Name", .value = name})
     .push_back(
-      {.icon = icons::fa::folder_solid, .label = "Path", .value = theme.get_path()});
+      {.icon = icons::fa::folder_open_solid, .label = "Path", .value = theme.get_path()});
   return result;
 }
 

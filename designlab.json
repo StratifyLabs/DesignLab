@@ -143,6 +143,11 @@
          },
          {
             "family": "solid",
+            "name": "copyright",
+            "unicode": "uf1f9"
+         },
+         {
+            "family": "solid",
             "name": "download",
             "unicode": "uf019"
          },
@@ -248,6 +253,11 @@
          },
          {
             "family": "solid",
+            "name": "info-circle",
+            "unicode": "uf05a"
+         },
+         {
+            "family": "solid",
             "name": "italic",
             "unicode": "uf033"
          },
@@ -308,6 +318,11 @@
          },
          {
             "family": "solid",
+            "name": "sliders-h",
+            "unicode": "uf1de"
+         },
+         {
+            "family": "solid",
             "name": "sort-down",
             "unicode": "uf0dd"
          },
@@ -318,8 +333,18 @@
          },
          {
             "family": "solid",
+            "name": "stream",
+            "unicode": "uf550"
+         },
+         {
+            "family": "solid",
             "name": "terminal",
             "unicode": "uf120"
+         },
+         {
+            "family": "solid",
+            "name": "th",
+            "unicode": "uf00a"
          },
          {
             "family": "solid",
@@ -368,5 +393,6 @@
          }
       ]
    },
-   "fontDirty": false
+   "fontDirty": false,
+   "assetsDirty": false
 }

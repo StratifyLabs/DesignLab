@@ -77,6 +77,19 @@ public:
 
   Settings() : json::JsonValue(json::JsonObject()) {}
   Settings(const json::JsonObject &object) : json::JsonValue(object) {}
+  Settings(const Settings&) = delete;
+  Settings& operator=(const Settings&) = delete;
+
+  Settings(Settings&&a){
+    std::swap(m_path, a.m_path);
+    std::swap(m_is_overwrite, a.m_is_overwrite);
+  }
+
+  Settings& operator=(Settings&&a){
+    std::swap(m_path, a.m_path);
+    std::swap(m_is_overwrite, a.m_is_overwrite);
+    return *this;
+  }
 
   using IsOverwrite = fs::File::IsOverwrite;
 
@@ -105,10 +118,10 @@ public:
   Settings &edit_from_form_entry(size_t offset, design::Form form);
 
   ~Settings() {
-    if (bool(m_is_overwrite)) {
-      json::JsonDocument().save(to_object(), fs::File(m_is_overwrite, m_path));
-    }
+    save();
   }
+
+  Settings& save();
 
   JSON_ACCESS_STRING(Settings, name);
   JSON_ACCESS_STRING(Settings, source);

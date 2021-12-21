@@ -32,7 +32,7 @@ FontMaker::get_feature_list(json::JsonObject object) {
   const auto size_list = FontManager::get_size_list(item);
   result
     .push_back(
-      {.icon = icons::fa::check_solid,
+      {.icon = icons::fa::th_solid,
        .label = "Bits Per Pixel",
        .value = item.get_bits_per_pixel()})
     .push_back(
@@ -42,11 +42,11 @@ FontMaker::get_feature_list(json::JsonObject object) {
     .push_back(
       {.icon = icons::fa::bold_solid, .label = "Style", .value = item.get_style()})
     .push_back(
-      {.icon = icons::fa::info_solid,
+      {.icon = icons::fa::stream_solid,
        .label = "Range",
        .value = item.get_range()})
     .push_back(
-      {.icon = icons::fa::info_solid,
+      {.icon = icons::fa::info_circle_solid,
        .label = "Sizes",
        .value = size_list.string_view()})
     .push_back(
