@@ -16,31 +16,24 @@
 
 struct Model {
 public:
-  //all access to the model must be withing a Scope
-  class Scope : public thread::Mutex::Scope {
-  public:
-    Scope() : thread::Mutex::Scope(Model::instance().m_mutex) {
-      auto &model = Model::instance();
-      model.m_pthread_scoped = thread::Thread::self();
-      ++model.m_lock_count;
-    }
 
-    ~Scope() {
-      auto &model = Model::instance();
-      --model.m_lock_count;
-      if (model.m_lock_count == 0) {
-        model.m_pthread_scoped = {};
-      }
-    }
+  static constexpr auto worker_done_message = "Done";
+
+  // all access to the model must be withing a Scope
+  class Scope : public design::ModelScope {
+  public:
+    Scope() : design::ModelScope(Model::instance().model_scope_options) {}
   };
 
   printer::YamlPrinter printer;
   lvgl::Runtime *runtime;
   ExportWorker export_worker;
+  var::GeneralString worker_message;
+  lvgl::Range worker_progress_range;
+  lv_obj_t * worker_notify_object;
 
   SessionSettings session_settings;
   Settings project_settings;
-
 
   lvgl::Theme light_theme;
   lvgl::Theme dark_theme;
@@ -53,18 +46,14 @@ private:
   friend Scope;
   friend class ModelAccess;
 
-  thread::Mutex m_mutex;
-  pthread_t m_pthread_scoped = pthread_t{};
-  size_t m_lock_count = 0;
+  design::ModelScope::Construct model_scope_options;
 
   Model()
     : project_settings(
       Settings::get_file_path(session_settings.get_project()),
-      Settings::IsOverwrite::yes),
-      m_mutex(
-        thread::Mutex::Attributes().set_type(thread::Mutex::Type::recursive)) {}
+      Settings::IsOverwrite::yes) {}
 
-  static Model & instance(){
+  static Model &instance() {
     static Model model;
     return model;
   }
@@ -75,12 +64,12 @@ public:
   static Model &model() {
     // make sure the caller has locked the model
     Model &result = Model::instance();
-    API_ASSERT(result.m_pthread_scoped == thread::Thread::self());
+    API_ASSERT(result.model_scope_options.is_available());
     return Model::instance();
   }
   static printer::Printer &printer() { return model().printer; }
 
-  static var::PathString get_project_path(){
+  static var::PathString get_project_path() {
     Model::Scope model_scope;
     return model().session_settings.get_project();
   }

@@ -218,6 +218,11 @@
          },
          {
             "family": "solid",
+            "name": "hat-wizard",
+            "unicode": "uf6e8"
+         },
+         {
+            "family": "solid",
             "name": "icons",
             "unicode": "uf86d"
          },
@@ -362,5 +367,6 @@
             "unicode": "uf092"
          }
       ]
-   }
+   },
+   "fontDirty": false
 }

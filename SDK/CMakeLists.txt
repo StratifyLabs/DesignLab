@@ -40,8 +40,6 @@ set(STRATIFYOS_LWIP_PATH
 sdk_add_subdirectory(API main)
 include(${BASE_DIRECTORY}/API/libraries/API.cmake)
 
-set(LODEPNG_DEFINITIONS "__lodepng;LODEPNG_NO_COMPILE_ENCODER=1;LODEPNG_NO_COMPILE_CPP=1;LODEPNG_NO_COMPILE_DISK=1" CACHE INTERNAL "Defintions for compiling lodepng")
-
 set(LVGL_API_IS_QT_SIMULATOR OFF CACHE INTERNAL "Disable QT Simulator")
 set(LVGL_CONFIG_PATH ${CMAKE_CURRENT_SOURCE_DIR}/config CACHE INTERNAL "LVGL config path")
 set(LVGL_NO_STRATIFY_OS ON CACHE INTERNAL "Do not include dependency on Stratify OS")

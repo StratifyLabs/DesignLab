@@ -6,6 +6,7 @@
 
 #include "controller/ExportWorker.hpp"
 
+#include "ExportModal.hpp"
 #include "Project.hpp"
 
 void Project::configure(Generic generic) {
@@ -34,13 +35,7 @@ void Project::handle_exited(lv_event_t *) {
 }
 
 void Project::export_project(lv_event_t *) {
-  Model::Scope model_scope;
-  if (model().export_worker.is_running()) {
-    printf("Can't export right now\n");
-  } else {
-    model().export_worker = ExportWorker(model().runtime);
-    model().export_worker.start();
-  }
+  ExportModal::start();
 }
 
 void Project::configure_form(Form form) {

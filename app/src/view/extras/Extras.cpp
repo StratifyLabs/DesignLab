@@ -12,15 +12,16 @@ HeaderRow::HeaderRow(
   const char *title,
   const char *button_icon,
   const char *button_text,
-  Event::Callback callback) {
+  Event::Callback callback,
+  const char * color) {
   construct_object(title);
   add_style(Row::get_style())
     .add_style("row")
     .fill_width()
     .add(ScreenHeading(title).set_flex_grow())
     .add(
-      Button()
-        .add_style("btn_success")
+      Button(Names::action_button)
+        .add_style(color)
         .add_label(var::KeyString(button_icon).append(" ").append(button_text))
         .add_event_callback(EventCode::clicked, callback));
 }

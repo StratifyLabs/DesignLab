@@ -8,8 +8,8 @@
 
 #include <design/extras/CheckList.hpp>
 
-#include "extras/Extras.hpp"
 #include "ThemePreview.hpp"
+#include "extras/Extras.hpp"
 
 void ThemePreview::configure(lvgl::Generic generic) {
   generic.add(
@@ -27,6 +27,7 @@ void ThemePreview::configure(lvgl::Generic generic) {
         configure_cards(column);
         column.add(HorizontalLine());
         configure_checklists(column);
+        configure_progress(column);
       })));
 }
 
@@ -75,8 +76,9 @@ void ThemePreview::configure_badges(design::Column column) {
     .add(SectionHeading("Styles"))
     .add(Row().fill_width().setup([](Row row) {
       for (const auto *color : color_list) {
-        row.add(
-          Badge().add_style(StringView("bg_") | color).add_label_as_static(color));
+        row.add(Badge()
+                  .add_style(StringView("bg_") | color)
+                  .add_label_as_static(color));
       }
     }))
     .add(SectionHeading("Pills"))
@@ -170,22 +172,35 @@ void ThemePreview::configure_checklists(design::Column column) {
 
   static const auto fruit_list_name = "FruitList";
 
-  column.add(Row()
-               .fill_width()
-               .justify_space_around()
-               .add_style("text_font_large")
-               .add(CheckList(CheckList::Data::create(fruit_list_name)
-                                .set_checked_symbol(icons::fa::check_solid))
-                      .add_style("list_group")
-                      .add_item("1", "Bananas")
-                      .add_item("2", "Apples")
-                      .add_item("3", "Oranges"))
+  column.add(
+    Row()
+      .fill_width()
+      .justify_space_around()
+      .add_style("text_font_large")
+      .add(CheckList(CheckList::Data::create(fruit_list_name)
+                       .set_checked_symbol(icons::fa::check_solid))
+             .add_style("list_group")
+             .add_item("1", "Bananas")
+             .add_item("2", "Apples")
+             .add_item("3", "Oranges"))
 
-               .add(CheckList(CheckList::Data::create()
-                                .set_checked_symbol(icons::fa::check_double_solid)
-                                .set_allow_multiple())
-                      .add_style("list_group_flush")
-                      .add_item("1", "Cars")
-                      .add_item("2", "Truck")
-                      .add_item("3", "SUVs")));
+      .add(CheckList(CheckList::Data::create()
+                       .set_checked_symbol(icons::fa::check_double_solid)
+                       .set_allow_multiple())
+             .add_style("list_group_flush")
+             .add_item("1", "Cars")
+             .add_item("2", "Truck")
+             .add_item("3", "SUVs")));
+}
+
+void ThemePreview::configure_progress(design::Column column) {
+  column.add(SectionHeading("Progress"))
+    .add(SubSectionHeading("Progress Bars"));
+
+  column.add(Bar().set_width(80_percent).set_value(Range().set_value(25)));
+  column.add(Bar().set_width(80_percent).set_value(Range().set_value(50)).add_style("bg_secondary", Part::indicator));
+  column.add(Bar().set_width(80_percent).set_value(Range().set_value(75)).add_style("bg_info", Part::indicator));
+  column.add(Bar().set_width(80_percent).set_value(Range().set_value(100)).add_style("bg_warning", Part::indicator));
+  column.add(Bar().set_width(80_percent).set_value(Range().set_value(25)).add_style("bg_danger", Part::indicator));
+  column.add(Bar().set_width(80_percent).set_value(Range().set_value(50)).add_style("bg_success", Part::indicator));
 }

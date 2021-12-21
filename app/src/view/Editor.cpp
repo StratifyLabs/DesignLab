@@ -76,9 +76,16 @@ void Editor::configure_form_input(Data &data) {
     .add(Form(data.form_name, data.input_form_schema.to_object()));
 
   input_form_column.find<Form>(data.form_name)
-    .add(AddButtonRow(Names::add_button, icons::fa::plus_solid, "Add", submit_form_add))
-    .add(
-      AddButtonRow(Names::edit_button, icons::fa::edit_solid, "Edit", submit_form_edit));
+    .add(AddButtonRow(
+      Names::add_button,
+      icons::fa::plus_solid,
+      "Add",
+      submit_form_add))
+    .add(AddButtonRow(
+      Names::edit_button,
+      icons::fa::edit_solid,
+      "Edit",
+      submit_form_edit));
 
   find<Container>(Names::input_form_container)
     .add_style("slide_over_from_right_hidden")
@@ -93,12 +100,14 @@ void Editor::submit_form_add(lv_event_t *e) {
   api::ErrorScope error_scope;
   const auto form = self.find<Form>(data->form_name);
   API_ASSERT(form.is_valid());
-  model().project_settings.append_form_entry(form);
+  model().project_settings.append_form_entry(form).update_dirty_bits(
+    data->form_name);
   if (is_error()) {
     printer().object("error", error());
     printer().key("badInput", model().project_settings.bad_key());
   } else {
     printer().object("projectSettings", model().project_settings);
+
     hide_form(e);
     self.show_values(*data);
   }
@@ -112,7 +121,9 @@ void Editor::submit_form_edit(lv_event_t *e) {
 
   {
     Model::Scope model_scope;
-    model().project_settings.edit_from_form_entry(data->edit_offset, form);
+    model()
+      .project_settings.edit_from_form_entry(data->edit_offset, form)
+      .update_dirty_bits(data->form_name);
   }
 
   hide_form(e);

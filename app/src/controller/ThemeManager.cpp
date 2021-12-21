@@ -70,11 +70,14 @@ void ThemeManager::construct(const Construct &options) {
   }
   API_RETURN_IF_ERROR();
 
-  const auto output_directory = m_theme_object.get_directory();
+  const auto output_directory = [&]() {
+    Model::Scope model_scope;
+    return model().session_settings.get_project()
+           / model().project_settings.get_source();
+  }();
+
   const auto output_path
-    = output_directory.is_empty()
-        ? m_theme_object.get_name() & ".c"
-        : output_directory / m_theme_object.get_name() & ".c";
+    = output_directory / "designlab/themes" / m_theme_object.get_name() & ".c";
   printer().key("outputFile", output_path);
   m_output = File(File::IsOverwrite::yes, output_path);
 
@@ -93,17 +96,18 @@ void ThemeManager::construct(const Construct &options) {
   generate_theme();
 }
 
-fs::PathList ThemeManager::get_source_list(var::StringView project_path, const Settings & settings) {
+fs::PathList ThemeManager::get_source_list(
+  var::StringView project_path,
+  const Settings &settings) {
   fs::PathList result;
 
   const auto theme_list = settings.get_themes();
-  for(const auto & theme_file: theme_list){
+  for (const auto &theme_file : theme_list) {
     ThemeObject theme = load_json_file(project_path / theme_file.get_path());
     result.push_back("themes" / theme.get_name() & ".c");
   }
   return result;
 }
-
 
 json::JsonObject ThemeManager::load_reference_json_file(var::StringView key) {
   const auto parent = Path::parent_directory(m_theme_path);
@@ -113,7 +117,6 @@ json::JsonObject ThemeManager::load_reference_json_file(var::StringView key) {
 
   return load_json_file(path);
 }
-
 
 void ThemeManager::add_variables(const StringView key) {
 

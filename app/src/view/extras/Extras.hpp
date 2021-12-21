@@ -19,7 +19,18 @@ public:
     const char *title,
     const char *button_icon,
     const char *button_text,
-    Event::Callback callback);
+    Event::Callback callback,
+    const char *color = "btn_success");
+  HeaderRow(lv_obj_t * object){ m_object = object; }
+
+  Button get_button() const {
+    return find<Button>(Names::action_button);
+  }
+
+private:
+  struct Names {
+    static constexpr auto action_button = "ActionButton";
+  };
 };
 
 class FormHeaderRow : public ObjectAccess<FormHeaderRow> {

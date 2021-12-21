@@ -13,6 +13,8 @@
     "$sizeHorizontalLine": 2,
 
     "$sizeColorWheelArcWidth": 20,
+    "$sizeProgressBarHeight": 20,
+    "$sizeProgressBarRadius": "$sizeBorderRadius",
 
     "$sizeFormSwitchHeight": 64,
     "$sizeFormSwitchWidth": "$sizeFormSwitchHeight *2",

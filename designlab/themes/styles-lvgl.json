@@ -588,7 +588,10 @@
       "background_color": "$colorPrimary",
       "background_opacity": "$opaque"
     },
-    "background_color_primary_muted": {},
+    "background_color_primary_muted": {
+      "background_color": "$colorGrey",
+      "background_opacity": "$opaque"
+    },
     "background_color_secondary": {
       "background_color": "$colorSecondary",
       "background_opacity": "$opaque"
@@ -652,6 +655,16 @@
     "radius_none": {},
     "clip_corner": {
       "clip_corner": true
+    },
+    "progress_bar_background": {
+      "height": "$sizeProgressBarHeight",
+      "background_opacity": "$opaque",
+      "background_color": "$colorGrey",
+      "radius": "$sizeProgressBarRadius"
+    },
+    "progress_bar_indicator": {
+      "background_opacity": "$opaque",
+      "background_color": "$colorPrimary"
     },
     "grow": {
       "transform_width": "$sizeGrow",

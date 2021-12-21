@@ -220,10 +220,11 @@ void IconMaker::handle_exited(lv_event_t *e) {
     for (const auto icon : icon_queue) {
       range_list.push_back(icon);
     }
-    model().project_settings.set_icons(
-      Settings::Icons().set_name("icons").set_path("").set_range(range_list));
-
-    printer().object("settings", model().project_settings);
+    model()
+      .project_settings
+      .set_icons(
+        Settings::Icons().set_name("icons").set_path("").set_range(range_list))
+      .set_font_dirty();
   }
 }
 

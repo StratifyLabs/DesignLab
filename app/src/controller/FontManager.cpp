@@ -23,11 +23,11 @@ FontManager::FontManager(const Construct &options) {
     = load_json_file(options.project_path / options.input_path);
   API_RETURN_IF_ERROR();
 
-  static constexpr auto font_solid_name
-    = "Font Awesome 5 Free-Solid-900.otf";
+  static constexpr auto font_solid_name = "Font Awesome 5 Free-Solid-900.otf";
   static constexpr auto font_regular_name
     = "Font Awesome 5 Free-Regular-400.otf";
-  static constexpr auto font_brands_name = "Font Awesome 5 Brands-Regular-400.otf";
+  static constexpr auto font_brands_name
+    = "Font Awesome 5 Brands-Regular-400.otf";
   static constexpr auto font_file_list
     = {font_solid_name, font_regular_name, font_brands_name};
 
@@ -43,67 +43,66 @@ FontManager::FontManager(const Construct &options) {
   const auto font_list = settings.get_fonts();
   const auto output_directory = settings.get_output_directory() / "fonts";
 
-  for (const auto &font : font_list) {
+  if (options.is_dry_run == false) {
+    for (const auto &font : font_list) {
 
-    const auto sizes = get_size_list(font);
+      const auto sizes = get_size_list(font);
 
-    for (const auto font_size : sizes.string_view().split(",")) {
-      var::GeneralString command = "lv_font_conv";
+      for (const auto font_size : sizes.string_view().split(",")) {
+        var::GeneralString command = "lv_font_conv";
 
-      const auto output_file_path
-        = output_directory / get_file_name(font, font_size);
+        const auto output_file_path
+          = output_directory / get_file_name(font, font_size);
 
-      Process::Arguments arguments(program_path);
-      arguments.push("--bpp=" | font.get_bits_per_pixel())
-        .push("--size=" | font_size)
-        .push("--format=lvgl")
-        .push("--output=" | output_file_path.string_view())
-        .push("--font=" | font.get_path())
-        .push("--range=" | font.get_range());
+        Process::Arguments arguments(program_path);
+        arguments.push("--bpp=" | font.get_bits_per_pixel())
+          .push("--size=" | font_size)
+          .push("--format=lvgl")
+          .push("--output=" | output_file_path.string_view())
+          .push("--font=" | font.get_path())
+          .push("--range=" | font.get_range());
 
-      if (font.is_icons()) {
-        Model::Scope model_scope;
-        auto add_icon_range = [&](var::StringView font_name, var::StringView family){
-          const auto icon_range
-            = get_icon_font_range(model().project_settings.icons(), family);
-          if( icon_range.length() ) {
-            arguments.push("--font=" | get_temporary_font_path(font_name))
-              .push(
-                "--range="
-                | icon_range);
-          }
-        };
+        if (font.is_icons()) {
+          Model::Scope model_scope;
+          auto add_icon_range =
+            [&](var::StringView font_name, var::StringView family) {
+              const auto icon_range
+                = get_icon_font_range(model().project_settings.icons(), family);
+              if (icon_range.length()) {
+                arguments.push("--font=" | get_temporary_font_path(font_name))
+                  .push("--range=" | icon_range);
+              }
+            };
 
-        add_icon_range(font_solid_name, "solid");
-        add_icon_range(font_regular_name, "regular");
-        add_icon_range(font_brands_name, "brands");
-      }
+          add_icon_range(font_solid_name, "solid");
+          add_icon_range(font_regular_name, "regular");
+          add_icon_range(font_brands_name, "brands");
+        }
 
-      {
-        Model::Scope model_scope;
-        auto &printer = ModelAccess::printer();
-        for (const auto arg : arguments.arguments()) {
-          if (arg != nullptr) {
-            printer.info(arg);
+        {
+          Model::Scope model_scope;
+          auto &printer = ModelAccess::printer();
+          for (const auto arg : arguments.arguments()) {
+            if (arg != nullptr) {
+              printer.info(arg);
+            }
           }
         }
-      }
 
-#if 1
-      Process lv_font_conv(
-        arguments,
-        Process::Environment().set_working_directory(options.project_path));
-      lv_font_conv.wait();
-      {
-        Model::Scope model_scope;
-        auto &printer = ModelAccess::printer();
-        printer.key(
-          "result",
-          var::NumberString(lv_font_conv.status().exit_status()));
-      }
-#endif
+        Process lv_font_conv(
+          arguments,
+          Process::Environment().set_working_directory(options.project_path));
+        lv_font_conv.wait();
+        {
+          Model::Scope model_scope;
+          auto &printer = ModelAccess::printer();
+          printer.key(
+            "result",
+            var::NumberString(lv_font_conv.status().exit_status()));
+        }
 
-      // was there an error?
+        // was there an error?
+      }
     }
   }
 

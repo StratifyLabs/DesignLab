@@ -119,14 +119,12 @@
       "condition": ".bar",
       "styles": {
         "default": [
-          "background_color_primary_muted",
-          "circle"
+          "progress_bar_background"
         ],
         "focus_key": "outline_border_primary",
         "edited": "outline_border_secondary",
         "default | indicator": [
-          "background_color_primary",
-          "circle"
+          "background_color_primary"
         ]
       }
     },

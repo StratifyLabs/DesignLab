@@ -73,6 +73,8 @@ void Home::configure_button_column(Column column) {
     "Theme Preview",
     ThemePreview::configure);
   column.add(Label().set_text_as_static("Account"));
+
+  column.find<Button>(Names::project_button).add_state(State::checked);
 }
 
 void Home::add_side_button(

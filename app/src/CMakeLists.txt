@@ -20,6 +20,8 @@ set(SOURCES
 	view/Home.hpp
 	view/IconMaker.cpp
 	view/IconMaker.hpp
+	view/ExportModal.cpp
+	view/ExportModal.hpp
 	view/Project.cpp
 	view/Project.hpp
 	view/ThemeMaker.cpp
@@ -45,7 +47,9 @@ set(SOURCES
 	controller/ThemeManager.cpp
 	controller/ThemeManager.hpp
   controller/ExportWorker.cpp
-  controller/ExportWorker.hpp
+	controller/ExportWorker.hpp
+	controller/WorkerObject.cpp
+	controller/WorkerObject.hpp
 
 	designlab/bootstrap.c
 	designlab/fontawesome_brands_regular.c

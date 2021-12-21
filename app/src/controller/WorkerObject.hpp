@@ -7,6 +7,7 @@
 
 #include <api/api.hpp>
 #include <design/Worker.hpp>
+#include <lvgl/Bar.hpp>
 
 class WorkerObject : public design::Worker {
 public:
@@ -19,10 +20,10 @@ public:
 
 protected:
 
-
+  void update_message(var::StringView message);
+  void update_progress(int value, int total);
 
   virtual void interface_work() = 0;
-
 };
 
 #endif // DESIGNLAB_WORKEROBJECT_HPP

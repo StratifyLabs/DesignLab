@@ -76,6 +76,7 @@ private:
     if (offset < array.count()) {
       array.remove(offset);
     }
+    model().project_settings.update_dirty_bits(key_name);
   }
 
   static Editor get_self(lv_event_t *e) {

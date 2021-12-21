@@ -1394,6 +1394,8 @@ static const lv_style_t background_color_primary_style = {
 };
 
 static const lv_style_const_prop_t background_color_primary_muted_const_list[] = {
+  { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full= 0xff888888 } } },
+  { .prop = LV_STYLE_BG_OPA, .value = { .num = 255 } },
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
 
@@ -1627,6 +1629,32 @@ static const lv_style_const_prop_t clip_corner_const_list[] = {
 
 static const lv_style_t clip_corner_style = {
   .v_p = { .const_props = clip_corner_const_list },
+  .has_group = 0xff,
+  .is_const = 1
+};
+
+static const lv_style_const_prop_t progress_bar_background_const_list[] = {
+  { .prop = LV_STYLE_HEIGHT, .value = { .num = 20 } },
+  { .prop = LV_STYLE_BG_OPA, .value = { .num = 255 } },
+  { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full= 0xff888888 } } },
+  { .prop = LV_STYLE_RADIUS, .value = { .num = 8 } },
+  { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
+};
+
+static const lv_style_t progress_bar_background_style = {
+  .v_p = { .const_props = progress_bar_background_const_list },
+  .has_group = 0xff,
+  .is_const = 1
+};
+
+static const lv_style_const_prop_t progress_bar_indicator_const_list[] = {
+  { .prop = LV_STYLE_BG_OPA, .value = { .num = 255 } },
+  { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full= 0xff244e99 } } },
+  { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
+};
+
+static const lv_style_t progress_bar_indicator_style = {
+  .v_p = { .const_props = progress_bar_indicator_const_list },
   .has_group = 0xff,
   .is_const = 1
 };
@@ -2232,12 +2260,10 @@ void lvgl_small_light_apply_callback(lv_theme_t * theme, lv_obj_t * object){
     return;
   }
   if((lv_obj_check_type(object, &lv_bar_class))){
-    lv_obj_add_style(object, (lv_style_t*)&background_color_primary_muted_style, LV_STATE_DEFAULT);
-    lv_obj_add_style(object, (lv_style_t*)&circle_style, LV_STATE_DEFAULT);
+    lv_obj_add_style(object, (lv_style_t*)&progress_bar_background_style, LV_STATE_DEFAULT);
     lv_obj_add_style(object, (lv_style_t*)&outline_border_primary_style, LV_STATE_FOCUS_KEY);
     lv_obj_add_style(object, (lv_style_t*)&outline_border_secondary_style, LV_STATE_EDITED);
     lv_obj_add_style(object, (lv_style_t*)&background_color_primary_style, LV_STATE_DEFAULT|LV_PART_INDICATOR);
-    lv_obj_add_style(object, (lv_style_t*)&circle_style, LV_STATE_DEFAULT|LV_PART_INDICATOR);
     return;
   }
   if((lv_obj_check_type(object, &lv_slider_class))){

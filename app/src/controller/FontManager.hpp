@@ -11,8 +11,12 @@ class FontManager : public Manager {
 public:
   struct Construct {
     API_PMAZ(input_path, Construct, var::PathString, {});
+
+    API_PUBLIC_BOOL(Construct,dry_run,false);
+
     API_PMAZ(output_path, Construct, var::PathString, {});
     API_PMAZ(project_path, Construct, var::PathString, {});
+
   };
 
   FontManager(const Construct &options);

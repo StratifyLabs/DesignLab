@@ -33,6 +33,7 @@ namespace icons {
     static constexpr auto folder_open_solid = "\uf07c";
     static constexpr auto folder_plus_solid = "\uf65e";
     static constexpr auto font_solid = "\uf031";
+    static constexpr auto hat_wizard_solid = "\uf6e8";
     static constexpr auto icons_solid = "\uf86d";
     static constexpr auto image_solid = "\uf03e";
     static constexpr auto images_solid = "\uf302";
