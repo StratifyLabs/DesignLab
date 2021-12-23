@@ -80,16 +80,9 @@ public:
   Settings(const Settings&) = delete;
   Settings& operator=(const Settings&) = delete;
 
-  Settings(Settings&&a){
-    std::swap(m_path, a.m_path);
-    std::swap(m_is_overwrite, a.m_is_overwrite);
-  }
+  Settings(Settings&&a) = default;
 
-  Settings& operator=(Settings&&a){
-    std::swap(m_path, a.m_path);
-    std::swap(m_is_overwrite, a.m_is_overwrite);
-    return *this;
-  }
+  Settings& operator=(Settings&&a) = default;
 
   using IsOverwrite = fs::File::IsOverwrite;
 
@@ -134,6 +127,17 @@ private:
   API_AC(Settings, var::KeyString, bad_key);
   var::PathString m_path;
   IsOverwrite m_is_overwrite = IsOverwrite::no;
+
+  void move(Settings & a){
+    auto json = to_object();
+    auto a_json = a.to_object();
+    auto tmp = a_json;
+    a.to_object() = json;
+    json = tmp;
+
+    std::swap(m_path, a.m_path);
+    std::swap(m_is_overwrite, a.m_is_overwrite);
+  }
 };
 
 #endif // DESIGNLAB_LOGIC_SETTINGS_HPP

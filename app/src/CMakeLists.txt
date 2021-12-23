@@ -18,10 +18,11 @@ set(SOURCES
 	logic/StringPrinter.hpp
 	logic/ThemeManager.cpp
 	logic/ThemeManager.hpp
-	logic/ExportWorker.cpp
-	logic/ExportWorker.hpp
-	logic/WorkerObject.cpp
-	logic/WorkerObject.hpp
+
+	worker/ExportWorker.cpp
+	worker/ExportWorker.hpp
+	worker/WorkerObject.cpp
+	worker/WorkerObject.hpp
 
 	model/Model.hpp
 	model/Settings.cpp

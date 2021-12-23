@@ -45,12 +45,17 @@ Settings::Settings(var::StringView path, Settings::IsOverwrite is_overwrite)
     return;
   }
 
+  printf("load project %s\n", m_path.cstring());
+
+
   api::ErrorScope error_scope;
   to_object() = json::JsonDocument().load(fs::File(path));
   if (is_error()) {
     reset_error();
     to_object() = json::JsonObject();
   }
+  printer::Printer().object("load", to_object());
+
 }
 
 
@@ -90,6 +95,8 @@ Settings::edit_from_form_entry(size_t offset, const design::Form form) {
 
 Settings &Settings::save() {
   if (bool(m_is_overwrite)) {
+    printf("save project %s\n", m_path.cstring());
+    printer::Printer().object("save", to_object());
     json::JsonDocument().save(to_object(), fs::File(m_is_overwrite, m_path));
   }
   return *this;

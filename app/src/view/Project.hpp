@@ -25,6 +25,7 @@ private:
 
   static void configure_form(Form form);
   static void handle_exited(lv_event_t*);
+  static void project_path_changed(lv_event_t*);
 
 
 };

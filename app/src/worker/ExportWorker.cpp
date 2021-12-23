@@ -5,12 +5,15 @@
 #include <fs.hpp>
 #include <var.hpp>
 
-#include "AssetManager.hpp"
-#include "ExportWorker.hpp"
-#include "FontManager.hpp"
-#include "ThemeManager.hpp"
+
+#include "logic/AssetManager.hpp"
+#include "logic/FontManager.hpp"
+#include "logic/ThemeManager.hpp"
 
 #include "model/Model.hpp"
+
+#include "ExportWorker.hpp"
+
 
 /*
  * The constructor cannot use the model or it will
@@ -94,6 +97,7 @@ void ExportWorker::export_assets(const Settings &settings) {
 void ExportWorker::export_themes(const Settings &settings) {
   const auto theme_list = settings.get_themes();
   for (const auto &theme : theme_list) {
+    printf("----------------------------process theme %s --> %s\n", theme.get_path_cstring(), m_project_path.cstring());
     m_theme_path_list = ThemeManager({.input_path = theme.get_path(),
                                       .project_path = m_project_path})
                           .get_source_list(m_project_path, settings);

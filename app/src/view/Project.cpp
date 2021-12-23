@@ -4,7 +4,7 @@
 
 #include "extras/Extras.hpp"
 
-#include "logic/ExportWorker.hpp"
+#include "worker/ExportWorker.hpp"
 
 #include "ExportModal.hpp"
 #include "Project.hpp"
@@ -47,9 +47,7 @@ void Project::handle_exited(lv_event_t *) {
     Settings::IsOverwrite::yes);
 }
 
-void Project::export_project(lv_event_t *) {
-  ExportModal::start();
-}
+void Project::export_project(lv_event_t *) { ExportModal::start(); }
 
 void Project::configure_form(Form form) {
   Model::Scope model_scope;
@@ -58,6 +56,7 @@ void Project::configure_form(Form form) {
       Form::SelectFile::Data::create(Names::directory_select_file)
         .set_select_folder()
         .set_absolute_path())
+      .add_event_callback(EventCode::notified, project_path_changed)
       .set_value(model().session_settings.get_project_cstring())
       .set_label("Select Project Directory")
       .set_hint("A file called `designlab.json` will be created in the project "
@@ -77,4 +76,22 @@ void Project::configure_form(Form form) {
       .set_label("Specify Source Directory")
       .set_hint("The source directory where the `designlab/*.c` files will be "
                 "generated. This is relative to the project directory."));
+}
+
+void Project::project_path_changed(lv_event_t *e) {
+  Model::Scope model_scope;
+  printf(
+    "Current project path is %s\n",
+    model().session_settings.get_project_cstring());
+  printf("target name is %s\n", Event(e).target().name());
+  auto form_select = Event(e).target<Form::SelectFile>();
+
+  const auto new_path = form_select.get_value();
+  model().session_settings.set_project(new_path);
+
+  printf(
+    "form value is %s\n",
+    var::PathString(form_select.get_value()).cstring());
+
+  model().project_settings = Settings(Settings::get_file_path(new_path), Settings::IsOverwrite::yes);
 }

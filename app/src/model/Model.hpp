@@ -12,7 +12,7 @@
 #include <design/extras/Form.hpp>
 
 #include "Settings.hpp"
-#include "logic/ExportWorker.hpp"
+#include "worker/ExportWorker.hpp"
 
 struct Model {
 public:
