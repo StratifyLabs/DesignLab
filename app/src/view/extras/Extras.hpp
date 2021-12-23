@@ -78,6 +78,22 @@ private:
   };
 };
 
+class ColorButton : public ObjectAccess<ColorButton> {
+public:
+  ColorButton(
+    const char *name,
+    Color color,
+    void (*clicked)(lv_event_t*));
+  ColorButton(lv_obj_t *object) { m_object = object; }
+
+  ColorButton & set_color(Color color);
+
+private:
+  struct Names {
+    DESIGN_DECLARE_NAME(color_label);
+  };
+};
+
 class FormHeaderRow : public ObjectAccess<FormHeaderRow> {
 public:
   FormHeaderRow(const char *title, Event::Callback callback);

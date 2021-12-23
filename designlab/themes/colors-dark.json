@@ -5,7 +5,7 @@
   "$variables": {
     "$colorBackground": "0xff222222",
     "$colorForeground": "0xffffffff",
-    "$colorPrimary": "0xff244e99",
+    "$colorPrimary": "0xff1c3a87",
     "$colorSecondary": "0xff303846",
     "$colorInfo": "0xff0dcaf0",
     "$colorWarning": "0xffffc107",

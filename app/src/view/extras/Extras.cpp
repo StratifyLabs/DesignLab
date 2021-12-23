@@ -199,7 +199,10 @@ IconGridContainer::IconGridContainer(const char *name) {
     .add(IconGrid(Names::icon_grid));
 }
 
-ColorSlider::ColorSlider(const char *name, u16 maximum, void (*value_changed)(lv_event_t*)) {
+ColorSlider::ColorSlider(
+  const char *name,
+  u16 maximum,
+  void (*value_changed)(lv_event_t *)) {
   construct_object(name);
   add_style(Column::get_style())
     .add_style("col")
@@ -239,4 +242,28 @@ ColorSlider::ColorSlider(const char *name, u16 maximum, void (*value_changed)(lv
             .find_sibling<TextArea>(Names::value_text_area)
             .set_text(NumberString(value, "0x%02X"));
         }));
+}
+
+ColorButton::ColorButton(const char *name, Color color, void (*clicked)(lv_event_t*)) {
+  construct_button(name);
+  get<Button>()
+    .set_width(25_percent)
+    .add_event_callback(EventCode::clicked, clicked)
+    .add(Label(Names::color_label)
+           .center()
+           .set_text_color(Color::grey())
+           .set_padding(8)
+           .set_text(NumberString(color.get_color().full & 0xffffff, "%06x")));
+  set_radius(0);
+  set_height(60);
+}
+
+ColorButton &ColorButton::set_color(Color color) {
+  set_background_color(color);
+  const auto text_color
+    = color.brightness() > 128 ? Color::black() : Color::white();
+  find<Label>(Names::color_label)
+    .set_text_color(text_color)
+    .set_text(NumberString(color.get_color().full & 0xffffff, "%06x"));
+  return *this;
 }

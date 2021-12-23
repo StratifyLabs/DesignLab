@@ -84,6 +84,16 @@
          },
          {
             "family": "solid",
+            "name": "bug",
+            "unicode": "uf188"
+         },
+         {
+            "family": "solid",
+            "name": "chart-line",
+            "unicode": "uf201"
+         },
+         {
+            "family": "solid",
             "name": "check",
             "unicode": "uf00c"
          },
@@ -114,8 +124,18 @@
          },
          {
             "family": "solid",
+            "name": "cloud-download-alt",
+            "unicode": "uf381"
+         },
+         {
+            "family": "solid",
             "name": "code",
             "unicode": "uf121"
+         },
+         {
+            "family": "solid",
+            "name": "copyright",
+            "unicode": "uf1f9"
          },
          {
             "family": "solid",
@@ -194,6 +214,11 @@
          },
          {
             "family": "solid",
+            "name": "hat-wizard",
+            "unicode": "uf6e8"
+         },
+         {
+            "family": "solid",
             "name": "icons",
             "unicode": "uf86d"
          },
@@ -216,6 +241,11 @@
             "family": "solid",
             "name": "info",
             "unicode": "uf129"
+         },
+         {
+            "family": "solid",
+            "name": "info-circle",
+            "unicode": "uf05a"
          },
          {
             "family": "solid",
@@ -249,6 +279,11 @@
          },
          {
             "family": "solid",
+            "name": "microchip",
+            "unicode": "uf2db"
+         },
+         {
+            "family": "solid",
             "name": "minus",
             "unicode": "uf068"
          },
@@ -279,6 +314,11 @@
          },
          {
             "family": "solid",
+            "name": "sliders-h",
+            "unicode": "uf1de"
+         },
+         {
+            "family": "solid",
             "name": "sort-down",
             "unicode": "uf0dd"
          },
@@ -289,8 +329,18 @@
          },
          {
             "family": "solid",
+            "name": "stream",
+            "unicode": "uf550"
+         },
+         {
+            "family": "solid",
             "name": "terminal",
             "unicode": "uf120"
+         },
+         {
+            "family": "solid",
+            "name": "th",
+            "unicode": "uf00a"
          },
          {
             "family": "solid",
@@ -338,5 +388,7 @@
             "unicode": "uf092"
          }
       ]
-   }
+   },
+   "fontDirty": true,
+   "assetsDirty": false
 }
