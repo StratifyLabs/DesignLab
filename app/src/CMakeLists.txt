@@ -4,6 +4,25 @@ set(SOURCES
 	Application.cpp
 	Application.hpp
 
+	logic/AssetManager.cpp
+	logic/AssetManager.hpp
+	logic/BootstrapIconManager.cpp
+	logic/BootstrapIconManager.hpp
+	logic/CodePrinter.hpp
+	logic/FontAwesomeManager.cpp
+	logic/FontAwesomeManager.hpp
+	logic/FontManager.cpp
+	logic/FontManager.hpp
+	logic/Manager.cpp
+	logic/Manager.hpp
+	logic/StringPrinter.hpp
+	logic/ThemeManager.cpp
+	logic/ThemeManager.hpp
+	logic/ExportWorker.cpp
+	logic/ExportWorker.hpp
+	logic/WorkerObject.cpp
+	logic/WorkerObject.hpp
+
 	model/Model.hpp
 	model/Settings.cpp
 	model/Settings.hpp
@@ -32,24 +51,6 @@ set(SOURCES
 	view/extras/Extras.cpp
 	view/extras/Extras.hpp
 
-	controller/AssetManager.cpp
-	controller/AssetManager.hpp
-	controller/BootstrapIconManager.cpp
-	controller/BootstrapIconManager.hpp
-	controller/CodePrinter.hpp
-	controller/FontAwesomeManager.cpp
-	controller/FontAwesomeManager.hpp
-	controller/FontManager.cpp
-	controller/FontManager.hpp
-	controller/Manager.cpp
-	controller/Manager.hpp
-	controller/StringPrinter.hpp
-	controller/ThemeManager.cpp
-	controller/ThemeManager.hpp
-  controller/ExportWorker.cpp
-	controller/ExportWorker.hpp
-	controller/WorkerObject.cpp
-	controller/WorkerObject.hpp
 
 	designlab/bootstrap.c
 	designlab/fontawesome_brands_regular.c

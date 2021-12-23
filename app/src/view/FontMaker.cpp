@@ -5,7 +5,7 @@
 #include <var.hpp>
 
 #include "designlab/fonts/FontAwesomeIcons.hpp"
-#include "controller/FontManager.hpp"
+#include "logic/FontManager.hpp"
 #include "Editor.hpp"
 
 #include "FontMaker.hpp"

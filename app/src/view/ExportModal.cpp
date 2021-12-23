@@ -62,7 +62,7 @@ void ExportModal::start() {
 }
 
 void ExportModal::cancel_clicked(lv_event_t *e) {
-  Event::find_parent<Modal>(e, Names::export_modal).close(300_milliseconds);
+  Event(e).find_parent<Modal>(Names::export_modal).close(300_milliseconds);
 }
 
 void ExportModal::notified(lv_event_t *e) {
@@ -83,5 +83,5 @@ void ExportModal::notified(lv_event_t *e) {
 }
 
 void ExportModal::ok_clicked(lv_event_t *e) {
-  Event::find_parent<Modal>(e, Names::export_modal).close(300_milliseconds);
+  Event(e).find_parent<Modal>(Names::export_modal).close(300_milliseconds);
 }

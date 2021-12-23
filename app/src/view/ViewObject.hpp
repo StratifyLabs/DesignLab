@@ -5,9 +5,11 @@
 #ifndef DESIGNLAB_VIEWOBJECT_HPP
 #define DESIGNLAB_VIEWOBJECT_HPP
 
-#include "printer/YamlPrinter.hpp"
-#include "thread/Mutex.hpp"
-#include "thread/Thread.hpp"
+#include <design/macros.h>
+
+#include <printer/YamlPrinter.hpp>
+#include <thread/Mutex.hpp>
+#include <thread/Thread.hpp>
 
 using namespace printer;
 
@@ -25,7 +27,7 @@ public:
 
 protected:
   struct Names {
-    static constexpr auto content_container = "ContentContainer";
+    DESIGN_DECLARE_NAME(content_container);
   };
 
 };

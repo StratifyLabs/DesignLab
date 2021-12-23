@@ -9,9 +9,9 @@
 
 #include "Application.hpp"
 
-#include "controller/ThemeManager.hpp"
-#include "controller/BootstrapIconManager.hpp"
-#include "controller/FontAwesomeManager.hpp"
+#include "logic/ThemeManager.hpp"
+#include "logic/BootstrapIconManager.hpp"
+#include "logic/FontAwesomeManager.hpp"
 
 #include <cprinter.hpp>
 

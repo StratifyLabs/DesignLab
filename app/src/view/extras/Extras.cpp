@@ -2,18 +2,18 @@
 // Created by Tyler Gilbert on 12/14/21.
 //
 
-#include "Extras.hpp"
-
-#include "designlab/fonts/FontAwesomeIcons.hpp"
-
 #include <design.hpp>
+#include <var.hpp>
+
+#include "Extras.hpp"
+#include "designlab/fonts/FontAwesomeIcons.hpp"
 
 HeaderRow::HeaderRow(
   const char *title,
   const char *button_icon,
   const char *button_text,
   Event::Callback callback,
-  const char * color) {
+  const char *color) {
   construct_object(title);
   add_style(Row::get_style())
     .add_style("row")
@@ -129,16 +129,19 @@ InfoCard::InfoCard(Data &data) {
   }
 }
 
-IconCheck::IconCheck(u16 icon_unicode, const var::StringView name, const var::StringView family, Font font) {
+IconCheck::IconCheck(
+  u16 icon_unicode,
+  const var::StringView name,
+  const var::StringView family,
+  Font font) {
   construct_object("");
   add_style(Column::get_style())
     .add_style("col")
     .set_width(24_percent)
     .set_height(size_from_content)
     .add(Button(Names::checkable_button)
-           .add(Label()
-                  .set_text_font(font)
-                  .set_text(Font::Utf8Character(icon_unicode).cstring()))
+           .add(Label().set_text_font(font).set_text(
+             Font::Utf8Character(icon_unicode).cstring()))
            .add_style("btn_light btn_lg")
            .add_flag(Flags::checkable))
     .add(Label(Names::name_label).set_text(var::KeyString(name)))
@@ -194,4 +197,46 @@ IconGridContainer::IconGridContainer(const char *name) {
     .add_flag(Flags::scrollable)
     .set_scroll_direction(Direction::vertical)
     .add(IconGrid(Names::icon_grid));
+}
+
+ColorSlider::ColorSlider(const char *name, u16 maximum, void (*value_changed)(lv_event_t*)) {
+  construct_object(name);
+  add_style(Column::get_style())
+    .add_style("col")
+    .set_height(33_percent)
+    .set_width(90_percent)
+    .set_row_padding(20);
+
+  add_event_callback(EventCode::value_changed, value_changed);
+  add(Row(Names::label_row)
+        .add_flag(Flags::event_bubble)
+        .justify_space_between()
+        .fill_width()
+        .add(Label().set_text(StringView(name) | ":"))
+        .add(TextArea(Names::value_text_area)
+               .add_flag(Flags::event_bubble)
+               .set_text_alignment(TextAlignment::center)
+               .add_style("H4")
+               .set_width(40_percent)
+               .set_one_line_mode()
+               .add_event_callback(EventCode::value_changed, [](lv_event_t *e) {
+                 const auto value
+                   = var::StringView(Event(e).target<TextArea>().get_text())
+                       .to_unsigned_long(StringView::Base::auto_);
+                 Event(e)
+                   .target()
+                   .get_parent()
+                   .get_parent()
+                   .find<Slider>(Names::value_slider)
+                   .set_value(value);
+               })));
+  add(Slider(Names::value_slider)
+        .set_width(80_percent)
+        .set_range(Range().set_maximum(maximum))
+        .add_event_callback(EventCode::value_changed, [](lv_event_t *e) {
+          const auto value = Event(e).target<Slider>().get_value();
+          Event(e)
+            .find_sibling<TextArea>(Names::value_text_area)
+            .set_text(NumberString(value, "0x%02X"));
+        }));
 }

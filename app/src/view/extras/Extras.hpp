@@ -6,6 +6,7 @@
 #define DESIGNLAB_EXTRAS_HPP
 
 #include <design/Typography.hpp>
+#include <design/macros.h>
 #include <json/Json.hpp>
 #include <lvgl.hpp>
 
@@ -21,15 +22,59 @@ public:
     const char *button_text,
     Event::Callback callback,
     const char *color = "btn_success");
-  HeaderRow(lv_obj_t * object){ m_object = object; }
+  HeaderRow(lv_obj_t *object) { m_object = object; }
 
-  Button get_button() const {
-    return find<Button>(Names::action_button);
-  }
+  Button get_button() const { return find<Button>(Names::action_button); }
 
 private:
   struct Names {
     static constexpr auto action_button = "ActionButton";
+  };
+};
+
+class ColorSlider : public ObjectAccess<ColorSlider> {
+public:
+  ColorSlider(
+    const char *name,
+    u16 maximum,
+    void (*value_changed)(lv_event_t *));
+  ColorSlider(lv_obj_t *object) { m_object = object; }
+
+  u8 get_u8() const {
+    return var::StringView(find<TextArea>(Names::value_text_area).get_text())
+      .to_unsigned_long(var::StringView::Base::auto_);
+  }
+
+  u16 get_u16() const {
+    return var::StringView(find<TextArea>(Names::value_text_area).get_text())
+      .to_unsigned_long(var::StringView::Base::auto_);
+  }
+
+  ColorSlider &set_u8(u8 value) {
+    auto slider = find<Slider>(Names::value_slider);
+    if (slider.get_value() != value) {
+      find<TextArea>(Names::value_text_area)
+        .set_text(var::NumberString(value, "0x%02x"));
+      slider.set_value(value);
+    }
+    return *this;
+  }
+
+  ColorSlider &set_u16(u16 value) {
+    auto slider = find<Slider>(Names::value_slider);
+    if (slider.get_value() != value) {
+      find<TextArea>(Names::value_text_area)
+        .set_text(var::NumberString(value, "0x%04x"));
+      slider.set_value(value);
+    }
+    return *this;
+  }
+
+private:
+  struct Names {
+    DESIGN_DECLARE_NAME(value_text_area);
+    DESIGN_DECLARE_NAME(value_slider);
+    DESIGN_DECLARE_NAME(label_row);
   };
 };
 
@@ -40,7 +85,11 @@ public:
 
 class AddButtonRow : public ObjectAccess<AddButtonRow> {
 public:
-  AddButtonRow(const char * button_name, const char * icon, const char *title, Event::Callback callback);
+  AddButtonRow(
+    const char *button_name,
+    const char *icon,
+    const char *title,
+    Event::Callback callback);
 };
 
 class InfoCard : public ObjectAccess<InfoCard> {
@@ -64,8 +113,6 @@ public:
     API_PMAZ(remove_callback, Data, Event::Callback, nullptr);
     API_PMAZ(title, Data, var::KeyString, {});
 
-
-
     struct Feature {
       const char *icon;
       const char *label;
@@ -84,9 +131,9 @@ public:
   };
 
   InfoCard(Data &data);
-  InfoCard(lv_obj_t * object){ m_object = object; }
+  InfoCard(lv_obj_t *object) { m_object = object; }
   static InfoCard get_from_member(lvgl::Object object);
-  static InfoCard::Data* get_data_from_event(lv_event_t * e);
+  static InfoCard::Data *get_data_from_event(lv_event_t *e);
 
 private:
   struct Names {
@@ -101,14 +148,18 @@ private:
 
 class IconCheck : public ObjectAccess<IconCheck> {
 public:
-  IconCheck(u16 icon_unicode, const var::StringView name, var::StringView family, Font font);
-  IconCheck(lv_obj_t*object){ m_object = object; }
+  IconCheck(
+    u16 icon_unicode,
+    const var::StringView name,
+    var::StringView family,
+    Font font);
+  IconCheck(lv_obj_t *object) { m_object = object; }
 
-  const char * get_name() const;
+  const char *get_name() const;
   const char *get_unicode() const;
   const char *get_family() const;
 
-  IconCheck& set_checked(bool value = true);
+  IconCheck &set_checked(bool value = true);
   bool is_checked() const;
 
 private:
@@ -118,7 +169,6 @@ private:
     static constexpr auto family_label = "FamilyLabel";
     static constexpr auto unicode_label = "UnicodeLabel";
   };
-
 };
 
 class IconGrid : public ObjectAccess<IconGrid> {
@@ -132,9 +182,8 @@ public:
 
   static constexpr size_t max_icon_count = 88;
 
-  IconGrid get_icon_grid() const {
-    return find<IconGrid>(Names::icon_grid);
-  }
+  IconGrid get_icon_grid() const { return find<IconGrid>(Names::icon_grid); }
+
 private:
   struct Names {
     static constexpr auto icon_grid = "IconGrid";

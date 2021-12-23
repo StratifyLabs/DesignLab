@@ -4,7 +4,7 @@
 
 #include "extras/Extras.hpp"
 
-#include "controller/ExportWorker.hpp"
+#include "logic/ExportWorker.hpp"
 
 #include "ExportModal.hpp"
 #include "Project.hpp"
