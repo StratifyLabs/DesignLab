@@ -37,6 +37,7 @@ void IconMaker::configure(Generic generic) {
     auto load_file = [&](var::StringView family, var::StringView path) {
       auto icons_object
         = json::JsonDocument().load(AssetFile(path)).to_object();
+      API_ASSERT(is_success());
       const auto key_list = icons_object.get_key_list();
       for (const auto &key : key_list) {
         result.push_back(
@@ -44,6 +45,7 @@ void IconMaker::configure(Generic generic) {
             icons_object.at(key).to_string_view()));
       }
     };
+
     load_file("solid", "a:fa-solid.json");
     load_file("regular", "a:fa-regular.json");
     load_file("brands", "a:fa-brands.json");

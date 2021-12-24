@@ -2,19 +2,13 @@
    "source": "app/src",
    "themes": [
       {
-         "path": "designlab/themes/lvgl-small-dark.json"
+         "path": "designlab/themes/lvgl-small-light.json"
       },
       {
-         "path": "designlab/themes/lvgl-small-light.json"
+         "path": "designlab/themes/lvgl-small-dark.json"
       }
    ],
    "assets": [
-      {
-         "path": "designlab/fonts/icons-1.7.2/font/bootstrap-icons.json"
-      },
-      {
-         "path": "designlab/fonts/icons-1.7.2/font/fonts/bootstrap-icons.woff"
-      },
       {
          "path": "designlab/fonts/fontawesome/fa-icons.json"
       },

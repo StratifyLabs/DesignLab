@@ -299,7 +299,7 @@ static const lv_style_t bg_info_style = {
 };
 
 static const lv_style_const_prop_t bg_danger_const_list[] = {
-  { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full= 0xffdc3545 } } },
+  { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full= 0xff912123 } } },
   { .prop = LV_STYLE_BG_OPA, .value = { .num = 255 } },
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
@@ -397,8 +397,8 @@ static const lv_style_t btn_info_style = {
 };
 
 static const lv_style_const_prop_t btn_danger_const_list[] = {
-  { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full= 0xffdc3545 } } },
-  { .prop = LV_STYLE_BORDER_COLOR, .value = { .color = { .full= 0xffdc3545 } } },
+  { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full= 0xff912123 } } },
+  { .prop = LV_STYLE_BORDER_COLOR, .value = { .color = { .full= 0xff912123 } } },
   { .prop = LV_STYLE_TEXT_COLOR, .value = { .color = { .full= 0xffeeeeee } } },
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
@@ -530,8 +530,8 @@ static const lv_style_t btn_outline_info_style = {
 
 static const lv_style_const_prop_t btn_outline_danger_const_list[] = {
   { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full= 0xffeeeeee } } },
-  { .prop = LV_STYLE_BORDER_COLOR, .value = { .color = { .full= 0xffdc3545 } } },
-  { .prop = LV_STYLE_TEXT_COLOR, .value = { .color = { .full= 0xffdc3545 } } },
+  { .prop = LV_STYLE_BORDER_COLOR, .value = { .color = { .full= 0xff912123 } } },
+  { .prop = LV_STYLE_TEXT_COLOR, .value = { .color = { .full= 0xff912123 } } },
   { .prop = LV_STYLE_BORDER_WIDTH, .value = { .num = 4 } },
   { .prop = LV_STYLE_PAD_TOP, .value = { .num = 10 *4 - 4 } },
   { .prop = LV_STYLE_PAD_BOTTOM, .value = { .num = 10 *4 - 4 } },
@@ -883,7 +883,7 @@ static const lv_style_t text_color_warning_style = {
 };
 
 static const lv_style_const_prop_t text_color_danger_const_list[] = {
-  { .prop = LV_STYLE_TEXT_COLOR, .value = { .color = { .full= 0xffdc3545 } } },
+  { .prop = LV_STYLE_TEXT_COLOR, .value = { .color = { .full= 0xff912123 } } },
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
 

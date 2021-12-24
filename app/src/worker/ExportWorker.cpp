@@ -30,9 +30,8 @@ void ExportWorker::interface_work() {
     const auto settings_path = Settings::get_file_path(m_project_path);
 
     model.printer.object("Settings", model.project_settings);
-
-    model.project_settings.save()
-      = Settings(settings_path, Settings::IsOverwrite::yes);
+    model.project_settings.save();
+    model.project_settings = Settings(settings_path, Settings::IsOverwrite::yes);
 
     // grab a read-only copy
     return Settings(settings_path);

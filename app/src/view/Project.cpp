@@ -80,18 +80,17 @@ void Project::configure_form(Form form) {
 
 void Project::project_path_changed(lv_event_t *e) {
   Model::Scope model_scope;
-  printf(
-    "Current project path is %s\n",
-    model().session_settings.get_project_cstring());
-  printf("target name is %s\n", Event(e).target().name());
   auto form_select = Event(e).target<Form::SelectFile>();
-
   const auto new_path = form_select.get_value();
-  model().session_settings.set_project(new_path);
 
-  printf(
-    "form value is %s\n",
-    var::PathString(form_select.get_value()).cstring());
+  if (fs::FileSystem().directory_exists(new_path)) {
+    // verify the new path is OK
+    api::ErrorScope error_scope;
+    model().session_settings.set_project(new_path);
+    model().project_settings
+      = Settings(Settings::get_file_path(new_path), Settings::IsOverwrite::yes);
 
-  model().project_settings = Settings(Settings::get_file_path(new_path), Settings::IsOverwrite::yes);
+    //set the source directory
+
+  }
 }
