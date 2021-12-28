@@ -750,6 +750,22 @@ static const lv_style_t form_dropdown_list_style = {
   .is_const = 1
 };
 
+static const lv_style_const_prop_t form_error_badge_const_list[] = {
+  { .prop = LV_STYLE_TEXT_FONT, .value = { .ptr = (void*)&montserrat_sb_36 } },
+  { .prop = LV_STYLE_RADIUS, .value = { .num = LV_RADIUS_CIRCLE } },
+  { .prop = LV_STYLE_BORDER_WIDTH, .value = { .num = 0 } },
+  { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full= 0xffdc3545 } } },
+  { .prop = LV_STYLE_BG_OPA, .value = { .num = 255 } },
+  { .prop = LV_STYLE_TEXT_COLOR, .value = { .color = { .full= 0xff222222 } } },
+  { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
+};
+
+static const lv_style_t form_error_badge_style = {
+  .v_p = { .const_props = form_error_badge_const_list },
+  .has_group = 0xff,
+  .is_const = 1
+};
+
 static const lv_style_const_prop_t text_light_const_list[] = {
   { .prop = LV_STYLE_TEXT_COLOR, .value = { .color = { .full= 0xffaaaaaa } } },
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
@@ -2137,6 +2153,7 @@ static const lvgl_api_style_descriptor_t lvgl_small_dark_style_descriptor_list[]
   { .name = "form_filesystem", .style = &form_filesystem_style },
   { .name = "form_dropdown", .style = &form_dropdown_style },
   { .name = "form_dropdown_list", .style = &form_dropdown_list_style },
+  { .name = "form_error_badge", .style = &form_error_badge_style },
   { .name = "text_light", .style = &text_light_style },
   { .name = "text_dark", .style = &text_dark_style },
   { .name = "text_primary", .style = &text_primary_style },

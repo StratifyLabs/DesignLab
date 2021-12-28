@@ -393,6 +393,6 @@
          }
       ]
    },
-   "fontDirty": true,
+   "fontDirty": false,
    "assetsDirty": false
 }

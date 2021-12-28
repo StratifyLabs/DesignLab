@@ -337,6 +337,14 @@
       "row_padding": "$sizePadding",
       "padding": "$sizePadding *2"
     },
+    "@form_error_badge": {
+      "text_font": "$fontFormLabel",
+      "radius": "LV_RADIUS_CIRCLE",
+      "border_width": 0,
+      "background_color": "$colorDanger",
+      "background_opacity": "$opaque",
+      "text_color": "$colorDangerText"
+    },
     "@text_light": {
       "text_color": "$colorLight"
     },
