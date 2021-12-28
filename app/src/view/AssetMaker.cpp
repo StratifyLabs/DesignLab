@@ -19,10 +19,10 @@ void AssetMaker::configure(Generic generic) {
                         .set_form_title("Asset Details")
                         .set_get_info_title_callback(get_info_title)
                         .set_get_feature_list_callback(get_feature_list)
+                        .set_validate_callback(validate)
                         .set_get_schema_callback(InputSchema::get_form_schema);
 
   generic.clear_flag(Flags::scrollable).add(Editor(editor_data).fill());
-
 }
 
 AssetMaker::InputSchema::InputSchema() {
@@ -35,7 +35,6 @@ AssetMaker::InputSchema::InputSchema() {
               .set_hint("Choose the file to include in the binary."));
 }
 
-
 var::Vector<InfoCard::Data::Feature>
 AssetMaker::get_feature_list(json::JsonObject object) {
   var::Vector<InfoCard::Data::Feature> result;
@@ -44,11 +43,30 @@ AssetMaker::get_feature_list(json::JsonObject object) {
   result
     .push_back({.icon = icons::fa::image_solid, .label = "Name", .value = name})
     .push_back(
-      {.icon = icons::fa::folder_open_solid, .label = "Path", .value = asset.get_path()});
+      {.icon = icons::fa::folder_open_solid,
+       .label = "Path",
+       .value = asset.get_path()});
   return result;
 }
 
 var::StringView AssetMaker::get_info_title(json::JsonObject object) {
   Settings::Asset asset(object);
   return fs::Path::name(asset.get_path());
+}
+
+Editor::IsValid AssetMaker::validate(Form form) {
+  auto select_file = form.find<Form::SelectFile>(Settings::Asset::path_key());
+  const auto value
+    = select_file.get_value();
+  // verify the data path exists
+  Model::Scope model_scope;
+  const auto asset_path = model().session_settings.get_project() / value;
+  if( !fs::FileSystem().exists(asset_path) ){
+    select_file.set_error_message("asset does not exist");
+    return Editor::IsValid::no;
+  }
+
+  select_file.hide_error_message();
+
+  return Editor::IsValid::yes;
 }

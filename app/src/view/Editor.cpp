@@ -100,17 +100,23 @@ void Editor::submit_form_add(lv_event_t *e) {
   api::ErrorScope error_scope;
   const auto form = self.find<Form>(data->form_name);
   API_ASSERT(form.is_valid());
-  model().project_settings.append_form_entry(form).update_dirty_bits(
-    data->form_name).save();
+  model()
+    .project_settings.append_form_entry(form)
+    .update_dirty_bits(data->form_name)
+    .save();
 
   if (is_error()) {
     printer().object("error", error());
     printer().key("badInput", model().project_settings.bad_key());
   } else {
-    printer().object("projectSettings", model().project_settings);
+    const auto is_valid
+      = data->validate_callback
+        && (data->validate_callback(self.find<Form>(data->form_name)) == IsValid::yes);
 
-    hide_form(e);
-    self.show_values(*data);
+    if (!data->validate_callback || is_valid) {
+      hide_form(e);
+      self.show_values(*data);
+    }
   }
 }
 
@@ -128,8 +134,14 @@ void Editor::submit_form_edit(lv_event_t *e) {
       .save();
   }
 
-  hide_form(e);
-  self.show_values(*data);
+  const auto is_valid
+    = data->validate_callback
+      && (data->validate_callback(self.find<Form>(data->form_name)) == IsValid::yes);
+
+  if (!data->validate_callback || is_valid) {
+    hide_form(e);
+    self.show_values(*data);
+  }
 }
 
 void Editor::edit_info_card(lv_event_t *e) {

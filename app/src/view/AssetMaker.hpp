@@ -7,6 +7,7 @@
 
 #include "ViewObject.hpp"
 #include "extras/Extras.hpp"
+#include "Editor.hpp"
 
 class AssetMaker : public ViewObject {
 public:
@@ -29,6 +30,7 @@ private:
 
   static var::Vector<InfoCard::Data::Feature> get_feature_list(json::JsonObject);
   static var::StringView get_info_title(json::JsonObject object);
+  static Editor::IsValid validate(Form form);
 
 
 };

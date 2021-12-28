@@ -17,6 +17,13 @@
 
 class Editor : public ObjectAccess<Editor>, public ModelAccess {
 public:
+
+  enum class IsValid {
+    no, yes
+  };
+
+  using ValidateCallback = IsValid (*)(Form);
+
   using GetFormSchemaCallback = design::Form::Schema (*)();
   using GetFeatureListCallback
     = var::Vector<InfoCard::Data::Feature> (*)(json::JsonObject);
@@ -25,15 +32,15 @@ public:
   class Data : public UserDataAccess<Data> {
   public:
 
-
+    API_PMAZ(add_button_text, Data, const char *, "Add Button");
     API_PMAZ(form_name, Data, const char *, "");
-    API_PMAZ(get_schema_callback, Data, GetFormSchemaCallback, nullptr);
+    API_PMAZ(form_title, Data, const char *, "Form Title");
     API_PMAZ(get_feature_list_callback, Data, GetFeatureListCallback, nullptr);
     API_PMAZ(get_info_title_callback, Data, GetInfoTitleCallback, nullptr);
-    API_PMAZ(title, Data, const char *, "Title");
-    API_PMAZ(form_title, Data, const char *, "Form Title");
+    API_PMAZ(get_schema_callback, Data, GetFormSchemaCallback, nullptr);
     API_PMAZ(nothing_to_show, Data, const char *, "No Items");
-    API_PMAZ(add_button_text, Data, const char *, "Add Button");
+    API_PMAZ(title, Data, const char *, "Title");
+    API_PMAZ(validate_callback, Data, ValidateCallback, nullptr);
 
   private:
     friend Editor;
