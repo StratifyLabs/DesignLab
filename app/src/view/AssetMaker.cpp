@@ -56,17 +56,16 @@ var::StringView AssetMaker::get_info_title(json::JsonObject object) {
 
 Editor::IsValid AssetMaker::validate(Form form) {
   auto select_file = form.find<Form::SelectFile>(Settings::Asset::path_key());
-  const auto value
-    = select_file.get_value();
+  const auto value = select_file.get_value();
   // verify the data path exists
   Model::Scope model_scope;
   const auto asset_path = model().session_settings.get_project() / value;
-  if( !fs::FileSystem().exists(asset_path) ){
+  if (!fs::FileSystem().exists(asset_path)) {
     select_file.set_error_message("asset does not exist");
-    return Editor::IsValid::no;
+    return IsValid::no;
   }
 
   select_file.hide_error_message();
 
-  return Editor::IsValid::yes;
+  return IsValid::yes;
 }

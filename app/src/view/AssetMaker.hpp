@@ -5,16 +5,16 @@
 #ifndef DESIGNLAB_ASSETMAKER_HPP
 #define DESIGNLAB_ASSETMAKER_HPP
 
+#include "Editor.hpp"
 #include "ViewObject.hpp"
 #include "extras/Extras.hpp"
-#include "Editor.hpp"
 
 class AssetMaker : public ViewObject {
 public:
+  using IsValid = Editor::IsValid;
   static void configure(Generic generic);
 
 private:
-
   class InputSchema : var::Vector<json::JsonObject> {
   public:
     InputSchema();
@@ -28,11 +28,10 @@ private:
     }
   };
 
-  static var::Vector<InfoCard::Data::Feature> get_feature_list(json::JsonObject);
+  static var::Vector<InfoCard::Data::Feature>
+    get_feature_list(json::JsonObject);
   static var::StringView get_info_title(json::JsonObject object);
-  static Editor::IsValid validate(Form form);
-
-
+  static IsValid validate(Form form);
 };
 
 #endif // DESIGNLAB_ASSETMAKER_HPP
