@@ -28,21 +28,36 @@ void ExportWorker::interface_work() {
     // this will reload the project saving the changes
     m_project_path = model.session_settings.get_project();
     const auto settings_path = Settings::get_file_path(m_project_path);
-
-    model.printer.object("Settings", model.project_settings);
     model.project_settings.save();
     model.project_settings = Settings(settings_path, Settings::IsOverwrite::yes);
-
     // grab a read-only copy
     return Settings(settings_path);
   };
 
   const auto settings = save_settings();
 
+  //makes sure the output directories exist
+  {
+    api::ErrorScope error_scope;
+    const PathString source_path = [&](){
+      Model::Scope model_scope;
+      return  PathString(ModelAccess::model().session_settings.get_project());
+    }()/ settings.get_source() / "designlab";
+
+    FileSystem().create_directory(source_path);
+    FileSystem().create_directory(source_path / "assets");
+    FileSystem().create_directory(source_path / "fonts");
+    FileSystem().create_directory(source_path / "themes");
+    if( is_error() ){
+      printf("Failed to create output directories at %s\n", source_path.cstring());
+      return;
+    }
+  }
+
   update_message("Exporting Assets");
   update_progress(0, 4);
   export_assets(settings);
-  update_message("Exporting Themee");
+  update_message("Exporting Theme");
   update_progress(1, 4);
   export_themes(settings);
   update_message("Exporting Fonts");

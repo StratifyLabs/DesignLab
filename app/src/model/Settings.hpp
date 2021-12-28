@@ -24,6 +24,10 @@ public:
   JSON_ACCESS_STRING(SessionSettings, theme);
   JSON_ACCESS_INTEGER(SessionSettings, offset);
 
+  bool is_project_path_valid() const {
+    return fs::FileSystem().directory_exists(get_project());
+  }
+
 private:
   static var::PathString get_file_path() {
     return get_application_directory() / "designlab_session.json";

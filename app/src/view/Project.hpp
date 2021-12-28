@@ -13,10 +13,10 @@ public:
 private:
 
   struct Names {
-    static constexpr auto directory_select_file = "DirectorySelectFile";
-    static constexpr auto source_select_file = "SourceSelectFile";
-    static constexpr auto project_form = "ProjectForm";
-    static constexpr auto project_column = "ProjectColumn";
+    DESIGN_DECLARE_NAME(directory_select_file);
+    DESIGN_DECLARE_NAME(source_select_file);
+    DESIGN_DECLARE_NAME(project_form);
+    DESIGN_DECLARE_NAME(project_column);
   };
 
   static void export_project(lv_event_t*);
@@ -25,7 +25,9 @@ private:
 
   static void configure_form(Form form);
   static void handle_exited(lv_event_t*);
+  static void mark_all_as_dirty(lv_event_t*);
   static void project_path_changed(lv_event_t*);
+  static void source_path_changed(lv_event_t*);
 
 
 };

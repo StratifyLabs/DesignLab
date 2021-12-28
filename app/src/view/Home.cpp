@@ -16,11 +16,14 @@
 
 void Home::configure(Generic generic) {
 
+  NotifyHome notify_home;
+
   generic.add(
-    Row()
+    Row(ViewObject::Names::home_top_row)
       .fill()
       .set_padding(0)
-      .add(Container()
+      .add_event_callback(EventCode::notified, notified)
+      .add(Container(ViewObject::Names::home_container)
              .add_style("darker")
              .set_width(450)
              .fill_height()
@@ -30,6 +33,7 @@ void Home::configure(Generic generic) {
       .add(NakedContainer(Names::content_area).set_flex_grow().fill_height()));
 
   Project::configure(screen().find<Generic>(Names::content_area));
+
 }
 
 void Home::configure_button_column(Column column) {
@@ -131,6 +135,28 @@ void Home::update_buttons(lv_event_t *e) {
       callback(screen().find<Generic>(Names::content_area).clean());
     } else {
       self.add_state(State::checked);
+    }
+  }
+}
+
+void Home::notified(lv_event_t *e) {
+  // children can notify Home of errors
+  Model::Scope ms;
+  set_project_button_enabled(
+    e,
+    model().is_project_path_valid);
+}
+
+void Home::set_project_button_enabled(lv_event_t *e, bool value) {
+  const auto button_list
+    = {Names::theme_button, Names::asset_button, Names::icon_button, Names::font_button};
+  auto self = Event(e).target<Generic>();
+  for (const auto &button_name : button_list) {
+    auto button = self.find<Generic>(button_name);
+    if (value) {
+      button.clear_state(State::disabled);
+    } else {
+      button.add_state(State::disabled);
     }
   }
 }

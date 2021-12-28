@@ -31,6 +31,10 @@ private:
 
   static void configure_button_column(Column column);
   static void update_buttons(lv_event_t*);
+  static void notified(lv_event_t*);
+
+  static void set_project_button_enabled(lv_event_t * e, bool value = true);
+
 };
 
 #endif // DESIGNLAB_HOME_HPP

@@ -25,8 +25,22 @@ using namespace printer;
 class ViewObject : public ModelAccess {
 public:
 
+  static void send_notify_to_home(){
+    Event::send(screen().find<Generic>(Names::home_top_row), EventCode::notified);
+  }
+
+  class NotifyHome {
+  public:
+    NotifyHome() =default;
+    ~NotifyHome(){
+      send_notify_to_home();
+    }
+  };
+
 protected:
   struct Names {
+    DESIGN_DECLARE_NAME(home_top_row);
+    DESIGN_DECLARE_NAME(home_container);
     DESIGN_DECLARE_NAME(content_container);
   };
 

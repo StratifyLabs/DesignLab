@@ -16,7 +16,6 @@
 
 struct Model {
 public:
-
   static constexpr auto worker_done_message = "Done";
 
   // all access to the model must be withing a Scope
@@ -31,16 +30,13 @@ public:
   var::GeneralString worker_message;
   lvgl::Range worker_progress_range;
   lv_obj_t * worker_notify_object;
+  bool is_project_path_valid = false;
 
   SessionSettings session_settings;
   Settings project_settings;
 
   lvgl::Theme light_theme;
   lvgl::Theme dark_theme;
-  design::Form::Schema font_input_form_schema;
-  design::Form::Schema asset_input_form_schema;
-  design::Form::Schema theme_input_form_schema;
-  design::Form::Schema icon_input_form_schema;
 
 private:
   friend Scope;

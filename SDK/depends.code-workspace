@@ -17,6 +17,9 @@
 		},
 		{
 			"path": "dependencies/WindowAPI"
+		},
+		{
+			"path": "dependencies/CPrinterAPI"
 		}
 	],
 	"settings": {
