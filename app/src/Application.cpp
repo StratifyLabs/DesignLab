@@ -45,6 +45,10 @@ void Application::run(sys::Cli &cli) {
     model().dark_theme
       = Theme(lvgl_small_dark_theme_initialize(runtime.display(), nullptr));
 
+    if (fs::FileSystem().directory_exists(model().session_settings.get_project())) {
+      model().is_project_path_valid = true;
+    }
+
     Display(runtime.display()).set_theme(model().light_theme);
   }
 

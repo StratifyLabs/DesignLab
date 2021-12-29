@@ -4,6 +4,7 @@
   "version": 0,
   "$variables": {
     "$transitionPeriodMilliseconds": 20,
+    "$transitionSlowPeriodMilliseconds": 90,
     "$transitionSlidePeriodMilliseconds": 150,
     "$radiusCircle": "0x7fff",
     "$opacity20": 51,
@@ -38,6 +39,14 @@
       "period": "$transitionPeriodMilliseconds",
       "delay": 0
     },
+    "$transitionSlow": {
+      "name": "transition_slow",
+      "type": "transitionDescriptor",
+      "property_list": "transition_property_list",
+      "path": "linear",
+      "period": "$transitionSlowPeriodMilliseconds",
+      "delay": 0
+    },
     "$transitionSlideIn": {
       "name": "transition_slide_in",
       "type": "transitionDescriptor",
@@ -60,6 +69,14 @@
       "property_list": "transition_property_list",
       "path": "linear",
       "period": "$transitionPeriodMilliseconds",
+      "delay": 50
+    },
+    "$transitionDelayedSlow": {
+      "name": "transition_delayed_slow",
+      "type": "transitionDescriptor",
+      "property_list": "transition_property_list",
+      "path": "linear",
+      "period": "$transitionSlowPeriodMilliseconds",
       "delay": 50
     },
     "$transitionLongDelayed": {
@@ -464,20 +481,20 @@
       "width": "LV_PCT(100)",
       "height": "LV_PCT(100)",
       "background_opacity": 0,
-      "transition": "$transitionNormal"
+      "transition": "$transitionSlow"
     },
     "@modal_enabled": {
       "background_opacity": "$opacity80",
-      "transition": "$transitionDelayed"
+      "transition": "$transitionDelayedSlow"
     },
     "@modal_content": {
       "opacity": 0,
-      "transition": "$transitionNormal"
+      "transition": "$transitionSlow"
     },
     "@modal_content_enabled": {
       "opacity": "$opaque",
       "translate_y": "$sizeModalTranslateY",
-      "transition": "$transitionDelayed"
+      "transition": "$transitionDelayedSlow"
     },
     "@card": {
       "radius": "$sizeCardBorderRadius",

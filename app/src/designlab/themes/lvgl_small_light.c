@@ -43,6 +43,13 @@ static const lv_style_transition_dsc_t transition_normal = {
   .time = 20,
   .delay = 0
 };
+static const lv_style_transition_dsc_t transition_slow = {
+  .props = transition_property_list,
+  .user_data = NULL,
+  .path_xcb = lv_anim_path_linear,
+  .time = 90,
+  .delay = 0
+};
 static const lv_style_transition_dsc_t transition_slide_in = {
   .props = transition_property_list,
   .user_data = NULL,
@@ -62,6 +69,13 @@ static const lv_style_transition_dsc_t transition_delayed = {
   .user_data = NULL,
   .path_xcb = lv_anim_path_linear,
   .time = 20,
+  .delay = 50
+};
+static const lv_style_transition_dsc_t transition_delayed_slow = {
+  .props = transition_property_list,
+  .user_data = NULL,
+  .path_xcb = lv_anim_path_linear,
+  .time = 90,
   .delay = 50
 };
 static const lv_style_transition_dsc_t transition_long_delayed = {
@@ -1115,7 +1129,7 @@ static const lv_style_const_prop_t modal_const_list[] = {
   { .prop = LV_STYLE_WIDTH, .value = { .num = LV_PCT(100) } },
   { .prop = LV_STYLE_HEIGHT, .value = { .num = LV_PCT(100) } },
   { .prop = LV_STYLE_BG_OPA, .value = { .num = 0 } },
-  { .prop = LV_STYLE_TRANSITION, .value = { .ptr = (void*)&transition_normal } },
+  { .prop = LV_STYLE_TRANSITION, .value = { .ptr = (void*)&transition_slow } },
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
 
@@ -1127,7 +1141,7 @@ static const lv_style_t modal_style = {
 
 static const lv_style_const_prop_t modal_enabled_const_list[] = {
   { .prop = LV_STYLE_BG_OPA, .value = { .num = 204 } },
-  { .prop = LV_STYLE_TRANSITION, .value = { .ptr = (void*)&transition_delayed } },
+  { .prop = LV_STYLE_TRANSITION, .value = { .ptr = (void*)&transition_delayed_slow } },
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
 
@@ -1139,7 +1153,7 @@ static const lv_style_t modal_enabled_style = {
 
 static const lv_style_const_prop_t modal_content_const_list[] = {
   { .prop = LV_STYLE_OPA, .value = { .num = 0 } },
-  { .prop = LV_STYLE_TRANSITION, .value = { .ptr = (void*)&transition_normal } },
+  { .prop = LV_STYLE_TRANSITION, .value = { .ptr = (void*)&transition_slow } },
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
 
@@ -1152,7 +1166,7 @@ static const lv_style_t modal_content_style = {
 static const lv_style_const_prop_t modal_content_enabled_const_list[] = {
   { .prop = LV_STYLE_OPA, .value = { .num = 255 } },
   { .prop = LV_STYLE_TRANSLATE_Y, .value = { .num = 50 } },
-  { .prop = LV_STYLE_TRANSITION, .value = { .ptr = (void*)&transition_delayed } },
+  { .prop = LV_STYLE_TRANSITION, .value = { .ptr = (void*)&transition_delayed_slow } },
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
 
