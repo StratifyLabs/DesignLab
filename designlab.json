@@ -78,6 +78,11 @@
       "range": [
          {
             "family": "solid",
+            "name": "align-justify",
+            "unicode": "uf039"
+         },
+         {
+            "family": "solid",
             "name": "angle-down",
             "unicode": "uf107"
          },
@@ -198,6 +203,11 @@
          },
          {
             "family": "solid",
+            "name": "flask",
+            "unicode": "uf0c3"
+         },
+         {
+            "family": "solid",
             "name": "folder",
             "unicode": "uf07b"
          },
@@ -293,6 +303,11 @@
          },
          {
             "family": "solid",
+            "name": "moon",
+            "unicode": "uf186"
+         },
+         {
+            "family": "solid",
             "name": "palette",
             "unicode": "uf53f"
          },
@@ -335,6 +350,11 @@
             "family": "solid",
             "name": "stream",
             "unicode": "uf550"
+         },
+         {
+            "family": "solid",
+            "name": "sun",
+            "unicode": "uf185"
          },
          {
             "family": "solid",
@@ -393,6 +413,6 @@
          }
       ]
    },
-   "fontDirty": true,
+   "fontDirty": false,
    "assetsDirty": false
 }

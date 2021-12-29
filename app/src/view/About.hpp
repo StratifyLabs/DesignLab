@@ -14,7 +14,11 @@ public:
 private:
   struct Names {
     DESIGN_DECLARE_NAME(about_column);
+    DESIGN_DECLARE_NAME(dark_button);
+    DESIGN_DECLARE_NAME(light_button);
   };
+
+  static void update_theme(lv_event_t *e);
 };
 
 #endif // DESIGNLAB_ABOUT_HPP

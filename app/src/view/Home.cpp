@@ -16,8 +16,7 @@
 #include "Home.hpp"
 
 void Home::configure(Generic generic) {
-
-  NotifyHome notify_home;
+  Model::Scope model_scope;
 
   generic.add(
     Row(ViewObject::Names::home_top_row)
@@ -33,7 +32,9 @@ void Home::configure(Generic generic) {
              .add(Column().setup(configure_button_column)))
       .add(NakedContainer(Names::content_area).set_flex_grow().fill_height()));
 
-  Project::configure(screen().find<Generic>(Names::content_area));
+  auto configure_content
+    = model().is_theme_updated ? About::configure : Project::configure;
+  configure_content(screen().find<Generic>(Names::content_area));
 }
 
 void Home::configure_button_column(Column column) {
@@ -84,13 +85,16 @@ void Home::configure_button_column(Column column) {
   add_side_button(
     column,
     icons::fa::info_circle_solid,
-    "About",
+    Names::about_button,
     About::configure);
 
   column.add(HorizontalLine())
     .add(Image().set_source("a:StratifyLabs-400px.png"));
 
-  column.find<Button>(Names::project_button).add_state(State::checked);
+  column
+    .find<Button>(
+      model().is_theme_updated ? Names::about_button : Names::project_button)
+    .add_state(State::checked);
 }
 
 void Home::add_side_button(
@@ -109,10 +113,12 @@ void Home::add_side_button(
       .set_padding(16)
       .add(Label().set_text_as_static(icon).add_style("text_color_primary"))
       .add_label_as_static(name)
-      .add_style("btn_light")
+      .add_style(model().is_dark_theme ? "btn_dark" : "btn_light")
       .set_background_opacity(Opacity::transparent)
       .set_background_opacity(Opacity::x70, State::checked)
-      .set_background_color(Color::white(), State::checked)
+      .set_background_color(
+        model().is_dark_theme ? Color::black() : Color::white(),
+        State::checked)
       .add_event_callback(
         EventCode::clicked,
         (void *)callback,
@@ -150,6 +156,11 @@ void Home::notified(lv_event_t *e) {
   // children can notify Home of errors
   Model::Scope ms;
   set_project_button_enabled(e, model().is_project_path_valid);
+
+  if (model().is_theme_updated) {
+    configure(screen().clean());
+    model().is_theme_updated = false;
+  }
 }
 
 void Home::set_project_button_enabled(lv_event_t *e, bool value) {

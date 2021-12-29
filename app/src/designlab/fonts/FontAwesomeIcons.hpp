@@ -5,6 +5,7 @@
 
 namespace icons {
   namespace fa {
+    static constexpr auto align_justify_solid = "\uf039";
     static constexpr auto angle_down_solid = "\uf107";
     static constexpr auto angle_left_solid = "\uf104";
     static constexpr auto angle_right_solid = "\uf105";
@@ -29,6 +30,7 @@ namespace icons {
     static constexpr auto file_alt_solid = "\uf15c";
     static constexpr auto file_code_solid = "\uf1c9";
     static constexpr auto file_image_solid = "\uf1c5";
+    static constexpr auto flask_solid = "\uf0c3";
     static constexpr auto folder_solid = "\uf07b";
     static constexpr auto folder_minus_solid = "\uf65d";
     static constexpr auto folder_open_solid = "\uf07c";
@@ -48,6 +50,7 @@ namespace icons {
     static constexpr auto lock_solid = "\uf023";
     static constexpr auto lock_open_solid = "\uf3c1";
     static constexpr auto minus_solid = "\uf068";
+    static constexpr auto moon_solid = "\uf186";
     static constexpr auto palette_solid = "\uf53f";
     static constexpr auto pencil_alt_solid = "\uf303";
     static constexpr auto plus_solid = "\uf067";
@@ -57,6 +60,7 @@ namespace icons {
     static constexpr auto sort_down_solid = "\uf0dd";
     static constexpr auto sort_up_solid = "\uf0de";
     static constexpr auto stream_solid = "\uf550";
+    static constexpr auto sun_solid = "\uf185";
     static constexpr auto terminal_solid = "\uf120";
     static constexpr auto th_solid = "\uf00a";
     static constexpr auto th_large_solid = "\uf009";

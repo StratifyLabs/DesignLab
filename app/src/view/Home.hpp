@@ -20,6 +20,7 @@ private:
     static constexpr auto icon_button = "Icons";
     static constexpr auto asset_button = "Assets";
     static constexpr auto font_button = "Fonts";
+    static constexpr auto about_button = "About";
 
   };
 

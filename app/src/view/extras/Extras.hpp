@@ -32,6 +32,23 @@ private:
   };
 };
 
+class AttributionRow : public ObjectAccess<AttributionRow> {
+public:
+  AttributionRow(
+    const char *name,
+    const char *description,
+    const char *external_link = nullptr);
+  AttributionRow(lv_obj_t *object) { m_object = object; }
+
+
+private:
+  struct Names {
+    DESIGN_DECLARE_NAME(external_link_button);
+    DESIGN_DECLARE_NAME(link_row);
+    DESIGN_DECLARE_NAME(dots_label);
+  };
+};
+
 class ColorSlider : public ObjectAccess<ColorSlider> {
 public:
   ColorSlider(
