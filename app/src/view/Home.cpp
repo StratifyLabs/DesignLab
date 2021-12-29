@@ -2,6 +2,7 @@
 // Created by Tyler Gilbert on 12/8/21.
 //
 
+#include "About.hpp"
 #include "AssetMaker.hpp"
 #include "ColorPreview.hpp"
 #include "FontMaker.hpp"
@@ -33,7 +34,6 @@ void Home::configure(Generic generic) {
       .add(NakedContainer(Names::content_area).set_flex_grow().fill_height()));
 
   Project::configure(screen().find<Generic>(Names::content_area));
-
 }
 
 void Home::configure_button_column(Column column) {
@@ -81,7 +81,14 @@ void Home::configure_button_column(Column column) {
     icons::fa::th_list_solid,
     "Theme Preview",
     ThemePreview::configure);
-  column.add(Label().set_text_as_static("Account"));
+  add_side_button(
+    column,
+    icons::fa::info_circle_solid,
+    "About",
+    About::configure);
+
+  column.add(HorizontalLine())
+    .add(Image().set_source("a:StratifyLabs-400px.png"));
 
   column.find<Button>(Names::project_button).add_state(State::checked);
 }
@@ -142,14 +149,15 @@ void Home::update_buttons(lv_event_t *e) {
 void Home::notified(lv_event_t *e) {
   // children can notify Home of errors
   Model::Scope ms;
-  set_project_button_enabled(
-    e,
-    model().is_project_path_valid);
+  set_project_button_enabled(e, model().is_project_path_valid);
 }
 
 void Home::set_project_button_enabled(lv_event_t *e, bool value) {
-  const auto button_list
-    = {Names::theme_button, Names::asset_button, Names::icon_button, Names::font_button};
+  const auto button_list = {
+    Names::theme_button,
+    Names::asset_button,
+    Names::icon_button,
+    Names::font_button};
   auto self = Event(e).target<Generic>();
   for (const auto &button_name : button_list) {
     auto button = self.find<Generic>(button_name);

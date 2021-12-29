@@ -3,8 +3,8 @@
   "type": "styles",
   "version": 0,
   "$variables": {
-    "$transitionPeriodMilliseconds": 100,
-    "$transitionSlidePeriodMilliseconds": 250,
+    "$transitionPeriodMilliseconds": 20,
+    "$transitionSlidePeriodMilliseconds": 150,
     "$radiusCircle": "0x7fff",
     "$opacity20": 51,
     "$opacity40": 102,

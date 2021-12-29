@@ -18,7 +18,7 @@ void ExportModal::start() {
               .set_row_padding(30)
               .add_style("card modal_content col")
               .add_style("modal_content_enabled", Modal::enabled)
-              .set_height(60_percent)
+              .set_height(40_percent)
               .set_width(60_percent)
               .set_alignment(Alignment::top_middle)
               .add_state(Modal::enabled)

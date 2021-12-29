@@ -6,6 +6,7 @@
 #include <SDL_main.h>
 
 #include <sys/Cli.hpp>
+#include <api/api.hpp>
 
 #include "Application.hpp"
 
@@ -13,11 +14,9 @@
 #include "logic/BootstrapIconManager.hpp"
 #include "logic/FontAwesomeManager.hpp"
 
-#include <cprinter.hpp>
-
 int main(int argc, char *argv[]) {
+  api::catch_segmentation_fault();
   sys::Cli cli(argc, argv);
-
 
   if( !cli.get_option("fa").is_empty() ){
     FontAwesomeManager manager(cli);

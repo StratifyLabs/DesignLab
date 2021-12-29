@@ -28,6 +28,8 @@ set(SOURCES
 	model/Settings.cpp
 	model/Settings.hpp
 
+	view/About.cpp
+	view/About.hpp
 	view/AssetMaker.cpp
 	view/AssetMaker.hpp
 	view/FontMaker.cpp

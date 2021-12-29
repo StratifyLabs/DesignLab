@@ -40,35 +40,35 @@ static const lv_style_transition_dsc_t transition_normal = {
   .props = transition_property_list,
   .user_data = NULL,
   .path_xcb = lv_anim_path_linear,
-  .time = 100,
+  .time = 20,
   .delay = 0
 };
 static const lv_style_transition_dsc_t transition_slide_in = {
   .props = transition_property_list,
   .user_data = NULL,
   .path_xcb = lv_anim_path_ease_out,
-  .time = 250,
+  .time = 150,
   .delay = 0
 };
 static const lv_style_transition_dsc_t transition_slide_out = {
   .props = transition_property_list,
   .user_data = NULL,
   .path_xcb = lv_anim_path_ease_in,
-  .time = 250,
+  .time = 150,
   .delay = 0
 };
 static const lv_style_transition_dsc_t transition_delayed = {
   .props = transition_property_list,
   .user_data = NULL,
   .path_xcb = lv_anim_path_linear,
-  .time = 100,
+  .time = 20,
   .delay = 50
 };
 static const lv_style_transition_dsc_t transition_long_delayed = {
   .props = transition_property_list,
   .user_data = NULL,
   .path_xcb = lv_anim_path_linear,
-  .time = 100,
+  .time = 20,
   .delay = 800
 };
 static lv_color_t dark_filter_callback(const lv_color_filter_dsc_t * filter_descriptor, lv_color_t color, lv_opa_t opacity){

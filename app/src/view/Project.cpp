@@ -10,6 +10,7 @@
 #include "Project.hpp"
 
 void Project::configure(Generic generic) {
+  NotifyHome notify_home;
   generic.clear_flag(Flags::scrollable)
     .add(Container(ViewObject::Names::content_container)
            .add_event_callback(EventCode::exited, handle_exited)
@@ -50,6 +51,8 @@ void Project::handle_exited(lv_event_t *) {
   model().project_settings = Settings(
     Settings::get_file_path(model().session_settings.get_project()),
     Settings::IsOverwrite::yes);
+
+  API_ASSERT(is_success());
 }
 
 void Project::export_project(lv_event_t *) { ExportModal::start(); }
@@ -89,14 +92,14 @@ void Project::source_path_changed(lv_event_t *e) {
 
   const auto source_dir = project_path / new_path;
 
-  if( !fs::FileSystem().directory_exists(source_dir) ){
+  if (!fs::FileSystem().directory_exists(source_dir)) {
     form_select.set_error_message_as_static("Error: does not exist");
   } else {
     form_select.hide_error_message();
   }
 
+  API_ASSERT(is_success());
 }
-
 
 void Project::project_path_changed(lv_event_t *e) {
   NotifyHome notify_home;
@@ -113,29 +116,34 @@ void Project::project_path_changed(lv_event_t *e) {
   // verify the new path is OK
   const auto settings_file_path = Settings::get_file_path(new_path);
 
-  api::ErrorScope error_scope;
-  model().session_settings.set_project(new_path);
-  model().project_settings
-    = Settings(settings_file_path, Settings::IsOverwrite::yes);
+  {
+    api::ErrorScope error_scope;
+    model().session_settings.set_project(new_path);
+    model().project_settings
+      = Settings(settings_file_path, Settings::IsOverwrite::yes);
 
-  // set the source directory
-  if (is_success()) {
-    form_select.hide_error_message();
-    auto source_select_file
-      = Event(e)
-          .find_parent<Container>(ViewObject::Names::content_container)
-          .find<Form::SelectFile>(Names::source_select_file);
+    // set the source directory
+    if (is_success()) {
+      form_select.hide_error_message();
+      auto source_select_file
+        = Event(e)
+            .find_parent<Container>(ViewObject::Names::content_container)
+            .find<Form::SelectFile>(Names::source_select_file);
 
-    source_select_file.set_value(model().project_settings.get_source_cstring());
-    model().is_project_path_valid = true;
+      source_select_file.set_value(
+        model().project_settings.get_source_cstring());
+      model().is_project_path_valid = true;
 
-  } else {
-    form_select.set_error_message_as_static("Error loading settings file");
+    } else {
+      form_select.set_error_message_as_static("Error loading settings file");
+    }
   }
+
+  API_ASSERT(is_success());
 }
 
 void Project::mark_all_as_dirty(lv_event_t *) {
   Model::Scope model_scope;
   model().project_settings.set_font_dirty().set_assets_dirty();
+  API_ASSERT(is_success());
 }
-
