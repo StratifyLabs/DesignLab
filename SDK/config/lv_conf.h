@@ -322,7 +322,7 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h"*/
 #define LV_FONT_FMT_TXT_LARGE   1
 
 /*Enables/disables support for compressed fonts.*/
-#define LV_USE_FONT_COMPRESSED  1
+#define LV_USE_FONT_COMPRESSED  0
 
 /*Enable subpixel rendering*/
 #define LV_USE_FONT_SUBPX       0
@@ -513,7 +513,7 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h"*/
 #define LV_USE_GRID     1
 
 #define LV_USE_PNG 1
-#define LV_USE_GPU_SDL 1
+#define LV_USE_GPU_SDL 0
 #define LV_USE_EXTERNAL_RENDERER LV_USE_GPU_SDL
 
 /*==================

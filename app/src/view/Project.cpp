@@ -137,6 +137,10 @@ void Project::project_path_changed(lv_event_t *e) {
 
       source_select_file.set_value(
         model().project_settings.get_source_cstring());
+
+      source_select_file.user_data<Form::SelectFile::Data>()->base_path
+        = new_path;
+
       model().is_project_path_valid = true;
     }
   } else {
@@ -202,6 +206,7 @@ void Project::accept_prompt_new_project(lv_event_t *e) {
 
   model().is_project_path_valid = true;
   model().session_settings.set_project(parent_directory);
-  model().project_settings = Settings(model().new_project_path, Settings::IsOverwrite::yes);
+  model().project_settings
+    = Settings(model().new_project_path, Settings::IsOverwrite::yes);
   close_prompt(e);
 }
