@@ -71,17 +71,21 @@ void Home::configure_button_column(Column column) {
     Names::icon_button,
     IconMaker::configure);
 
-  column.add(NakedContainer().set_flex_grow());
   add_side_button(
     column,
     icons::fa::palette_solid,
     "Colors",
     ColorPreview::configure);
+
+  column.add(NakedContainer().set_flex_grow());
+
+#if USE_THEME_PREVIEW
   add_side_button(
     column,
     icons::fa::th_list_solid,
     "Theme Preview",
     ThemePreview::configure);
+#endif
   add_side_button(
     column,
     icons::fa::info_circle_solid,

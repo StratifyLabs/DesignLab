@@ -9,13 +9,18 @@
 
 class FontManager : public Manager {
 public:
+  using UpdateCallback = void (*)(void*,int,int);
+
   struct Construct {
+    API_PMAZ(icons, Construct, Settings::Icons, {});
     API_PMAZ(input_path, Construct, var::PathString, {});
 
     API_PUBLIC_BOOL(Construct,dry_run,false);
 
     API_PMAZ(output_path, Construct, var::PathString, {});
     API_PMAZ(project_path, Construct, var::PathString, {});
+    API_PMAZ(update_callback, Construct, UpdateCallback, nullptr);
+    API_PMAZ(update_context, Construct, void*, nullptr);
 
   };
 
@@ -64,6 +69,9 @@ public:
   }
 
 private:
+
+  Settings::Icons m_icons;
+
   var::String
   get_icon_font_range(Settings::Icons icons, var::StringView family);
   void generate_bootstrap_icons_hpp(var::StringView directory);

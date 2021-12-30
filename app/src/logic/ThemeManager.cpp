@@ -70,11 +70,8 @@ void ThemeManager::construct(const Construct &options) {
   }
   API_RETURN_IF_ERROR();
 
-  const auto output_directory = [&]() {
-    Model::Scope model_scope;
-    return model().session_settings.get_project()
-           / model().project_settings.get_source();
-  }();
+  const auto output_directory
+    = options.project_path / options.output_source_path;
 
   const auto output_path
     = output_directory / "designlab/themes" / m_theme_object.get_name() & ".c";
@@ -94,6 +91,8 @@ void ThemeManager::construct(const Construct &options) {
   generate_styles();
   generate_apply_callback();
   generate_theme();
+
+  API_ASSERT(is_success());
 }
 
 fs::PathList ThemeManager::get_source_list(

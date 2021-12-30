@@ -14,6 +14,8 @@
 
 FontManager::FontManager(const Construct &options) {
 
+  m_icons = options.icons;
+
   const auto program_path = Process::which("lv_font_conv");
   if (program_path.is_empty()) {
     API_RETURN_ASSIGN_ERROR("`lv_font_conv` not found on the path", EINVAL);
@@ -43,6 +45,17 @@ FontManager::FontManager(const Construct &options) {
   const auto font_list = settings.get_fonts();
   const auto output_directory = settings.get_output_directory() / "fonts";
 
+  const auto progress_total = [&]() {
+    size_t result = 0;
+    for (const auto &font : font_list) {
+      const auto sizes = get_size_list(font);
+      result += sizes.string_view().split(",").count();
+    }
+    return result;
+  }();
+
+  size_t progress_value = 0;
+
   if (options.is_dry_run == false) {
     for (const auto &font : font_list) {
 
@@ -63,46 +76,39 @@ FontManager::FontManager(const Construct &options) {
           .push("--range=" | font.get_range());
 
         if (font.is_icons()) {
-          Model::Scope model_scope;
-          auto add_icon_range =
-            [&](var::StringView font_name, var::StringView family) {
-              const auto icon_range
-                = get_icon_font_range(model().project_settings.icons(), family);
-              if (icon_range.length()) {
-                arguments.push("--font=" | get_temporary_font_path(font_name))
-                  .push("--range=" | icon_range);
-              }
-            };
+          auto add_icon_range
+            = [&](var::StringView font_name, var::StringView family) {
+                const auto icon_range
+                  = get_icon_font_range(options.icons, family);
+                if (icon_range.length()) {
+                  arguments.push("--font=" | get_temporary_font_path(font_name))
+                    .push("--range=" | icon_range);
+                }
+              };
 
           add_icon_range(font_solid_name, "solid");
           add_icon_range(font_regular_name, "regular");
           add_icon_range(font_brands_name, "brands");
         }
 
-        {
-          Model::Scope model_scope;
-          auto &printer = ModelAccess::printer();
-          for (const auto arg : arguments.arguments()) {
-            if (arg != nullptr) {
-              printer.info(arg);
-            }
-          }
-        }
-
         Process lv_font_conv(
           arguments,
           Process::Environment().set_working_directory(options.project_path));
         lv_font_conv.wait();
-        {
-          Model::Scope model_scope;
-          auto &printer = ModelAccess::printer();
-          printer.key(
-            "result",
-            var::NumberString(lv_font_conv.status().exit_status()));
+        auto status = lv_font_conv.status().exit_status();
+        if (status != 0) {
+          API_RETURN_ASSIGN_ERROR("`lv_font_conv` had an error", EINVAL);
         }
 
         // was there an error?
+
+        progress_value++;
+
+        if (options.update_callback){
+          options.update_callback(options.update_context,progress_value, progress_total);
+        }
       }
+
     }
   }
 
@@ -154,7 +160,6 @@ void FontManager::generate_bootstrap_icons_hpp(
   CodePrinter code_printer(icon_hpp);
 
   {
-    Model::Scope model_scope;
     code_printer.inline_comment("This is a generated source file, do not edit")
       .newline();
     cprinter::CppPrinter::HeaderGuard header_guard(
@@ -162,7 +167,7 @@ void FontManager::generate_bootstrap_icons_hpp(
       "BOOTSTRAP_ICONS_HPP");
     cprinter::CppPrinter::NamespaceScope icons_namespace(code_printer, "icons");
     cprinter::CppPrinter::NamespaceScope fa_namespace(code_printer, "bs");
-    const auto icons = model().project_settings.icons();
+    const auto icons = m_icons;
     for (const auto &icon : icons.get_range()) {
       if (icon.get_name() == "bootstrap") {
         const auto needs_x_prefix = [&]() {
@@ -192,7 +197,6 @@ void FontManager::generate_fontawesome_icons_hpp(var::StringView directory) {
   CodePrinter code_printer(icon_hpp);
 
   {
-    Model::Scope model_scope;
     code_printer.inline_comment("This is a generated source file, do not edit")
       .newline();
     cprinter::CppPrinter::HeaderGuard header_guard(
@@ -200,7 +204,7 @@ void FontManager::generate_fontawesome_icons_hpp(var::StringView directory) {
       "FONTAWESOME_ICONS_HPP");
     cprinter::CppPrinter::NamespaceScope icons_namespace(code_printer, "icons");
     cprinter::CppPrinter::NamespaceScope fa_namespace(code_printer, "fa");
-    const auto icons = model().project_settings.icons();
+    const auto icons = m_icons;
     for (const auto &icon : icons.get_range()) {
       if (icon.get_name() != "bootstrap") {
         const auto needs_x_prefix = [&]() {

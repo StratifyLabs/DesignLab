@@ -110,26 +110,6 @@
          },
          {
             "family": "solid",
-            "name": "angle-down",
-            "unicode": "uf107"
-         },
-         {
-            "family": "solid",
-            "name": "angle-left",
-            "unicode": "uf104"
-         },
-         {
-            "family": "solid",
-            "name": "angle-right",
-            "unicode": "uf105"
-         },
-         {
-            "family": "solid",
-            "name": "angle-up",
-            "unicode": "uf106"
-         },
-         {
-            "family": "solid",
             "name": "bars",
             "unicode": "uf0c9"
          },
@@ -450,6 +430,6 @@
          }
       ]
    },
-   "fontDirty": true,
+   "fontDirty": false,
    "assetsDirty": false
 }

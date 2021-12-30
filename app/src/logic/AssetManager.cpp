@@ -7,7 +7,6 @@
 #include <var.hpp>
 
 #include "AssetManager.hpp"
-#include "model/Model.hpp"
 
 AssetManager::AssetManager(const sys::Cli &cli) {
   construct(

@@ -17,12 +17,11 @@
 
 #include "CodePrinter.hpp"
 
-#include "model/Model.hpp"
+#include "model/Settings.hpp"
 
 
-class Manager : public ModelAccess {
+class Manager : public api::ExecutionContext {
 public:
-
 
   bool is_create_file_ok(const var::StringView path) {
     const auto parent_path = fs::Path::parent_directory(path);

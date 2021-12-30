@@ -9,6 +9,8 @@
 #include <design/Worker.hpp>
 #include <lvgl/Bar.hpp>
 
+#include "model/Settings.hpp"
+
 class WorkerObject : public design::Worker {
 public:
   WorkerObject() = default;

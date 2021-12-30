@@ -23,6 +23,7 @@ public:
   struct Construct {
     API_PMAZ(input_path,Construct,var::PathString,{});
     API_PMAZ(project_path,Construct,var::PathString,{});
+    API_PMAZ(output_source_path,Construct,var::PathString,{});
   };
 
   explicit ThemeManager(const Construct & options){

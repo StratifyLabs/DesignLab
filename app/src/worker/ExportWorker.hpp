@@ -17,16 +17,24 @@ public:
 protected:
 
   var::PathString m_project_path;
+  Settings m_project_settings;
   fs::PathList m_asset_path_list;
   fs::PathList m_theme_path_list;
   fs::PathList m_font_path_list;
 
   void interface_work();
 
-  void export_assets(const Settings & settings);
-  void export_themes(const Settings & settings);
-  void export_fonts(const Settings & settings);
-  void export_cmake_sourcelist(const Settings & settings);
+  void export_assets();
+  void export_themes();
+  fs::PathList get_font_path_list();
+  void export_fonts();
+  void export_cmake_sourcelist();
+
+  static void update_font_progress_callback(void * context, int value, int total){
+    reinterpret_cast<ExportWorker*>(context)->update_font_progress(value, total);
+  }
+
+  void update_font_progress(int value, int total);
 
 
 
