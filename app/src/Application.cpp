@@ -32,7 +32,6 @@ void Application::run(sys::Cli &cli) {
   // this file is distributed with the binary rather than as a separate file
   static lv_fs_drv_t drive;
   lvgl_api_mount_asset_filesystem(DESIGN_INCBIN_DATA(assetfs), &drive, 'a');
-  // Icon is at a:icon256x256.png
 
   // load the PNG decoder
   lvgl_api_initialize_png_decoder();
@@ -56,8 +55,21 @@ void Application::run(sys::Cli &cli) {
     Display(runtime.display())
       .set_theme(
         model().is_dark_theme ? model().dark_theme : model().light_theme);
+
+    runtime.window().set_position(window::Point(
+      model().session_settings.get_window_x(),
+      model().session_settings.get_window_y()));
   }
+
+
 
   Home::configure(screen().get<Generic>());
   runtime.loop();
+
+  {
+    Model::Scope model_scope;
+    const auto final_position = runtime.window().get_position();
+    model().session_settings.set_window_x(final_position.x());
+    model().session_settings.set_window_y(final_position.y());
+  }
 }

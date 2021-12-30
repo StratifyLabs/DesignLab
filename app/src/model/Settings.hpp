@@ -23,6 +23,8 @@ public:
   JSON_ACCESS_STRING(SessionSettings, project);
   JSON_ACCESS_STRING(SessionSettings, theme);
   JSON_ACCESS_INTEGER(SessionSettings, offset);
+  JSON_ACCESS_INTEGER_WITH_KEY(SessionSettings, windowX, window_x);
+  JSON_ACCESS_INTEGER_WITH_KEY(SessionSettings, windowY, window_y);
 
   bool is_project_path_valid() const {
     return fs::FileSystem().directory_exists(get_project());
