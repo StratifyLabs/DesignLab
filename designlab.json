@@ -35,6 +35,33 @@
       },
       {
          "path": "designlab/assets/Stratify-Icon-250px.png"
+      },
+      {
+         "path": "designlab/assets/designlab.json"
+      },
+      {
+         "path": "designlab/themes/colors-dark.json"
+      },
+      {
+         "path": "designlab/themes/colors-light.json"
+      },
+      {
+         "path": "designlab/themes/fonts-small.json"
+      },
+      {
+         "path": "designlab/themes/lvgl-small-dark.json"
+      },
+      {
+         "path": "designlab/themes/lvgl-small-light.json"
+      },
+      {
+         "path": "designlab/themes/rules-lvgl.json"
+      },
+      {
+         "path": "designlab/themes/sizes-small.json"
+      },
+      {
+         "path": "designlab/themes/styles-lvgl.json"
       }
    ],
    "fonts": [
@@ -323,6 +350,16 @@
          },
          {
             "family": "solid",
+            "name": "question",
+            "unicode": "uf128"
+         },
+         {
+            "family": "solid",
+            "name": "question-circle",
+            "unicode": "uf059"
+         },
+         {
+            "family": "solid",
             "name": "quote-left",
             "unicode": "uf10d"
          },
@@ -413,6 +450,6 @@
          }
       ]
    },
-   "fontDirty": false,
+   "fontDirty": true,
    "assetsDirty": false
 }

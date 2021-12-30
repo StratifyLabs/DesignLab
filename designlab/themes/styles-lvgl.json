@@ -197,6 +197,16 @@
     "@bg_dark": {
       "background_color": "$colorDark"
     },
+    "@prompt_accept_btn": {
+      "background_color": "$colorPrimary",
+      "border_color": "$colorPrimary",
+      "text_color": "$colorPrimaryText"
+    },
+    "@prompt_reject_btn": {
+      "background_color": "$colorDanger",
+      "border_color": "$colorDanger",
+      "text_color": "$colorDangerText"
+    },
     "@btn_primary": {
       "background_color": "$colorPrimary",
       "border_color": "$colorPrimary",

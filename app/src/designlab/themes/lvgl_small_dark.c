@@ -358,6 +358,32 @@ static const lv_style_t bg_dark_style = {
   .is_const = 1
 };
 
+static const lv_style_const_prop_t prompt_accept_btn_const_list[] = {
+  { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full= 0xff1c3a87 } } },
+  { .prop = LV_STYLE_BORDER_COLOR, .value = { .color = { .full= 0xff1c3a87 } } },
+  { .prop = LV_STYLE_TEXT_COLOR, .value = { .color = { .full= 0xffffffff } } },
+  { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
+};
+
+static const lv_style_t prompt_accept_btn_style = {
+  .v_p = { .const_props = prompt_accept_btn_const_list },
+  .has_group = 0xff,
+  .is_const = 1
+};
+
+static const lv_style_const_prop_t prompt_reject_btn_const_list[] = {
+  { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full= 0xffdc3545 } } },
+  { .prop = LV_STYLE_BORDER_COLOR, .value = { .color = { .full= 0xffdc3545 } } },
+  { .prop = LV_STYLE_TEXT_COLOR, .value = { .color = { .full= 0xffffffff } } },
+  { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
+};
+
+static const lv_style_t prompt_reject_btn_style = {
+  .v_p = { .const_props = prompt_reject_btn_const_list },
+  .has_group = 0xff,
+  .is_const = 1
+};
+
 static const lv_style_const_prop_t btn_primary_const_list[] = {
   { .prop = LV_STYLE_BG_COLOR, .value = { .color = { .full= 0xff1c3a87 } } },
   { .prop = LV_STYLE_BORDER_COLOR, .value = { .color = { .full= 0xff1c3a87 } } },
@@ -2139,6 +2165,8 @@ static const lvgl_api_style_descriptor_t lvgl_small_dark_style_descriptor_list[]
   { .name = "bg_success", .style = &bg_success_style },
   { .name = "bg_light", .style = &bg_light_style },
   { .name = "bg_dark", .style = &bg_dark_style },
+  { .name = "prompt_accept_btn", .style = &prompt_accept_btn_style },
+  { .name = "prompt_reject_btn", .style = &prompt_reject_btn_style },
   { .name = "btn_primary", .style = &btn_primary_style },
   { .name = "btn_secondary", .style = &btn_secondary_style },
   { .name = "btn_warning", .style = &btn_warning_style },

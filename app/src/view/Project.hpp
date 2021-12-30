@@ -29,6 +29,8 @@ private:
   static void project_path_changed(lv_event_t*);
   static void source_path_changed(lv_event_t*);
 
+  static void accept_prompt_new_project(lv_event_t * e);
+
 
 };
 

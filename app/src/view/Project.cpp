@@ -2,8 +2,10 @@
 // Created by Tyler Gilbert on 12/15/21.
 //
 
-#include "extras/Extras.hpp"
+#include <fs.hpp>
+#include <var.hpp>
 
+#include "extras/Extras.hpp"
 #include "worker/ExportWorker.hpp"
 
 #include "ExportModal.hpp"
@@ -55,7 +57,10 @@ void Project::handle_exited(lv_event_t *) {
   API_ASSERT(is_success());
 }
 
-void Project::export_project(lv_event_t *) { ExportModal::start(); }
+void Project::export_project(lv_event_t *) {
+  ExportModal::start();
+  API_ASSERT(is_success());
+}
 
 void Project::configure_form(Form form) {
   Model::Scope model_scope;
@@ -116,7 +121,7 @@ void Project::project_path_changed(lv_event_t *e) {
   // verify the new path is OK
   const auto settings_file_path = Settings::get_file_path(new_path);
 
-  {
+  if (fs::FileSystem().exists(settings_file_path)) {
     api::ErrorScope error_scope;
     model().session_settings.set_project(new_path);
     model().project_settings
@@ -133,10 +138,24 @@ void Project::project_path_changed(lv_event_t *e) {
       source_select_file.set_value(
         model().project_settings.get_source_cstring());
       model().is_project_path_valid = true;
-
-    } else {
-      form_select.set_error_message_as_static("Error loading settings file");
     }
+  } else {
+    // create a new project
+    static var::KeyString title;
+    static var::PathString message;
+    title
+      = var::KeyString(icons::fa::question_circle_solid).append(" New Project");
+    message
+      = var::StringView("Would you like to create a new project in folder ")
+        & new_path & "?";
+
+    model().new_project_path = settings_file_path;
+    prompt_user(Prompt::Data::create()
+                  .set_title(title)
+                  .set_message(message)
+                  .set_accept_callback(accept_prompt_new_project)
+                  .set_reject_callback(close_prompt));
+    model().is_project_path_valid = false;
   }
 
   API_ASSERT(is_success());
@@ -146,4 +165,43 @@ void Project::mark_all_as_dirty(lv_event_t *) {
   Model::Scope model_scope;
   model().project_settings.set_font_dirty().set_assets_dirty();
   API_ASSERT(is_success());
+}
+
+void Project::accept_prompt_new_project(lv_event_t *e) {
+  NotifyHome notify_home;
+  Model::Scope model_scope;
+
+  const auto parent_directory
+    = Path::parent_directory(model().new_project_path);
+  printf("Create a new project %s\n", model().new_project_path.cstring());
+
+  File(File::IsOverwrite::yes, model().new_project_path)
+    .write(AssetFile("a:designlab.json"));
+
+  const auto designlab_directory = parent_directory / "designlab";
+  const auto theme_directory = designlab_directory / "themes";
+  FileSystem().create_directory(designlab_directory);
+  FileSystem().create_directory(designlab_directory / "fonts");
+  FileSystem().create_directory(designlab_directory / "assets");
+  FileSystem().create_directory(theme_directory);
+  const auto theme_file_list = {
+    "colors-dark.json",
+    "colors-light.json",
+    "fonts-small.json",
+    "lvgl-small-dark.json",
+    "lvgl-small-light.json",
+    "rules-lvgl.json",
+    "styles-lvgl.json"};
+
+  for (const auto theme_file : theme_file_list) {
+    File(File::IsOverwrite::yes, theme_directory / theme_file)
+      .write(AssetFile(StringView("a:") & theme_file));
+  }
+
+  API_ASSERT(is_success());
+
+  model().is_project_path_valid = true;
+  model().session_settings.set_project(parent_directory);
+  model().project_settings = Settings(model().new_project_path, Settings::IsOverwrite::yes);
+  close_prompt(e);
 }

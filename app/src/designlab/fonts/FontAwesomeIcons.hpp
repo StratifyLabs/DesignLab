@@ -54,6 +54,8 @@ namespace icons {
     static constexpr auto palette_solid = "\uf53f";
     static constexpr auto pencil_alt_solid = "\uf303";
     static constexpr auto plus_solid = "\uf067";
+    static constexpr auto question_solid = "\uf128";
+    static constexpr auto question_circle_solid = "\uf059";
     static constexpr auto quote_left_solid = "\uf10d";
     static constexpr auto quote_right_solid = "\uf10e";
     static constexpr auto sliders_h_solid = "\uf1de";
