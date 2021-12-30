@@ -77,3 +77,13 @@ set_target_properties(${RELEASE_TARGET}
 	MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/MacOSXBundleInfo.plist.in
 	)
 
+message(STATUS "Code signing identify is $ENV{CODESIGN_IDENTITY}")
+
+add_custom_target(sign
+	COMMAND codesign -s $ENV{CODESIGN_IDENTITY} ${BINARY_OUTPUT_DIR}/${RELEASE_TARGET}.app
+	VERBATIM
+	)
+
+add_custom_target(verify
+	COMMAND spctl --assess -vvvv ${BINARY_OUTPUT_DIR}/${RELEASE_TARGET}.app)
+

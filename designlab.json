@@ -34,7 +34,7 @@
          "path": "designlab/assets/StratifyLabs-400px.png"
       },
       {
-         "path": "designlab/assets/Stratify-Icon-250px.png"
+         "path": "designlab/assets/icon-250px.png"
       },
       {
          "path": "designlab/assets/designlab.json"
@@ -103,6 +103,11 @@
       "name": "icons",
       "path": "",
       "range": [
+         {
+            "family": "solid",
+            "name": "adjust",
+            "unicode": "uf042"
+         },
          {
             "family": "solid",
             "name": "align-justify",
@@ -431,5 +436,6 @@
       ]
    },
    "fontDirty": false,
-   "assetsDirty": false
+   "assetsDirty": false,
+   "fontsCompressed": false
 }

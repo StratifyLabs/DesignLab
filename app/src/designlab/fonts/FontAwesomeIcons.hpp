@@ -5,6 +5,7 @@
 
 namespace icons {
   namespace fa {
+    static constexpr auto adjust_solid = "\uf042";
     static constexpr auto align_justify_solid = "\uf039";
     static constexpr auto bars_solid = "\uf0c9";
     static constexpr auto bold_solid = "\uf032";

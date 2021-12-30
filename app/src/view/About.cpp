@@ -83,4 +83,5 @@ void About::update_theme(lv_event_t *e) {
   screen().update_layout().invalidate();
   model().is_dark_theme = is_dark;
   model().is_theme_updated = true;
+  model().session_settings.set_theme(is_dark ? "dark" : "light");
 }

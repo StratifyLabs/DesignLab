@@ -116,7 +116,7 @@ extern const struct _lv_font_t montserrat_r_28;
 *With complex image decoders (e.g. PNG or JPG) caching can save the continuous open/decode of images.
 *However the opened images might consume additional RAM.
 *0: to disable caching*/
-#define LV_IMG_CACHE_DEF_SIZE       0
+#define LV_IMG_CACHE_DEF_SIZE       (32768)
 
 /*Maximum buffer size to allocate for rotation. Only used if software rotation is enabled in the display driver.*/
 #define LV_DISP_ROT_MAX_BUF         (100*1024)
@@ -513,7 +513,7 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h"*/
 #define LV_USE_GRID     1
 
 #define LV_USE_PNG 1
-#define LV_USE_GPU_SDL 0
+#define LV_USE_GPU_SDL 1
 #define LV_USE_EXTERNAL_RENDERER LV_USE_GPU_SDL
 
 /*==================

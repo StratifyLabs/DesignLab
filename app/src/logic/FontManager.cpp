@@ -75,6 +75,10 @@ FontManager::FontManager(const Construct &options) {
           .push("--font=" | font.get_path())
           .push("--range=" | font.get_range());
 
+        if( settings.is_fonts_compressed() == false ){
+          arguments.push("--no-compress");
+        }
+
         if (font.is_icons()) {
           auto add_icon_range
             = [&](var::StringView font_name, var::StringView family) {

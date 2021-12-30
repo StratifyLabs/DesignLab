@@ -40,7 +40,7 @@ void Home::configure(Generic generic) {
 void Home::configure_button_column(Column column) {
   column.add_style("darker").fill();
 
-  column.add(Image().set_source("a:Stratify-Icon-250px.png"));
+  column.add(Image().set_source("a:icon-250px.png"));
   column
     .add(SectionHeading("Design Lab").set_text_alignment(TextAlignment::center))
     .add(HorizontalLine());
@@ -91,9 +91,6 @@ void Home::configure_button_column(Column column) {
     icons::fa::info_circle_solid,
     Names::about_button,
     About::configure);
-
-  column.add(HorizontalLine())
-    .add(Image().set_source("a:StratifyLabs-400px.png"));
 
   column
     .find<Button>(

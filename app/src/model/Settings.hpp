@@ -113,6 +113,7 @@ public:
   JSON_ACCESS_OBJECT(Settings, Icons, icons);
   JSON_ACCESS_BOOL_WITH_KEY(Settings, fontDirty, font_dirty);
   JSON_ACCESS_BOOL_WITH_KEY(Settings, assetsDirty, assets_dirty);
+  JSON_ACCESS_BOOL_WITH_KEY(Settings, fontsCompressed, fonts_compressed);
 
   var::PathString get_output_directory() const {
     return get_source() / "designlab";
