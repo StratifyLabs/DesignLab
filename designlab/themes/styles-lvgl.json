@@ -777,7 +777,12 @@
       "line_width": "$sizeLineWidth",
       "line_color": "$colorText"
     },
-    "table_cell": {},
+    "table_cell": {
+      "text_color": "$colorForeground",
+      "border_width": "$sizeTableCellBorderWidth",
+      "border_side": "bottom",
+      "border_color": "$colorGrey"
+    },
     "meter_marker": {},
     "meter_indicator": {},
     "calendar_background": {},
