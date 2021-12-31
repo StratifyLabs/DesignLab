@@ -109,6 +109,7 @@ void ExportWorker::update_font_progress(int value, int total) {
 }
 
 void ExportWorker::export_assets() {
+  API_RETURN_IF_ERROR();
   const auto options = [&]() {
     Model::Scope model_scope;
     auto &model = ModelAccess::model();
@@ -144,6 +145,7 @@ void ExportWorker::export_assets() {
 }
 
 void ExportWorker::export_themes() {
+  API_RETURN_IF_ERROR();
   const auto theme_list = m_project_settings.get_themes();
   for (const auto &theme : theme_list) {
     m_theme_path_list
@@ -151,6 +153,9 @@ void ExportWorker::export_themes() {
                       .project_path = m_project_path,
                       .output_source_path = m_project_settings.get_source()})
           .get_source_list(m_project_path, m_project_settings);
+    if( is_error() ){
+      return;
+    }
   }
 
   {
@@ -178,6 +183,7 @@ fs::PathList ExportWorker::get_font_path_list() {
 }
 
 void ExportWorker::export_fonts() {
+  API_RETURN_IF_ERROR();
   const auto options = FontManager::Construct{
     .icons = m_project_settings.icons(),
     .input_path = "designlab.json",
@@ -203,7 +209,7 @@ void ExportWorker::export_fonts() {
 }
 
 void ExportWorker::export_cmake_sourcelist() {
-
+  API_RETURN_IF_ERROR();
   const auto output_path = [&]() {
     Model::Scope model_scope;
     auto &model = ModelAccess::model();

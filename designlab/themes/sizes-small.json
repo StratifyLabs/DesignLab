@@ -38,6 +38,8 @@
     "$sizeCardBorderWidth": "$sizeBorderWidth",
     "$sizeCardPadding": "$sizePadding",
 
+    "$sizeTableCellBorderWidth": "$sizeBorderWidth",
+
     "$sizeCheckboxBorderWidth": "$sizeBorderWidth",
     "$sizeCheckboxRadius": "$sizeBorderRadius",
 

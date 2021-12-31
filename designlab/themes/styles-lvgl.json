@@ -519,7 +519,8 @@
       "column_padding": "$sizePaddingMedium",
       "line_color": "$colorGrey",
       "line_width": 1,
-      "height": "LV_SIZE_CONTENT"
+      "height": "LV_SIZE_CONTENT",
+      "clip_corner": true
     },
     "@list_group": {
       "radius": "$sizeCardBorderRadius",

@@ -22,6 +22,11 @@ public:
 
 protected:
 
+  struct Error {
+    var::GeneralString during;
+    var::GeneralString error;
+  };
+
   void update_message(var::StringView message);
   void update_progress(int value, int total);
 

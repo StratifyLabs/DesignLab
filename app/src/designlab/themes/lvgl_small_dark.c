@@ -1219,6 +1219,7 @@ static const lv_style_const_prop_t card_const_list[] = {
   { .prop = LV_STYLE_LINE_COLOR, .value = { .color = { .full= 0xff666666 } } },
   { .prop = LV_STYLE_LINE_WIDTH, .value = { .num = 1 } },
   { .prop = LV_STYLE_HEIGHT, .value = { .num = LV_SIZE_CONTENT } },
+  { .prop = LV_STYLE_CLIP_CORNER, .value = { .num = 1 } },
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
 
@@ -1943,6 +1944,10 @@ static const lv_style_t line_style = {
 };
 
 static const lv_style_const_prop_t table_cell_const_list[] = {
+  { .prop = LV_STYLE_TEXT_COLOR, .value = { .color = { .full= 0xffffffff } } },
+  { .prop = LV_STYLE_BORDER_WIDTH, .value = { .num = 4 } },
+  { .prop = LV_STYLE_BORDER_SIDE, .value = { .num = 0x1 } },
+  { .prop = LV_STYLE_BORDER_COLOR, .value = { .color = { .full= 0xff666666 } } },
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
 

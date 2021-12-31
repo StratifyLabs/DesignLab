@@ -4,6 +4,7 @@
 
 #include "WorkerObject.hpp"
 #include "model/Model.hpp"
+#include "view/ViewObject.hpp"
 
 void WorkerObject::update_message(var::StringView message) {
   auto *notify_object = [&]() {
@@ -24,3 +25,4 @@ void WorkerObject::update_progress(int value, int total) {
   }();
   notify(notify_object);
 }
+

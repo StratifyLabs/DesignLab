@@ -6,6 +6,7 @@
 #define DESIGNLAB_LOGIC_THEMEMANAGER_HPP
 
 #include <fs/File.hpp>
+#include <fs/DataFile.hpp>
 #include <json/Json.hpp>
 #include <lvgl/Types.hpp>
 #include <lvgl/Animation.hpp>
@@ -103,7 +104,7 @@ private:
   json::JsonObject m_variables_object;
   json::JsonObject m_styles_object;
   json::JsonObject m_rules_object;
-  fs::File m_output;
+  fs::DataFile m_output;
   var::PathString m_theme_path;
 
 

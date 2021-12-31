@@ -76,7 +76,7 @@ void ThemeManager::construct(const Construct &options) {
   const auto output_path
     = output_directory / "designlab/themes" / m_theme_object.get_name() & ".c";
   printer().key("outputFile", output_path);
-  m_output = File(File::IsOverwrite::yes, output_path);
+  m_output = DataFile();
 
   API_RETURN_IF_ERROR();
 
@@ -92,12 +92,21 @@ void ThemeManager::construct(const Construct &options) {
   generate_apply_callback();
   generate_theme();
 
+  if( is_error() ){
+    printer().object("error", error());
+    return;
+  }
+
   API_ASSERT(is_success());
+
+  File(File::IsOverwrite::yes, output_path).write(m_output.seek(0));
+
 }
 
 fs::PathList ThemeManager::get_source_list(
   var::StringView project_path,
   const Settings &settings) {
+  API_RETURN_VALUE_IF_ERROR({});
   fs::PathList result;
 
   const auto theme_list = settings.get_themes();

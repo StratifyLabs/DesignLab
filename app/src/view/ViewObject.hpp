@@ -38,14 +38,6 @@ public:
     ~NotifyHome() { send_notify_to_home(); }
   };
 
-protected:
-  struct Names {
-    DESIGN_DECLARE_NAME(home_top_row);
-    DESIGN_DECLARE_NAME(home_container);
-    DESIGN_DECLARE_NAME(content_container);
-    DESIGN_DECLARE_NAME(prompt_modal);
-  };
-
   static void prompt_user(design::Prompt::Data &data) {
     Modal modal(Names::prompt_modal);
     modal.add_content(
@@ -55,6 +47,15 @@ protected:
   static void close_prompt(lv_event_t *e) {
     Event(e).find_parent<Modal>(Names::prompt_modal).close(300_milliseconds);
   }
+
+protected:
+  struct Names {
+    DESIGN_DECLARE_NAME(home_top_row);
+    DESIGN_DECLARE_NAME(home_container);
+    DESIGN_DECLARE_NAME(content_container);
+    DESIGN_DECLARE_NAME(prompt_modal);
+  };
+
 };
 
 #endif // DESIGNLAB_VIEWOBJECT_HPP
