@@ -6,7 +6,7 @@
 #define DESIGNLAB_EXTRAS_HPP
 
 #include <design/Typography.hpp>
-#include <design/macros.h>
+#include <design/macros.hpp>
 #include <json/Json.hpp>
 #include <lvgl.hpp>
 

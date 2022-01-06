@@ -9,7 +9,7 @@
 #include "view/Home.hpp"
 #include "view/ThemePreview.hpp"
 
-#include <design/macros.h>
+#include <design/macros.hpp>
 
 INCBIN(assetfs, "../app/src/designlab/assets/assets.assetfs");
 INCBIN_EXTERN(assetfs);

@@ -5,7 +5,7 @@
 #ifndef DESIGNLAB_VIEWOBJECT_HPP
 #define DESIGNLAB_VIEWOBJECT_HPP
 
-#include <design/macros.h>
+#include <design/macros.hpp>
 
 #include <printer/YamlPrinter.hpp>
 #include <thread/Mutex.hpp>

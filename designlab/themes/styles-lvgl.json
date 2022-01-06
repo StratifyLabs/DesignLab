@@ -772,7 +772,8 @@
       "text_font": "$fontBodySmall"
     },
     "switch_knob": {
-      "background_color": "$colorPrimary"
+      "background_color": "$colorPrimary",
+      "padding": "-2"
     },
     "line": {
       "line_width": "$sizeLineWidth",
