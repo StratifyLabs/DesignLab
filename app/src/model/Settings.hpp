@@ -23,6 +23,7 @@ public:
   JSON_ACCESS_STRING(SessionSettings, project);
   JSON_ACCESS_STRING(SessionSettings, theme);
   JSON_ACCESS_INTEGER(SessionSettings, offset);
+  JSON_ACCESS_STRING_WITH_KEY(SessionSettings, nodePath, node_path);
   JSON_ACCESS_STRING_WITH_KEY(SessionSettings, lvFontConvPath, lv_font_conv_path);
   JSON_ACCESS_INTEGER_WITH_KEY(SessionSettings, windowX, window_x);
   JSON_ACCESS_INTEGER_WITH_KEY(SessionSettings, windowY, window_y);

@@ -26,6 +26,7 @@ void ExportWorker::interface_work() {
     // this will reload the project saving the changes
     m_project_path = model.session_settings.get_project();
     m_lv_font_path = model.session_settings.get_lv_font_conv_path();
+    m_node_path = model.session_settings.get_node_path();
     const auto settings_path = Settings::get_file_path(m_project_path);
     model.project_settings.save();
     m_project_settings.copy(model.project_settings);
@@ -176,6 +177,7 @@ fs::PathList ExportWorker::get_font_path_list() {
     .input_path = "designlab.json",
     .is_dry_run = true,
     .lv_font_conv_path = m_lv_font_path,
+    .node_path = m_node_path,
     .output_path = m_project_settings.get_source(),
     .project_path = m_project_path};
 
@@ -191,6 +193,7 @@ void ExportWorker::export_fonts() {
     .input_path = "designlab.json",
     .is_dry_run = !m_project_settings.is_font_dirty(),
     .lv_font_conv_path = m_lv_font_path,
+    .node_path = m_node_path,
     .output_path = m_project_settings.get_source(),
     .project_path = m_project_path,
     .update_callback = update_font_progress_callback,

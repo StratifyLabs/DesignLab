@@ -90,12 +90,22 @@ void Project::configure_form(Form form) {
 
   form.add(
     Form::SelectFile(
+      Form::SelectFile::Data::create(Names::node_select_file)
+        .set_select_file()
+        .set_absolute_path())
+      .add_event_callback(EventCode::notified, node_path_changed)
+      .set_value(model().session_settings.get_node_path_cstring())
+      .set_label("Select path to `node`")
+      .set_hint("This value is the same for all projects (saved in session settings)."));
+
+  form.add(
+    Form::SelectFile(
       Form::SelectFile::Data::create(Names::lv_font_conv_select_file)
         .set_select_file()
         .set_absolute_path())
       .add_event_callback(EventCode::notified, lv_font_conv_path_changed)
       .set_value(model().session_settings.get_lv_font_conv_path_cstring())
-      .set_label("Select path to `lv_font_conv`")
+      .set_label("Select path to `lv_font_conv.js`")
       .set_hint("This value is the same for all projects (saved in session settings)."));
 }
 
@@ -221,6 +231,28 @@ void Project::accept_prompt_new_project(lv_event_t *e) {
   close_prompt(e);
 }
 
+void Project::node_path_changed(lv_event_t * e) {
+  Model::Scope model_scope;
+  auto form_select = Event(e).target<Form::SelectFile>();
+  const auto new_path = form_select.get_value();
+
+  if( !new_path.is_empty() ) {
+    if (fs::Path::name(new_path) != "node") {
+      form_select.set_error_message_as_static("Error: please specify path to `node`");
+      return;
+    }
+
+    if (!fs::FileSystem().exists(new_path)) {
+      form_select.set_error_message_as_static("Error: does not exist");
+      return;
+    }
+  }
+
+  model().session_settings.set_node_path(new_path);
+  form_select.hide_error_message();
+  API_ASSERT(is_success());
+}
+
 void Project::lv_font_conv_path_changed(lv_event_t * e) {
   Model::Scope model_scope;
   auto form_select = Event(e).target<Form::SelectFile>();
@@ -229,8 +261,8 @@ void Project::lv_font_conv_path_changed(lv_event_t * e) {
   printf("New path is `%s` %d\n", PathString(new_path).cstring(), new_path.is_empty());
 
   if( !new_path.is_empty() ) {
-    if (fs::Path::name(new_path) != "lv_font_conv") {
-      form_select.set_error_message_as_static("Error: please specify path to `lv_font_conv`");
+    if (fs::Path::name(new_path) != "lv_font_conv.js") {
+      form_select.set_error_message_as_static("Error: please specify path to `lv_font_conv.js`");
       return;
     }
 

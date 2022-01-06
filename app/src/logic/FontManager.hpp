@@ -18,6 +18,7 @@ public:
     API_PUBLIC_BOOL(Construct,dry_run,false);
 
     API_PMAZ(lv_font_conv_path, Construct, var::PathString, {});
+    API_PMAZ(node_path, Construct, var::PathString, {});
     API_PMAZ(output_path, Construct, var::PathString, {});
     API_PMAZ(project_path, Construct, var::PathString, {});
     API_PMAZ(update_callback, Construct, UpdateCallback, nullptr);

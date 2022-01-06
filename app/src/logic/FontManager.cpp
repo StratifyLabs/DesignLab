@@ -22,7 +22,7 @@ FontManager::FontManager(const Construct &options) {
                           ? Process::which("lv_font_conv")
                           : options.lv_font_conv_path;
 
-  const auto node_path = fs::Path::parent_directory(m_lv_font_conv_path);
+  const auto node_path = options.node_path;
 
   if (m_lv_font_conv_path.is_empty()) {
     API_RETURN_ASSIGN_ERROR("`lv_font_conv` not found on the path", EINVAL);
@@ -74,11 +74,15 @@ FontManager::FontManager(const Construct &options) {
         const auto output_file_path
           = output_directory / get_file_name(font, font_size);
 
-        Process::Arguments arguments(m_lv_font_conv_path);
-        arguments.push("--bpp=" | font.get_bits_per_pixel())
+        StringPrinter printer;
+
+        Process::Arguments arguments(node_path);
+        arguments.push(m_lv_font_conv_path)
+          .push("--bpp=" | font.get_bits_per_pixel())
           .push("--size=" | font_size)
           .push("--format=lvgl")
-          .push("--output=" | options.project_path / output_file_path.string_view())
+          .push(
+            "--output=" | options.project_path / output_file_path.string_view())
           .push("--font=" | options.project_path / font.get_path())
           .push("--range=" | font.get_range());
 
@@ -102,47 +106,41 @@ FontManager::FontManager(const Construct &options) {
           add_icon_range(font_brands_name, "brands");
         }
 
-        StringPrinter printer;
-
         auto env
           = Process::Environment().set_working_directory(options.project_path);
 
-        if( !node_path.is_empty() ){
+        if (!node_path.is_empty()) {
           const auto current_path = getenv("PATH");
-          if( current_path != nullptr ) {
+          if (current_path != nullptr && 0) {
             env.set("PATH", var::StringView(current_path) | ":" | node_path);
           } else {
             env.set("PATH", node_path);
           }
         }
 
+        printer.object("arguments", arguments).object("environment", env);
+
         Process lv_font_conv(arguments, env);
-
-        printer.object("args", arguments)
-          .object("env", env);
-
-        var::PathString cwd;
-        getcwd(cwd.data(), cwd.capacity());
-        printer.key("currentDirectory", cwd);
 
         lv_font_conv.wait();
         lv_font_conv.read_output();
-        printer.key("output", lv_font_conv.get_standard_output());
-        printer.key("error", lv_font_conv.get_standard_error());
 
-        File(File::IsOverwrite::yes, "/Users/tgil/Desktop/printer.txt")
-          .write(printer.output());
+        printer.key("output", lv_font_conv.get_standard_output())
+          .key("error", lv_font_conv.get_standard_error());
 
         auto status = lv_font_conv.status();
         auto exit_status = status.exit_status();
-        File(File::IsOverwrite::yes, "/Users/tgil/Desktop/log.txt")
-          .write(var::GeneralString()
-                   .format("exit status: %d\n", exit_status)
-                   .string_view());
+        printer.key("exitStatus", var::NumberString(exit_status));
+
+        const auto log_file_path = SessionSettings::get_application_directory()
+                                   / "lv_font_conv_log.txt";
+        File(File::IsOverwrite::yes, log_file_path).write(printer.output());
 
         if (exit_status != 0) {
+
           API_RETURN_ASSIGN_ERROR(
-            "`lv_font_conv` had an error " | m_lv_font_conv_path.string_view(),
+            "`lv_font_conv` had an error (see `" | log_file_path.string_view()
+              | "` for details)",
             EINVAL);
         }
 
