@@ -92,7 +92,7 @@ void ThemeManager::construct(const Construct &options) {
   generate_apply_callback();
   generate_theme();
 
-  if( is_error() ){
+  if (is_error()) {
     printer().object("error", error());
     return;
   }
@@ -100,7 +100,6 @@ void ThemeManager::construct(const Construct &options) {
   API_ASSERT(is_success());
 
   File(File::IsOverwrite::yes, output_path).write(m_output.seek(0));
-
 }
 
 fs::PathList ThemeManager::get_source_list(
@@ -127,6 +126,7 @@ json::JsonObject ThemeManager::load_reference_json_file(var::StringView key) {
 }
 
 void ThemeManager::add_variables(const StringView key) {
+  API_RETURN_IF_ERROR();
 
   if (m_theme_object.to_object().at(key).is_string()) {
     const auto filename = m_theme_object.to_object().at(key).to_string_view();
@@ -679,12 +679,27 @@ ThemeManager::get_property_value(Property property, const char *value) {
   auto get_color = [&](const char *value) {
     if (const auto number_value = Color::palette_from_string(value);
         number_value != Palette::invalid) {
+      const auto lv_color = Color::get_palette(number_value).get_color();
       return var::GeneralString().format(
-        ".color = { .full = 0x%08X } ",
-        Color::get_palette(number_value).get_color());
+        ".color = LV_COLOR_MAKE(0x%02x,0x%02x,0x%02x) ",
+        LV_COLOR_GET_R(lv_color),
+        LV_COLOR_GET_G(lv_color),
+        LV_COLOR_GET_B(lv_color));
     }
 
-    return var::GeneralString().format(".color = { .full= %s }", value);
+    const StringView color_value = value;
+    if (color_value.find("LV_COLOR_") == 0) {
+      return var::GeneralString().format(".color = %s ", value);
+    }
+
+    const auto number_value = color_value.to_unsigned_long(StringView::Base::auto_);
+
+    const lv_color_t lv_color = { .full = u32(number_value) };
+    return var::GeneralString().format(
+      ".color = LV_COLOR_MAKE(0x%02x,0x%02x,0x%02x) ",
+      LV_COLOR_GET_R(lv_color),
+      LV_COLOR_GET_G(lv_color),
+      LV_COLOR_GET_B(lv_color));
   };
 
   auto get_number = [&](const char *value) {

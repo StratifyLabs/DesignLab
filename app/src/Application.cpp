@@ -62,7 +62,6 @@ void Application::run(sys::Cli &cli) {
   }
 
 
-
   Home::configure(screen().get<Generic>());
   runtime.loop();
 
@@ -73,3 +72,4 @@ void Application::run(sys::Cli &cli) {
     model().session_settings.set_window_y(final_position.y());
   }
 }
+

@@ -8,6 +8,8 @@
 
 #include <lvgl/AssetFile.hpp>
 
+#include "StringPrinter.hpp"
+
 #include "designlab/fonts/FontAwesomeIcons.hpp"
 
 #include "FontManager.hpp"
@@ -16,8 +18,13 @@ FontManager::FontManager(const Construct &options) {
 
   m_icons = options.icons;
 
-  const auto program_path = Process::which("lv_font_conv");
-  if (program_path.is_empty()) {
+  m_lv_font_conv_path = options.lv_font_conv_path.is_empty()
+                          ? Process::which("lv_font_conv")
+                          : options.lv_font_conv_path;
+
+  const auto node_path = fs::Path::parent_directory(m_lv_font_conv_path);
+
+  if (m_lv_font_conv_path.is_empty()) {
     API_RETURN_ASSIGN_ERROR("`lv_font_conv` not found on the path", EINVAL);
   }
 
@@ -67,15 +74,15 @@ FontManager::FontManager(const Construct &options) {
         const auto output_file_path
           = output_directory / get_file_name(font, font_size);
 
-        Process::Arguments arguments(program_path);
+        Process::Arguments arguments(m_lv_font_conv_path);
         arguments.push("--bpp=" | font.get_bits_per_pixel())
           .push("--size=" | font_size)
           .push("--format=lvgl")
-          .push("--output=" | output_file_path.string_view())
-          .push("--font=" | font.get_path())
+          .push("--output=" | options.project_path / output_file_path.string_view())
+          .push("--font=" | options.project_path / font.get_path())
           .push("--range=" | font.get_range());
 
-        if( settings.is_fonts_compressed() == false ){
+        if (settings.is_fonts_compressed() == false) {
           arguments.push("--no-compress");
         }
 
@@ -95,24 +102,61 @@ FontManager::FontManager(const Construct &options) {
           add_icon_range(font_brands_name, "brands");
         }
 
-        Process lv_font_conv(
-          arguments,
-          Process::Environment().set_working_directory(options.project_path));
+        StringPrinter printer;
+
+        auto env
+          = Process::Environment().set_working_directory(options.project_path);
+
+        if( !node_path.is_empty() ){
+          const auto current_path = getenv("PATH");
+          if( current_path != nullptr ) {
+            env.set("PATH", var::StringView(current_path) | ":" | node_path);
+          } else {
+            env.set("PATH", node_path);
+          }
+        }
+
+        Process lv_font_conv(arguments, env);
+
+        printer.object("args", arguments)
+          .object("env", env);
+
+        var::PathString cwd;
+        getcwd(cwd.data(), cwd.capacity());
+        printer.key("currentDirectory", cwd);
+
         lv_font_conv.wait();
-        auto status = lv_font_conv.status().exit_status();
-        if (status != 0) {
-          API_RETURN_ASSIGN_ERROR("`lv_font_conv` had an error", EINVAL);
+        lv_font_conv.read_output();
+        printer.key("output", lv_font_conv.get_standard_output());
+        printer.key("error", lv_font_conv.get_standard_error());
+
+        File(File::IsOverwrite::yes, "/Users/tgil/Desktop/printer.txt")
+          .write(printer.output());
+
+        auto status = lv_font_conv.status();
+        auto exit_status = status.exit_status();
+        File(File::IsOverwrite::yes, "/Users/tgil/Desktop/log.txt")
+          .write(var::GeneralString()
+                   .format("exit status: %d\n", exit_status)
+                   .string_view());
+
+        if (exit_status != 0) {
+          API_RETURN_ASSIGN_ERROR(
+            "`lv_font_conv` had an error " | m_lv_font_conv_path.string_view(),
+            EINVAL);
         }
 
         // was there an error?
 
         progress_value++;
 
-        if (options.update_callback){
-          options.update_callback(options.update_context,progress_value, progress_total);
+        if (options.update_callback) {
+          options.update_callback(
+            options.update_context,
+            progress_value,
+            progress_total);
         }
       }
-
     }
   }
 
@@ -244,14 +288,35 @@ void FontManager::generate_fonts_source(
   CodePrinter h_printer(fonts_h);
   CodePrinter c_printer(fonts_c);
 
+  const auto font_count = [&]() {
+    int count = 0;
+    for_each_font<int>(
+      font_list,
+      count,
+      [](const Settings::Font &font, var::StringView font_size, int &count) {
+        count++;
+      });
+    return count;
+  }();
+
+  const GeneralString lvgl_font_list = GeneralString().format(
+    "const lvgl_api_font_descriptor_t lvgl_font_list[%d]",
+    font_count);
+
   {
     CodePrinter::HeaderGuard header_guard(h_printer, "DESIGNLAB_FONTS_H_");
     h_printer.newline();
-    h_printer.line("#if defined __cplusplus")
+    h_printer.line("#include <lvgl_api.h>")
+      .newline()
+      .line("#if defined __cplusplus")
       .line("extern \"C\" {")
       .line("#endif")
       .newline()
+      .line("#if defined __link")
       .line("void fonts_initialize();")
+      .line("#else")
+      .statement("extern " | lvgl_font_list)
+      .line("#endif")
       .newline()
       .line("#if defined __cplusplus")
       .line("}")
@@ -261,11 +326,7 @@ void FontManager::generate_fonts_source(
 
   c_printer.newline().newline();
 
-  c_printer.line("#include \"fonts.h\"")
-    .line("#include <lvgl.h>")
-    .line("#include <lvgl_api.h>")
-    .newline()
-    .newline();
+  c_printer.line("#include \"fonts.h\"").newline().newline();
 
   for_each_font<CodePrinter>(
     font_list,
@@ -281,9 +342,7 @@ void FontManager::generate_fonts_source(
   c_printer.newline().newline();
 
   {
-    CodePrinter::StructInitialization struct_init(
-      c_printer,
-      "static const lvgl_api_font_descriptor_t lvgl_font_list[]");
+    CodePrinter::StructInitialization struct_init(c_printer, lvgl_font_list);
 
     for_each_font<CodePrinter::StructInitialization>(
       font_list,
@@ -305,6 +364,7 @@ void FontManager::generate_fonts_source(
   }
 
   c_printer.newline().newline();
+  c_printer.newline().line("#if defined __link").newline();
   {
     CodePrinter::Function get_font_function(
       c_printer,
@@ -329,4 +389,5 @@ void FontManager::generate_fonts_source(
       "void fonts_initialize()");
     c_printer.statement("lvgl_api_set_font_callback(get_font)");
   }
+  c_printer.newline().line("#endif").newline().newline();
 }

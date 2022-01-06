@@ -9,6 +9,11 @@
 
 class StringPrinter : public printer::Printer {
 public:
+
+  var::StringView output() const {
+    return m_output.string_view();
+  }
+
   void interface_print_final(var::StringView value) override {
     m_output += value;
   }

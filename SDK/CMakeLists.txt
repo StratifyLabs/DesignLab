@@ -1,6 +1,6 @@
 cmake_minimum_required (VERSION 3.12)
 
-project(StratifyApp-SDK)
+project(DesignLab-SDK)
 
 set(API_IS_SDK TRUE CACHE INTERNAL "Build SDK projects")
 option(IS_PULL "Pull SDK projects" ON)

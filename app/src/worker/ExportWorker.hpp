@@ -17,6 +17,7 @@ public:
 protected:
 
   var::PathString m_project_path;
+  var::PathString m_lv_font_path;
   Settings m_project_settings;
   fs::PathList m_asset_path_list;
   fs::PathList m_theme_path_list;

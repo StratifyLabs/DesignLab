@@ -99,31 +99,11 @@ FontMaker::InputSchema::InputSchema() {
               .set_options("1\n2\n4\n8")
               .set_hint("The style of the font (should match the file)."));
 
-  push_back(Form::SectionHeadingSchema()
-              .set_name(Names::sizes_section_heading)
-              .set_label("Sizes"));
-
   push_back(Form::LineField::Schema()
-              .set_name(Settings::Font::sizes_start_key())
-              .set_label("Start")
-              .set_value("12")
-              .set_hint("The first font will be this size."));
-
-  push_back(
-    Form::LineField::Schema()
-      .set_name(Settings::Font::sizes_steps_key())
-      .set_label("Steps")
-      .set_value("4")
-      .set_hint("Use one value to evenly space the font sizes. Use comma "
-                "separated values to specify each delta. e.g. 4 or "
-                "4,4,4,4,8,8,8,8."));
-
-  push_back(Form::LineField::Schema()
-              .set_name(Settings::Font::sizes_total_key())
-              .set_label("Total")
-              .set_value("15")
-              .set_hint("The number of fonts to generate. The last delta "
-                        "value will be used more than once if needed."));
+              .set_name(Settings::Font::sizes_key())
+              .set_label("Sizes")
+              .set_value("20,24,28,32,40,48")
+              .set_hint("A comma-separated list of font sizes."));
 
   push_back(Form::Switch::Schema()
               .set_name(Settings::Font::icons_key())

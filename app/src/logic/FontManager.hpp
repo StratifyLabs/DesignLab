@@ -17,6 +17,7 @@ public:
 
     API_PUBLIC_BOOL(Construct,dry_run,false);
 
+    API_PMAZ(lv_font_conv_path, Construct, var::PathString, {});
     API_PMAZ(output_path, Construct, var::PathString, {});
     API_PMAZ(project_path, Construct, var::PathString, {});
     API_PMAZ(update_callback, Construct, UpdateCallback, nullptr);
@@ -27,20 +28,7 @@ public:
   FontManager(const Construct &options);
 
   static var::GeneralString get_size_list(const Settings::Font &font) {
-    auto start = font.get_sizes_start().to_integer();
-    const auto step_list = font.get_sizes_steps().split(",");
-    const auto total = font.get_sizes_total().to_integer();
-    var::GeneralString result;
-
-    int step = 0;
-    for (const auto i : api::Index(total)) {
-      result.append(var::NumberString(start, "%d,").string_view());
-      if (i < step_list.count()) {
-        step = step_list.at(i).to_integer();
-      }
-      start += step;
-    }
-    return result.pop_back();
+    return font.get_sizes();
   }
 
   static var::PathString
@@ -71,6 +59,7 @@ public:
 private:
 
   Settings::Icons m_icons;
+  var::PathString m_lv_font_conv_path;
 
   var::String
   get_icon_font_range(Settings::Icons icons, var::StringView family);

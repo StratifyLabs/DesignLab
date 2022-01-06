@@ -15,6 +15,7 @@ private:
   struct Names {
     DESIGN_DECLARE_NAME(directory_select_file);
     DESIGN_DECLARE_NAME(source_select_file);
+    DESIGN_DECLARE_NAME(lv_font_conv_select_file);
     DESIGN_DECLARE_NAME(project_form);
     DESIGN_DECLARE_NAME(project_column);
   };
@@ -27,6 +28,7 @@ private:
   static void handle_exited(lv_event_t*);
   static void mark_all_as_dirty(lv_event_t*);
   static void project_path_changed(lv_event_t*);
+  static void lv_font_conv_path_changed(lv_event_t*);
   static void source_path_changed(lv_event_t*);
 
   static void accept_prompt_new_project(lv_event_t * e);
