@@ -9,9 +9,11 @@
 #include "designlab/icon_fonts.h"
 #include "extras/Extras.hpp"
 
-void IconMaker::configure(Generic generic) {
+IconMaker::IconMaker(const char *name) {
+  construct_object(name);
+  fill();
 
-  generic.clear_flag(Flags::scrollable)
+  clear_flag(Flags::scrollable)
     .add(Container(ViewObject::Names::content_container)
            .add_event_callback(EventCode::exited, handle_exited)
            .clear_flag(Flags::scrollable)
@@ -20,7 +22,7 @@ void IconMaker::configure(Generic generic) {
                   .fill()
                   .clear_flag(Flags::scrollable)));
 
-  auto input_form_column = generic.find<Column>(Names::input_form_column);
+  auto input_form_column = find<Column>(Names::input_form_column);
 
   input_form_column.add(ScreenHeading("Icons"))
     .add(HorizontalLine())
@@ -67,7 +69,7 @@ void IconMaker::configure(Generic generic) {
               .add_event_callback(EventCode::clicked, callback));
   };
 
-  auto control_row = generic.find<Row>(Names::control_row);
+  auto control_row = find<Row>(Names::control_row);
   add_control_button(
     control_row,
     Names::select_all_button,
@@ -79,7 +81,7 @@ void IconMaker::configure(Generic generic) {
   // push the page buttons to the right
   control_row.add(NakedContainer().set_height(1).set_flex_grow());
 
-  auto icon_container_row = generic.find<Row>(Names::icon_container_row);
+  auto icon_container_row = find<Row>(Names::icon_container_row);
 
   const auto icon_count = icons_list.count();
   for (u32 offset = 0; offset < icon_count;
@@ -109,7 +111,7 @@ void IconMaker::configure(Generic generic) {
   }();
 
   update_icons<RangeList>(
-    generic.find<Container>(ViewObject::Names::content_container),
+    find<Container>(ViewObject::Names::content_container),
     range,
     [](IconCheck icon_check, RangeList &range) {
       const StringView unicode = icon_check.get_unicode();

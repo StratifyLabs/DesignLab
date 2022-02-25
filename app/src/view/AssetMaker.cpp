@@ -9,7 +9,9 @@
 
 #include "Editor.hpp"
 
-void AssetMaker::configure(Generic generic) {
+AssetMaker::AssetMaker(const char *name) {
+  construct_object(name);
+  fill();
 
   auto &editor_data = Editor::Data::create()
                         .set_add_button_text("Add Asset")
@@ -22,7 +24,7 @@ void AssetMaker::configure(Generic generic) {
                         .set_validate_callback(validate)
                         .set_get_schema_callback(InputSchema::get_form_schema);
 
-  generic.clear_flag(Flags::scrollable).add(Editor(editor_data).fill());
+  clear_flag(Flags::scrollable).add(Editor(editor_data).fill());
 }
 
 AssetMaker::InputSchema::InputSchema() {

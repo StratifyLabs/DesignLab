@@ -6,20 +6,21 @@
 #include <var.hpp>
 
 #include "extras/Extras.hpp"
-#include "worker/ExportWorker.hpp"
 
 #include "ExportModal.hpp"
 #include "Project.hpp"
 
-void Project::configure(Generic generic) {
+Project::Project(const char * name) {
+  construct_object(name);
+  fill();
   NotifyHome notify_home;
-  generic.clear_flag(Flags::scrollable)
+  clear_flag(Flags::scrollable)
     .add(Container(ViewObject::Names::content_container)
            .add_event_callback(EventCode::exited, handle_exited)
            .fill()
            .add(Column(Names::project_column)));
 
-  auto column = generic.find<Column>(Names::project_column);
+  auto column = find<Column>(Names::project_column);
   column.fill()
     .add(HeaderRow(
       "Project",

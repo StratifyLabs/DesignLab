@@ -7,11 +7,15 @@
 
 #include "ViewObject.hpp"
 
-class About : public ViewObject {
+class About : public ViewObject, public ObjectAccess<About> {
 public:
-  static void configure(Generic generic);
+  static void configure(Generic generic){
+    generic.add(About(ViewObject::Names::about_object));
+  }
 
 private:
+  LVGL_OBJECT_ACCESS_DECLARE_CONSTRUCTOR(About);
+
   struct Names {
     DESIGN_DECLARE_NAME(about_column);
     DESIGN_DECLARE_NAME(dark_button);

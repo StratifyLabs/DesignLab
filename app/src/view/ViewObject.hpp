@@ -41,7 +41,7 @@ public:
   static void prompt_user(design::Prompt::Data &data) {
     Modal modal(Names::prompt_modal);
     modal.add_content(
-      Prompt(data).set_width(60_percent).set_height(40_percent).object());
+      Prompt(data).set_width(60_percent).set_height(40_percent));
   }
 
   static void close_prompt(lv_event_t *e) {
@@ -54,6 +54,17 @@ protected:
     DESIGN_DECLARE_NAME(home_container);
     DESIGN_DECLARE_NAME(content_container);
     DESIGN_DECLARE_NAME(prompt_modal);
+
+    DESIGN_DECLARE_NAME(home_object);
+    DESIGN_DECLARE_NAME(about_object);
+    DESIGN_DECLARE_NAME(builder_object);
+    DESIGN_DECLARE_NAME(project_object);
+    DESIGN_DECLARE_NAME(asset_maker_object);
+    DESIGN_DECLARE_NAME(color_preview_object);
+    DESIGN_DECLARE_NAME(font_maker_object);
+    DESIGN_DECLARE_NAME(icon_maker_object);
+    DESIGN_DECLARE_NAME(theme_maker_object);
+
   };
 
 };

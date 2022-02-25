@@ -8,11 +8,15 @@
 #include "ViewObject.hpp"
 #include "extras/Extras.hpp"
 
-class ThemeMaker : public ViewObject {
+class ThemeMaker : public ViewObject, public ObjectAccess<ThemeMaker> {
 public:
-  static void configure(lvgl::Generic generic);
+  static void configure(lvgl::Generic generic){
+    generic.add(ThemeMaker(ViewObject::Names::theme_maker_object));
+  }
 
 private:
+  LVGL_OBJECT_ACCESS_DECLARE_CONSTRUCTOR(ThemeMaker);
+
   class InputSchema : var::Vector<json::JsonObject> {
   public:
     InputSchema();

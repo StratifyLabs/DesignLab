@@ -7,6 +7,8 @@ namespace icons {
   namespace fa {
     static constexpr auto adjust_solid = "\uf042";
     static constexpr auto align_justify_solid = "\uf039";
+    static constexpr auto arrows_alt_h_solid = "\uf337";
+    static constexpr auto arrows_alt_v_solid = "\uf338";
     static constexpr auto bars_solid = "\uf0c9";
     static constexpr auto bold_solid = "\uf032";
     static constexpr auto check_solid = "\uf00c";
@@ -33,6 +35,7 @@ namespace icons {
     static constexpr auto folder_open_solid = "\uf07c";
     static constexpr auto folder_plus_solid = "\uf65e";
     static constexpr auto font_solid = "\uf031";
+    static constexpr auto hammer_solid = "\uf6e3";
     static constexpr auto hat_wizard_solid = "\uf6e8";
     static constexpr auto icons_solid = "\uf86d";
     static constexpr auto image_solid = "\uf03e";
@@ -74,4 +77,76 @@ namespace icons {
   }
 }
 #endif // FONTAWESOME_ICONS_HPP
+
+
+#define ICONS_FA_ADJUST_SOLID "\uf042"
+#define ICONS_FA_ALIGN_JUSTIFY_SOLID "\uf039"
+#define ICONS_FA_ARROWS_ALT_H_SOLID "\uf337"
+#define ICONS_FA_ARROWS_ALT_V_SOLID "\uf338"
+#define ICONS_FA_BARS_SOLID "\uf0c9"
+#define ICONS_FA_BOLD_SOLID "\uf032"
+#define ICONS_FA_CHECK_SOLID "\uf00c"
+#define ICONS_FA_CHECK_DOUBLE_SOLID "\uf560"
+#define ICONS_FA_CHEVRON_DOWN_SOLID "\uf078"
+#define ICONS_FA_CHEVRON_LEFT_SOLID "\uf053"
+#define ICONS_FA_CHEVRON_RIGHT_SOLID "\uf054"
+#define ICONS_FA_CHEVRON_UP_SOLID "\uf077"
+#define ICONS_FA_CODE_SOLID "\uf121"
+#define ICONS_FA_COPYRIGHT_SOLID "\uf1f9"
+#define ICONS_FA_DOWNLOAD_SOLID "\uf019"
+#define ICONS_FA_EDIT_SOLID "\uf044"
+#define ICONS_FA_ELLIPSIS_H_SOLID "\uf141"
+#define ICONS_FA_ELLIPSIS_V_SOLID "\uf142"
+#define ICONS_FA_EXCLAMATION_SOLID "\uf12a"
+#define ICONS_FA_EXTERNAL_LINK_ALT_SOLID "\uf35d"
+#define ICONS_FA_FILE_SOLID "\uf15b"
+#define ICONS_FA_FILE_ALT_SOLID "\uf15c"
+#define ICONS_FA_FILE_CODE_SOLID "\uf1c9"
+#define ICONS_FA_FILE_IMAGE_SOLID "\uf1c5"
+#define ICONS_FA_FLASK_SOLID "\uf0c3"
+#define ICONS_FA_FOLDER_SOLID "\uf07b"
+#define ICONS_FA_FOLDER_MINUS_SOLID "\uf65d"
+#define ICONS_FA_FOLDER_OPEN_SOLID "\uf07c"
+#define ICONS_FA_FOLDER_PLUS_SOLID "\uf65e"
+#define ICONS_FA_FONT_SOLID "\uf031"
+#define ICONS_FA_HAMMER_SOLID "\uf6e3"
+#define ICONS_FA_HAT_WIZARD_SOLID "\uf6e8"
+#define ICONS_FA_ICONS_SOLID "\uf86d"
+#define ICONS_FA_IMAGE_SOLID "\uf03e"
+#define ICONS_FA_IMAGES_SOLID "\uf302"
+#define ICONS_FA_INBOX_SOLID "\uf01c"
+#define ICONS_FA_INFO_SOLID "\uf129"
+#define ICONS_FA_INFO_CIRCLE_SOLID "\uf05a"
+#define ICONS_FA_ITALIC_SOLID "\uf033"
+#define ICONS_FA_KEYBOARD_SOLID "\uf11c"
+#define ICONS_FA_LIST_SOLID "\uf03a"
+#define ICONS_FA_LIST_ALT_SOLID "\uf022"
+#define ICONS_FA_LOCK_SOLID "\uf023"
+#define ICONS_FA_LOCK_OPEN_SOLID "\uf3c1"
+#define ICONS_FA_MINUS_SOLID "\uf068"
+#define ICONS_FA_MOON_SOLID "\uf186"
+#define ICONS_FA_PALETTE_SOLID "\uf53f"
+#define ICONS_FA_PENCIL_ALT_SOLID "\uf303"
+#define ICONS_FA_PLUS_SOLID "\uf067"
+#define ICONS_FA_QUESTION_SOLID "\uf128"
+#define ICONS_FA_QUESTION_CIRCLE_SOLID "\uf059"
+#define ICONS_FA_QUOTE_LEFT_SOLID "\uf10d"
+#define ICONS_FA_QUOTE_RIGHT_SOLID "\uf10e"
+#define ICONS_FA_SLIDERS_H_SOLID "\uf1de"
+#define ICONS_FA_SORT_DOWN_SOLID "\uf0dd"
+#define ICONS_FA_SORT_UP_SOLID "\uf0de"
+#define ICONS_FA_STREAM_SOLID "\uf550"
+#define ICONS_FA_SUN_SOLID "\uf185"
+#define ICONS_FA_TERMINAL_SOLID "\uf120"
+#define ICONS_FA_TH_SOLID "\uf00a"
+#define ICONS_FA_TH_LARGE_SOLID "\uf009"
+#define ICONS_FA_TH_LIST_SOLID "\uf00b"
+#define ICONS_FA_TIMES_SOLID "\uf00d"
+#define ICONS_FA_TRASH_ALT_SOLID "\uf2ed"
+#define ICONS_FA_USER_SOLID "\uf007"
+#define ICONS_FA_CIRCLE_REGULAR "\uf111"
+#define ICONS_FA_GITHUB_BRANDS "\uf09b"
+#define ICONS_FA_GITHUB_ALT_BRANDS "\uf113"
+#define ICONS_FA_GITHUB_SQUARE_BRANDS "\uf092"
+
 

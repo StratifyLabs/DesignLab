@@ -7,20 +7,25 @@
 
 #include "ViewObject.hpp"
 
-class Home : public ViewObject {
+class Home : public ViewObject, public ObjectAccess<Home> {
 public:
-  static void configure(Generic generic);
+  static void configure(Generic generic){
+    generic.add(Home(ViewObject::Names::home_object));
+  }
 
 private:
+  LVGL_OBJECT_ACCESS_DECLARE_CONSTRUCTOR(Home);
   struct Names {
     static constexpr auto button_area = "HomeButtonArea";
     static constexpr auto content_area = "HomeContentArea";
-    static constexpr auto project_button = "Project";
-    static constexpr auto theme_button = "Themes";
+    DESIGN_DECLARE_NAME_VALUE(project_button, Project);
+    DESIGN_DECLARE_NAME_VALUE(theme_button, Themes);
     static constexpr auto icon_button = "Icons";
     static constexpr auto asset_button = "Assets";
     static constexpr auto font_button = "Fonts";
     static constexpr auto about_button = "About";
+    DESIGN_DECLARE_NAME_VALUE(builder_button, Builder);
+
 
   };
 

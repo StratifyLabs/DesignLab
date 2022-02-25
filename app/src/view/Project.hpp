@@ -7,11 +7,14 @@
 
 #include "ViewObject.hpp"
 
-class Project : public ViewObject {
+class Project : public ViewObject, public ObjectAccess<Project> {
 public:
-  static void configure(Generic generic);
-private:
+  static void configure(Generic generic){
+    generic.add(Project(ViewObject::Names::project_object));
+  }
 
+private:
+  LVGL_OBJECT_ACCESS_DECLARE_CONSTRUCTOR(Project);
   struct Names {
     DESIGN_DECLARE_NAME(directory_select_file);
     DESIGN_DECLARE_NAME(source_select_file);

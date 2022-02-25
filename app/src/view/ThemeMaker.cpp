@@ -3,25 +3,25 @@
 //
 
 #include "ThemeMaker.hpp"
-#include "extras/Extras.hpp"
 #include "Editor.hpp"
+#include "extras/Extras.hpp"
 
-void ThemeMaker::configure(lvgl::Generic generic) {
+ThemeMaker::ThemeMaker(const char *name) {
+  construct_object(name);
+  fill();
 
-    auto &editor_data = Editor::Data::create()
-                          .set_add_button_text("Add Theme")
-                          .set_form_name(Settings::themes_key())
-                          .set_nothing_to_show("No Themes")
-                          .set_title("Themes")
-                          .set_form_title("Theme Details")
-                          .set_get_info_title_callback(get_info_title)
-                          .set_get_feature_list_callback(get_feature_list)
-                          .set_get_schema_callback(InputSchema::get_form_schema);
+  auto &editor_data = Editor::Data::create()
+                        .set_add_button_text("Add Theme")
+                        .set_form_name(Settings::themes_key())
+                        .set_nothing_to_show("No Themes")
+                        .set_title("Themes")
+                        .set_form_title("Theme Details")
+                        .set_get_info_title_callback(get_info_title)
+                        .set_get_feature_list_callback(get_feature_list)
+                        .set_get_schema_callback(InputSchema::get_form_schema);
 
-    generic.clear_flag(Flags::scrollable).add(Editor(editor_data).fill());
+  clear_flag(Flags::scrollable).add(Editor(editor_data).fill());
 }
-
-
 
 ThemeMaker::InputSchema::InputSchema() {
   Model::Scope model_scope;
@@ -39,9 +39,12 @@ ThemeMaker::get_feature_list(json::JsonObject object) {
   Settings::Theme theme(object);
   const auto name = fs::Path::name(theme.get_path());
   result
-    .push_back({.icon = icons::fa::th_list_solid, .label = "Name", .value = name})
     .push_back(
-      {.icon = icons::fa::folder_open_solid, .label = "Path", .value = theme.get_path()});
+      {.icon = icons::fa::th_list_solid, .label = "Name", .value = name})
+    .push_back(
+      {.icon = icons::fa::folder_open_solid,
+       .label = "Path",
+       .value = theme.get_path()});
   return result;
 }
 

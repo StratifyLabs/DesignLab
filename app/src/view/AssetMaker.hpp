@@ -9,12 +9,15 @@
 #include "ViewObject.hpp"
 #include "extras/Extras.hpp"
 
-class AssetMaker : public ViewObject {
+class AssetMaker : public ViewObject, public ObjectAccess<AssetMaker> {
 public:
   using IsValid = Editor::IsValid;
-  static void configure(Generic generic);
+  static void configure(Generic generic){
+    generic.add(AssetMaker(ViewObject::Names::asset_maker_object));
+  }
 
 private:
+  LVGL_OBJECT_ACCESS_DECLARE_CONSTRUCTOR(AssetMaker);
   class InputSchema : var::Vector<json::JsonObject> {
   public:
     InputSchema();

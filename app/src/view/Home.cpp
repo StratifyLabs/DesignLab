@@ -8,17 +8,20 @@
 #include "FontMaker.hpp"
 #include "IconMaker.hpp"
 #include "Project.hpp"
+#include "Builder.hpp"
 #include "ThemeMaker.hpp"
-#include "ThemePreview.hpp"
 
 #include "designlab/fonts/FontAwesomeIcons.hpp"
 
 #include "Home.hpp"
 
-void Home::configure(Generic generic) {
+Home::Home(const char * name) {
+  construct_object(name);
+  fill();
+
   Model::Scope model_scope;
 
-  generic.add(
+  add(
     Row(ViewObject::Names::home_top_row)
       .fill()
       .set_padding(0)
@@ -73,19 +76,18 @@ void Home::configure_button_column(Column column) {
 
   add_side_button(
     column,
+    icons::fa::hammer_solid,
+    Names::builder_button,
+    Builder::configure);
+
+  add_side_button(
+    column,
     icons::fa::palette_solid,
     "Colors",
     ColorPreview::configure);
 
   column.add(NakedContainer().set_flex_grow());
 
-#if USE_THEME_PREVIEW
-  add_side_button(
-    column,
-    icons::fa::th_list_solid,
-    "Theme Preview",
-    ThemePreview::configure);
-#endif
   add_side_button(
     column,
     icons::fa::info_circle_solid,

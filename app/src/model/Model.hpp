@@ -26,7 +26,6 @@ public:
 
   printer::YamlPrinter printer;
   lvgl::Runtime *runtime = nullptr;
-  ExportWorker export_worker;
   var::GeneralString worker_message;
   lvgl::Range worker_progress_range;
   lv_obj_t * worker_notify_object;

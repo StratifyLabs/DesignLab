@@ -8,11 +8,15 @@
 #include "ViewObject.hpp"
 #include "extras/Extras.hpp"
 
-class IconMaker : public ViewObject {
+class IconMaker : public ViewObject, public ObjectAccess<IconMaker> {
 public:
-  static void configure(Generic generic);
+  static void configure(Generic generic){
+    generic.add(IconMaker(ViewObject::Names::icon_maker_object));
+  }
 
 private:
+  LVGL_OBJECT_ACCESS_DECLARE_CONSTRUCTOR(IconMaker);
+
   using RangeList = var::Vector<Settings::Icon>;
 
   struct Names {

@@ -9,9 +9,11 @@
 #include "ColorPreview.hpp"
 #include "extras/Extras.hpp"
 
-void ColorPreview::configure(Generic generic) {
+ColorPreview::ColorPreview(const char * name) {
+  construct_object(name);
+  fill();
 
-  generic.add(Column(ViewObject::Names::content_container)
+  add(Column(ViewObject::Names::content_container)
                 .add_style("container")
                 .fill()
                 .add(ScreenHeading("Color Picker"))
@@ -23,7 +25,7 @@ void ColorPreview::configure(Generic generic) {
                 .add(SubSectionHeading("Shades"))
                 .add(Row(Names::shade_color_row).fill_width()));
 
-  auto rgb_row = generic.find<Row>(Names::rgb_color_control_row);
+  auto rgb_row = find<Row>(Names::rgb_color_control_row);
 
   auto configure_tint_shade_row = [](Row row) {
     row.set_flex_flow(FlexFlow::row_wrap)
@@ -52,7 +54,7 @@ void ColorPreview::configure(Generic generic) {
         .set_height(450)
         .set_width(450));
 
-  auto tint_row = generic.find<Row>(Names::tint_color_row);
+  auto tint_row = find<Row>(Names::tint_color_row);
   configure_tint_shade_row(tint_row);
   for (auto i : api::Index(tint_shade_count)) {
     tint_row.add(ColorButton("", Color::grey(), color_clicked));
@@ -60,7 +62,7 @@ void ColorPreview::configure(Generic generic) {
 
   update_tint_colors(tint_row, Color::grey());
 
-  auto shade_row = generic.find<Row>(Names::shade_color_row);
+  auto shade_row = find<Row>(Names::shade_color_row);
   configure_tint_shade_row(shade_row);
   for (auto i : api::Index(tint_shade_count)) {
     shade_row.add(ColorButton("", Color::grey(), color_clicked));

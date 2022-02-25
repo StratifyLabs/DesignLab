@@ -8,14 +8,16 @@
 #include "About.hpp"
 #include "extras/Extras.hpp"
 
-void About::configure(Generic generic) {
+About::About(const char *name) {
+  construct_object(name);
+  fill();
 
-  generic.clear_flag(Flags::scrollable)
+  clear_flag(Flags::scrollable)
     .add(Container(ViewObject::Names::content_container)
            .fill()
            .add(Column(Names::about_column)));
 
-  auto column = generic.find<Column>(Names::about_column);
+  auto column = find<Column>(Names::about_column);
   column.fill()
     .add(HeaderRow(
       "About",
@@ -72,7 +74,6 @@ void About::configure(Generic generic) {
                   .add_style("btn_warning")
                   .add_event_callback(EventCode::clicked, update_theme)));
 }
-
 
 void About::update_theme(lv_event_t *e) {
   NotifyHome notify_home;

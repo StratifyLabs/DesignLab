@@ -8,11 +8,14 @@
 
 #include "ViewObject.hpp"
 
-class ColorPreview : public ViewObject {
+class ColorPreview : public ViewObject, public ObjectAccess<ColorPreview> {
 public:
-  static void configure(Generic generic);
+  static void configure(Generic generic){
+    generic.add(ColorPreview(ViewObject::Names::color_preview_object));
+  }
 
 private:
+  LVGL_OBJECT_ACCESS_DECLARE_CONSTRUCTOR(ColorPreview);
   struct Names {
     DESIGN_DECLARE_NAME(rgb_splotch_container);
     DESIGN_DECLARE_NAME(rgb_splotch_button);

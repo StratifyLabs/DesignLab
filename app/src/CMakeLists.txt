@@ -19,11 +19,6 @@ set(SOURCES
 	logic/ThemeManager.cpp
 	logic/ThemeManager.hpp
 
-	worker/ExportWorker.cpp
-	worker/ExportWorker.hpp
-	worker/WorkerObject.cpp
-	worker/WorkerObject.hpp
-
 	model/Model.hpp
 	model/Settings.cpp
 	model/Settings.hpp
@@ -32,6 +27,8 @@ set(SOURCES
 	view/About.hpp
 	view/AssetMaker.cpp
 	view/AssetMaker.hpp
+	view/Builder.cpp
+	view/Builder.hpp
 	view/FontMaker.cpp
 	view/FontMaker.hpp
 	view/ColorPreview.cpp
@@ -53,7 +50,10 @@ set(SOURCES
 	view/ViewObject.hpp
 	view/extras/Extras.cpp
 	view/extras/Extras.hpp
-
+	view/extras/BuilderTools.cpp
+	view/extras/BuilderTools.hpp
+	view/extras/PropertyEditor.cpp
+	view/extras/PropertyEditor.hpp
 
 	designlab/bootstrap.c
 	designlab/fontawesome_brands_regular.c

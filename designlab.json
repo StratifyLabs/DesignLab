@@ -109,6 +109,16 @@
          },
          {
             "family": "solid",
+            "name": "arrows-alt-h",
+            "unicode": "uf337"
+         },
+         {
+            "family": "solid",
+            "name": "arrows-alt-v",
+            "unicode": "uf338"
+         },
+         {
+            "family": "solid",
             "name": "bars",
             "unicode": "uf0c9"
          },
@@ -236,6 +246,11 @@
             "family": "solid",
             "name": "font",
             "unicode": "uf031"
+         },
+         {
+            "family": "solid",
+            "name": "hammer",
+            "unicode": "uf6e3"
          },
          {
             "family": "solid",

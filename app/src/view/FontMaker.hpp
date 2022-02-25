@@ -10,11 +10,14 @@
 #include "ViewObject.hpp"
 #include "extras/Extras.hpp"
 
-class FontMaker : public ViewObject {
+class FontMaker : public ViewObject, public ObjectAccess<FontMaker> {
 public:
-  static void configure(Generic generic);
+  static void configure(Generic generic){
+    generic.add(FontMaker(ViewObject::Names::font_maker_object));
+  }
 
 private:
+  LVGL_OBJECT_ACCESS_DECLARE_CONSTRUCTOR(FontMaker);
   struct Names {
     static constexpr auto sizes_section_heading = "sizesSectionHeading";
   };

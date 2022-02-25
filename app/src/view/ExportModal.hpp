@@ -12,6 +12,53 @@ public:
   static void start();
 
 private:
+  class ExportWorker : public WorkerAccess<ExportWorker> {
+  public:
+    ExportWorker() = default;
+    explicit ExportWorker(Runtime *runtime)
+      : WorkerAccess<ExportWorker>(runtime) {}
+
+  private:
+    var::StringView m_update_message;
+    int m_update_progress;
+    int m_update_total;
+
+    var::PathString m_project_path;
+    var::PathString m_lv_font_path;
+    var::PathString m_node_path;
+    Settings m_project_settings;
+    fs::PathList m_asset_path_list;
+    fs::PathList m_theme_path_list;
+    fs::PathList m_font_path_list;
+
+    void work() override;
+
+    void update_message(var::StringView message);
+    void update_progress(int value, int total);
+    void update_success();
+
+    void export_assets();
+    void export_themes();
+    fs::PathList get_font_path_list();
+    void export_fonts();
+    void export_cmake_sourcelist();
+
+    static void
+    update_font_progress_callback(void *context, int value, int total) {
+      reinterpret_cast<ExportWorker *>(context)->update_font_progress(
+        value,
+        total);
+    }
+
+    void update_font_progress(int value, int total);
+  };
+
+  struct Data : public UserDataAccess<Data> {
+    Data(const char *name) : UserDataAccess<Data>(name) {}
+
+    ExportWorker export_worker;
+  };
+
   struct Names {
     static constexpr auto export_modal = "ExportModal";
     static constexpr auto title_header_row = "Exporting";
@@ -22,10 +69,9 @@ private:
     static constexpr auto abort_button = "AbortButton";
   };
 
-
-  static void ok_clicked(lv_event_t*);
-  static void cancel_clicked(lv_event_t*);
-  static void notified(lv_event_t*);
+  static void ok_clicked(lv_event_t *);
+  static void cancel_clicked(lv_event_t *);
+  static void notified(lv_event_t *);
 };
 
 #endif // DESIGNLAB_EXPORTMODAL_HPP

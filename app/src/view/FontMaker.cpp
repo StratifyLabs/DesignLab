@@ -10,7 +10,10 @@
 
 #include "FontMaker.hpp"
 
-void FontMaker::configure(Generic generic) {
+FontMaker::FontMaker(const char * name) {
+  construct_object(name);
+  fill();
+
   auto &editor_data = Editor::Data::create()
                         .set_add_button_text("Add Font")
                         .set_form_name(Settings::fonts_key())
@@ -21,7 +24,7 @@ void FontMaker::configure(Generic generic) {
                         .set_get_feature_list_callback(get_feature_list)
                         .set_get_schema_callback(InputSchema::get_form_schema);
 
-  generic.clear_flag(Flags::scrollable).add(Editor(editor_data).fill());
+  clear_flag(Flags::scrollable).add(Editor(editor_data).fill());
 }
 
 var::Vector<InfoCard::Data::Feature>
