@@ -5,15 +5,15 @@
 #ifndef DESIGNLAB_BUILDERTOOLS_HPP
 #define DESIGNLAB_BUILDERTOOLS_HPP
 
-#include <design/macros.hpp>
 #include <design/extras/Form.hpp>
+#include <design/macros.hpp>
 #include <lvgl/ObjectAccess.hpp>
 
 class BuilderTools : public lvgl::ObjectAccess<BuilderTools> {
 public:
   LVGL_OBJECT_ACCESS_DECLARE_CONSTRUCTOR(BuilderTools);
 
-  design::Form get_add_component_form(){
+  design::Form get_add_component_form() {
     return find<design::Form>(Names::form);
   }
 
@@ -24,8 +24,19 @@ public:
     DESIGN_DECLARE_NAME(component_height);
   };
 
-private:
+  struct Components {
+    DESIGN_DECLARE_NAME(button);
+    DESIGN_DECLARE_NAME(column);
+    DESIGN_DECLARE_NAME(container);
+    DESIGN_DECLARE_NAME(label);
+    DESIGN_DECLARE_NAME(row);
+    DESIGN_DECLARE_NAME(spinner);
 
+    static constexpr auto list
+      = {button, column, container, label, row, spinner};
+  };
+
+private:
   struct Names {
     DESIGN_DECLARE_NAME(top_container);
     DESIGN_DECLARE_NAME(parent_label);
@@ -40,12 +51,11 @@ private:
     DESIGN_DECLARE_NAME(fill_height_button);
   };
 
-  static void form_clicked(lv_event_t * e);
-  static void fill_width_clicked(lv_event_t * e);
-  static void fill_height_clicked(lv_event_t * e);
+  static void form_clicked(lv_event_t *e);
+  static void fill_width_clicked(lv_event_t *e);
+  static void fill_height_clicked(lv_event_t *e);
 
-  static BuilderTools get_builder_tools(lv_event_t * e);
-
+  static BuilderTools get_builder_tools(lv_event_t *e);
 };
 
 #endif // DESIGNLAB_BUILDERTOOLS_HPP

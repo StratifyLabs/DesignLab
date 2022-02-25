@@ -67,9 +67,12 @@ BuilderTools::BuilderTools(const char *name) {
   auto dropdown
     = form.find<Form::Select>(Fields::component_type).get_dropdown();
 
-  dropdown.set_options(
-    "object\nlabel\nform\ncard\nalert\nbadge\nhorizontal "
-    "line\nbutton\nspinner\n");
+  var::String component_options;
+  for (const auto *option : Components::list) {
+    component_options += var::String(option) + "\n";
+  }
+
+  dropdown.set_options(component_options.cstring());
 }
 
 BuilderTools BuilderTools::get_builder_tools(lv_event_t *e) {

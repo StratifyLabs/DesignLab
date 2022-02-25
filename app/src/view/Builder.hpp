@@ -58,6 +58,9 @@ private:
   void update_target_properties(Generic generic);
 
 
+  Builder & add_component(json::JsonObject form_value);
+
+
 };
 
 
