@@ -53,9 +53,19 @@ Builder::Builder(const char *name) {
       .add(NakedContainer(Names::target_object)
              .fill_width()
              .set_flex_grow()
-             .add_style(data.highlight_style, State::user4)
              .add_flag(Flags::clickable)
              .add_event_callback(EventCode::clicked, target_clicked)));
+
+  add(NakedContainer(Names::highlight_object)
+        .fill()
+        .set_height(100)
+        .clear_flag(Flags::clickable)
+        .set_background_opacity(Opacity::transparent)
+        .set_border_opacity(Opacity::x50)
+        .set_border_width(4)
+        .set_border_color(Color::red()));
+
+  data.selected_object = find(Names::target_object).object();
 
   auto &drawer_data = Drawer::Data::create(Names::control_drawer);
 
@@ -84,23 +94,50 @@ void Builder::show_clicked(lv_event_t *e) {
 void Builder::target_clicked(lv_event_t *e) {
   auto object = Event(e).target<Generic>();
 
-  auto target = get_builder(e).find<Generic>(Names::target_object);
-  // recurse into target and remove user4
-  if (target.object() != object.object()) {
-    target.clear_state(State::user4);
-  }
-  for (auto child : target) {
-    if (child.object() != object.object()) {
-      child.get<Generic>().clear_state(State::user4);
-    }
+  auto builder = get_builder(e);
+  auto target = builder.find<Generic>(Names::target_object);
+  auto container = builder.find<Generic>(ViewObject::Names::content_container);
+  auto highlight_object = builder.find<Generic>(Names::highlight_object);
+  if (object.object() == highlight_object.object()) {
+    return;
   }
 
-  get_builder(e).data()->selected_object = object.object();
-  if (object.has_state(State::user4)) {
-    object.clear_state(State::user4);
+  target.update_layout();
+
+  const auto coords = object.get_coordinates();
+  const auto target_coords = target.get_coordinates();
+  const auto container_coords = container.get_coordinates();
+
+  const auto highlight_offset
+    = target_coords.get_point() - container_coords.get_point();
+
+  const auto highlight_point = coords.get_point() - container_coords.get_point();
+
+  highlight_object.set_position(highlight_point).set_size(coords.get_size());
+
+  printf(
+    "Highlight %d,%d %dx%d\n",
+    highlight_point.x(),
+    highlight_point.y(),
+    coords.get_size().width(),
+    coords.get_size().height());
+
+  builder.data()->selected_object = object.object();
+
+  auto current = object;
+  if( object.name() != Names::target_object ){
+    builder.data()->json_path = object.name();
   } else {
-    object.add_state(State::user4);
+    builder.data()->json_path = "";
   }
+
+  while( current.object() != target.object() ){
+    builder.data()->json_path = var::StringView(current.name()) + "/" + builder.data()->json_path;
+    current = current.get_parent<Generic>();
+  }
+
+  printf("JSON path is -%s-\n", builder.data()->json_path.cstring());
+
 }
 
 Builder Builder::get_builder(lv_event_t *e) {
@@ -127,30 +164,26 @@ void Builder::builder_tools_clicked(lv_event_t *e) {
   }
 }
 
-void Builder::update_target_properties(Generic generic) {
-  generic.add_flag(Flags::clickable)
-    .add_event_callback(EventCode::clicked, target_clicked)
-    .add_style(data()->highlight_style, State::user4);
-}
-
-Builder &Builder::add_label(const char *name) {
-  if (data()->selected_object != nullptr) {
-    auto container = Container(data()->selected_object);
-    container.add(Label(name).set_text_as_static("New Label"));
-    update_target_properties(container.find<Generic>(name));
-  }
-
-  return *this;
-}
-
-Builder &Builder::add_row() { return *this; }
-
 Builder &Builder::add_component(json::JsonObject form_value) {
+  API_PRINTF_TRACE_LINE();
   const auto type
     = form_value.at(BuilderTools::Fields::component_type).to_string_view();
   const auto name
     = form_value.at(BuilderTools::Fields::component_name).to_cstring();
   auto container = Container(data()->selected_object);
+  API_PRINTF_TRACE_LINE();
+
+  printf("Selected is %s\n", data()->json_path.cstring());
+  auto object = [&](){
+    if( data()->json_path.is_empty() ){
+      return data()->json_tree;
+    }
+    return data()->json_tree.find(data()->json_path).to_object();
+  }();
+
+  API_PRINTF_TRACE_LINE();
+  object.insert(name, form_value);
+  API_PRINTF_TRACE_LINE();
 
   if (type == BuilderTools::Components::container) {
     container.add(Container(name));
@@ -186,6 +219,7 @@ Builder &Builder::add_component(json::JsonObject form_value) {
     const auto is_percentage = height.find("%") != StringView::npos;
     const auto value = height.to_unsigned_long();
     if (is_percentage) {
+      printf("Set height percent %d\n", Percent(value).value());
       component.set_height(Percent(value).value());
     } else {
       component.set_height(value);

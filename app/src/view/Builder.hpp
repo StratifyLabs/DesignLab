@@ -24,13 +24,16 @@ private:
 
     Style highlight_style;
     lv_obj_t * selected_object;
+    json::JsonObject json_tree;
+    var::String json_path;
 
   };
 
   struct Names {
     DESIGN_DECLARE_NAME(container);
     DESIGN_DECLARE_NAME(control_drawer);
-    DESIGN_DECLARE_NAME(target_object);
+    DESIGN_DECLARE_NAME_VALUE(target_object, ComponentBase);
+    DESIGN_DECLARE_NAME(highlight_object);
     DESIGN_DECLARE_NAME(builder_tools);
     DESIGN_DECLARE_NAME(get_parent_button);
     DESIGN_DECLARE_NAME(get_previous_sibling_button);
@@ -48,14 +51,9 @@ private:
   static void get_previous_sibling_clicked(lv_event_t*e);
   static void get_next_sibling_clicked(lv_event_t*e);
 
-  Builder& add_label(const char * name);
-  Builder& add_row();
-
   Data * data(){
     return user_data<Data>();
   }
-
-  void update_target_properties(Generic generic);
 
 
   Builder & add_component(json::JsonObject form_value);
