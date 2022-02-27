@@ -49,8 +49,11 @@ Builder::Builder(const char *name) {
               .add_label_as_static(icons::fa::chevron_right_solid)
               .add_event_callback(EventCode::clicked, get_next_sibling_clicked))
           .add(Button()
-                 .add_label_as_static(ICONS_FA_HAMMER_SOLID " Tools")
+                 .add_label_as_static(icons::fa::plus_solid)
                  .add_event_callback(EventCode::clicked, show_clicked))
+          .add(Button()
+                 .add_label_as_static(icons::fa::pencil_alt_solid)
+                 .add_event_callback(EventCode::clicked, edit_clicked))
           .add(Button(Names::remove_button)
                  .add_label_as_static(icons::fa::times_solid)
                  .add_style("btn_danger")
@@ -156,7 +159,6 @@ BuilderTools Builder::get_builder_tools() const {
 }
 
 void Builder::builder_tools_clicked(lv_event_t *e) {
-  printf("builder tools clicked\n");
   if (Form::is_submit_button(e)) {
     printf("Form Submitted -- Add Component\n");
 
@@ -195,7 +197,7 @@ Builder &Builder::add_component(json::JsonObject form_value) {
   if (type == BuilderTools::Components::container) {
     container.add(Container(name));
   } else if (type == BuilderTools::Components::button) {
-    container.add(Button(name).add_label_as_static("Button"));
+    container.add(Button(name));
   } else if (type == BuilderTools::Components::label) {
     container.add(Label(name).set_text_as_static("New Label"));
   } else if (type == BuilderTools::Components::row) {
@@ -305,3 +307,5 @@ Builder &Builder::remove_selected() {
   selected.remove();
   return select_target(parent);
 }
+
+void Builder::edit_clicked(lv_event_t *e) {}

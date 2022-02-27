@@ -48,6 +48,7 @@ private:
 
   static Builder get_builder(lv_event_t * e);
   static void remove_clicked(lv_event_t*e);
+  static void edit_clicked(lv_event_t*e);
   static void show_clicked(lv_event_t*e);
   static void target_clicked(lv_event_t*e);
   static void builder_tools_clicked(lv_event_t*e);
