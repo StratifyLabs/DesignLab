@@ -36,6 +36,8 @@ private:
     DESIGN_DECLARE_NAME(highlight_object);
     DESIGN_DECLARE_NAME(builder_tools);
     DESIGN_DECLARE_NAME(currently_selected_label);
+
+    DESIGN_DECLARE_NAME(remove_button);
     DESIGN_DECLARE_NAME(get_parent_button);
     DESIGN_DECLARE_NAME(get_previous_sibling_button);
     DESIGN_DECLARE_NAME(get_next_sibling_button);
@@ -45,6 +47,7 @@ private:
   BuilderTools get_builder_tools() const;
 
   static Builder get_builder(lv_event_t * e);
+  static void remove_clicked(lv_event_t*e);
   static void show_clicked(lv_event_t*e);
   static void target_clicked(lv_event_t*e);
   static void builder_tools_clicked(lv_event_t*e);
@@ -59,7 +62,7 @@ private:
 
   Builder & add_component(json::JsonObject form_value);
   Builder & select_target(Object object);
-
+  Builder & remove_selected();
 
 };
 

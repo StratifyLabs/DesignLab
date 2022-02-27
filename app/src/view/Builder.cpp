@@ -31,7 +31,8 @@ Builder::Builder(const char *name) {
         Row()
           .fill_width()
           .add(ScreenHeading("Builder").set_flex_grow())
-          .add(Label(Names::currently_selected_label).set_text_as_static("<none>"))
+          .add(
+            Label(Names::currently_selected_label).set_text_as_static("<none>"))
           .add(Button(Names::get_previous_sibling_button)
                  .add_style("btn_outline_primary")
                  .add_label_as_static(icons::fa::chevron_left_solid)
@@ -49,7 +50,11 @@ Builder::Builder(const char *name) {
               .add_event_callback(EventCode::clicked, get_next_sibling_clicked))
           .add(Button()
                  .add_label_as_static(ICONS_FA_HAMMER_SOLID " Tools")
-                 .add_event_callback(EventCode::clicked, show_clicked)))
+                 .add_event_callback(EventCode::clicked, show_clicked))
+          .add(Button(Names::remove_button)
+                 .add_label_as_static(icons::fa::times_solid)
+                 .add_style("btn_danger")
+                 .add_event_callback(EventCode::clicked, remove_clicked)))
       .add(HorizontalLine())
       .add(NakedContainer(Names::target_object)
              .fill_width()
@@ -97,7 +102,6 @@ void Builder::target_clicked(lv_event_t *e) {
   auto object = Event(e).target<Generic>();
 
   get_builder(e).select_target(object);
-
 }
 
 Builder &Builder::select_target(Object object) {
@@ -142,7 +146,6 @@ Builder &Builder::select_target(Object object) {
   printf("JSON path is -%s-\n", data()->json_path.cstring());
   return *this;
 }
-
 
 Builder Builder::get_builder(lv_event_t *e) {
   return Event(e).find_parent<Builder>(ViewObject::Names::builder_object);
@@ -199,8 +202,24 @@ Builder &Builder::add_component(json::JsonObject form_value) {
     container.add(Row(name));
   } else if (type == BuilderTools::Components::column) {
     container.add(Column(name));
+  } else if (type == BuilderTools::Components::heading1) {
+    container.add(Heading1(name));
+  } else if (type == BuilderTools::Components::heading2) {
+    container.add(Heading2(name));
+  } else if (type == BuilderTools::Components::heading3) {
+    container.add(Heading3(name));
+  } else if (type == BuilderTools::Components::heading4) {
+    container.add(Heading4(name));
+  } else if (type == BuilderTools::Components::horizontal_line) {
+    container.add(HorizontalLine(name));
+  } else if (type == BuilderTools::Components::image) {
+    container.add(Image(name));
   } else if (type == BuilderTools::Components::spinner) {
     container.add(Spinner(name));
+  } else if (type == BuilderTools::Components::meter) {
+    container.add(Meter(name));
+  } else if (type == BuilderTools::Components::spinbox) {
+    container.add(SpinBox(name));
   } else {
     return *this;
   }
@@ -225,7 +244,6 @@ Builder &Builder::add_component(json::JsonObject form_value) {
     const auto is_percentage = height.find("%") != StringView::npos;
     const auto value = height.to_unsigned_long();
     if (is_percentage) {
-      printf("Set height percent %d\n", Percent(value).value());
       component.set_height(Percent(value).value());
     } else {
       component.set_height(value);
@@ -240,10 +258,9 @@ Builder &Builder::add_component(json::JsonObject form_value) {
 }
 
 void Builder::get_parent_clicked(lv_event_t *e) {
-  printf("Get parent of selected object\n");
   auto builder = get_builder(e);
   auto selected = Generic(builder.data()->selected_object);
-  if( selected.object() == builder.find(Names::target_object).object() ){
+  if (selected.object() == builder.find(Names::target_object).object()) {
     return;
   }
   auto higlight_parent = Generic(builder.data()->selected_object).get_parent();
@@ -251,28 +268,40 @@ void Builder::get_parent_clicked(lv_event_t *e) {
 }
 
 void Builder::get_previous_sibling_clicked(lv_event_t *e) {
-  printf("Get previous sibling\n");
   auto builder = get_builder(e);
   auto selected = Generic(builder.data()->selected_object);
-  if( selected.object() == builder.find(Names::target_object).object() ){
+  if (selected.object() == builder.find(Names::target_object).object()) {
     return;
   }
   const auto offset = selected.get_index();
-  if( offset > 0 ){
-    builder.select_target(selected.get_parent().get_child(offset-1));
+  if (offset > 0) {
+    builder.select_target(selected.get_parent().get_child(offset - 1));
   }
 }
 
 void Builder::get_next_sibling_clicked(lv_event_t *e) {
-  printf("Get next sibling\n");
   auto builder = get_builder(e);
   auto selected = Generic(builder.data()->selected_object);
-  if( selected.object() == builder.find(Names::target_object).object() ){
+  if (selected.object() == builder.find(Names::target_object).object()) {
     return;
   }
   const auto offset = selected.get_index();
   auto parent = selected.get_parent();
-  if( offset < parent.get_child_count() - 1 ){
-    builder.select_target(parent.get_child(offset+1));
+  if (offset < parent.get_child_count() - 1) {
+    builder.select_target(parent.get_child(offset + 1));
   }
+}
+
+void Builder::remove_clicked(lv_event_t *e) {
+  get_builder(e).remove_selected();
+}
+
+Builder &Builder::remove_selected() {
+  if (data()->selected_object == find(Names::target_object).object()) {
+    return *this;
+  }
+  auto selected = Generic(data()->selected_object);
+  auto parent = selected.get_parent();
+  selected.remove();
+  return select_target(parent);
 }
