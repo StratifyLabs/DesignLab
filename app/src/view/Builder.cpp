@@ -60,6 +60,7 @@ Builder::Builder(const char *name) {
         .fill()
         .set_height(100)
         .clear_flag(Flags::clickable)
+        .add_flag(Flags::hidden)
         .set_background_opacity(Opacity::transparent)
         .set_border_opacity(Opacity::x50)
         .set_border_width(4)
@@ -111,33 +112,30 @@ void Builder::target_clicked(lv_event_t *e) {
   const auto highlight_offset
     = target_coords.get_point() - container_coords.get_point();
 
-  const auto highlight_point = coords.get_point() - container_coords.get_point();
+  const auto highlight_point
+    = coords.get_point() - container_coords.get_point();
 
-  highlight_object.set_position(highlight_point).set_size(coords.get_size());
-
-  printf(
-    "Highlight %d,%d %dx%d\n",
-    highlight_point.x(),
-    highlight_point.y(),
-    coords.get_size().width(),
-    coords.get_size().height());
+  highlight_object.set_position(highlight_point)
+    .set_size(coords.get_size())
+    .clear_flag(Flags::hidden);
 
   builder.data()->selected_object = object.object();
 
   auto current = object;
-  if( object.name() != Names::target_object ){
+  if (current.object() != target.object()) {
     builder.data()->json_path = object.name();
+    current = current.get_parent<Generic>();
   } else {
     builder.data()->json_path = "";
   }
 
-  while( current.object() != target.object() ){
-    builder.data()->json_path = var::StringView(current.name()) + "/" + builder.data()->json_path;
+  while (current.object() != target.object()) {
+    builder.data()->json_path
+      = var::StringView(current.name()) + "/" + builder.data()->json_path;
     current = current.get_parent<Generic>();
   }
 
   printf("JSON path is -%s-\n", builder.data()->json_path.cstring());
-
 }
 
 Builder Builder::get_builder(lv_event_t *e) {
@@ -165,25 +163,25 @@ void Builder::builder_tools_clicked(lv_event_t *e) {
 }
 
 Builder &Builder::add_component(json::JsonObject form_value) {
-  API_PRINTF_TRACE_LINE();
   const auto type
     = form_value.at(BuilderTools::Fields::component_type).to_string_view();
   const auto name
     = form_value.at(BuilderTools::Fields::component_name).to_cstring();
   auto container = Container(data()->selected_object);
-  API_PRINTF_TRACE_LINE();
 
   printf("Selected is %s\n", data()->json_path.cstring());
-  auto object = [&](){
-    if( data()->json_path.is_empty() ){
+  auto object = [&]() {
+    if (data()->json_path.is_empty()) {
       return data()->json_tree;
     }
     return data()->json_tree.find(data()->json_path).to_object();
   }();
 
-  API_PRINTF_TRACE_LINE();
   object.insert(name, form_value);
-  API_PRINTF_TRACE_LINE();
+  {
+    Model::Scope ms;
+    printer().object("tree", data()->json_tree);
+  }
 
   if (type == BuilderTools::Components::container) {
     container.add(Container(name));
@@ -195,6 +193,8 @@ Builder &Builder::add_component(json::JsonObject form_value) {
     container.add(Row(name));
   } else if (type == BuilderTools::Components::column) {
     container.add(Column(name));
+  } else if (type == BuilderTools::Components::spinner) {
+    container.add(Spinner(name));
   } else {
     return *this;
   }

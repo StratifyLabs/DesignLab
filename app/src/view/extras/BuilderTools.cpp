@@ -68,7 +68,11 @@ BuilderTools::BuilderTools(const char *name) {
     = form.find<Form::Select>(Fields::component_type).get_dropdown();
 
   var::String component_options;
-  for (const auto *option : Components::list) {
+  for (const auto *option : Components::list_of_lvgl_components) {
+    component_options += var::String(option) + "\n";
+  }
+
+  for (const auto *option : Components::list_of_design_components) {
     component_options += var::String(option) + "\n";
   }
 
