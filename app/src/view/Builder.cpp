@@ -31,6 +31,7 @@ Builder::Builder(const char *name) {
         Row()
           .fill_width()
           .add(ScreenHeading("Builder").set_flex_grow())
+          .add(Label(Names::currently_selected_label).set_text_as_static("<none>"))
           .add(Button(Names::get_previous_sibling_button)
                  .add_style("btn_outline_primary")
                  .add_label_as_static(icons::fa::chevron_left_solid)
@@ -95,12 +96,16 @@ void Builder::show_clicked(lv_event_t *e) {
 void Builder::target_clicked(lv_event_t *e) {
   auto object = Event(e).target<Generic>();
 
-  auto builder = get_builder(e);
-  auto target = builder.find<Generic>(Names::target_object);
-  auto container = builder.find<Generic>(ViewObject::Names::content_container);
-  auto highlight_object = builder.find<Generic>(Names::highlight_object);
+  get_builder(e).select_target(object);
+
+}
+
+Builder &Builder::select_target(Object object) {
+  auto target = find<Generic>(Names::target_object);
+  auto container = find<Generic>(ViewObject::Names::content_container);
+  auto highlight_object = find<Generic>(Names::highlight_object);
   if (object.object() == highlight_object.object()) {
-    return;
+    return *this;
   }
 
   target.update_layout();
@@ -109,9 +114,6 @@ void Builder::target_clicked(lv_event_t *e) {
   const auto target_coords = target.get_coordinates();
   const auto container_coords = container.get_coordinates();
 
-  const auto highlight_offset
-    = target_coords.get_point() - container_coords.get_point();
-
   const auto highlight_point
     = coords.get_point() - container_coords.get_point();
 
@@ -119,24 +121,28 @@ void Builder::target_clicked(lv_event_t *e) {
     .set_size(coords.get_size())
     .clear_flag(Flags::hidden);
 
-  builder.data()->selected_object = object.object();
+  data()->selected_object = object.object();
 
   auto current = object;
   if (current.object() != target.object()) {
-    builder.data()->json_path = object.name();
+    data()->json_path = object.name();
     current = current.get_parent<Generic>();
   } else {
-    builder.data()->json_path = "";
+    data()->json_path = "";
   }
 
   while (current.object() != target.object()) {
-    builder.data()->json_path
-      = var::StringView(current.name()) + "/" + builder.data()->json_path;
+    data()->json_path
+      = var::StringView(current.name()) + "/" + data()->json_path;
     current = current.get_parent<Generic>();
   }
 
-  printf("JSON path is -%s-\n", builder.data()->json_path.cstring());
+  find<Label>(Names::currently_selected_label).set_text(object.name());
+
+  printf("JSON path is -%s-\n", data()->json_path.cstring());
+  return *this;
 }
+
 
 Builder Builder::get_builder(lv_event_t *e) {
   return Event(e).find_parent<Builder>(ViewObject::Names::builder_object);
@@ -235,12 +241,38 @@ Builder &Builder::add_component(json::JsonObject form_value) {
 
 void Builder::get_parent_clicked(lv_event_t *e) {
   printf("Get parent of selected object\n");
+  auto builder = get_builder(e);
+  auto selected = Generic(builder.data()->selected_object);
+  if( selected.object() == builder.find(Names::target_object).object() ){
+    return;
+  }
+  auto higlight_parent = Generic(builder.data()->selected_object).get_parent();
+  builder.select_target(higlight_parent);
 }
 
 void Builder::get_previous_sibling_clicked(lv_event_t *e) {
   printf("Get previous sibling\n");
+  auto builder = get_builder(e);
+  auto selected = Generic(builder.data()->selected_object);
+  if( selected.object() == builder.find(Names::target_object).object() ){
+    return;
+  }
+  const auto offset = selected.get_index();
+  if( offset > 0 ){
+    builder.select_target(selected.get_parent().get_child(offset-1));
+  }
 }
 
 void Builder::get_next_sibling_clicked(lv_event_t *e) {
   printf("Get next sibling\n");
+  auto builder = get_builder(e);
+  auto selected = Generic(builder.data()->selected_object);
+  if( selected.object() == builder.find(Names::target_object).object() ){
+    return;
+  }
+  const auto offset = selected.get_index();
+  auto parent = selected.get_parent();
+  if( offset < parent.get_child_count() - 1 ){
+    builder.select_target(parent.get_child(offset+1));
+  }
 }
