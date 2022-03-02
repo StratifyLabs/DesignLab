@@ -109,6 +109,11 @@
          },
          {
             "family": "solid",
+            "name": "arrows-alt",
+            "unicode": "uf0b2"
+         },
+         {
+            "family": "solid",
             "name": "arrows-alt-h",
             "unicode": "uf337"
          },
@@ -129,6 +134,31 @@
          },
          {
             "family": "solid",
+            "name": "calendar-alt",
+            "unicode": "uf073"
+         },
+         {
+            "family": "solid",
+            "name": "certificate",
+            "unicode": "uf0a3"
+         },
+         {
+            "family": "solid",
+            "name": "chart-area",
+            "unicode": "uf1fe"
+         },
+         {
+            "family": "solid",
+            "name": "chart-bar",
+            "unicode": "uf080"
+         },
+         {
+            "family": "solid",
+            "name": "chart-line",
+            "unicode": "uf201"
+         },
+         {
+            "family": "solid",
             "name": "check",
             "unicode": "uf00c"
          },
@@ -136,6 +166,11 @@
             "family": "solid",
             "name": "check-double",
             "unicode": "uf560"
+         },
+         {
+            "family": "solid",
+            "name": "check-square",
+            "unicode": "uf14a"
          },
          {
             "family": "solid",
@@ -159,8 +194,18 @@
          },
          {
             "family": "solid",
+            "name": "clipboard-list",
+            "unicode": "uf46d"
+         },
+         {
+            "family": "solid",
             "name": "code",
             "unicode": "uf121"
+         },
+         {
+            "family": "solid",
+            "name": "columns",
+            "unicode": "uf0db"
          },
          {
             "family": "solid",
@@ -189,8 +234,13 @@
          },
          {
             "family": "solid",
-            "name": "exclamation",
-            "unicode": "uf12a"
+            "name": "exclamation-circle",
+            "unicode": "uf06a"
+         },
+         {
+            "family": "solid",
+            "name": "exclamation-triangle",
+            "unicode": "uf071"
          },
          {
             "family": "solid",
@@ -259,6 +309,11 @@
          },
          {
             "family": "solid",
+            "name": "heading",
+            "unicode": "uf1dc"
+         },
+         {
+            "family": "solid",
             "name": "icons",
             "unicode": "uf86d"
          },
@@ -276,6 +331,11 @@
             "family": "solid",
             "name": "inbox",
             "unicode": "uf01c"
+         },
+         {
+            "family": "solid",
+            "name": "indent",
+            "unicode": "uf03c"
          },
          {
             "family": "solid",
@@ -319,6 +379,11 @@
          },
          {
             "family": "solid",
+            "name": "long-arrow-alt-right",
+            "unicode": "uf30b"
+         },
+         {
+            "family": "solid",
             "name": "minus",
             "unicode": "uf068"
          },
@@ -326,6 +391,11 @@
             "family": "solid",
             "name": "moon",
             "unicode": "uf186"
+         },
+         {
+            "family": "solid",
+            "name": "paint-brush",
+            "unicode": "uf1fc"
          },
          {
             "family": "solid",
@@ -379,6 +449,16 @@
          },
          {
             "family": "solid",
+            "name": "spinner",
+            "unicode": "uf110"
+         },
+         {
+            "family": "solid",
+            "name": "square",
+            "unicode": "uf0c8"
+         },
+         {
+            "family": "solid",
             "name": "stream",
             "unicode": "uf550"
          },
@@ -389,8 +469,33 @@
          },
          {
             "family": "solid",
+            "name": "swimmer",
+            "unicode": "uf5c4"
+         },
+         {
+            "family": "solid",
+            "name": "table",
+            "unicode": "uf0ce"
+         },
+         {
+            "family": "solid",
+            "name": "tachometer-alt",
+            "unicode": "uf3fd"
+         },
+         {
+            "family": "solid",
+            "name": "tasks",
+            "unicode": "uf0ae"
+         },
+         {
+            "family": "solid",
             "name": "terminal",
             "unicode": "uf120"
+         },
+         {
+            "family": "solid",
+            "name": "text-height",
+            "unicode": "uf034"
          },
          {
             "family": "solid",
@@ -414,6 +519,11 @@
          },
          {
             "family": "solid",
+            "name": "toggle-on",
+            "unicode": "uf205"
+         },
+         {
+            "family": "solid",
             "name": "trash-alt",
             "unicode": "uf2ed"
          },
@@ -423,9 +533,24 @@
             "unicode": "uf007"
          },
          {
+            "family": "solid",
+            "name": "window-maximize",
+            "unicode": "uf2d0"
+         },
+         {
+            "family": "solid",
+            "name": "window-minimize",
+            "unicode": "uf2d1"
+         },
+         {
             "family": "regular",
             "name": "circle",
             "unicode": "uf111"
+         },
+         {
+            "family": "regular",
+            "name": "window-maximize",
+            "unicode": "uf2d0"
          },
          {
             "family": "brands",
@@ -444,7 +569,7 @@
          }
       ]
    },
-   "fontDirty": false,
+   "fontDirty": true,
    "assetsDirty": false,
    "fontsCompressed": false
 }

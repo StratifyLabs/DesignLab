@@ -48,6 +48,10 @@ set(SOURCES
 	view/ThemePreview.cpp
 	view/ThemePreview.hpp
 	view/ViewObject.hpp
+	view/extras/AddComponent.cpp
+	view/extras/AddComponent.cpp
+	view/extras/EditComponent.cpp
+	view/extras/EditComponent.hpp
 	view/extras/Extras.cpp
 	view/extras/Extras.hpp
 	view/extras/BuilderTools.cpp

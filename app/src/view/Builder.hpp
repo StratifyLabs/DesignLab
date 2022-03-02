@@ -7,8 +7,6 @@
 
 #include "ViewObject.hpp"
 
-#include "extras/BuilderTools.hpp"
-
 class Builder : public ViewObject, public ObjectAccess<Builder> {
 public:
   static void configure(Generic generic){
@@ -37,6 +35,10 @@ private:
     DESIGN_DECLARE_NAME(builder_tools);
     DESIGN_DECLARE_NAME(currently_selected_label);
 
+    DESIGN_DECLARE_NAME(add_component_modal);
+    DESIGN_DECLARE_NAME(add_component);
+    DESIGN_DECLARE_NAME(edit_component);
+
     DESIGN_DECLARE_NAME(remove_button);
     DESIGN_DECLARE_NAME(get_parent_button);
     DESIGN_DECLARE_NAME(get_previous_sibling_button);
@@ -44,14 +46,13 @@ private:
   };
 
 
-  BuilderTools get_builder_tools() const;
-
   static Builder get_builder(lv_event_t * e);
   static void remove_clicked(lv_event_t*e);
   static void edit_clicked(lv_event_t*e);
+  static void add_clicked(lv_event_t*e);
   static void show_clicked(lv_event_t*e);
   static void target_clicked(lv_event_t*e);
-  static void builder_tools_clicked(lv_event_t*e);
+  static void add_component_clicked(lv_event_t*e);
   static void get_parent_clicked(lv_event_t*e);
   static void get_previous_sibling_clicked(lv_event_t*e);
   static void get_next_sibling_clicked(lv_event_t*e);

@@ -43,7 +43,7 @@ Home::Home(const char * name) {
 void Home::configure_button_column(Column column) {
   column.add_style("darker").fill();
 
-  column.add(Image().set_source("a:icon-250px.png"));
+  //column.add(Image().set_source("a:icon-250px.png"));
   column
     .add(SectionHeading("Design Lab").set_text_alignment(TextAlignment::center))
     .add(HorizontalLine());

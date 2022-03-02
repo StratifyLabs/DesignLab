@@ -7,7 +7,8 @@
 #include "extras/Extras.hpp"
 
 #include "Builder.hpp"
-#include "extras/BuilderTools.hpp"
+#include "extras/AddComponent.hpp"
+#include "extras/EditComponent.hpp"
 
 Builder::Builder(const char *name) {
   auto &data = Data::create(name);
@@ -50,7 +51,7 @@ Builder::Builder(const char *name) {
               .add_event_callback(EventCode::clicked, get_next_sibling_clicked))
           .add(Button()
                  .add_label_as_static(icons::fa::plus_solid)
-                 .add_event_callback(EventCode::clicked, show_clicked))
+                 .add_event_callback(EventCode::clicked, add_clicked))
           .add(Button()
                  .add_label_as_static(icons::fa::pencil_alt_solid)
                  .add_event_callback(EventCode::clicked, edit_clicked))
@@ -84,8 +85,6 @@ Builder::Builder(const char *name) {
         .set_width(40_percent)
         .set_open_from_right()
         .set_alignment(Alignment::right_middle)
-        .add(BuilderTools(Names::builder_tools)
-               .add_event_callback(EventCode::clicked, builder_tools_clicked))
         .close());
 }
 
@@ -151,36 +150,39 @@ Builder &Builder::select_target(Object object) {
 }
 
 Builder Builder::get_builder(lv_event_t *e) {
-  return Event(e).find_parent<Builder>(ViewObject::Names::builder_object);
+  auto result = Event(e).find_parent<Builder>(ViewObject::Names::builder_object);
+  if( result.is_valid() == false ){
+    return screen().find<Builder>(ViewObject::Names::builder_object);
+  }
+  return result;
 }
 
-BuilderTools Builder::get_builder_tools() const {
-  return find<BuilderTools>(Names::builder_tools);
-}
-
-void Builder::builder_tools_clicked(lv_event_t *e) {
+void Builder::add_component_clicked(lv_event_t *e) {
   if (Form::is_submit_button(e)) {
     printf("Form Submitted -- Add Component\n");
-
-    auto builder_tools = Event(e).current_target<BuilderTools>();
+    auto add_component = Event(e).current_target<AddComponent>();
     const auto form_value
-      = builder_tools.get_add_component_form().get_json_object();
+      = add_component.get_add_component_form().get_json_object();
     Model::Scope ms;
     printer().object("form", form_value);
-
     get_builder(e).add_component(form_value);
+    screen().find<Modal>(Names::add_component_modal).close(300_milliseconds);
     return;
   }
 }
 
 Builder &Builder::add_component(json::JsonObject form_value) {
+
   const auto type
-    = form_value.at(BuilderTools::Fields::component_type).to_string_view();
+    = form_value.at(AddComponent::Fields::component_type).to_string_view();
+
+
   const auto name
-    = form_value.at(BuilderTools::Fields::component_name).to_cstring();
+    = form_value.at(AddComponent::Fields::component_name).to_cstring();
   auto container = Container(data()->selected_object);
 
   printf("Selected is %s\n", data()->json_path.cstring());
+
   auto object = [&]() {
     if (data()->json_path.is_empty()) {
       return data()->json_tree;
@@ -194,33 +196,33 @@ Builder &Builder::add_component(json::JsonObject form_value) {
     printer().object("tree", data()->json_tree);
   }
 
-  if (type == BuilderTools::Components::container) {
+  if (type == AddComponent::Components::container) {
     container.add(Container(name));
-  } else if (type == BuilderTools::Components::button) {
+  } else if (type == AddComponent::Components::button) {
     container.add(Button(name));
-  } else if (type == BuilderTools::Components::label) {
+  } else if (type == AddComponent::Components::label) {
     container.add(Label(name).set_text_as_static("New Label"));
-  } else if (type == BuilderTools::Components::row) {
+  } else if (type == AddComponent::Components::row) {
     container.add(Row(name));
-  } else if (type == BuilderTools::Components::column) {
+  } else if (type == AddComponent::Components::column) {
     container.add(Column(name));
-  } else if (type == BuilderTools::Components::heading1) {
+  } else if (type == AddComponent::Components::heading1) {
     container.add(Heading1(name));
-  } else if (type == BuilderTools::Components::heading2) {
+  } else if (type == AddComponent::Components::heading2) {
     container.add(Heading2(name));
-  } else if (type == BuilderTools::Components::heading3) {
+  } else if (type == AddComponent::Components::heading3) {
     container.add(Heading3(name));
-  } else if (type == BuilderTools::Components::heading4) {
+  } else if (type == AddComponent::Components::heading4) {
     container.add(Heading4(name));
-  } else if (type == BuilderTools::Components::horizontal_line) {
+  } else if (type == AddComponent::Components::horizontal_line) {
     container.add(HorizontalLine(name));
-  } else if (type == BuilderTools::Components::image) {
+  } else if (type == AddComponent::Components::image) {
     container.add(Image(name));
-  } else if (type == BuilderTools::Components::spinner) {
+  } else if (type == AddComponent::Components::spinner) {
     container.add(Spinner(name));
-  } else if (type == BuilderTools::Components::meter) {
+  } else if (type == AddComponent::Components::meter) {
     container.add(Meter(name));
-  } else if (type == BuilderTools::Components::spinbox) {
+  } else if (type == AddComponent::Components::spinbox) {
     container.add(SpinBox(name));
   } else {
     return *this;
@@ -229,7 +231,7 @@ Builder &Builder::add_component(json::JsonObject form_value) {
   auto component = container.find<Generic>(name);
 
   if (const auto width
-      = form_value.at(BuilderTools::Fields::component_width).to_string_view();
+      = form_value.at(AddComponent::Fields::component_width).to_string_view();
       width.is_empty() == false) {
     const auto is_percentage = width.find("%") != StringView::npos;
     const auto value = width.to_unsigned_long();
@@ -241,7 +243,7 @@ Builder &Builder::add_component(json::JsonObject form_value) {
   }
 
   if (const auto height
-      = form_value.at(BuilderTools::Fields::component_height).to_string_view();
+      = form_value.at(AddComponent::Fields::component_height).to_string_view();
       height.is_empty() == false) {
     const auto is_percentage = height.find("%") != StringView::npos;
     const auto value = height.to_unsigned_long();
@@ -306,6 +308,12 @@ Builder &Builder::remove_selected() {
   auto parent = selected.get_parent();
   selected.remove();
   return select_target(parent);
+}
+
+void Builder::add_clicked(lv_event_t *e) {
+  Modal(Names::add_component_modal).add_content(
+    AddComponent(Names::add_component)
+      .add_event_callback(EventCode::clicked, add_component_clicked));
 }
 
 void Builder::edit_clicked(lv_event_t *e) {}
