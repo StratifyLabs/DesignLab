@@ -507,7 +507,7 @@ void Builder::edit_component_clicked(lv_event_t *e) {
 Builder &Builder::load_json_tree(Settings::Component component) {
   data()->json_tree = JsonObject();
   auto target = find<Generic>(Names::target_object);
-  //draw the objects on the display and add them to the tree
+  // draw the objects on the display and add them to the tree
   build_tree(target.remove_children().object(), component.tree());
 
   data()->is_new = !component.tree().is_valid();
@@ -515,9 +515,8 @@ Builder &Builder::load_json_tree(Settings::Component component) {
   return *this;
 }
 
-void Builder::build_tree(lv_obj_t * lvgl_object, json::JsonObject object){
-  if( !object.is_valid() || object.is_empty() ){
-    printf("empty object\n");
+void Builder::build_tree(lv_obj_t *lvgl_object, json::JsonObject object) {
+  if (!object.is_valid() || object.is_empty()) {
     return;
   }
 
@@ -525,17 +524,20 @@ void Builder::build_tree(lv_obj_t * lvgl_object, json::JsonObject object){
 
   const auto key_container = object.get_key_list();
 
-  for(const auto & key: key_container){
+  for (const auto &key : key_container) {
     auto child_value = object.at(key);
-    if( child_value.is_object() ){
-      printf("Add %s\n", KeyString(key).cstring());
-      lv_obj_t  * parent = data()->selected_object;
-      //auto child_target = Generic(parent).find(KeyString(key).cstring()).object();
+    if (child_value.is_object()) {
+      lv_obj_t *parent = data()->selected_object;
       add_component(child_value.to_object());
-      build_tree(parent, child_value.to_object());
+      auto just_added_object
+        = Generic(data()->selected_object)
+            .find<Generic>(
+              child_value.to_object().at(Fields::component_name).to_cstring())
+            .object();
+
+      build_tree(just_added_object, child_value.to_object());
 
       data()->selected_object = parent;
     }
   }
 }
-
