@@ -7,6 +7,8 @@
 
 #include "ViewObject.hpp"
 
+#include "extras/AddComponent.hpp"
+
 class Builder : public ViewObject, public ObjectAccess<Builder> {
 public:
   static void configure(Generic generic){
@@ -14,6 +16,9 @@ public:
   }
 
   LVGL_OBJECT_ACCESS_DECLARE_CONSTRUCTOR(Builder);
+
+  using Fields = AddComponent::Fields;
+  using Components = AddComponent::Components;
 
 private:
 
@@ -37,6 +42,7 @@ private:
 
     DESIGN_DECLARE_NAME(add_component_modal);
     DESIGN_DECLARE_NAME(add_component);
+    DESIGN_DECLARE_NAME(edit_component_modal);
     DESIGN_DECLARE_NAME(edit_component);
 
     DESIGN_DECLARE_NAME(remove_button);
@@ -53,6 +59,7 @@ private:
   static void show_clicked(lv_event_t*e);
   static void target_clicked(lv_event_t*e);
   static void add_component_clicked(lv_event_t*e);
+  static void edit_component_clicked(lv_event_t*e);
   static void get_parent_clicked(lv_event_t*e);
   static void get_previous_sibling_clicked(lv_event_t*e);
   static void get_next_sibling_clicked(lv_event_t*e);
@@ -61,10 +68,17 @@ private:
     return user_data<Data>();
   }
 
+  const Data * data() const {
+    return user_data<const Data>();
+  }
+
 
   Builder & add_component(json::JsonObject form_value);
+  Builder & edit_component(json::JsonObject form_value);
   Builder & select_target(Object object);
   Builder & remove_selected();
+
+  json::JsonObject get_active_json_object() const;
 
 };
 

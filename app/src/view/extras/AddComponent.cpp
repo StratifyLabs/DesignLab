@@ -32,6 +32,7 @@ AddComponent::AddComponent(const char *name) {
                .set_width(30_percent))
         .add(Column(Names::form_column)
                .add_flag(Flags::event_bubble)
+               .add(Heading3(Names::parent_label, "Add to ..."))
                .set_flex_grow()
                .add(Form(Names::form)
                       .fill_width()
@@ -73,9 +74,99 @@ AddComponent::AddComponent(const char *name) {
              .set_label_as_static("Height")
              .set_hint_as_static("Height in pixels or % (blank for default)"));
 
-  form.add(Form::SubmitButton()
-             .set_label_as_static(ICONS_FA_PLUS_SOLID " Add")
-             .add_style("success"));
+  form.add(HorizontalLine(Names::form_hline_type_start));
+
+  form.add(Form::LineField(Fields::component_button_label)
+             .fill_width()
+             .add_flag(Flags::hidden)
+             .set_label_as_static("Button Label")
+             .set_hint_as_static(
+               "This label will be added to the center of the button"));
+
+  form.add(Form::LineField(Fields::component_heading1_label)
+             .fill_width()
+             .add_flag(Flags::hidden)
+             .set_label_as_static("Heading")
+             .set_hint_as_static(
+               "Text to show as the heading"));
+
+  form.add(Form::LineField(Fields::component_heading2_label)
+             .fill_width()
+             .add_flag(Flags::hidden)
+             .set_label_as_static("Heading")
+             .set_hint_as_static(
+               "Text to show as the heading"));
+
+  form.add(Form::LineField(Fields::component_heading3_label)
+             .fill_width()
+             .add_flag(Flags::hidden)
+             .set_label_as_static("Heading")
+             .set_hint_as_static(
+               "Text to show as the heading"));
+
+
+  form.add(Form::LineField(Fields::component_heading4_label)
+             .fill_width()
+             .add_flag(Flags::hidden)
+             .set_label_as_static("Heading")
+             .set_hint_as_static(
+               "Text to show as the heading"));
+
+  form.add(Form::LineField(Fields::component_form_line_field_label)
+             .fill_width()
+             .add_flag(Flags::hidden)
+             .set_label_as_static("Input Label")
+             .set_hint_as_static(
+               "Label to apply to the form line field"));
+
+  form.add(Form::LineField(Fields::component_form_line_field_hint)
+             .fill_width()
+             .add_flag(Flags::hidden)
+             .set_label_as_static("Input Hint")
+             .set_hint_as_static(
+               "Hint to apply to the form line field"));
+
+  form.add(Form::LineField(Fields::component_form_select_label)
+             .fill_width()
+             .add_flag(Flags::hidden)
+             .set_label_as_static("Input Label")
+             .set_hint_as_static(
+               "Label to apply to the select input"));
+
+  form.add(Form::LineField(Fields::component_form_select_hint)
+             .fill_width()
+             .add_flag(Flags::hidden)
+             .set_label_as_static("Input Hint")
+             .set_hint_as_static(
+               "Hint to apply to the select input"));
+
+  form.add(Form::LineField(Fields::component_form_file_select_label)
+             .fill_width()
+             .add_flag(Flags::hidden)
+             .set_label_as_static("Input Label")
+             .set_hint_as_static(
+               "Label to apply to the file select input"));
+
+  form.add(Form::LineField(Fields::component_form_file_select_hint)
+             .fill_width()
+             .add_flag(Flags::hidden)
+             .set_label_as_static("Input Hint")
+             .set_hint_as_static(
+               "Hint to apply to the file select input"));
+
+
+  form.add(HorizontalLine(Names::form_hline_type_stop));
+
+  form.add(Row()
+             .add_flag(Flags::event_bubble)
+             .fill_width()
+             .add(Form::SubmitButton()
+                    .set_label_as_static(ICONS_FA_PLUS_SOLID " Add")
+                    .add_style("btn_success"))
+             .add(Button(Names::cancel_button)
+                    .add_flag(Flags::event_bubble)
+                    .add_label_as_static(ICONS_FA_TIMES_SOLID " Cancel")
+                    .add_style("btn_outline_primary")));
 
   form.add_flag(Flags::event_bubble);
 
@@ -93,6 +184,10 @@ AddComponent::AddComponent(const char *name) {
     component_options += var::String(option) + "\n";
   }
 
+  for (const auto *option : Components::list_of_extra_design_components) {
+    component_options += var::String(option) + "\n";
+  }
+
   dropdown.set_options(component_options.cstring());
 }
 
@@ -103,20 +198,37 @@ AddComponent AddComponent::get_add_component(lv_event_t *e) {
 void AddComponent::form_clicked(lv_event_t *e) { printf("Form clicked\n"); }
 
 void AddComponent::fill_width_clicked(lv_event_t *e) {
-  auto form = get_add_component(e).get_add_component_form();
+  auto form = get_add_component(e).get_form();
   form.set_value(form.find(Fields::component_width), "100%");
 }
 
 void AddComponent::fill_height_clicked(lv_event_t *e) {
-  auto form = get_add_component(e).get_add_component_form();
+  auto form = get_add_component(e).get_form();
   form.set_value(form.find(Fields::component_height), "100%");
 }
 
 void AddComponent::control_button_clicked(lv_event_t *e) {
   auto target = Event(e).target();
-  auto form = get_add_component(e).get_add_component_form();
+  auto form = get_add_component(e).get_form();
   printf("Set form value for type %s\n", target.name());
   form.set_value(form.find(Fields::component_type), target.name());
+
+  bool is_filter_active = false;
+  for (auto object : form) {
+    if( object.name() == Names::form_hline_type_stop){
+      is_filter_active = false;
+    }
+
+    if (object.name() == Names::form_hline_type_start) {
+      is_filter_active = true;
+    } else if (is_filter_active) {
+      if (StringView(object.name()).find(target.name()) != StringView::npos) {
+        object.get<Generic>().clear_flag(Flags::hidden);
+      } else {
+        object.get<Generic>().add_flag(Flags::hidden);
+      }
+    }
+  }
 }
 
 void AddComponent::add_type_selection(lvgl::Generic generic) {
@@ -171,4 +283,27 @@ void AddComponent::add_type_selection(lvgl::Generic generic) {
       add_button(row, component_type);
     }
   }
+
+  generic.add(Heading4("form items"));
+  generic.add(Row(Names::extra_design_form_row)
+                .add_flag(Flags::event_bubble)
+                .fill_width()
+                .set_flex_flow(FlexFlow::row_wrap)
+                .set_row_padding(20));
+  {
+    auto row = generic.find<Row>(Names::extra_design_form_row);
+    for (const auto &component_type : component_type_list_extra_design_form) {
+      add_button(row, component_type);
+    }
+  }
+}
+
+bool AddComponent::is_cancel_button(lv_event_t *e) {
+  return Event(e).target().name() == Names::cancel_button;
+}
+
+AddComponent &AddComponent::set_parent_item_name(const char *value) {
+  const auto label = StringView("Add to ") | value;
+  find<Label>(Names::parent_label).set_text(label.cstring());
+  return *this;
 }

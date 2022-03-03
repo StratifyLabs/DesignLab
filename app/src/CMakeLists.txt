@@ -54,8 +54,6 @@ set(SOURCES
 	view/extras/EditComponent.hpp
 	view/extras/Extras.cpp
 	view/extras/Extras.hpp
-	view/extras/BuilderTools.cpp
-	view/extras/BuilderTools.hpp
 	view/extras/PropertyEditor.cpp
 	view/extras/PropertyEditor.hpp
 

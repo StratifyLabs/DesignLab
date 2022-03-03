@@ -2,12 +2,19 @@
 // Created by Tyler Gilbert on 2/24/22.
 //
 
+#include <json.hpp>
 #include <var.hpp>
+
+#include <design/extras/CheckList.hpp>
+#include <design/extras/DrawerStack.hpp>
+#include <design/extras/FileSystemCard.hpp>
+#include <design/extras/Form.hpp>
+#include <design/extras/NotificationToast.hpp>
+#include <design/extras/Prompt.hpp>
 
 #include "extras/Extras.hpp"
 
 #include "Builder.hpp"
-#include "extras/AddComponent.hpp"
 #include "extras/EditComponent.hpp"
 
 Builder::Builder(const char *name) {
@@ -102,7 +109,6 @@ void Builder::show_clicked(lv_event_t *e) {
 
 void Builder::target_clicked(lv_event_t *e) {
   auto object = Event(e).target<Generic>();
-
   get_builder(e).select_target(object);
 }
 
@@ -150,8 +156,9 @@ Builder &Builder::select_target(Object object) {
 }
 
 Builder Builder::get_builder(lv_event_t *e) {
-  auto result = Event(e).find_parent<Builder>(ViewObject::Names::builder_object);
-  if( result.is_valid() == false ){
+  auto result
+    = Event(e).find_parent<Builder>(ViewObject::Names::builder_object);
+  if (result.is_valid() == false) {
     return screen().find<Builder>(ViewObject::Names::builder_object);
   }
   return result;
@@ -161,21 +168,30 @@ void Builder::add_component_clicked(lv_event_t *e) {
   if (Form::is_submit_button(e)) {
     printf("Form Submitted -- Add Component\n");
     auto add_component = Event(e).current_target<AddComponent>();
-    const auto form_value
-      = add_component.get_add_component_form().get_json_object();
+    const auto form_value = add_component.get_form().get_json_object();
     Model::Scope ms;
     printer().object("form", form_value);
     get_builder(e).add_component(form_value);
     screen().find<Modal>(Names::add_component_modal).close(300_milliseconds);
     return;
   }
+
+  if (AddComponent::is_cancel_button(e)) {
+    screen().find<Modal>(Names::add_component_modal).close(300_milliseconds);
+  }
 }
 
-Builder &Builder::add_component(json::JsonObject form_value) {
+JsonObject Builder::get_active_json_object() const {
+  if (data()->json_path.is_empty()) {
+    return data()->json_tree;
+  }
+  return data()->json_tree.find(data()->json_path).to_object();
+}
+
+Builder &Builder::add_component(JsonObject form_value) {
 
   const auto type
     = form_value.at(AddComponent::Fields::component_type).to_string_view();
-
 
   const auto name
     = form_value.at(AddComponent::Fields::component_name).to_cstring();
@@ -183,12 +199,7 @@ Builder &Builder::add_component(json::JsonObject form_value) {
 
   printf("Selected is %s\n", data()->json_path.cstring());
 
-  auto object = [&]() {
-    if (data()->json_path.is_empty()) {
-      return data()->json_tree;
-    }
-    return data()->json_tree.find(data()->json_path).to_object();
-  }();
+  auto object = get_active_json_object();
 
   object.insert(name, form_value);
   {
@@ -196,35 +207,123 @@ Builder &Builder::add_component(json::JsonObject form_value) {
     printer().object("tree", data()->json_tree);
   }
 
-  if (type == AddComponent::Components::container) {
+  if (type == Components::container) {
     container.add(Container(name));
-  } else if (type == AddComponent::Components::button) {
-    container.add(Button(name));
-  } else if (type == AddComponent::Components::label) {
-    container.add(Label(name).set_text_as_static("New Label"));
-  } else if (type == AddComponent::Components::row) {
-    container.add(Row(name));
-  } else if (type == AddComponent::Components::column) {
-    container.add(Column(name));
-  } else if (type == AddComponent::Components::heading1) {
-    container.add(Heading1(name));
-  } else if (type == AddComponent::Components::heading2) {
-    container.add(Heading2(name));
-  } else if (type == AddComponent::Components::heading3) {
-    container.add(Heading3(name));
-  } else if (type == AddComponent::Components::heading4) {
-    container.add(Heading4(name));
-  } else if (type == AddComponent::Components::horizontal_line) {
-    container.add(HorizontalLine(name));
-  } else if (type == AddComponent::Components::image) {
+  } else if (type == Components::bar) {
+    container.add(Bar(name));
+  } else if (type == Components::button) {
+    container.add(Button(name).add_label(
+      form_value.at(AddComponent::Fields::component_button_label)
+        .to_cstring()));
+  } else if (type == Components::calendar) {
+    container.add(Calendar(name));
+  } else if (type == Components::canvas) {
+    container.add(Canvas(name));
+  } else if (type == Components::chart) {
+    container.add(Chart(name));
+  } else if (type == Components::color_wheel) {
+    container.add(ColorWheel(name));
+  } else if (type == Components::image) {
     container.add(Image(name));
-  } else if (type == AddComponent::Components::spinner) {
-    container.add(Spinner(name));
-  } else if (type == AddComponent::Components::meter) {
+  } else if (type == Components::keyboard) {
+    container.add(Keyboard(name));
+  } else if (type == Components::label) {
+    container.add(Label(name).set_text_as_static("New Label"));
+  } else if (type == Components::list) {
+    container.add(List(name));
+  } else if (type == Components::meter) {
     container.add(Meter(name));
-  } else if (type == AddComponent::Components::spinbox) {
+  } else if (type == Components::roller) {
+    container.add(Roller(name));
+  } else if (type == Components::slider) {
+    container.add(Slider(name));
+  } else if (type == Components::spinbox) {
     container.add(SpinBox(name));
-  } else {
+  } else if (type == Components::spinner) {
+    container.add(Spinner(name));
+  } else if (type == Components::switch_) {
+    container.add(Switch(name));
+  } else if (type == Components::table) {
+    container.add(Table(name));
+  } else if (type == Components::tileview) {
+    container.add(TileView(name));
+  } else if (type == Components::window) {
+    container.add(Window(name));
+  }
+
+  else if (type == Components::alert) {
+    // container.add(Alert(name));
+  } else if (type == Components::badge) {
+    container.add(Badge(name));
+  } else if (type == Components::card) {
+    container.add(Card(name));
+  } else if (type == Components::column) {
+    container.add(Column(name));
+  } else if (type == Components::container) {
+    container.add(Container(name));
+  } else if (type == Components::drawer) {
+    container.add(Drawer(Drawer::Data::create(name)));
+  } else if (type == Components::heading1) {
+    container.add(Heading1(name).get<Label>().set_text(
+      form_value.at(Fields::component_heading1_label).to_cstring()));
+  } else if (type == Components::heading2) {
+    container.add(Heading2(name).get<Label>().set_text(
+      form_value.at(Fields::component_heading2_label).to_cstring()));
+  } else if (type == Components::heading3) {
+    container.add(Heading3(name).get<Label>().set_text(
+      form_value.at(Fields::component_heading3_label).to_cstring()));
+  } else if (type == Components::heading4) {
+    container.add(Heading4(name).get<Label>().set_text(
+      form_value.at(Fields::component_heading4_label).to_cstring()));
+  } else if (type == Components::horizontal_line) {
+    container.add(HorizontalLine(name));
+  }
+
+  else if (type == Components::check_list) {
+    container.add(HorizontalLine(name));
+  } else if (type == Components::drawer_stack) {
+    container.add(DrawerStack(DrawerStack::Data::create()));
+  } else if (type == Components::filesystem_card) {
+    container.add(FileSystemCard(FileSystemCard::Data::create(name)));
+  } else if (type == Components::form_container) {
+    container.add(Form(name));
+  } else if (type == Components::form_heading) {
+    container.add(Form::SectionHeading(name));
+  } else if (type == Components::form_line_field) {
+    container.add(
+      Form::LineField(name)
+        .set_label(
+          form_value.at(Fields::component_form_line_field_label).to_cstring())
+        .set_hint(
+          form_value.at(Fields::component_form_line_field_hint).to_cstring()));
+  } else if (type == Components::form_select) {
+    container.add(
+      Form::Select(name)
+        .set_label(
+          form_value.at(Fields::component_form_select_label).to_cstring())
+        .set_hint(
+          form_value.at(Fields::component_form_select_hint).to_cstring()));
+  } else if (type == Components::form_file_select) {
+    container.add(
+      Form::SelectFile(Form::SelectFile::Data::create(name))
+        .set_label(
+          form_value.at(Fields::component_form_file_select_label).to_cstring())
+        .set_hint(
+          form_value.at(Fields::component_form_file_select_hint).to_cstring()));
+  } else if (type == Components::form_switch) {
+    container.add(
+      Form::Switch(name)
+        .set_label(
+          form_value.at(Fields::component_form_switch_label).to_cstring())
+        .set_hint(
+          form_value.at(Fields::component_form_switch_hint).to_cstring()));
+  } else if (type == Components::notification_toast) {
+    container.add(NotificationToast(500_milliseconds));
+  } else if (type == Components::prompt) {
+    container.add(Prompt(Prompt::Data::create(name)));
+  }
+
+  else {
     return *this;
   }
 
@@ -311,9 +410,90 @@ Builder &Builder::remove_selected() {
 }
 
 void Builder::add_clicked(lv_event_t *e) {
-  Modal(Names::add_component_modal).add_content(
-    AddComponent(Names::add_component)
-      .add_event_callback(EventCode::clicked, add_component_clicked));
+  auto builder = get_builder(e);
+  Modal(Names::add_component_modal)
+    .add_content(
+      AddComponent(Names::add_component)
+        .set_parent_item_name(Generic(builder.data()->selected_object).name())
+        .add_event_callback(EventCode::clicked, add_component_clicked));
 }
 
-void Builder::edit_clicked(lv_event_t *e) {}
+void Builder::edit_clicked(lv_event_t *e) {
+  auto builder = get_builder(e);
+
+  // get the JSON object associated with the target
+  Modal(Names::edit_component_modal)
+    .add_content(
+      EditComponent(
+        EditComponent::Data::create(Names::edit_component)
+          .set_json_object(builder.get_active_json_object())
+          .set_target_object(Generic(builder.data()->selected_object)))
+        .add_event_callback(EventCode::clicked, edit_component_clicked));
+}
+
+Builder &Builder::edit_component(json::JsonObject form_value) {
+  // once editing modal is done, call this to sync the new JSON object settings
+  // with item visually
+  auto json_object = get_active_json_object();
+  auto target = Generic(data()->selected_object);
+
+  const auto key_container = form_value.get_key_list();
+  for (const auto &key : key_container) {
+    const auto value = form_value.at(key);
+    json_object.insert(key, value);
+    const auto property = Style::property_from_string(key);
+    if (property != Property::invalid) {
+      const auto description = Style::get_property_description(property);
+      switch (description.type) {
+      case PropertyType::coordinate:
+      case PropertyType::number:
+      case PropertyType::milliseconds:
+        if( value.to_string_view().is_empty() ){
+          break;
+        }
+        printf("Set %s to %d\n", KeyString(key).cstring(), value.to_integer());
+        target.set_property(property, value.to_integer());
+        break;
+      case PropertyType::color:
+        target.set_property(
+          property,
+          Color::from_hex(
+            value.to_string_view().to_unsigned_long(StringView::Base::auto_)));
+        break;
+      default:
+        break;
+      }
+    }
+    // apply the property
+  }
+
+  Model::Scope ms;
+  printer().object("activeObject", json_object);
+  printer().object("tree", data()->json_tree);
+
+  select_target(Generic(data()->selected_object));
+
+  return *this;
+}
+
+void Builder::edit_component_clicked(lv_event_t *e) {
+  if (EditComponent::is_cancel_button(e)) {
+    screen().find<Modal>(Names::edit_component_modal).close(300_milliseconds);
+  }
+
+  if (Form::is_submit_button(e)) {
+    printf("Form submitted\n");
+
+    auto edit_component = Event(e).current_target<EditComponent>();
+    const auto form_value = edit_component.get_form().get_json_object();
+
+    {
+      Model::Scope ms;
+      printer().object("editForm", form_value);
+    }
+
+    get_builder(e).edit_component(form_value);
+
+    screen().find<Modal>(Names::edit_component_modal).close(300_milliseconds);
+  }
+}
