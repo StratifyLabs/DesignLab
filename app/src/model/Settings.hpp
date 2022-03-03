@@ -75,6 +75,13 @@ public:
     JSON_ACCESS_ARRAY(Icons, Icon, range);
   };
 
+  class Component : public json::JsonValue {
+  public:
+    JSON_ACCESS_CONSTRUCT_OBJECT(Component);
+    JSON_ACCESS_STRING(Component,name);
+    JSON_ACCESS_OBJECT(Component,json::JsonObject,tree);
+  };
+
   class Theme : public json::JsonValue {
   public:
     JSON_ACCESS_CONSTRUCT_OBJECT(Theme);
@@ -112,6 +119,7 @@ public:
   JSON_ACCESS_ARRAY(Settings, Font, fonts);
   JSON_ACCESS_ARRAY(Settings, Asset, assets);
   JSON_ACCESS_ARRAY(Settings, Theme, themes);
+  JSON_ACCESS_ARRAY(Settings, Component, components);
   JSON_ACCESS_OBJECT(Settings, Icons, icons);
   JSON_ACCESS_BOOL_WITH_KEY(Settings, fontDirty, font_dirty);
   JSON_ACCESS_BOOL_WITH_KEY(Settings, assetsDirty, assets_dirty);

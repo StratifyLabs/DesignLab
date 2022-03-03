@@ -20,6 +20,38 @@ public:
   using Fields = AddComponent::Fields;
   using Components = AddComponent::Components;
 
+  static bool is_back_button(lv_event_t * e){
+    return Event(e).target().name() == Names::back_button;
+  }
+
+  Builder& set_component_name(var::StringView name){
+    data()->component_name = name;
+    return *this;
+  }
+
+  const var::GeneralString& component_name() const {
+    return data()->component_name;
+  }
+
+  Builder& load_json_tree(Settings::Component component);
+
+  Builder& set_component_offset(u32 value){
+    data()->component_offset = value;
+    return *this;
+  }
+
+  u32 component_offset() const {
+    return data()->component_offset;
+  }
+
+  json::JsonObject get_json_tree() const {
+    return data()->json_tree;
+  }
+
+  bool is_new() const {
+    return data()->is_new;
+  }
+
 private:
 
   struct Data : public UserDataAccess<Data> {
@@ -29,6 +61,9 @@ private:
     lv_obj_t * selected_object;
     json::JsonObject json_tree;
     var::String json_path;
+    var::GeneralString component_name;
+    u32 component_offset;
+    bool is_new = true;
 
   };
 
@@ -46,9 +81,11 @@ private:
     DESIGN_DECLARE_NAME(edit_component);
 
     DESIGN_DECLARE_NAME(remove_button);
+    DESIGN_DECLARE_NAME(back_button);
     DESIGN_DECLARE_NAME(get_parent_button);
     DESIGN_DECLARE_NAME(get_previous_sibling_button);
     DESIGN_DECLARE_NAME(get_next_sibling_button);
+
   };
 
 
@@ -79,6 +116,8 @@ private:
   Builder & remove_selected();
 
   json::JsonObject get_active_json_object() const;
+
+  void build_tree(lv_obj_t * target, json::JsonObject object);
 
 };
 

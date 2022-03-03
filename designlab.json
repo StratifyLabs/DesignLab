@@ -8,6 +8,30 @@
          "path": "designlab/themes/lvgl-small-dark.json"
       }
    ],
+   "components": [
+      {
+         "name": "HelloButton",
+         "tree": {
+            "control_button": {
+               "component_name": "control_button",
+               "component_type": "button",
+               "width": "",
+               "height": "",
+               "component_button_label": "Hello World",
+               "component_heading1_label": "",
+               "component_heading2_label": "",
+               "component_heading3_label": "",
+               "component_heading4_label": "",
+               "component_form_line_field_label": "",
+               "component_form_line_field_hint": "",
+               "component_form_select_label": "",
+               "component_form_select_hint": "",
+               "component_form_file_select_label": "",
+               "component_form_file_select_hint": ""
+            }
+         }
+      }
+   ],
    "assets": [
       {
          "path": "designlab/fonts/fontawesome/fa-icons.json"
@@ -569,7 +593,7 @@
          }
       ]
    },
-   "fontDirty": true,
+   "fontDirty": false,
    "assetsDirty": false,
    "fontsCompressed": false
 }

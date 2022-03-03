@@ -7,6 +7,7 @@
 #include "ColorPreview.hpp"
 #include "FontMaker.hpp"
 #include "IconMaker.hpp"
+#include "ComponentMaker.hpp"
 #include "Project.hpp"
 #include "Builder.hpp"
 #include "ThemeMaker.hpp"
@@ -43,7 +44,7 @@ Home::Home(const char * name) {
 void Home::configure_button_column(Column column) {
   column.add_style("darker").fill();
 
-  //column.add(Image().set_source("a:icon-250px.png"));
+  column.add(Image().set_source("a:icon-250px.png"));
   column
     .add(SectionHeading("Design Lab").set_text_alignment(TextAlignment::center))
     .add(HorizontalLine());
@@ -73,13 +74,11 @@ void Home::configure_button_column(Column column) {
     icons::fa::icons_solid,
     Names::icon_button,
     IconMaker::configure);
-
   add_side_button(
     column,
     icons::fa::hammer_solid,
-    Names::builder_button,
-    Builder::configure);
-
+    Names::component_button,
+    ComponentMaker::configure);
   add_side_button(
     column,
     icons::fa::palette_solid,

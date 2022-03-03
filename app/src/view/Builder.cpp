@@ -34,10 +34,16 @@ Builder::Builder(const char *name) {
   add(
     Column(ViewObject::Names::content_container)
       .add_style("container")
+      .add_flag(Flags::event_bubble)
       .fill()
       .add(
         Row()
           .fill_width()
+          .add_flag(Flags::event_bubble)
+          .add(Button(Names::back_button)
+                 .add_label_as_static(icons::fa::chevron_left_solid)
+                 .add_style("btn_outline_primary")
+                 .add_flag(Flags::event_bubble))
           .add(ScreenHeading("Builder").set_flex_grow())
           .add(
             Label(Names::currently_selected_label).set_text_as_static("<none>"))
@@ -448,7 +454,7 @@ Builder &Builder::edit_component(json::JsonObject form_value) {
       case PropertyType::coordinate:
       case PropertyType::number:
       case PropertyType::milliseconds:
-        if( value.to_string_view().is_empty() ){
+        if (value.to_string_view().is_empty()) {
           break;
         }
         printf("Set %s to %d\n", KeyString(key).cstring(), value.to_integer());
@@ -497,3 +503,39 @@ void Builder::edit_component_clicked(lv_event_t *e) {
     screen().find<Modal>(Names::edit_component_modal).close(300_milliseconds);
   }
 }
+
+Builder &Builder::load_json_tree(Settings::Component component) {
+  data()->json_tree = JsonObject();
+  auto target = find<Generic>(Names::target_object);
+  //draw the objects on the display and add them to the tree
+  build_tree(target.remove_children().object(), component.tree());
+
+  data()->is_new = !component.tree().is_valid();
+
+  return *this;
+}
+
+void Builder::build_tree(lv_obj_t * lvgl_object, json::JsonObject object){
+  if( !object.is_valid() || object.is_empty() ){
+    printf("empty object\n");
+    return;
+  }
+
+  data()->selected_object = lvgl_object;
+
+  const auto key_container = object.get_key_list();
+
+  for(const auto & key: key_container){
+    auto child_value = object.at(key);
+    if( child_value.is_object() ){
+      printf("Add %s\n", KeyString(key).cstring());
+      lv_obj_t  * parent = data()->selected_object;
+      //auto child_target = Generic(parent).find(KeyString(key).cstring()).object();
+      add_component(child_value.to_object());
+      build_tree(parent, child_value.to_object());
+
+      data()->selected_object = parent;
+    }
+  }
+}
+

@@ -21,9 +21,9 @@ void Application::run(sys::Cli &cli) {
     window::Point(),
     window::Size(320 * 6, 240 * 6),
     window::Window::Flags::shown | window::Window::Flags::highdpi
-    /*| window::Window::Flags::resizeable*/);
+    | window::Window::Flags::resizeable);
 
-  runtime.window().set_minimum_size(window::Size(480, 360));
+  runtime.window().set_minimum_size(window::Size(800, 600));
 
   // make the fonts available to `Font::find()`
   fonts_initialize();
@@ -35,7 +35,6 @@ void Application::run(sys::Cli &cli) {
 
   // load the PNG decoder
   lvgl_api_initialize_png_decoder();
-
   {
     Model::Scope model_scope;
     model().runtime = &runtime;

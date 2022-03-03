@@ -146,11 +146,19 @@ void Editor::submit_form_edit(lv_event_t *e) {
 
 void Editor::edit_info_card(lv_event_t *e) {
   auto self = get_self(e);
+
+  auto *data = get_data(e);
+  auto *info_card_data = InfoCard::get_data_from_event(e);
+  if (data->edit_clicked_callback != nullptr) {
+    data->edit_clicked_callback(e, info_card_data->offset);
+    return;
+  }
+
   self.set_action(Action::edit);
   self.show_form();
   // this is clicked from an info card
-  auto *data = get_data(e);
-  data->edit_offset = InfoCard::get_data_from_event(e)->offset;
+
+  data->edit_offset = info_card_data->offset;
 
   {
     // populate the form with the current values
@@ -173,6 +181,13 @@ void Editor::remove_info_card(lv_event_t *e) {
 
 void Editor::show_add_form(lv_event_t *e) {
   auto self = get_self(e);
+
+  auto * data = self.user_data<Data>();
+  if( data->add_clicked_callback != nullptr ){
+    data->add_clicked_callback(e);
+    return;
+  }
+
   self.set_action(Action::add);
   self.show_form();
 }

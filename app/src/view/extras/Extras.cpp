@@ -73,8 +73,8 @@ FormHeaderRow::FormHeaderRow(const char *title, Event::Callback callback) {
     .add_style("row")
     .fill_width()
     .add(Button()
-           .add_label_as_static(icons::fa::times_solid)
-           .add_style("btn_outline_primary circle")
+           .add_label_as_static(icons::fa::chevron_left_solid)
+           .add_style("btn_outline_primary")
            .add_event_callback(EventCode::clicked, callback))
     .add(
       ScreenHeading(title).set_width(Row::size_from_content).set_flex_grow());

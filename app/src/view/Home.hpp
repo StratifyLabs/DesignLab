@@ -25,6 +25,7 @@ private:
     static constexpr auto font_button = "Fonts";
     static constexpr auto about_button = "About";
     DESIGN_DECLARE_NAME_VALUE(builder_button, Builder);
+    DESIGN_DECLARE_NAME_VALUE(component_button, Components);
 
 
   };

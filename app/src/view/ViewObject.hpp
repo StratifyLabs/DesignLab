@@ -62,6 +62,7 @@ protected:
     DESIGN_DECLARE_NAME(asset_maker_object);
     DESIGN_DECLARE_NAME(color_preview_object);
     DESIGN_DECLARE_NAME(font_maker_object);
+    DESIGN_DECLARE_NAME(component_maker_object);
     DESIGN_DECLARE_NAME(icon_maker_object);
     DESIGN_DECLARE_NAME(theme_maker_object);
 

@@ -29,6 +29,8 @@ set(SOURCES
 	view/AssetMaker.hpp
 	view/Builder.cpp
 	view/Builder.hpp
+	view/ComponentMaker.cpp
+	view/ComponentMaker.hpp
 	view/FontMaker.cpp
 	view/FontMaker.hpp
 	view/ColorPreview.cpp

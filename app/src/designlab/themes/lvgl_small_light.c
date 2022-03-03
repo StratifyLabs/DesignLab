@@ -36,6 +36,11 @@ static const lv_style_prop_t transition_property_list[] = {
    (lv_style_prop_t)0x0462 /* opacity */
 };
 
+static const lv_style_prop_t drawer_transition_property_list[] = {
+   (lv_style_prop_t)0x300D /* translate_y */,
+   (lv_style_prop_t)0x300C /* translate_x */
+};
+
 static const lv_style_transition_dsc_t transition_normal = {
   .props = transition_property_list,
   .user_data = NULL,
@@ -59,6 +64,20 @@ static const lv_style_transition_dsc_t transition_slide_in = {
 };
 static const lv_style_transition_dsc_t transition_slide_out = {
   .props = transition_property_list,
+  .user_data = NULL,
+  .path_xcb = lv_anim_path_ease_in,
+  .time = 150,
+  .delay = 0
+};
+static const lv_style_transition_dsc_t transition_ease_out = {
+  .props = drawer_transition_property_list,
+  .user_data = NULL,
+  .path_xcb = lv_anim_path_ease_out,
+  .time = 150,
+  .delay = 0
+};
+static const lv_style_transition_dsc_t transition_ease_in = {
+  .props = drawer_transition_property_list,
   .user_data = NULL,
   .path_xcb = lv_anim_path_ease_in,
   .time = 150,
@@ -1150,6 +1169,28 @@ static const lv_style_t slide_over_from_right_style = {
   .is_const = 1
 };
 
+static const lv_style_const_prop_t drawer_ease_in_const_list[] = {
+  { .prop = LV_STYLE_TRANSITION, .value = { .ptr = (void*)&transition_ease_in } },
+  { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
+};
+
+static const lv_style_t drawer_ease_in_style = {
+  .v_p = { .const_props = drawer_ease_in_const_list },
+  .has_group = 0xff,
+  .is_const = 1
+};
+
+static const lv_style_const_prop_t drawer_ease_out_const_list[] = {
+  { .prop = LV_STYLE_TRANSITION, .value = { .ptr = (void*)&transition_ease_out } },
+  { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
+};
+
+static const lv_style_t drawer_ease_out_style = {
+  .v_p = { .const_props = drawer_ease_out_const_list },
+  .has_group = 0xff,
+  .is_const = 1
+};
+
 static const lv_style_const_prop_t modal_const_list[] = {
   { .prop = LV_STYLE_BG_COLOR, .value = { .color = LV_COLOR_MAKE(0x22,0x22,0x22)  } },
   { .prop = LV_STYLE_WIDTH, .value = { .num = LV_PCT(100) } },
@@ -2229,6 +2270,8 @@ static const lvgl_api_style_descriptor_t lvgl_small_light_style_descriptor_list[
   { .name = "badge_lg", .style = &badge_lg_style },
   { .name = "slide_over_from_right_hidden", .style = &slide_over_from_right_hidden_style },
   { .name = "slide_over_from_right", .style = &slide_over_from_right_style },
+  { .name = "drawer_ease_in", .style = &drawer_ease_in_style },
+  { .name = "drawer_ease_out", .style = &drawer_ease_out_style },
   { .name = "modal", .style = &modal_style },
   { .name = "modal_enabled", .style = &modal_enabled_style },
   { .name = "modal_content", .style = &modal_content_style },

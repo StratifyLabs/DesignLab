@@ -23,6 +23,8 @@ public:
   };
 
   using ValidateCallback = IsValid (*)(Form);
+  using EditClickedCallback = void (*)(lv_event_t * e, u32 offset);
+  using AddClickedCallback = void (*)(lv_event_t * e);
 
   using GetFormSchemaCallback = design::Form::Schema (*)();
   using GetFeatureListCallback
@@ -33,6 +35,8 @@ public:
   public:
 
     API_PMAZ(add_button_text, Data, const char *, "Add Button");
+    API_PMAZ(add_clicked_callback, Data, AddClickedCallback, nullptr);
+    API_PMAZ(edit_clicked_callback, Data, EditClickedCallback, nullptr);
     API_PMAZ(form_name, Data, const char *, "");
     API_PMAZ(form_title, Data, const char *, "Form Title");
     API_PMAZ(get_feature_list_callback, Data, GetFeatureListCallback, nullptr);
