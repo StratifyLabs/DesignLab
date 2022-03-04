@@ -27,23 +27,23 @@ public:
     DESIGN_DECLARE_NAME_VALUE(component_width, width);
     DESIGN_DECLARE_NAME_VALUE(component_height, height);
 
-    DESIGN_DECLARE_NAME(component_button_label);
-    DESIGN_DECLARE_NAME(component_heading1_label);
-    DESIGN_DECLARE_NAME(component_heading2_label);
-    DESIGN_DECLARE_NAME(component_heading3_label);
-    DESIGN_DECLARE_NAME(component_heading4_label);
+    DESIGN_DECLARE_NAME_VALUE(component_button_label, Component::Button::Label);
+    DESIGN_DECLARE_NAME_VALUE(component_heading1_label, Component::Heading1::Label);
+    DESIGN_DECLARE_NAME_VALUE(component_heading2_label, Component::Heading2::Label);
+    DESIGN_DECLARE_NAME_VALUE(component_heading3_label, Component::Heading3::Label);
+    DESIGN_DECLARE_NAME_VALUE(component_heading4_label, Component::Heading3::Label);
 
-    DESIGN_DECLARE_NAME(component_form_line_field_label);
-    DESIGN_DECLARE_NAME(component_form_line_field_hint);
+    DESIGN_DECLARE_NAME_VALUE(component_form_line_field_label,Component::Form::LineField::Label);
+    DESIGN_DECLARE_NAME_VALUE(component_form_line_field_hint,Component::Form::LineField::Hint);
 
-    DESIGN_DECLARE_NAME(component_form_select_label);
-    DESIGN_DECLARE_NAME(component_form_select_hint);
+    DESIGN_DECLARE_NAME_VALUE(component_form_select_label,Component::Form::Select::Label);
+    DESIGN_DECLARE_NAME_VALUE(component_form_select_hint,Component::Form::Select::Hint);
 
-    DESIGN_DECLARE_NAME(component_form_file_select_label);
-    DESIGN_DECLARE_NAME(component_form_file_select_hint);
+    DESIGN_DECLARE_NAME_VALUE(component_form_file_select_label,Component::Form::FileSelect::Label);
+    DESIGN_DECLARE_NAME_VALUE(component_form_file_select_hint,Component::Form::FileSelect::Hint);
 
-    DESIGN_DECLARE_NAME(component_form_switch_label);
-    DESIGN_DECLARE_NAME(component_form_switch_hint);
+    DESIGN_DECLARE_NAME_VALUE(component_form_switch_label,Component::Form::Switch::Label);
+    DESIGN_DECLARE_NAME_VALUE(component_form_switch_hint,Component::Form::Switch::Hint);
   };
 
   struct Components {

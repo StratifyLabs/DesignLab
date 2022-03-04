@@ -194,9 +194,18 @@ void ComponentManager::add_modifiers(json::JsonObject node) {
           StringView(".set_") | property_name | "(" | property_type_class_name
           | "::" | property_value.to_string_view());
       } else {
-        m_source_printer.line(
-          StringView(".set_") | property_name | "("
-          | property_value.to_string_view() | ")");
+        const auto property_value_string = property_value.to_string_view();
+        if( property_value_string.is_empty() == false && property_value_string.back() == '%' ){
+          m_source_printer.line(
+            StringView(".set_") | property_name | "("
+            | NumberString(property_value.to_integer()) | "_percent)");
+        } else {
+          m_source_printer.line(
+            StringView(".set_") | property_name | "("
+            | property_value.to_string_view() | ")");
+        }
+
+
       }
     }
   }

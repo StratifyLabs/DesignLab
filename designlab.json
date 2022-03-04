@@ -49,6 +49,44 @@
                "width": "100%"
             }
          }
+      },
+      {
+         "name": "MyComponent2",
+         "generateWorker": true,
+         "generateData": true,
+         "tree": {
+            "main_column": {
+               "component_name": "main_column",
+               "component_type": "Column",
+               "width": "100%",
+               "height": "100%",
+               "main_heading": {
+                  "component_name": "main_heading",
+                  "component_type": "Heading1",
+                  "Component::Heading1::Label": "Hello World"
+               },
+               "progress_bar": {
+                  "component_name": "progress_bar",
+                  "component_type": "Bar",
+                  "width": "100%"
+               },
+               "button_row": {
+                  "component_name": "button_row",
+                  "component_type": "Row",
+                  "width": "100%",
+                  "up_button": {
+                     "component_name": "up_button",
+                     "component_type": "Button",
+                     "Component::Button::Label": "Up"
+                  },
+                  "down_button": {
+                     "component_name": "down_button",
+                     "component_type": "Button",
+                     "Component::Button::Label": "Down"
+                  }
+               }
+            }
+         }
       }
    ],
    "assets": [

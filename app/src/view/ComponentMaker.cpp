@@ -157,7 +157,7 @@ void ComponentMaker::builder_button_clicked(lv_event_t *e) {
                   .close(300_milliseconds);
               }))
             .set_width(80_percent)
-            .set_height(size_from_content))
+            .set_height(60_percent))
         .set_enabled();
 
       auto prompt = screen().find<Prompt>(Names::new_component_prompt);
