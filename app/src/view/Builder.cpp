@@ -289,6 +289,10 @@ Builder &Builder::add_component(JsonObject form_value) {
       form_value.at(Fields::component_heading4_label).to_cstring()));
   } else if (type == Components::horizontal_line) {
     container.add(HorizontalLine(name));
+  } else if (type == Components::paragraph) {
+    container.add(Paragraph(name));
+  } else if (type == Components::row) {
+    container.add(Row(name));
   }
 
   else if (type == Components::check_list) {
@@ -366,8 +370,7 @@ Builder &Builder::add_component(JsonObject form_value) {
   }
 
   component.add_flag(Flags::clickable)
-    .add_event_callback(EventCode::clicked, target_clicked)
-    .add_style(data()->highlight_style, State::user4);
+    .add_event_callback(EventCode::clicked, target_clicked);
 
   return *this;
 }
@@ -477,20 +480,80 @@ Builder &Builder::edit_component(json::JsonObject form_value) {
       switch (description.type) {
       case PropertyType::coordinate:
       case PropertyType::number:
-      case PropertyType::milliseconds:
+      case PropertyType::milliseconds: {
         if (value.to_string_view().is_empty()) {
           break;
         }
-        printf("Set %s to %d\n", KeyString(key).cstring(), value.to_integer());
-        target.set_property(property, value.to_integer());
+        const auto value_string = value.to_string_view();
+        if (value_string.back() == '%') {
+          target.set_property(property, Percent(value.to_integer()).value());
+        } else {
+          target.set_property(property, value.to_integer());
+        }
         break;
+      }
       case PropertyType::color:
         target.set_property(
           property,
           Color::from_hex(
             value.to_string_view().to_unsigned_long(StringView::Base::auto_)));
         break;
+      case PropertyType::boolean: {
+        target.set_property(property, value.to_bool());
+      } break;
+      case PropertyType::border_side: {
+        target.set_property(
+          property,
+          s32(Style::border_side_from_string(value.to_string_view())));
+      } break;
+      case PropertyType::direction: {
+        target.set_property(
+          property,
+          s32(Style::direction_from_string(value.to_string_view())));
+      } break;
+      case PropertyType::alignment: {
+        target.set_property(
+          property,
+          s32(Style::alignment_from_string(value.to_string_view())));
+      } break;
+      case PropertyType::base_direction: {
+        target.set_property(
+          property,
+          s32(Style::base_direction_from_string(value.to_string_view())));
+      } break;
+      case PropertyType::blend_mode: {
+        target.set_property(
+          property,
+          s32(Style::blend_mode_from_string(value.to_string_view())));
+      } break;
+      case PropertyType::flex_align: {
+        target.set_property(
+          property,
+          s32(Style::flex_align_from_string(value.to_string_view())));
+      } break;
+      case PropertyType::flex_flow: {
+        target.set_property(
+          property,
+          s32(Style::flex_flow_from_string(value.to_string_view())));
+      } break;
+      case PropertyType::gradient_direction: {
+        target.set_property(
+          property,
+          s32(Style::gradient_direction_from_string(value.to_string_view())));
+      } break;
+      case PropertyType::text_alignment: {
+        target.set_property(
+          property,
+          s32(Style::text_alignment_from_string(value.to_string_view())));
+      } break;
+      case PropertyType::text_decoration: {
+        target.set_property(
+          property,
+          s32(Style::text_decoration_from_string(value.to_string_view())));
+      } break;
+
       default:
+        printf("Property %s is not applied\n", Style::to_cstring(property));
         break;
       }
     }
@@ -584,8 +647,18 @@ void Builder::tree_clicked(lv_event_t *e) {
 
           const auto name = Event(e).target().name();
           auto builder = get_builder(e);
-          auto target = builder.find<Generic>({Names::target_object, name});
+          printf("find %s\n", name);
+          API_PRINTF_TRACE_LINE();
+          auto target_object = builder.find<Generic>(Names::target_object);
+          printf(
+            "target object has %d children\n",
+            target_object.get_child_count());
+          for (auto child : target_object) {
+            printf("Child:%s\n", child.name());
+          }
+          API_PRINTF_TRACE_LINE();
+          auto target = target_object.find<Generic>(name);
+          API_PRINTF_TRACE_LINE();
           builder.select_target(target);
-
         }));
 }

@@ -169,15 +169,214 @@ void EditComponent::add_property_to_form(
   } break;
 
   case PropertyType::alignment: {
-    form.add(Form::LineField(Style::to_cstring(property.property))
+    const auto property_name = Style::to_cstring(property.property);
+    form.add(Form::Select(property_name)
                .set_label(name_string(replace_underscore_with_period))
                .set_hint_as_static("Select Alignment"));
+
+    auto dropdown = form.find<Form::Select>(property_name).get_dropdown();
+
+    String options_string;
+    for (const auto alignment : alignment_list) {
+      options_string += Style::to_cstring(alignment);
+      options_string += "\n";
+    }
+    options_string.pop_back();
+
+    dropdown.set_options(options_string.cstring());
+  } break;
+
+  case PropertyType::direction: {
+    const auto property_name = Style::to_cstring(property.property);
+    form.add(Form::Select(property_name)
+               .set_label(name_string(replace_underscore_with_period))
+               .set_hint_as_static("Select Direction"));
+
+    auto dropdown = form.find<Form::Select>(property_name).get_dropdown();
+
+    String options_string;
+    for (const auto value : direction_list) {
+      options_string += Style::to_cstring(value);
+      options_string += "\n";
+    }
+    options_string.pop_back();
+
+    dropdown.set_options(options_string.cstring());
+  } break;
+
+  case PropertyType::base_direction: {
+    const auto property_name = Style::to_cstring(property.property);
+    form.add(Form::Select(property_name)
+               .set_label(name_string(replace_underscore_with_period))
+               .set_hint_as_static("Select Base Direction"));
+
+    auto dropdown = form.find<Form::Select>(property_name).get_dropdown();
+
+    String options_string;
+    for (const auto value : base_direction_list) {
+      options_string += Style::to_cstring(value);
+      options_string += "\n";
+    }
+    options_string.pop_back();
+
+    dropdown.set_options(options_string.cstring());
+  } break;
+
+  case PropertyType::border_side: {
+    const auto property_name = Style::to_cstring(property.property);
+    form.add(Form::Select(property_name)
+               .set_label(name_string(replace_underscore_with_period))
+               .set_hint_as_static("Select Border Side"));
+
+    auto dropdown = form.find<Form::Select>(property_name).get_dropdown();
+
+    String options_string;
+    for (const auto value : border_side_list) {
+      options_string += Style::to_cstring(value);
+      options_string += "\n";
+    }
+    options_string.pop_back();
+
+    dropdown.set_options(options_string.cstring());
   } break;
 
   case PropertyType::milliseconds: {
     form.add(Form::LineField(Style::to_cstring(property.property))
                .set_label(name_string(replace_underscore_with_period))
                .set_hint_as_static("Set value in milliseconds"));
+  } break;
+
+  case PropertyType::gradient_direction: {
+    const auto property_name = Style::to_cstring(property.property);
+    form.add(Form::Select(property_name)
+               .set_label(name_string(replace_underscore_with_period))
+               .set_hint_as_static("Select Gradient Direction"));
+
+    auto dropdown = form.find<Form::Select>(property_name).get_dropdown();
+
+    String options_string;
+    for (const auto value : gradient_direction_list) {
+      options_string += Style::to_cstring(value);
+      options_string += "\n";
+    }
+    options_string.pop_back();
+
+    dropdown.set_options(options_string.cstring());
+  } break;
+
+  case PropertyType::blend_mode: {
+    const auto property_name = Style::to_cstring(property.property);
+    form.add(Form::Select(property_name)
+               .set_label(name_string(replace_underscore_with_period))
+               .set_hint_as_static("Select Blend Mode"));
+
+    auto dropdown = form.find<Form::Select>(property_name).get_dropdown();
+
+    String options_string;
+    for (const auto value : blend_mode_list) {
+      options_string += Style::to_cstring(value);
+      options_string += "\n";
+    }
+    options_string.pop_back();
+
+    dropdown.set_options(options_string.cstring());
+  } break;
+
+  case PropertyType::boolean: {
+    const auto property_name = Style::to_cstring(property.property);
+    form.add(Form::Switch(property_name)
+               .set_label(name_string(replace_underscore_with_period)));
+  } break;
+
+  case PropertyType::flex_align: {
+    const auto property_name = Style::to_cstring(property.property);
+    form.add(Form::Select(property_name)
+               .set_label(name_string(replace_underscore_with_period))
+               .set_hint_as_static("Select Flex Align Main"));
+
+    auto dropdown = form.find<Form::Select>(property_name).get_dropdown();
+
+    String options_string;
+    for (const auto value : flex_align_list) {
+      options_string += Style::to_cstring(value);
+      options_string += "\n";
+    }
+    options_string.pop_back();
+
+    dropdown.set_options(options_string.cstring());
+  } break;
+
+  case PropertyType::flex_flow: {
+    const auto property_name = Style::to_cstring(property.property);
+    form.add(Form::Select(property_name)
+               .set_label(name_string(replace_underscore_with_period))
+               .set_hint_as_static("Select Flex Flow"));
+
+    auto dropdown = form.find<Form::Select>(property_name).get_dropdown();
+
+    String options_string;
+    for (const auto value : flex_flow_list) {
+      options_string += Style::to_cstring(value);
+      options_string += "\n";
+    }
+    options_string.pop_back();
+
+    dropdown.set_options(options_string.cstring());
+  } break;
+
+  case PropertyType::text_decoration: {
+    const auto property_name = Style::to_cstring(property.property);
+    form.add(Form::Select(property_name)
+               .set_label(name_string(replace_underscore_with_period))
+               .set_hint_as_static("Select Text Decoration"));
+
+    auto dropdown = form.find<Form::Select>(property_name).get_dropdown();
+
+    String options_string;
+    for (const auto value : text_decoration_list) {
+      options_string += Style::to_cstring(value);
+      options_string += "\n";
+    }
+    options_string.pop_back();
+
+    dropdown.set_options(options_string.cstring());
+  } break;
+
+  case PropertyType::text_alignment: {
+    const auto property_name = Style::to_cstring(property.property);
+    form.add(Form::Select(property_name)
+               .set_label(name_string(replace_underscore_with_period))
+               .set_hint_as_static("Select Text Alignment"));
+
+    auto dropdown = form.find<Form::Select>(property_name).get_dropdown();
+
+    String options_string;
+    for (const auto value : text_alignment_list) {
+      options_string += Style::to_cstring(value);
+      options_string += "\n";
+    }
+    options_string.pop_back();
+
+    dropdown.set_options(options_string.cstring());
+  } break;
+
+  case PropertyType::font: {
+    const auto property_name = Style::to_cstring(property.property);
+    form.add(Form::Select(property_name)
+               .set_label(name_string(replace_underscore_with_period))
+               .set_hint_as_static("Select Font"));
+
+    auto dropdown = form.find<Form::Select>(property_name).get_dropdown();
+
+    //need to pull the font list from what will be available
+    String options_string;
+    for (const auto value : text_alignment_list) {
+      options_string += Style::to_cstring(value);
+      options_string += "\n";
+    }
+    options_string.pop_back();
+
+    dropdown.set_options(options_string.cstring());
   } break;
 
   default:

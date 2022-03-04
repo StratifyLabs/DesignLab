@@ -101,7 +101,6 @@ public:
     DESIGN_DECLARE_NAME(horizontal_line);
     DESIGN_DECLARE_NAME(paragraph);
     DESIGN_DECLARE_NAME(row);
-    DESIGN_DECLARE_NAME(toast);
 
     static constexpr auto list_of_design_components = {
       alert,
@@ -116,8 +115,7 @@ public:
       heading4,
       horizontal_line,
       paragraph,
-      row,
-      toast};
+      row};
 
     DESIGN_DECLARE_NAME(check_list);
     DESIGN_DECLARE_NAME(drawer_stack);
@@ -218,9 +216,7 @@ private:
       Components::horizontal_line,
       icons::fa::window_minimize_solid},
     ComponentType{Components::paragraph, icons::fa::align_justify_solid},
-    ComponentType{Components::row, icons::fa::stream_solid},
-    ComponentType{Components::toast, icons::fa::info_circle_solid},
-  };
+    ComponentType{Components::row, icons::fa::stream_solid}};
 
   static constexpr auto component_type_list_extra_design = {
     ComponentType{Components::check_list, icons::fa::check_double_solid},
