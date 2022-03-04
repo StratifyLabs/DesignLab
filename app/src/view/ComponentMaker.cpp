@@ -15,7 +15,7 @@ ComponentMaker::ComponentMaker(const char *name) {
   construct_object(name);
   fill();
 
-  auto &editor_data = Editor::Data::create()
+  auto &editor_data = Editor::Data::create(Names::component_maker_editor)
                         .set_add_button_text("Add Component")
                         .set_form_name(Settings::components_key())
                         .set_nothing_to_show("No Components")
@@ -135,6 +135,10 @@ void ComponentMaker::builder_button_clicked(lv_event_t *e) {
                 screen()
                   .find<Modal>(Names::new_component_modal)
                   .close(300_milliseconds);
+
+                screen()
+                  .find<Editor>(Names::component_maker_editor)
+                  .refresh_values();
               })
               .set_message("")
               .set_reject("Cancel")

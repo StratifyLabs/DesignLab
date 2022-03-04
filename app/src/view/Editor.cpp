@@ -211,3 +211,8 @@ Editor Editor::get_self(lv_event_t *e) {
                                          : form_container_parent.get_parent();
   return editor.get<Editor>();
 }
+
+Editor &Editor::refresh_values() {
+  show_values(*user_data<Data>());
+  return *this;
+}

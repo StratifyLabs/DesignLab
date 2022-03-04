@@ -33,6 +33,7 @@ public:
 
   class Data : public UserDataAccess<Data> {
   public:
+    explicit Data(const char * name = "") : UserDataAccess<Data>(name){}
 
     API_PMAZ(add_button_text, Data, const char *, "Add Button");
     API_PMAZ(add_clicked_callback, Data, AddClickedCallback, nullptr);
@@ -54,6 +55,8 @@ public:
 
   explicit Editor(Data &data);
   explicit Editor(lv_obj_t*object){ m_object = object; }
+
+  Editor& refresh_values();
 
 protected:
   struct Names {

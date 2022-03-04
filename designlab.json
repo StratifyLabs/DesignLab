@@ -35,6 +35,16 @@
                }
             }
          }
+      },
+      {
+         "name": "ProgressBar",
+         "tree": {
+            "progress_bar": {
+               "component_name": "progress_bar",
+               "component_type": "bar",
+               "width": "100%"
+            }
+         }
       }
    ],
    "assets": [

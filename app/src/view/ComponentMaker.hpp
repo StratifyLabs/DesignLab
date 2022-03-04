@@ -25,6 +25,7 @@ private:
     DESIGN_DECLARE_NAME(new_component_form);
     DESIGN_DECLARE_NAME(new_component_line_field_name);
     DESIGN_DECLARE_NAME(new_component_modal);
+    DESIGN_DECLARE_NAME(component_maker_editor);
   };
 
   class InputSchema : var::Vector<json::JsonObject> {
