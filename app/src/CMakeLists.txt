@@ -52,6 +52,8 @@ set(SOURCES
 	view/ViewObject.hpp
 	view/extras/AddComponent.cpp
 	view/extras/AddComponent.cpp
+	view/extras/ComponentTree.cpp
+	view/extras/ComponentTree.hpp
 	view/extras/EditComponent.cpp
 	view/extras/EditComponent.hpp
 	view/extras/Extras.cpp

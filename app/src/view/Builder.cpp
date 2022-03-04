@@ -15,6 +15,8 @@
 #include "extras/Extras.hpp"
 
 #include "Builder.hpp"
+
+#include "extras/ComponentTree.hpp"
 #include "extras/EditComponent.hpp"
 
 Builder::Builder(const char *name) {
@@ -62,6 +64,10 @@ Builder::Builder(const char *name) {
               .add_style("btn_outline_primary")
               .add_label_as_static(icons::fa::chevron_right_solid)
               .add_event_callback(EventCode::clicked, get_next_sibling_clicked))
+          .add(Button()
+                 .add_style("btn_outline_primary")
+                 .add_label_as_static(icons::fa::tree_solid)
+                 .add_event_callback(EventCode::clicked, tree_clicked))
           .add(Button()
                  .add_label_as_static(icons::fa::plus_solid)
                  .add_event_callback(EventCode::clicked, add_clicked))
@@ -415,7 +421,7 @@ Builder &Builder::remove_selected() {
       Model::Scope ms;
       printer().object("treeBefore", data()->json_tree);
     }
-    //clean the JSON tree
+    // clean the JSON tree
     const auto parent_path = fs::Path::parent_directory(data()->json_path);
     const auto object_name = fs::Path::name(data()->json_path);
     auto parent = data()->json_tree.find(parent_path);
@@ -426,8 +432,7 @@ Builder &Builder::remove_selected() {
     }
   }
 
-
-  //clean the graphics
+  // clean the graphics
   auto selected = Generic(data()->selected_object);
   auto parent = selected.get_parent();
   selected.remove();
@@ -563,4 +568,24 @@ void Builder::build_tree(lv_obj_t *lvgl_object, json::JsonObject object) {
       select_target(Generic(parent));
     }
   }
+}
+
+void Builder::tree_clicked(lv_event_t *e) {
+  Modal(Names::tree_modal)
+    .add_content(
+      ComponentTree()
+        .set_tree(get_builder(e).data()->json_tree)
+        .add_event_callback(EventCode::clicked, [](lv_event_t *e) {
+          screen().find<Modal>(Names::tree_modal).close(300_milliseconds);
+
+          if (ComponentTree::is_cancel_button(e)) {
+            return;
+          }
+
+          const auto name = Event(e).target().name();
+          auto builder = get_builder(e);
+          auto target = builder.find<Generic>({Names::target_object, name});
+          builder.select_target(target);
+
+        }));
 }

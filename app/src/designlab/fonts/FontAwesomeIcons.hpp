@@ -91,6 +91,7 @@ namespace icons {
     static constexpr auto times_solid = "\uf00d";
     static constexpr auto toggle_on_solid = "\uf205";
     static constexpr auto trash_alt_solid = "\uf2ed";
+    static constexpr auto tree_solid = "\uf1bb";
     static constexpr auto user_solid = "\uf007";
     static constexpr auto window_maximize_solid = "\uf2d0";
     static constexpr auto window_minimize_solid = "\uf2d1";
@@ -190,6 +191,7 @@ namespace icons {
 #define ICONS_FA_TIMES_SOLID "\uf00d"
 #define ICONS_FA_TOGGLE_ON_SOLID "\uf205"
 #define ICONS_FA_TRASH_ALT_SOLID "\uf2ed"
+#define ICONS_FA_TREE_SOLID "\uf1bb"
 #define ICONS_FA_USER_SOLID "\uf007"
 #define ICONS_FA_WINDOW_MAXIMIZE_SOLID "\uf2d0"
 #define ICONS_FA_WINDOW_MINIMIZE_SOLID "\uf2d1"

@@ -75,11 +75,15 @@ private:
     DESIGN_DECLARE_NAME(builder_tools);
     DESIGN_DECLARE_NAME(currently_selected_label);
 
+
+    DESIGN_DECLARE_NAME(tree_modal);
+
     DESIGN_DECLARE_NAME(add_component_modal);
     DESIGN_DECLARE_NAME(add_component);
     DESIGN_DECLARE_NAME(edit_component_modal);
     DESIGN_DECLARE_NAME(edit_component);
 
+    DESIGN_DECLARE_NAME(show_tree_button);
     DESIGN_DECLARE_NAME(remove_button);
     DESIGN_DECLARE_NAME(back_button);
     DESIGN_DECLARE_NAME(get_parent_button);
@@ -94,6 +98,7 @@ private:
   static void edit_clicked(lv_event_t*e);
   static void add_clicked(lv_event_t*e);
   static void show_clicked(lv_event_t*e);
+  static void tree_clicked(lv_event_t*e);
   static void target_clicked(lv_event_t*e);
   static void add_component_clicked(lv_event_t*e);
   static void edit_component_clicked(lv_event_t*e);

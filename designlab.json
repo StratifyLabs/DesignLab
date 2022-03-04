@@ -568,6 +568,11 @@
          },
          {
             "family": "solid",
+            "name": "tree",
+            "unicode": "uf1bb"
+         },
+         {
+            "family": "solid",
             "name": "user",
             "unicode": "uf007"
          },
@@ -608,7 +613,7 @@
          }
       ]
    },
-   "fontDirty": true,
+   "fontDirty": false,
    "assetsDirty": false,
    "fontsCompressed": false
 }
