@@ -80,6 +80,8 @@ public:
     JSON_ACCESS_CONSTRUCT_OBJECT(Component);
     JSON_ACCESS_STRING(Component,name);
     JSON_ACCESS_OBJECT(Component,json::JsonObject,tree);
+    JSON_ACCESS_BOOL_WITH_KEY(Component,generateWorker,generate_worker);
+    JSON_ACCESS_BOOL_WITH_KEY(Component,generateData,generate_data);
 
     Component& trim_tree();
 

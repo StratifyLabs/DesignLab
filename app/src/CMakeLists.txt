@@ -9,6 +9,8 @@ set(SOURCES
 	logic/BootstrapIconManager.cpp
 	logic/BootstrapIconManager.hpp
 	logic/CodePrinter.hpp
+  logic/ComponentManager.cpp
+  logic/ComponentManager.hpp
 	logic/FontAwesomeManager.cpp
 	logic/FontAwesomeManager.hpp
 	logic/FontManager.cpp

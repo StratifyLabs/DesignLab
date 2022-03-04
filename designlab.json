@@ -11,6 +11,8 @@
    "components": [
       {
          "name": "SignupForm",
+         "generateWorker": true,
+         "generateData": true,
          "tree": {
             "form_container": {
                "component_name": "form_container",
@@ -38,6 +40,8 @@
       },
       {
          "name": "ProgressBar",
+         "generateWorker": false,
+         "generateData": false,
          "tree": {
             "progress_bar": {
                "component_name": "progress_bar",
@@ -233,8 +237,23 @@
          },
          {
             "family": "solid",
+            "name": "clipboard",
+            "unicode": "uf328"
+         },
+         {
+            "family": "solid",
+            "name": "clipboard-check",
+            "unicode": "uf46c"
+         },
+         {
+            "family": "solid",
             "name": "clipboard-list",
             "unicode": "uf46d"
+         },
+         {
+            "family": "solid",
+            "name": "clone",
+            "unicode": "uf24d"
          },
          {
             "family": "solid",

@@ -24,7 +24,10 @@ namespace icons {
     static constexpr auto chevron_left_solid = "\uf053";
     static constexpr auto chevron_right_solid = "\uf054";
     static constexpr auto chevron_up_solid = "\uf077";
+    static constexpr auto clipboard_solid = "\uf328";
+    static constexpr auto clipboard_check_solid = "\uf46c";
     static constexpr auto clipboard_list_solid = "\uf46d";
+    static constexpr auto clone_solid = "\uf24d";
     static constexpr auto code_solid = "\uf121";
     static constexpr auto columns_solid = "\uf0db";
     static constexpr auto copyright_solid = "\uf1f9";
@@ -124,7 +127,10 @@ namespace icons {
 #define ICONS_FA_CHEVRON_LEFT_SOLID "\uf053"
 #define ICONS_FA_CHEVRON_RIGHT_SOLID "\uf054"
 #define ICONS_FA_CHEVRON_UP_SOLID "\uf077"
+#define ICONS_FA_CLIPBOARD_SOLID "\uf328"
+#define ICONS_FA_CLIPBOARD_CHECK_SOLID "\uf46c"
 #define ICONS_FA_CLIPBOARD_LIST_SOLID "\uf46d"
+#define ICONS_FA_CLONE_SOLID "\uf24d"
 #define ICONS_FA_CODE_SOLID "\uf121"
 #define ICONS_FA_COLUMNS_SOLID "\uf0db"
 #define ICONS_FA_COPYRIGHT_SOLID "\uf1f9"

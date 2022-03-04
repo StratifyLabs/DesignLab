@@ -24,6 +24,8 @@ private:
     DESIGN_DECLARE_NAME(new_component_prompt);
     DESIGN_DECLARE_NAME(new_component_form);
     DESIGN_DECLARE_NAME(new_component_line_field_name);
+    DESIGN_DECLARE_NAME(new_component_generate_worker_switch);
+    DESIGN_DECLARE_NAME(new_component_generate_data_switch);
     DESIGN_DECLARE_NAME(new_component_modal);
     DESIGN_DECLARE_NAME(component_maker_editor);
   };

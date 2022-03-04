@@ -6,24 +6,26 @@
 #include <var.hpp>
 #include <window/Clipboard.hpp>
 
+#include <design/extras/NotificationToast.hpp>
+
 #include "ColorPreview.hpp"
 #include "extras/Extras.hpp"
 
-ColorPreview::ColorPreview(const char * name) {
+ColorPreview::ColorPreview(const char *name) {
   construct_object(name);
   fill();
 
   add(Column(ViewObject::Names::content_container)
-                .add_style("container")
-                .fill()
-                .add(ScreenHeading("Color Picker"))
-                .add(HorizontalLine())
-                .add(SectionHeading("RGB Color Selector"))
-                .add(Row(Names::rgb_color_control_row).fill_width())
-                .add(SubSectionHeading("Tints"))
-                .add(Row(Names::tint_color_row).fill_width())
-                .add(SubSectionHeading("Shades"))
-                .add(Row(Names::shade_color_row).fill_width()));
+        .add_style("container")
+        .fill()
+        .add(ScreenHeading("Color Picker"))
+        .add(HorizontalLine())
+        .add(SectionHeading("RGB Color Selector"))
+        .add(Row(Names::rgb_color_control_row).fill_width())
+        .add(SubSectionHeading("Tints"))
+        .add(Row(Names::tint_color_row).fill_width())
+        .add(SubSectionHeading("Shades"))
+        .add(Row(Names::shade_color_row).fill_width()));
 
   auto rgb_row = find<Row>(Names::rgb_color_control_row);
 
@@ -114,4 +116,9 @@ void ColorPreview::update_shade_colors(Row row, Color color) {
 void ColorPreview::color_clicked(lv_event_t *e) {
   const char *text = Event(e).target().get_child(0).get<Label>().get_text();
   window::Clipboard::set_text(text);
+  NotificationToast(2_seconds)
+    .add_style("toast_bottom_right")
+    .add_style("bg_success text_success")
+    .set_title(ICONS_FA_CLONE_SOLID " Copied")
+    .set_message("Copied " | StringView(text) | " to clipboard");
 }

@@ -10,9 +10,9 @@
 #include <printer/YamlPrinter.hpp>
 
 #include <design/extras/Form.hpp>
+#include <design/Worker.hpp>
 
 #include "Settings.hpp"
-#include "worker/ExportWorker.hpp"
 
 struct Model {
 public:

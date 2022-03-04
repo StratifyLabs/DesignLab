@@ -8,6 +8,7 @@
 #include "extras/Extras.hpp"
 
 #include "logic/AssetManager.hpp"
+#include "logic/ComponentManager.hpp"
 #include "logic/FontManager.hpp"
 #include "logic/ThemeManager.hpp"
 
@@ -129,7 +130,7 @@ void ExportModal::ExportWorker::work() {
   }
 
   m_font_path_list = get_font_path_list();
-  static constexpr auto step_count = 4;
+  static constexpr auto step_count = 5;
   const auto font_count = m_font_path_list.count();
   const auto total_count = font_count + step_count;
 
@@ -162,10 +163,15 @@ void ExportModal::ExportWorker::work() {
   }
 
   update_progress(3 + font_count, total_count);
+
+  update_message("Exporting Components");
+  update_progress(4 + font_count, total_count);
+  export_components();
+
   update_message("Finalizing");
 
   export_cmake_sourcelist();
-  update_progress(4 + font_count, total_count);
+  update_progress(5 + font_count, total_count);
   update_message(Model::worker_done_message);
 
   save_settings();
@@ -278,6 +284,32 @@ void ExportModal::ExportWorker::export_fonts() {
     if (is_error()) {
       printer.object("error", error());
     }
+  }
+}
+
+void ExportModal::ExportWorker::export_components() {
+  const auto component_container = [&]() {
+    Model::Scope model_scope;
+    auto &model = ModelAccess::model();
+    return model.project_settings.get_components();
+  }();
+
+  const auto output_path = [&]() {
+    Model::Scope model_scope;
+    auto &model = ModelAccess::model();
+    return m_project_path / m_project_settings.get_source()
+           / "designlab/components";
+  }();
+
+  fs::FileSystem().create_directory(output_path);
+  API_RETURN_IF_ERROR();
+
+  for (const auto &component : component_container) {
+    ComponentManager component_manager;
+    component_manager.set_component(component).generate();
+
+    File(File::IsOverwrite::yes, output_path / component.get_name() & ".hpp")
+      .write(component_manager.header_file_contents());
   }
 }
 

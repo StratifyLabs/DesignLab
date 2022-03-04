@@ -485,6 +485,10 @@ Builder &Builder::edit_component(json::JsonObject form_value) {
           break;
         }
         const auto value_string = value.to_string_view();
+        if( value_string == "grow" ){
+          target.set_flex_grow();
+        }
+
         if (value_string.back() == '%') {
           target.set_property(property, Percent(value.to_integer()).value());
         } else {

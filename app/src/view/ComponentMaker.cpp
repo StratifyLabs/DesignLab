@@ -119,11 +119,20 @@ void ComponentMaker::builder_button_clicked(lv_event_t *e) {
 
                 {
                   Model::Scope ms;
+                  auto form_values = form.get_json_object();
                   const auto component
                     = Settings::Component()
-                        .set_name(form.get_json_object()
-                                    .at(Names::new_component_line_field_name)
-                                    .to_string_view())
+                        .set_name(
+                          form_values.at(Names::new_component_line_field_name)
+                            .to_string_view())
+                        .set_generate_worker(
+                          form_values
+                            .at(Names::new_component_generate_worker_switch)
+                            .to_bool())
+                        .set_generate_data(
+                          form_values
+                            .at(Names::new_component_generate_data_switch)
+                            .to_bool())
                         .set_tree(builder.get_json_tree())
                         .trim_tree();
 
@@ -148,7 +157,7 @@ void ComponentMaker::builder_button_clicked(lv_event_t *e) {
                   .close(300_milliseconds);
               }))
             .set_width(80_percent)
-            .set_height(40_percent))
+            .set_height(size_from_content))
         .set_enabled();
 
       auto prompt = screen().find<Prompt>(Names::new_component_prompt);
@@ -157,7 +166,16 @@ void ComponentMaker::builder_button_clicked(lv_event_t *e) {
           .add(Form::LineField(Names::new_component_line_field_name)
                  .set_label_as_static("Component Name")
                  .set_hint_as_static("Assign a name to this component (class "
-                                     "name when generating code)")));
+                                     "name when generating code)"))
+          .add(Form::Switch(Names::new_component_generate_worker_switch)
+                 .set_label_as_static("Generate Worker")
+                 .set_hint_as_static("Generate a nested Worker class for "
+                                     "performing tasks in the background"))
+          .add(Form::Switch(Names::new_component_generate_data_switch)
+                 .set_label_as_static("Generate Data")
+                 .set_hint_as_static("Generate a nested Data class for storing "
+                                     "extra data not directly associatd with "
+                                     "the visual aspects of the component")));
 
       prompt.find<Form>(Names::new_component_form)
         .move_to_index(

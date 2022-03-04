@@ -41,6 +41,7 @@ private:
     void export_themes();
     fs::PathList get_font_path_list();
     void export_fonts();
+    void export_components();
     void export_cmake_sourcelist();
 
     static void

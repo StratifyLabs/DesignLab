@@ -38,6 +38,9 @@
     "$sizeCardBorderWidth": "$sizeBorderWidth",
     "$sizeCardPadding": "$sizePadding",
 
+    "$sizeToastWidth": "LV_PCT(25)",
+    "$sizeToastOffset": 40,
+
     "$sizeTableCellBorderWidth": "$sizeBorderWidth",
 
     "$sizeCheckboxBorderWidth": "$sizeBorderWidth",
