@@ -92,16 +92,18 @@ void ComponentMaker::builder_button_clicked(lv_event_t *e) {
     if (!is_new) {
 
       Model::Scope ms;
-      model().project_settings.components_to_array().at(
-        builder.component_offset())
-        = Settings::Component()
-            .set_name(builder.component_name())
-            .set_tree(builder.get_json_tree());
 
+      const auto component = Settings::Component()
+                               .set_name(builder.component_name())
+                               .set_tree(builder.get_json_tree())
+                               .trim_tree();
+
+      auto components_array = model().project_settings.components_to_array();
+      components_array.remove(builder.component_offset());
+      components_array.insert(builder.component_offset(), component);
       model().project_settings.save();
 
     } else {
-      printf("Prompt for new name -- save the value to the settings\n");
       Modal(Names::new_component_modal)
         .add_content(
           Prompt(
@@ -122,7 +124,8 @@ void ComponentMaker::builder_button_clicked(lv_event_t *e) {
                         .set_name(form.get_json_object()
                                     .at(Names::new_component_line_field_name)
                                     .to_string_view())
-                        .set_tree(builder.get_json_tree());
+                        .set_tree(builder.get_json_tree())
+                        .trim_tree();
 
                   model().project_settings.components_to_array().append(
                     component);

@@ -53,9 +53,7 @@ Settings::Settings(var::StringView path, Settings::IsOverwrite is_overwrite)
     reset_error();
     to_object() = json::JsonObject();
   }
-
 }
-
 
 Settings &Settings::append_form_entry(const design::Form form) {
 
@@ -96,4 +94,21 @@ Settings &Settings::save() {
     json::JsonDocument().save(to_object(), fs::File(m_is_overwrite, m_path));
   }
   return *this;
+}
+
+Settings::Component &Settings::Component::trim_tree() {
+  trim_leaf(tree());
+  return *this;
+}
+
+void Settings::Component::trim_leaf(json::JsonObject leaf) {
+  const auto key_container = leaf.get_key_list();
+  for (const auto &key : key_container) {
+    auto child_leaf = leaf.at(key);
+    if (child_leaf.is_string() && child_leaf.to_string_view().is_empty()) {
+      leaf.remove(key);
+    } else if (child_leaf.is_object()) {
+      trim_leaf(child_leaf);
+    }
+  }
 }

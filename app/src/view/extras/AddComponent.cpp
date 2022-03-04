@@ -31,6 +31,7 @@ AddComponent::AddComponent(const char *name) {
                .fill_height()
                .set_width(30_percent))
         .add(Column(Names::form_column)
+               .fill_height()
                .add_flag(Flags::event_bubble)
                .add(Heading3(Names::parent_label, "Add to ..."))
                .set_flex_grow()
@@ -87,73 +88,73 @@ AddComponent::AddComponent(const char *name) {
              .fill_width()
              .add_flag(Flags::hidden)
              .set_label_as_static("Heading")
-             .set_hint_as_static(
-               "Text to show as the heading"));
+             .set_hint_as_static("Text to show as the heading"));
 
   form.add(Form::LineField(Fields::component_heading2_label)
              .fill_width()
              .add_flag(Flags::hidden)
              .set_label_as_static("Heading")
-             .set_hint_as_static(
-               "Text to show as the heading"));
+             .set_hint_as_static("Text to show as the heading"));
 
   form.add(Form::LineField(Fields::component_heading3_label)
              .fill_width()
              .add_flag(Flags::hidden)
              .set_label_as_static("Heading")
-             .set_hint_as_static(
-               "Text to show as the heading"));
-
+             .set_hint_as_static("Text to show as the heading"));
 
   form.add(Form::LineField(Fields::component_heading4_label)
              .fill_width()
              .add_flag(Flags::hidden)
              .set_label_as_static("Heading")
-             .set_hint_as_static(
-               "Text to show as the heading"));
+             .set_hint_as_static("Text to show as the heading"));
 
   form.add(Form::LineField(Fields::component_form_line_field_label)
              .fill_width()
              .add_flag(Flags::hidden)
              .set_label_as_static("Input Label")
-             .set_hint_as_static(
-               "Label to apply to the form line field"));
+             .set_hint_as_static("Label to apply to the form line field"));
 
   form.add(Form::LineField(Fields::component_form_line_field_hint)
              .fill_width()
              .add_flag(Flags::hidden)
              .set_label_as_static("Input Hint")
-             .set_hint_as_static(
-               "Hint to apply to the form line field"));
+             .set_hint_as_static("Hint to apply to the form line field"));
 
   form.add(Form::LineField(Fields::component_form_select_label)
              .fill_width()
              .add_flag(Flags::hidden)
              .set_label_as_static("Input Label")
-             .set_hint_as_static(
-               "Label to apply to the select input"));
+             .set_hint_as_static("Label to apply to the select input"));
 
   form.add(Form::LineField(Fields::component_form_select_hint)
              .fill_width()
              .add_flag(Flags::hidden)
              .set_label_as_static("Input Hint")
-             .set_hint_as_static(
-               "Hint to apply to the select input"));
+             .set_hint_as_static("Hint to apply to the select input"));
 
   form.add(Form::LineField(Fields::component_form_file_select_label)
              .fill_width()
              .add_flag(Flags::hidden)
              .set_label_as_static("Input Label")
-             .set_hint_as_static(
-               "Label to apply to the file select input"));
+             .set_hint_as_static("Label to apply to the file select input"));
 
   form.add(Form::LineField(Fields::component_form_file_select_hint)
              .fill_width()
              .add_flag(Flags::hidden)
              .set_label_as_static("Input Hint")
-             .set_hint_as_static(
-               "Hint to apply to the file select input"));
+             .set_hint_as_static("Hint to apply to the file select input"));
 
+  form.add(Form::LineField(Fields::component_form_switch_label)
+             .fill_width()
+             .add_flag(Flags::hidden)
+             .set_label_as_static("Input Label")
+             .set_hint_as_static("Label to apply to the switch input"));
+
+  form.add(Form::LineField(Fields::component_form_switch_hint)
+             .fill_width()
+             .add_flag(Flags::hidden)
+             .set_label_as_static("Input Hint")
+             .set_hint_as_static("Hint to apply to the switch input"));
 
   form.add(HorizontalLine(Names::form_hline_type_stop));
 
@@ -215,7 +216,7 @@ void AddComponent::control_button_clicked(lv_event_t *e) {
 
   bool is_filter_active = false;
   for (auto object : form) {
-    if( object.name() == Names::form_hline_type_stop){
+    if (object.name() == Names::form_hline_type_stop) {
       is_filter_active = false;
     }
 
@@ -245,7 +246,10 @@ void AddComponent::add_type_selection(lvgl::Generic generic) {
               .add_label(get_label(type)));
   };
 
-  generic.add(Heading4("lvgl"));
+  generic.add(Heading2("Select Type"))
+    .add(HorizontalLine())
+    .add(Heading4("lvgl"));
+
   generic.add(Row(Names::lvgl_row)
                 .fill_width()
                 .add_flag(Flags::event_bubble)

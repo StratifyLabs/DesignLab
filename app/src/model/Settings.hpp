@@ -80,6 +80,11 @@ public:
     JSON_ACCESS_CONSTRUCT_OBJECT(Component);
     JSON_ACCESS_STRING(Component,name);
     JSON_ACCESS_OBJECT(Component,json::JsonObject,tree);
+
+    Component& trim_tree();
+
+  private:
+    void trim_leaf(json::JsonObject leaf);
   };
 
   class Theme : public json::JsonValue {

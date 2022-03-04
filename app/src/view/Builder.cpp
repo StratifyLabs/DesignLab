@@ -409,6 +409,25 @@ Builder &Builder::remove_selected() {
   if (data()->selected_object == find(Names::target_object).object()) {
     return *this;
   }
+
+  {
+    {
+      Model::Scope ms;
+      printer().object("treeBefore", data()->json_tree);
+    }
+    //clean the JSON tree
+    const auto parent_path = fs::Path::parent_directory(data()->json_path);
+    const auto object_name = fs::Path::name(data()->json_path);
+    auto parent = data()->json_tree.find(parent_path);
+    parent.to_object().remove(object_name);
+    {
+      Model::Scope ms;
+      printer().object("treeAfter", data()->json_tree);
+    }
+  }
+
+
+  //clean the graphics
   auto selected = Generic(data()->selected_object);
   auto parent = selected.get_parent();
   selected.remove();
@@ -508,6 +527,7 @@ Builder &Builder::load_json_tree(Settings::Component component) {
   data()->json_tree = JsonObject();
   auto target = find<Generic>(Names::target_object);
   // draw the objects on the display and add them to the tree
+  select_target(target);
   build_tree(target.remove_children().object(), component.tree());
 
   data()->is_new = !component.tree().is_valid();
@@ -528,16 +548,19 @@ void Builder::build_tree(lv_obj_t *lvgl_object, json::JsonObject object) {
     auto child_value = object.at(key);
     if (child_value.is_object()) {
       lv_obj_t *parent = data()->selected_object;
+
       add_component(child_value.to_object());
+
       auto just_added_object
         = Generic(data()->selected_object)
             .find<Generic>(
               child_value.to_object().at(Fields::component_name).to_cstring())
             .object();
-
+      select_target(Generic(just_added_object));
       build_tree(just_added_object, child_value.to_object());
 
       data()->selected_object = parent;
+      select_target(Generic(parent));
     }
   }
 }
