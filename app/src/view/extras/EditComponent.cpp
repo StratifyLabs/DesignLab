@@ -6,6 +6,8 @@
 #include <lvgl.hpp>
 #include <var.hpp>
 
+#include <design/extras/Utility.hpp>
+
 #include "EditComponent.hpp"
 
 EditComponent::EditComponent(Data &data) {
@@ -68,9 +70,9 @@ EditComponent::EditComponent(Data &data) {
     .add(HorizontalLine())
     .add_event_callback(EventCode::clicked, add_property_clicked);
 
-  for (const auto &property_group : property_group_list) {
+  for (const auto &property_group : Utility::property_group_list) {
     if (property_group != PropertyGroup::invalid) {
-      const auto row_name = Style::to_cstring(property_group);
+      const auto row_name = Utility::to_cstring(property_group);
       control_column.add(Heading4("Heading", row_name));
 
       control_column.add(Row(row_name)
@@ -81,9 +83,9 @@ EditComponent::EditComponent(Data &data) {
 
       auto row = control_column.find<Row>(row_name);
 
-      for (const auto &property : property_list) {
+      for (const auto &property : Utility::property_list) {
         if (property.group == property_group) {
-          const auto name = Style::to_cstring(property.property);
+          const auto name = Utility::to_cstring(property.property);
           if (property.property == Property::width) {
             continue;
           }
@@ -132,8 +134,8 @@ void EditComponent::add_property_to_form(
   s32 offset) {
 
   const auto property = [](var::StringView property_name) {
-    for (const auto &property : property_list) {
-      if (property_name == Style::to_cstring(property.property)) {
+    for (const auto &property : Utility::property_list) {
+      if (property_name == Utility::to_cstring(property.property)) {
         return property;
       }
     }
@@ -144,7 +146,7 @@ void EditComponent::add_property_to_form(
     return;
   }
 
-  const auto name = Style::to_cstring(property.property);
+  const auto name = Utility::to_cstring(property.property);
   auto name_string = GeneralString(name);
 
   const auto replace_underscore_with_period
@@ -152,24 +154,24 @@ void EditComponent::add_property_to_form(
 
   switch (property.type) {
   case PropertyType::number: {
-    form.add(Form::LineField(Style::to_cstring(property.property))
+    form.add(Form::LineField(Utility::to_cstring(property.property))
                .set_label(name_string(replace_underscore_with_period))
                .set_hint_as_static("Specify Number"));
   } break;
   case PropertyType::coordinate: {
-    form.add(Form::LineField(Style::to_cstring(property.property))
+    form.add(Form::LineField(Utility::to_cstring(property.property))
                .set_label(name_string(replace_underscore_with_period))
                .set_hint_as_static("Specify Coordinate"));
   } break;
 
   case PropertyType::color: {
-    form.add(Form::LineField(Style::to_cstring(property.property))
+    form.add(Form::LineField(Utility::to_cstring(property.property))
                .set_label(name_string(replace_underscore_with_period))
                .set_hint_as_static("Specify Color (Use Hex 0xAARRGGBB"));
   } break;
 
   case PropertyType::alignment: {
-    const auto property_name = Style::to_cstring(property.property);
+    const auto property_name = Utility::to_cstring(property.property);
     form.add(Form::Select(property_name)
                .set_label(name_string(replace_underscore_with_period))
                .set_hint_as_static("Select Alignment"));
@@ -177,8 +179,8 @@ void EditComponent::add_property_to_form(
     auto dropdown = form.find<Form::Select>(property_name).get_dropdown();
 
     String options_string;
-    for (const auto alignment : alignment_list) {
-      options_string += Style::to_cstring(alignment);
+    for (const auto alignment : Utility::alignment_list) {
+      options_string += Utility::to_cstring(alignment);
       options_string += "\n";
     }
     options_string.pop_back();
@@ -187,7 +189,7 @@ void EditComponent::add_property_to_form(
   } break;
 
   case PropertyType::direction: {
-    const auto property_name = Style::to_cstring(property.property);
+    const auto property_name = Utility::to_cstring(property.property);
     form.add(Form::Select(property_name)
                .set_label(name_string(replace_underscore_with_period))
                .set_hint_as_static("Select Direction"));
@@ -195,8 +197,8 @@ void EditComponent::add_property_to_form(
     auto dropdown = form.find<Form::Select>(property_name).get_dropdown();
 
     String options_string;
-    for (const auto value : direction_list) {
-      options_string += Style::to_cstring(value);
+    for (const auto value : Utility::direction_list) {
+      options_string += Utility::to_cstring(value);
       options_string += "\n";
     }
     options_string.pop_back();
@@ -205,7 +207,7 @@ void EditComponent::add_property_to_form(
   } break;
 
   case PropertyType::base_direction: {
-    const auto property_name = Style::to_cstring(property.property);
+    const auto property_name = Utility::to_cstring(property.property);
     form.add(Form::Select(property_name)
                .set_label(name_string(replace_underscore_with_period))
                .set_hint_as_static("Select Base Direction"));
@@ -213,8 +215,8 @@ void EditComponent::add_property_to_form(
     auto dropdown = form.find<Form::Select>(property_name).get_dropdown();
 
     String options_string;
-    for (const auto value : base_direction_list) {
-      options_string += Style::to_cstring(value);
+    for (const auto value : Utility::base_direction_list) {
+      options_string += Utility::to_cstring(value);
       options_string += "\n";
     }
     options_string.pop_back();
@@ -223,7 +225,7 @@ void EditComponent::add_property_to_form(
   } break;
 
   case PropertyType::border_side: {
-    const auto property_name = Style::to_cstring(property.property);
+    const auto property_name = Utility::to_cstring(property.property);
     form.add(Form::Select(property_name)
                .set_label(name_string(replace_underscore_with_period))
                .set_hint_as_static("Select Border Side"));
@@ -231,8 +233,8 @@ void EditComponent::add_property_to_form(
     auto dropdown = form.find<Form::Select>(property_name).get_dropdown();
 
     String options_string;
-    for (const auto value : border_side_list) {
-      options_string += Style::to_cstring(value);
+    for (const auto value : Utility::border_side_list) {
+      options_string += Utility::to_cstring(value);
       options_string += "\n";
     }
     options_string.pop_back();
@@ -241,13 +243,13 @@ void EditComponent::add_property_to_form(
   } break;
 
   case PropertyType::milliseconds: {
-    form.add(Form::LineField(Style::to_cstring(property.property))
+    form.add(Form::LineField(Utility::to_cstring(property.property))
                .set_label(name_string(replace_underscore_with_period))
                .set_hint_as_static("Set value in milliseconds"));
   } break;
 
   case PropertyType::gradient_direction: {
-    const auto property_name = Style::to_cstring(property.property);
+    const auto property_name = Utility::to_cstring(property.property);
     form.add(Form::Select(property_name)
                .set_label(name_string(replace_underscore_with_period))
                .set_hint_as_static("Select Gradient Direction"));
@@ -255,8 +257,8 @@ void EditComponent::add_property_to_form(
     auto dropdown = form.find<Form::Select>(property_name).get_dropdown();
 
     String options_string;
-    for (const auto value : gradient_direction_list) {
-      options_string += Style::to_cstring(value);
+    for (const auto value : Utility::gradient_direction_list) {
+      options_string += Utility::to_cstring(value);
       options_string += "\n";
     }
     options_string.pop_back();
@@ -265,7 +267,7 @@ void EditComponent::add_property_to_form(
   } break;
 
   case PropertyType::blend_mode: {
-    const auto property_name = Style::to_cstring(property.property);
+    const auto property_name = Utility::to_cstring(property.property);
     form.add(Form::Select(property_name)
                .set_label(name_string(replace_underscore_with_period))
                .set_hint_as_static("Select Blend Mode"));
@@ -273,8 +275,8 @@ void EditComponent::add_property_to_form(
     auto dropdown = form.find<Form::Select>(property_name).get_dropdown();
 
     String options_string;
-    for (const auto value : blend_mode_list) {
-      options_string += Style::to_cstring(value);
+    for (const auto value : Utility::blend_mode_list) {
+      options_string += Utility::to_cstring(value);
       options_string += "\n";
     }
     options_string.pop_back();
@@ -283,13 +285,13 @@ void EditComponent::add_property_to_form(
   } break;
 
   case PropertyType::boolean: {
-    const auto property_name = Style::to_cstring(property.property);
+    const auto property_name = Utility::to_cstring(property.property);
     form.add(Form::Switch(property_name)
                .set_label(name_string(replace_underscore_with_period)));
   } break;
 
   case PropertyType::flex_align: {
-    const auto property_name = Style::to_cstring(property.property);
+    const auto property_name = Utility::to_cstring(property.property);
     form.add(Form::Select(property_name)
                .set_label(name_string(replace_underscore_with_period))
                .set_hint_as_static("Select Flex Align Main"));
@@ -297,8 +299,8 @@ void EditComponent::add_property_to_form(
     auto dropdown = form.find<Form::Select>(property_name).get_dropdown();
 
     String options_string;
-    for (const auto value : flex_align_list) {
-      options_string += Style::to_cstring(value);
+    for (const auto value : Utility::flex_align_list) {
+      options_string += Utility::to_cstring(value);
       options_string += "\n";
     }
     options_string.pop_back();
@@ -307,7 +309,7 @@ void EditComponent::add_property_to_form(
   } break;
 
   case PropertyType::flex_flow: {
-    const auto property_name = Style::to_cstring(property.property);
+    const auto property_name = Utility::to_cstring(property.property);
     form.add(Form::Select(property_name)
                .set_label(name_string(replace_underscore_with_period))
                .set_hint_as_static("Select Flex Flow"));
@@ -315,8 +317,8 @@ void EditComponent::add_property_to_form(
     auto dropdown = form.find<Form::Select>(property_name).get_dropdown();
 
     String options_string;
-    for (const auto value : flex_flow_list) {
-      options_string += Style::to_cstring(value);
+    for (const auto value : Utility::flex_flow_list) {
+      options_string += Utility::to_cstring(value);
       options_string += "\n";
     }
     options_string.pop_back();
@@ -325,7 +327,7 @@ void EditComponent::add_property_to_form(
   } break;
 
   case PropertyType::text_decoration: {
-    const auto property_name = Style::to_cstring(property.property);
+    const auto property_name = Utility::to_cstring(property.property);
     form.add(Form::Select(property_name)
                .set_label(name_string(replace_underscore_with_period))
                .set_hint_as_static("Select Text Decoration"));
@@ -333,8 +335,8 @@ void EditComponent::add_property_to_form(
     auto dropdown = form.find<Form::Select>(property_name).get_dropdown();
 
     String options_string;
-    for (const auto value : text_decoration_list) {
-      options_string += Style::to_cstring(value);
+    for (const auto value : Utility::text_decoration_list) {
+      options_string += Utility::to_cstring(value);
       options_string += "\n";
     }
     options_string.pop_back();
@@ -343,7 +345,7 @@ void EditComponent::add_property_to_form(
   } break;
 
   case PropertyType::text_alignment: {
-    const auto property_name = Style::to_cstring(property.property);
+    const auto property_name = Utility::to_cstring(property.property);
     form.add(Form::Select(property_name)
                .set_label(name_string(replace_underscore_with_period))
                .set_hint_as_static("Select Text Alignment"));
@@ -351,8 +353,8 @@ void EditComponent::add_property_to_form(
     auto dropdown = form.find<Form::Select>(property_name).get_dropdown();
 
     String options_string;
-    for (const auto value : text_alignment_list) {
-      options_string += Style::to_cstring(value);
+    for (const auto value : Utility::text_alignment_list) {
+      options_string += Utility::to_cstring(value);
       options_string += "\n";
     }
     options_string.pop_back();
@@ -361,7 +363,7 @@ void EditComponent::add_property_to_form(
   } break;
 
   case PropertyType::font: {
-    const auto property_name = Style::to_cstring(property.property);
+    const auto property_name = Utility::to_cstring(property.property);
     form.add(Form::Select(property_name)
                .set_label(name_string(replace_underscore_with_period))
                .set_hint_as_static("Select Font"));
@@ -370,8 +372,8 @@ void EditComponent::add_property_to_form(
 
     //need to pull the font list from what will be available
     String options_string;
-    for (const auto value : text_alignment_list) {
-      options_string += Style::to_cstring(value);
+    for (const auto value : Utility::text_alignment_list) {
+      options_string += Utility::to_cstring(value);
       options_string += "\n";
     }
     options_string.pop_back();

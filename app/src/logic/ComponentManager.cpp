@@ -2,16 +2,21 @@
 // Created by Tyler Gilbert on 3/4/22.
 //
 
+#include <design/extras/Utility.hpp>
+#include <lvgl/Style.hpp>
+
+#include "model/Model.hpp"
+
 #include "ComponentManager.hpp"
 
 using namespace fs;
 using namespace var;
+using namespace lvgl;
+using namespace design;
 
 ComponentManager &ComponentManager::generate() {
-
   generate_header();
   generate_source();
-
   return *this;
 }
 
@@ -85,13 +90,6 @@ void ComponentManager::generate_header() {
   m_header_contents = m_header_file.data().add_null_terminator();
 }
 
-void ComponentManager::generate_source() {
-  API_RETURN_IF_ERROR();
-  m_source_contents = "";
-}
-
-void ComponentManager::process_header_node(json::JsonObject node) {}
-
 void ComponentManager::add_to_names_struct(json::JsonObject node) {
   const auto name_value = node.at(Fields::component_name);
   if (name_value.is_valid()) {
@@ -103,6 +101,159 @@ void ComponentManager::add_to_names_struct(json::JsonObject node) {
   for (const auto leaf : node) {
     if (leaf.is_object()) {
       add_to_names_struct(leaf.to_object());
+    }
+  }
+}
+
+void ComponentManager::generate_source() {
+  API_RETURN_IF_ERROR();
+  m_source_contents = "";
+
+  const auto header_name = m_component.get_name() & ".hpp";
+  const auto class_name = m_component.get_name();
+
+  m_source_printer.newline();
+
+  m_source_printer.header("lvgl.hpp", CodePrinter::IsQuotes::no);
+  m_source_printer.header("design.hpp", CodePrinter::IsQuotes::no);
+
+  // any design extras to include?
+  m_source_printer.newline();
+  m_source_printer.header(header_name);
+  m_source_printer.newline();
+
+  {
+    CodePrinter::Function constructor(
+      m_source_printer,
+      class_name | "::" | class_name | "(const char * name)");
+
+    m_source_printer.statement("construct_object(name)");
+
+    // set top level settings
+
+    // add sub objects
+    for (const auto leaf : m_component.tree()) {
+      process_source_node(leaf, IsNested::no);
+    }
+  }
+
+  m_source_contents = m_source_file.data().add_null_terminator();
+}
+
+void ComponentManager::process_source_node(
+  json::JsonObject node,
+  IsNested is_nested) {
+  Model::Scope ms;
+  ModelAccess::printer().object("node", node);
+
+  const auto name_value = node.at(Fields::component_name);
+  if (!name_value.is_valid()) {
+    printf("No name\n");
+    return;
+  }
+
+  const auto class_value = node.at(Fields::component_type);
+
+  if (!class_value.is_valid()) {
+    printf("No type\n");
+    return;
+  }
+
+  const auto class_name = class_value.to_string_view();
+
+  const auto prefix = is_nested == IsNested::yes ? "." : "";
+
+  m_source_printer.line_with_indent(
+    prefix | StringView("add(") | class_value.to_string_view() | "(Names::"
+    | name_value.to_string_view() | ")");
+
+  add_modifiers(node);
+
+  for (const auto leaf : node) {
+    if (leaf.is_object()) {
+      process_source_node(leaf.to_object(), IsNested::yes);
+    }
+  }
+
+  m_source_printer.line_with_indent(")");
+}
+
+void ComponentManager::add_modifiers(json::JsonObject node) {
+
+  const auto class_name = node.at(Fields::component_type).to_string_view();
+
+  for (const auto description : Utility::property_list) {
+    const auto property_name = Utility::to_cstring(description.property);
+    const auto property_value = node.at(property_name);
+    if (property_value.is_valid()) {
+      const StringView property_type_class_name
+        = Utility::to_class_name_cstring(description.type);
+      if (
+        property_type_class_name != Utility::invalid_property_type_class_name) {
+        m_source_printer.line(
+          StringView(".set_") | property_name | "(" | property_type_class_name
+          | "::" | property_value.to_string_view());
+      } else {
+        m_source_printer.line(
+          StringView(".set_") | property_name | "("
+          | property_value.to_string_view() | ")");
+      }
+    }
+  }
+
+  if (class_name == AddComponent::Components::form_line_field) {
+    m_source_printer.line(
+      ".set_label_as_static(\""
+      | node.at(Fields::component_form_line_field_label).to_string_view()
+      | "\")");
+
+    m_source_printer.line(
+      ".set_hint_as_static(\""
+      | node.at(Fields::component_form_line_field_hint).to_string_view()
+      | "\")");
+    return;
+  }
+
+  if (class_name == AddComponent::Components::form_switch) {
+    m_source_printer.line(
+      ".set_label_as_static(\""
+      | node.at(Fields::component_form_switch_label).to_string_view() | "\")");
+
+    m_source_printer.line(
+      ".set_hint_as_static(\""
+      | node.at(Fields::component_form_switch_hint).to_string_view() | "\")");
+    return;
+  }
+
+  if (class_name == AddComponent::Components::form_select) {
+    m_source_printer.line(
+      ".set_label_as_static(\""
+      | node.at(Fields::component_form_select_label).to_string_view() | "\")");
+
+    m_source_printer.line(
+      ".set_hint_as_static(\""
+      | node.at(Fields::component_form_select_hint).to_string_view() | "\")");
+    return;
+  }
+
+  if (class_name == AddComponent::Components::form_file_select) {
+    m_source_printer.line(
+      ".set_label_as_static(\""
+      | node.at(Fields::component_form_file_select_label).to_string_view()
+      | "\")");
+
+    m_source_printer.line(
+      ".set_hint_as_static(\""
+      | node.at(Fields::component_form_file_select_hint).to_string_view()
+      | "\")");
+    return;
+  }
+
+  if (class_name == AddComponent::Components::button) {
+    const auto label_value = node.at(Fields::component_button_label);
+    if (label_value.is_valid()) {
+      m_source_printer.line(
+        ".add_label_as_static(\"" | label_value.to_string_view() | "\")");
     }
   }
 }

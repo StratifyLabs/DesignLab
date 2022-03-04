@@ -47,25 +47,25 @@ public:
   };
 
   struct Components {
-    DESIGN_DECLARE_NAME(bar);
-    DESIGN_DECLARE_NAME(button);
-    DESIGN_DECLARE_NAME(calendar);
-    DESIGN_DECLARE_NAME(canvas);
-    DESIGN_DECLARE_NAME(chart);
-    DESIGN_DECLARE_NAME(color_wheel);
-    DESIGN_DECLARE_NAME(image);
-    DESIGN_DECLARE_NAME(keyboard);
-    DESIGN_DECLARE_NAME(label);
-    DESIGN_DECLARE_NAME(list);
-    DESIGN_DECLARE_NAME(meter);
-    DESIGN_DECLARE_NAME(roller);
-    DESIGN_DECLARE_NAME(slider);
-    DESIGN_DECLARE_NAME(spinbox);
-    DESIGN_DECLARE_NAME(spinner);
-    DESIGN_DECLARE_NAME(switch_);
-    DESIGN_DECLARE_NAME(table);
-    DESIGN_DECLARE_NAME(tileview);
-    DESIGN_DECLARE_NAME(window);
+    DESIGN_DECLARE_NAME_VALUE(bar, Bar);
+    DESIGN_DECLARE_NAME_VALUE(button, Button);
+    DESIGN_DECLARE_NAME_VALUE(calendar, Calendar);
+    DESIGN_DECLARE_NAME_VALUE(canvas, Canvas);
+    DESIGN_DECLARE_NAME_VALUE(chart, Chart);
+    DESIGN_DECLARE_NAME_VALUE(color_wheel, ColorWheel);
+    DESIGN_DECLARE_NAME_VALUE(image, Image);
+    DESIGN_DECLARE_NAME_VALUE(keyboard, Keyboard);
+    DESIGN_DECLARE_NAME_VALUE(label, Label);
+    DESIGN_DECLARE_NAME_VALUE(list, List);
+    DESIGN_DECLARE_NAME_VALUE(meter, Meter);
+    DESIGN_DECLARE_NAME_VALUE(roller, Roller);
+    DESIGN_DECLARE_NAME_VALUE(slider, Slider);
+    DESIGN_DECLARE_NAME_VALUE(spinbox, SpinBox);
+    DESIGN_DECLARE_NAME_VALUE(spinner, Spinner);
+    DESIGN_DECLARE_NAME_VALUE(switch_, Switch);
+    DESIGN_DECLARE_NAME_VALUE(table, Table);
+    DESIGN_DECLARE_NAME_VALUE(tileview, TileView);
+    DESIGN_DECLARE_NAME_VALUE(window, Window);
 
     static constexpr auto list_of_lvgl_components = {
       bar,
@@ -88,19 +88,19 @@ public:
       tileview,
       window};
 
-    DESIGN_DECLARE_NAME(alert);
-    DESIGN_DECLARE_NAME(badge);
-    DESIGN_DECLARE_NAME(card);
-    DESIGN_DECLARE_NAME(column);
-    DESIGN_DECLARE_NAME(container);
-    DESIGN_DECLARE_NAME(drawer);
-    DESIGN_DECLARE_NAME(heading1);
-    DESIGN_DECLARE_NAME(heading2);
-    DESIGN_DECLARE_NAME(heading3);
-    DESIGN_DECLARE_NAME(heading4);
-    DESIGN_DECLARE_NAME(horizontal_line);
-    DESIGN_DECLARE_NAME(paragraph);
-    DESIGN_DECLARE_NAME(row);
+    DESIGN_DECLARE_NAME_VALUE(alert, Alert);
+    DESIGN_DECLARE_NAME_VALUE(badge, Badge);
+    DESIGN_DECLARE_NAME_VALUE(card, Card);
+    DESIGN_DECLARE_NAME_VALUE(column, Column);
+    DESIGN_DECLARE_NAME_VALUE(container, Container);
+    DESIGN_DECLARE_NAME_VALUE(drawer, Drawer);
+    DESIGN_DECLARE_NAME_VALUE(heading1, Heading1);
+    DESIGN_DECLARE_NAME_VALUE(heading2, Heading2);
+    DESIGN_DECLARE_NAME_VALUE(heading3, Heading3);
+    DESIGN_DECLARE_NAME_VALUE(heading4, Heading4);
+    DESIGN_DECLARE_NAME_VALUE(horizontal_line, HorizontalLine);
+    DESIGN_DECLARE_NAME_VALUE(paragraph, Paragraph);
+    DESIGN_DECLARE_NAME_VALUE(row, Row);
 
     static constexpr auto list_of_design_components = {
       alert,
@@ -117,18 +117,16 @@ public:
       paragraph,
       row};
 
-    DESIGN_DECLARE_NAME(check_list);
-    DESIGN_DECLARE_NAME(drawer_stack);
-    DESIGN_DECLARE_NAME(filesystem_card);
-    DESIGN_DECLARE_NAME(form_container);
-    DESIGN_DECLARE_NAME(form_heading);
-    DESIGN_DECLARE_NAME(form_line_field);
-    DESIGN_DECLARE_NAME(form_list);
-    DESIGN_DECLARE_NAME(form_select);
-    DESIGN_DECLARE_NAME(form_file_select);
-    DESIGN_DECLARE_NAME(form_switch);
-    DESIGN_DECLARE_NAME(notification_toast);
-    DESIGN_DECLARE_NAME(prompt);
+    DESIGN_DECLARE_NAME_VALUE(check_list, CheckList);
+    DESIGN_DECLARE_NAME_VALUE(drawer_stack, DrawerStack);
+    DESIGN_DECLARE_NAME_VALUE(filesystem_card, FileSystemCard);
+    DESIGN_DECLARE_NAME_VALUE(form_container, Form);
+    DESIGN_DECLARE_NAME_VALUE(form_heading, Form::SectionHeading);
+    DESIGN_DECLARE_NAME_VALUE(form_line_field, Form::LineField);
+    DESIGN_DECLARE_NAME_VALUE(form_list, FormList);
+    DESIGN_DECLARE_NAME_VALUE(form_select, Form::Select);
+    DESIGN_DECLARE_NAME_VALUE(form_file_select, Form::SelectFile);
+    DESIGN_DECLARE_NAME_VALUE(form_switch, Form::Switch);
 
     static constexpr auto list_of_extra_design_components = {
       check_list,
@@ -140,9 +138,7 @@ public:
       form_list,
       form_select,
       form_file_select,
-      form_switch,
-      notification_toast,
-      prompt};
+      form_switch};
   };
 
   static bool is_cancel_button(lv_event_t *e);
@@ -223,11 +219,7 @@ private:
     ComponentType{Components::drawer_stack, icons::fa::calendar_alt_solid},
     ComponentType{Components::filesystem_card, icons::fa::folder_open_solid},
     ComponentType{Components::form_container, icons::fa::tasks_solid},
-    ComponentType{Components::form_list, icons::fa::clipboard_list_solid},
-    ComponentType{
-      Components::notification_toast,
-      icons::fa::exclamation_circle_solid},
-    ComponentType{Components::prompt, icons::fa::question_circle_solid},
+    ComponentType{Components::form_list, icons::fa::clipboard_list_solid}
   };
 
   static constexpr auto component_type_list_extra_design_form = {

@@ -11,6 +11,7 @@
 #include <design/extras/Form.hpp>
 #include <design/extras/NotificationToast.hpp>
 #include <design/extras/Prompt.hpp>
+#include <design/extras/Utility.hpp>
 
 #include "extras/Extras.hpp"
 
@@ -333,10 +334,6 @@ Builder &Builder::add_component(JsonObject form_value) {
           form_value.at(Fields::component_form_switch_label).to_cstring())
         .set_hint(
           form_value.at(Fields::component_form_switch_hint).to_cstring()));
-  } else if (type == Components::notification_toast) {
-    container.add(NotificationToast(500_milliseconds));
-  } else if (type == Components::prompt) {
-    container.add(Prompt(Prompt::Data::create(name)));
   }
 
   else {
@@ -474,94 +471,20 @@ Builder &Builder::edit_component(json::JsonObject form_value) {
   for (const auto &key : key_container) {
     const auto value = form_value.at(key);
     json_object.insert(key, value);
-    const auto property = Style::property_from_string(key);
+    const auto property = Utility::property_from_string(key);
     if (property != Property::invalid) {
-      const auto description = Style::get_property_description(property);
-      switch (description.type) {
-      case PropertyType::coordinate:
-      case PropertyType::number:
-      case PropertyType::milliseconds: {
-        if (value.to_string_view().is_empty()) {
-          break;
-        }
-        const auto value_string = value.to_string_view();
-        if( value_string == "grow" ){
-          target.set_flex_grow();
-        }
-
-        if (value_string.back() == '%') {
-          target.set_property(property, Percent(value.to_integer()).value());
-        } else {
-          target.set_property(property, value.to_integer());
-        }
-        break;
-      }
-      case PropertyType::color:
-        target.set_property(
-          property,
-          Color::from_hex(
-            value.to_string_view().to_unsigned_long(StringView::Base::auto_)));
-        break;
-      case PropertyType::boolean: {
-        target.set_property(property, value.to_bool());
-      } break;
-      case PropertyType::border_side: {
-        target.set_property(
-          property,
-          s32(Style::border_side_from_string(value.to_string_view())));
-      } break;
-      case PropertyType::direction: {
-        target.set_property(
-          property,
-          s32(Style::direction_from_string(value.to_string_view())));
-      } break;
-      case PropertyType::alignment: {
-        target.set_property(
-          property,
-          s32(Style::alignment_from_string(value.to_string_view())));
-      } break;
-      case PropertyType::base_direction: {
-        target.set_property(
-          property,
-          s32(Style::base_direction_from_string(value.to_string_view())));
-      } break;
-      case PropertyType::blend_mode: {
-        target.set_property(
-          property,
-          s32(Style::blend_mode_from_string(value.to_string_view())));
-      } break;
-      case PropertyType::flex_align: {
-        target.set_property(
-          property,
-          s32(Style::flex_align_from_string(value.to_string_view())));
-      } break;
-      case PropertyType::flex_flow: {
-        target.set_property(
-          property,
-          s32(Style::flex_flow_from_string(value.to_string_view())));
-      } break;
-      case PropertyType::gradient_direction: {
-        target.set_property(
-          property,
-          s32(Style::gradient_direction_from_string(value.to_string_view())));
-      } break;
-      case PropertyType::text_alignment: {
-        target.set_property(
-          property,
-          s32(Style::text_alignment_from_string(value.to_string_view())));
-      } break;
-      case PropertyType::text_decoration: {
-        target.set_property(
-          property,
-          s32(Style::text_decoration_from_string(value.to_string_view())));
-      } break;
-
-      default:
-        printf("Property %s is not applied\n", Style::to_cstring(property));
-        break;
+      const auto description = Utility::get_property_description(property);
+      const auto value_string = value.to_string_view();
+      if (
+        description.type == PropertyType::coordinate
+        && value_string == "grow") {
+        target.set_flex_grow();
+      } else {
+        const auto property_value
+          = Utility::get_property_value(value, description.type);
+        target.set_property(property, property_value);
       }
     }
-    // apply the property
   }
 
   Model::Scope ms;

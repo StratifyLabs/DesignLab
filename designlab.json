@@ -16,22 +16,22 @@
          "tree": {
             "form_container": {
                "component_name": "form_container",
-               "component_type": "form_container",
+               "component_type": "Form",
                "width": "100%",
                "height": "100%",
                "Details": {
                   "component_name": "Details",
-                  "component_type": "form_heading"
+                  "component_type": "Form::SectionHeading"
                },
                "email_line_field": {
                   "component_name": "email_line_field",
-                  "component_type": "form_line_field",
+                  "component_type": "Form::LineField",
                   "component_form_line_field_label": "Email Address",
                   "component_form_line_field_hint": "Enter your email address"
                },
                "password_line_field": {
                   "component_name": "password_line_field",
-                  "component_type": "form_line_field",
+                  "component_type": "Form::LineField",
                   "component_form_line_field_label": "Password",
                   "component_form_line_field_hint": "Enter a password"
                }

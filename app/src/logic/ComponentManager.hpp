@@ -34,6 +34,11 @@ public:
 
 
 private:
+
+  enum class IsNested {
+    no, yes
+  };
+
   Settings::Component m_component;
 
   var::String m_header_contents;
@@ -49,9 +54,11 @@ private:
   void generate_header();
   void generate_source();
 
-  void process_header_node(json::JsonObject node);
   void add_to_names_struct(json::JsonObject node);
-  void process_source_node(json::JsonObject node){}
+  void process_source_node(json::JsonObject node, IsNested is_nested);
+
+  void add_modifiers(json::JsonObject node);
+
 
 };
 

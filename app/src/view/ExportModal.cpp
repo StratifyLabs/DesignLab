@@ -310,6 +310,9 @@ void ExportModal::ExportWorker::export_components() {
 
     File(File::IsOverwrite::yes, output_path / component.get_name() & ".hpp")
       .write(component_manager.header_file_contents());
+
+    File(File::IsOverwrite::yes, output_path / component.get_name() & ".cpp")
+      .write(component_manager.source_file_contents());
   }
 }
 
