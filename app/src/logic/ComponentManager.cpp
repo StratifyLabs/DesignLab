@@ -175,7 +175,12 @@ void ComponentManager::process_source_node(
     }
   }
 
-  m_source_printer.line_with_indent(")");
+  if( is_nested == IsNested::no ){
+    m_source_printer.statement(")");
+  } else {
+    m_source_printer.line_with_indent(")");
+  }
+
 }
 
 void ComponentManager::add_modifiers(json::JsonObject node) {
