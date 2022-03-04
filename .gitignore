@@ -4,3 +4,4 @@ SDK/dependencies/
 SDK/StratifyLabs-SDK/
 CMakeLists.txt.user
 .idea/
+app/src/designlab/components/
