@@ -10,7 +10,7 @@
 #include "extras/Extras.hpp"
 
 static constexpr auto introduction_paragraph
-  = R"(Welcome to Design Lab! Design lab is a desktop application
+  = R"(Welcome to Design Lab! Design Lab is a desktop application
 used to generate themes and assets for LVGL based programs
 that run on both microcontrollers and desktop operating
 systems including Windows, macOS, and Linux.
@@ -21,24 +21,17 @@ You can click the green button above to open Github in a browser.)";
 static constexpr auto project_paragraph
   = R"(The first thing you need to do is configure your project. You need to decide
 where your project will be located (directory) and where to generate code within
-your project.
+your project. You also need to specify the location of `lv_font_conv` so that Design Lab
+can generate fonts.
 
-Design Lab will generate a folder called 'designlab' within the 'Source Directory'.
-Within the 'designlab' folder, folders will be created for: 'assets', 'components', 'fonts',
-and 'themes'.
+The 'Project Directory' is the parent folder of your code. This is where the `designlab.json`
+file will be stored which saves the Design Lab project settings.
 
-The 'assets' folder will contain a binary file that is a concatenation of the assets plus
-some header information.
+The 'Source Directory' should be a source folder relative to 'Project Directory'. This
+folder is where the output files will be generated.
 
-The 'components' folder is for '.cpp' and '.hpp' files that are generated from
-the components you build in Design Lab.
-
-The 'fonts' folder is where the '.c' files for generated fonts will reside.
-
-The 'themes' folder is where '.c' files will be generated from the theme input files.
-
-Design Lab also generates a 'CMakeLists.txt' file to make it easy to build the
-source files within a `cmake` project.
+You also need to specify your 'Path to node' and 'Path to lv_font_conv.js'. Design Lab
+uses these values to invoke `lv_font_conv` for generating fonts and icons.
 )";
 
 static constexpr auto theme_paragraph
@@ -46,22 +39,36 @@ static constexpr auto theme_paragraph
 if you need to create similar themes (like light and dark).
 
 There is a main JSON file which references the JSON files you can use to define variables
-for sizes, fonts, styles, and rules.)";
+for sizes, fonts, styles, and rules.
+
+The helper files allow you to create variables. For example, in our sizes file we create
+a variable called "$sizePadding" which is uses in the styles file to specify padding
+of different objects.)";
 
 static constexpr auto asset_paragraph
-  = R"(Assets...)";
+  = R"(You can specify any number of assets. Assets are regular files that are
+integrated with the executable output file. These files can be accessed from
+within the program to draw image files, load settings, and such.
+
+You can include assets that are executable programs but they must be copied
+to the filesystem before they can be invoked.)";
 
 static constexpr auto font_paragraph
-  = R"(Fonts...)";
+  = R"(You can specify what fonts you want to generate and what point sizes. You can
+select whether the font should embed the selected icons.)";
 
 static constexpr auto icon_paragraph
-  = R"(Icons...)";
+  = R"(The free FontAwesome 5 icons are included with Design Lab. You can choose
+which icons you want to embed in your fonts (if the font has opted to embed icons).)";
 
 static constexpr auto component_paragraph
-  = R"(Components...)";
+  = R"(You can build components in real-time and then export source files that
+can draw the components. Currently, you can only export components to C++ code
+that use LvglAPI and DesignAPI libraries.)";
 
 static constexpr auto color_paragraph
-  = R"(Colors...)";
+  = R"(The color tool is for previewing colors that can be used in the themes
+you design.)";
 
 GettingStarted::GettingStarted(const char *name) {
   construct_object(name);

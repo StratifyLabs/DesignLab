@@ -632,7 +632,7 @@
          }
       ]
    },
-   "fontDirty": false,
+   "fontDirty": true,
    "assetsDirty": false,
    "fontsCompressed": false
 }

@@ -101,7 +101,7 @@ void Home::configure_button_column(Column column) {
 
   column
     .find<Button>(
-      model().is_theme_updated ? Names::about_button : Names::project_button)
+      model().is_theme_updated ? Names::about_button : Names::getting_started_button)
     .add_state(State::checked);
 }
 
