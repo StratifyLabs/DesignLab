@@ -84,6 +84,13 @@ AddComponent::AddComponent(const char *name) {
              .set_hint_as_static(
                "This label will be added to the center of the button"));
 
+  form.add(Form::LineField(Fields::component_label_text)
+             .fill_width()
+             .add_flag(Flags::hidden)
+             .set_label_as_static("Text")
+             .set_hint_as_static(
+               "The text to assign to the label"));
+
   form.add(Form::LineField(Fields::component_heading1_label)
              .fill_width()
              .add_flag(Flags::hidden)
@@ -223,10 +230,16 @@ void AddComponent::control_button_clicked(lv_event_t *e) {
     if (object.name() == Names::form_hline_type_start) {
       is_filter_active = true;
     } else if (is_filter_active) {
-      if (StringView(object.name()).find(target.name()) != StringView::npos) {
-        object.get<Generic>().clear_flag(Flags::hidden);
-      } else {
+      const auto target_name = StringView(target.name());
+      const auto object_name = StringView(object.name());
+
+      printf("name for filter is %s\n", target.name());
+      if (
+        (target_name == Components::form_container)
+        || object_name.find(target_name) == StringView::npos) {
         object.get<Generic>().add_flag(Flags::hidden);
+      } else {
+        object.get<Generic>().clear_flag(Flags::hidden);
       }
     }
   }

@@ -27,23 +27,25 @@ public:
     DESIGN_DECLARE_NAME_VALUE(component_width, width);
     DESIGN_DECLARE_NAME_VALUE(component_height, height);
 
-    DESIGN_DECLARE_NAME_VALUE(component_button_label, Component::Button::Label);
-    DESIGN_DECLARE_NAME_VALUE(component_heading1_label, Component::Heading1::Label);
-    DESIGN_DECLARE_NAME_VALUE(component_heading2_label, Component::Heading2::Label);
-    DESIGN_DECLARE_NAME_VALUE(component_heading3_label, Component::Heading3::Label);
-    DESIGN_DECLARE_NAME_VALUE(component_heading4_label, Component::Heading3::Label);
+    DESIGN_DECLARE_NAME_VALUE(component_button_label, Component::Button::label);
+    DESIGN_DECLARE_NAME_VALUE(component_heading1_label, Component::Heading1::label);
+    DESIGN_DECLARE_NAME_VALUE(component_heading2_label, Component::Heading2::label);
+    DESIGN_DECLARE_NAME_VALUE(component_heading3_label, Component::Heading3::label);
+    DESIGN_DECLARE_NAME_VALUE(component_heading4_label, Component::Heading3::label);
 
-    DESIGN_DECLARE_NAME_VALUE(component_form_line_field_label,Component::Form::LineField::Label);
-    DESIGN_DECLARE_NAME_VALUE(component_form_line_field_hint,Component::Form::LineField::Hint);
+    DESIGN_DECLARE_NAME_VALUE(component_label_text, Component::Label::text);
 
-    DESIGN_DECLARE_NAME_VALUE(component_form_select_label,Component::Form::Select::Label);
-    DESIGN_DECLARE_NAME_VALUE(component_form_select_hint,Component::Form::Select::Hint);
+    DESIGN_DECLARE_NAME_VALUE(component_form_line_field_label,Component::Form::LineField::label);
+    DESIGN_DECLARE_NAME_VALUE(component_form_line_field_hint,Component::Form::LineField::hint);
 
-    DESIGN_DECLARE_NAME_VALUE(component_form_file_select_label,Component::Form::FileSelect::Label);
-    DESIGN_DECLARE_NAME_VALUE(component_form_file_select_hint,Component::Form::FileSelect::Hint);
+    DESIGN_DECLARE_NAME_VALUE(component_form_select_label,Component::Form::Select::label);
+    DESIGN_DECLARE_NAME_VALUE(component_form_select_hint,Component::Form::Select::hint);
 
-    DESIGN_DECLARE_NAME_VALUE(component_form_switch_label,Component::Form::Switch::Label);
-    DESIGN_DECLARE_NAME_VALUE(component_form_switch_hint,Component::Form::Switch::Hint);
+    DESIGN_DECLARE_NAME_VALUE(component_form_file_select_label,Component::Form::FileSelect::label);
+    DESIGN_DECLARE_NAME_VALUE(component_form_file_select_hint,Component::Form::FileSelect::hint);
+
+    DESIGN_DECLARE_NAME_VALUE(component_form_switch_label,Component::Form::Switch::label);
+    DESIGN_DECLARE_NAME_VALUE(component_form_switch_hint,Component::Form::Switch::hint);
   };
 
   struct Components {

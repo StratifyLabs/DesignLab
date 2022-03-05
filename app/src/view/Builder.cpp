@@ -241,7 +241,8 @@ Builder &Builder::add_component(JsonObject form_value) {
   } else if (type == Components::keyboard) {
     container.add(Keyboard(name));
   } else if (type == Components::label) {
-    container.add(Label(name).set_text_as_static("New Label"));
+    container.add(Label(name).set_text_as_static(
+      form_value.at(AddComponent::Fields::component_label_text).to_cstring()));
   } else if (type == Components::list) {
     container.add(List(name));
   } else if (type == Components::meter) {
