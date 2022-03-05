@@ -77,91 +77,26 @@ AddComponent::AddComponent(const char *name) {
 
   form.add(HorizontalLine(Names::form_hline_type_start));
 
-  form.add(Form::LineField(Fields::component_button_label)
+  form.add(Form::LineField(Fields::component_label)
              .fill_width()
              .add_flag(Flags::hidden)
-             .set_label_as_static("Button Label")
+             .set_label_as_static("Label")
              .set_hint_as_static(
-               "This label will be added to the center of the button"));
+               "This is the text label to use for the new component."));
 
-  form.add(Form::LineField(Fields::component_label_text)
+  form.add(
+    Form::LineField(Fields::component_hint)
+      .fill_width()
+      .add_flag(Flags::hidden)
+      .set_label_as_static("Hint")
+      .set_hint_as_static("This is the hint text for the new component."));
+
+  form.add(Form::LineField(Fields::component_options)
              .fill_width()
              .add_flag(Flags::hidden)
-             .set_label_as_static("Text")
+             .set_label_as_static("Options")
              .set_hint_as_static(
-               "The text to assign to the label"));
-
-  form.add(Form::LineField(Fields::component_heading1_label)
-             .fill_width()
-             .add_flag(Flags::hidden)
-             .set_label_as_static("Heading")
-             .set_hint_as_static("Text to show as the heading"));
-
-  form.add(Form::LineField(Fields::component_heading2_label)
-             .fill_width()
-             .add_flag(Flags::hidden)
-             .set_label_as_static("Heading")
-             .set_hint_as_static("Text to show as the heading"));
-
-  form.add(Form::LineField(Fields::component_heading3_label)
-             .fill_width()
-             .add_flag(Flags::hidden)
-             .set_label_as_static("Heading")
-             .set_hint_as_static("Text to show as the heading"));
-
-  form.add(Form::LineField(Fields::component_heading4_label)
-             .fill_width()
-             .add_flag(Flags::hidden)
-             .set_label_as_static("Heading")
-             .set_hint_as_static("Text to show as the heading"));
-
-  form.add(Form::LineField(Fields::component_form_line_field_label)
-             .fill_width()
-             .add_flag(Flags::hidden)
-             .set_label_as_static("Input Label")
-             .set_hint_as_static("Label to apply to the form line field"));
-
-  form.add(Form::LineField(Fields::component_form_line_field_hint)
-             .fill_width()
-             .add_flag(Flags::hidden)
-             .set_label_as_static("Input Hint")
-             .set_hint_as_static("Hint to apply to the form line field"));
-
-  form.add(Form::LineField(Fields::component_form_select_label)
-             .fill_width()
-             .add_flag(Flags::hidden)
-             .set_label_as_static("Input Label")
-             .set_hint_as_static("Label to apply to the select input"));
-
-  form.add(Form::LineField(Fields::component_form_select_hint)
-             .fill_width()
-             .add_flag(Flags::hidden)
-             .set_label_as_static("Input Hint")
-             .set_hint_as_static("Hint to apply to the select input"));
-
-  form.add(Form::LineField(Fields::component_form_file_select_label)
-             .fill_width()
-             .add_flag(Flags::hidden)
-             .set_label_as_static("Input Label")
-             .set_hint_as_static("Label to apply to the file select input"));
-
-  form.add(Form::LineField(Fields::component_form_file_select_hint)
-             .fill_width()
-             .add_flag(Flags::hidden)
-             .set_label_as_static("Input Hint")
-             .set_hint_as_static("Hint to apply to the file select input"));
-
-  form.add(Form::LineField(Fields::component_form_switch_label)
-             .fill_width()
-             .add_flag(Flags::hidden)
-             .set_label_as_static("Input Label")
-             .set_hint_as_static("Label to apply to the switch input"));
-
-  form.add(Form::LineField(Fields::component_form_switch_hint)
-             .fill_width()
-             .add_flag(Flags::hidden)
-             .set_label_as_static("Input Hint")
-             .set_hint_as_static("Hint to apply to the switch input"));
+               "This is a list of comma separated items for the options"));
 
   form.add(HorizontalLine(Names::form_hline_type_stop));
 
@@ -230,19 +165,70 @@ void AddComponent::control_button_clicked(lv_event_t *e) {
     if (object.name() == Names::form_hline_type_start) {
       is_filter_active = true;
     } else if (is_filter_active) {
+
       const auto target_name = StringView(target.name());
       const auto object_name = StringView(object.name());
 
-      printf("name for filter is %s\n", target.name());
-      if (
-        (target_name == Components::form_container)
-        || object_name.find(target_name) == StringView::npos) {
-        object.get<Generic>().add_flag(Flags::hidden);
-      } else {
+      const auto component_type = get_component_type(target_name);
+
+      const bool is_visible = [&]() {
+        if (component_type.options) {
+          const auto option_container
+            = StringView(component_type.options).split(",");
+          for (const auto &option : option_container) {
+            if (
+              object_name
+              == NameString("Component::").append(option).string_view()) {
+              return true;
+            }
+          }
+        }
+        return false;
+      }();
+
+      if (is_visible) {
         object.get<Generic>().clear_flag(Flags::hidden);
+      } else {
+        object.get<Generic>().add_flag(Flags::hidden);
       }
     }
   }
+}
+
+AddComponent::ComponentType
+AddComponent::get_component_type(const var::StringView component_name) {
+
+  for (const auto &type : component_type_list_lvgl) {
+    if (type.name == component_name) {
+      return type;
+    }
+  }
+
+  for (const auto &type : component_type_list_design) {
+    if (type.name == component_name) {
+      return type;
+    }
+  }
+
+  for (const auto &type : component_type_list_extra_design) {
+    if (type.name == component_name) {
+      return type;
+    }
+  }
+
+  for (const auto &type : component_type_list_extra_design_form) {
+    if (type.name == component_name) {
+      return type;
+    }
+  }
+
+  for (const auto &type : component_type_list_extra_design_form_list) {
+    if (type.name == component_name) {
+      return type;
+    }
+  }
+
+  return {};
 }
 
 void AddComponent::add_type_selection(lvgl::Generic generic) {

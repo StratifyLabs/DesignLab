@@ -27,25 +27,9 @@ public:
     DESIGN_DECLARE_NAME_VALUE(component_width, width);
     DESIGN_DECLARE_NAME_VALUE(component_height, height);
 
-    DESIGN_DECLARE_NAME_VALUE(component_button_label, Component::Button::label);
-    DESIGN_DECLARE_NAME_VALUE(component_heading1_label, Component::Heading1::label);
-    DESIGN_DECLARE_NAME_VALUE(component_heading2_label, Component::Heading2::label);
-    DESIGN_DECLARE_NAME_VALUE(component_heading3_label, Component::Heading3::label);
-    DESIGN_DECLARE_NAME_VALUE(component_heading4_label, Component::Heading3::label);
-
-    DESIGN_DECLARE_NAME_VALUE(component_label_text, Component::Label::text);
-
-    DESIGN_DECLARE_NAME_VALUE(component_form_line_field_label,Component::Form::LineField::label);
-    DESIGN_DECLARE_NAME_VALUE(component_form_line_field_hint,Component::Form::LineField::hint);
-
-    DESIGN_DECLARE_NAME_VALUE(component_form_select_label,Component::Form::Select::label);
-    DESIGN_DECLARE_NAME_VALUE(component_form_select_hint,Component::Form::Select::hint);
-
-    DESIGN_DECLARE_NAME_VALUE(component_form_file_select_label,Component::Form::FileSelect::label);
-    DESIGN_DECLARE_NAME_VALUE(component_form_file_select_hint,Component::Form::FileSelect::hint);
-
-    DESIGN_DECLARE_NAME_VALUE(component_form_switch_label,Component::Form::Switch::label);
-    DESIGN_DECLARE_NAME_VALUE(component_form_switch_hint,Component::Form::Switch::hint);
+    DESIGN_DECLARE_NAME_VALUE(component_label, Component::label);
+    DESIGN_DECLARE_NAME_VALUE(component_hint, Component::hint);
+    DESIGN_DECLARE_NAME_VALUE(component_options, Component::options);
   };
 
   struct Components {
@@ -149,6 +133,7 @@ private:
   struct ComponentType {
     const char *name;
     const char *icon;
+    const char *options;
   };
 
   struct Names {
@@ -179,7 +164,7 @@ private:
 
   static constexpr auto component_type_list_lvgl = {
     ComponentType{Components::bar, icons::fa::spinner_solid},
-    ComponentType{Components::button, icons::fa::calendar_alt_solid},
+    ComponentType{Components::button, icons::fa::calendar_alt_solid, "label"},
     ComponentType{Components::calendar, icons::fa::calendar_alt_solid},
     ComponentType{Components::canvas, icons::fa::paint_brush_solid},
     ComponentType{Components::chart, icons::fa::chart_line_solid},
@@ -206,10 +191,10 @@ private:
     ComponentType{Components::column, icons::fa::columns_solid},
     ComponentType{Components::container, icons::fa::arrows_alt_solid},
     ComponentType{Components::drawer, icons::fa::palette_solid},
-    ComponentType{Components::heading1, icons::fa::heading_solid},
-    ComponentType{Components::heading2, icons::fa::heading_solid},
-    ComponentType{Components::heading3, icons::fa::heading_solid},
-    ComponentType{Components::heading4, icons::fa::heading_solid},
+    ComponentType{Components::heading1, icons::fa::heading_solid, "label"},
+    ComponentType{Components::heading2, icons::fa::heading_solid, "label"},
+    ComponentType{Components::heading3, icons::fa::heading_solid, "label"},
+    ComponentType{Components::heading4, icons::fa::heading_solid, "label"},
     ComponentType{
       Components::horizontal_line,
       icons::fa::window_minimize_solid},
@@ -221,16 +206,29 @@ private:
     ComponentType{Components::drawer_stack, icons::fa::calendar_alt_solid},
     ComponentType{Components::filesystem_card, icons::fa::folder_open_solid},
     ComponentType{Components::form_container, icons::fa::tasks_solid},
-    ComponentType{Components::form_list, icons::fa::clipboard_list_solid}
-  };
+    ComponentType{Components::form_list, icons::fa::clipboard_list_solid}};
 
   static constexpr auto component_type_list_extra_design_form = {
-    ComponentType{Components::form_heading, icons::fa::heading_solid},
-    ComponentType{Components::form_line_field, icons::fa::terminal_solid},
-    ComponentType{Components::form_select, icons::fa::calendar_alt_solid},
-    ComponentType{Components::form_file_select, icons::fa::file_alt_solid},
-    ComponentType{Components::form_switch, icons::fa::toggle_on_solid},
+    ComponentType{Components::form_heading, icons::fa::heading_solid, "label"},
+    ComponentType{
+      Components::form_line_field,
+      icons::fa::terminal_solid,
+      "label,hint"},
+    ComponentType{
+      Components::form_select,
+      icons::fa::calendar_alt_solid,
+      "label,hint"},
+    ComponentType{
+      Components::form_file_select,
+      icons::fa::file_alt_solid,
+      "label,hint"},
+    ComponentType{
+      Components::form_switch,
+      icons::fa::toggle_on_solid,
+      "label,hint"},
   };
+
+  static ComponentType get_component_type(var::StringView name);
 
   static constexpr auto component_type_list_extra_design_form_list
     = {ComponentType{Components::form_heading, icons::fa::heading_solid}};

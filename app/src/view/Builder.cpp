@@ -226,7 +226,7 @@ Builder &Builder::add_component(JsonObject form_value) {
     container.add(Bar(name));
   } else if (type == Components::button) {
     container.add(Button(name).add_label(
-      form_value.at(AddComponent::Fields::component_button_label)
+      form_value.at(AddComponent::Fields::component_label)
         .to_cstring()));
   } else if (type == Components::calendar) {
     container.add(Calendar(name));
@@ -242,7 +242,7 @@ Builder &Builder::add_component(JsonObject form_value) {
     container.add(Keyboard(name));
   } else if (type == Components::label) {
     container.add(Label(name).set_text_as_static(
-      form_value.at(AddComponent::Fields::component_label_text).to_cstring()));
+      form_value.at(AddComponent::Fields::component_label).to_cstring()));
   } else if (type == Components::list) {
     container.add(List(name));
   } else if (type == Components::meter) {
@@ -279,16 +279,16 @@ Builder &Builder::add_component(JsonObject form_value) {
     container.add(Drawer(Drawer::Data::create(name)));
   } else if (type == Components::heading1) {
     container.add(Heading1(name).get<Label>().set_text(
-      form_value.at(Fields::component_heading1_label).to_cstring()));
+      form_value.at(Fields::component_label).to_cstring()));
   } else if (type == Components::heading2) {
     container.add(Heading2(name).get<Label>().set_text(
-      form_value.at(Fields::component_heading2_label).to_cstring()));
+      form_value.at(Fields::component_label).to_cstring()));
   } else if (type == Components::heading3) {
     container.add(Heading3(name).get<Label>().set_text(
-      form_value.at(Fields::component_heading3_label).to_cstring()));
+      form_value.at(Fields::component_label).to_cstring()));
   } else if (type == Components::heading4) {
     container.add(Heading4(name).get<Label>().set_text(
-      form_value.at(Fields::component_heading4_label).to_cstring()));
+      form_value.at(Fields::component_label).to_cstring()));
   } else if (type == Components::horizontal_line) {
     container.add(HorizontalLine(name));
   } else if (type == Components::paragraph) {
@@ -311,30 +311,30 @@ Builder &Builder::add_component(JsonObject form_value) {
     container.add(
       Form::LineField(name)
         .set_label(
-          form_value.at(Fields::component_form_line_field_label).to_cstring())
+          form_value.at(Fields::component_label).to_cstring())
         .set_hint(
-          form_value.at(Fields::component_form_line_field_hint).to_cstring()));
+          form_value.at(Fields::component_hint).to_cstring()));
   } else if (type == Components::form_select) {
     container.add(
       Form::Select(name)
         .set_label(
-          form_value.at(Fields::component_form_select_label).to_cstring())
+          form_value.at(Fields::component_label).to_cstring())
         .set_hint(
-          form_value.at(Fields::component_form_select_hint).to_cstring()));
+          form_value.at(Fields::component_hint).to_cstring()));
   } else if (type == Components::form_file_select) {
     container.add(
       Form::SelectFile(Form::SelectFile::Data::create(name))
         .set_label(
-          form_value.at(Fields::component_form_file_select_label).to_cstring())
+          form_value.at(Fields::component_label).to_cstring())
         .set_hint(
-          form_value.at(Fields::component_form_file_select_hint).to_cstring()));
+          form_value.at(Fields::component_hint).to_cstring()));
   } else if (type == Components::form_switch) {
     container.add(
       Form::Switch(name)
         .set_label(
-          form_value.at(Fields::component_form_switch_label).to_cstring())
+          form_value.at(Fields::component_label).to_cstring())
         .set_hint(
-          form_value.at(Fields::component_form_switch_hint).to_cstring()));
+          form_value.at(Fields::component_hint).to_cstring()));
   }
 
   else {
