@@ -5,18 +5,18 @@
 #include "About.hpp"
 #include "AssetMaker.hpp"
 #include "ColorPreview.hpp"
-#include "FontMaker.hpp"
-#include "IconMaker.hpp"
 #include "ComponentMaker.hpp"
+#include "FontMaker.hpp"
+#include "GettingStarted.hpp"
+#include "IconMaker.hpp"
 #include "Project.hpp"
-#include "Builder.hpp"
 #include "ThemeMaker.hpp"
 
 #include "designlab/fonts/FontAwesomeIcons.hpp"
 
 #include "Home.hpp"
 
-Home::Home(const char * name) {
+Home::Home(const char *name) {
   construct_object(name);
   fill();
 
@@ -37,7 +37,7 @@ Home::Home(const char * name) {
       .add(NakedContainer(Names::content_area).set_flex_grow().fill_height()));
 
   auto configure_content
-    = model().is_theme_updated ? About::configure : Project::configure;
+    = model().is_theme_updated ? About::configure : GettingStarted::configure;
   configure_content(screen().find<Generic>(Names::content_area));
 }
 
@@ -48,6 +48,12 @@ void Home::configure_button_column(Column column) {
   column
     .add(SectionHeading("Design Lab").set_text_alignment(TextAlignment::center))
     .add(HorizontalLine());
+
+  add_side_button(
+    column,
+    icons::fa::map_signs_solid,
+    Names::getting_started_button,
+    GettingStarted::configure);
 
   add_side_button(
     column,

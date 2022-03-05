@@ -437,6 +437,11 @@
          },
          {
             "family": "solid",
+            "name": "map-signs",
+            "unicode": "uf277"
+         },
+         {
+            "family": "solid",
             "name": "minus",
             "unicode": "uf068"
          },
@@ -627,7 +632,7 @@
          }
       ]
    },
-   "fontDirty": true,
+   "fontDirty": false,
    "assetsDirty": false,
    "fontsCompressed": false
 }

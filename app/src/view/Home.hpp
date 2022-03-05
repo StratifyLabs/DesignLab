@@ -20,6 +20,7 @@ private:
     static constexpr auto content_area = "HomeContentArea";
     DESIGN_DECLARE_NAME_VALUE(project_button, Project);
     DESIGN_DECLARE_NAME_VALUE(theme_button, Themes);
+    DESIGN_DECLARE_NAME_VALUE(getting_started_button, Getting Started);
     static constexpr auto icon_button = "Icons";
     static constexpr auto asset_button = "Assets";
     static constexpr auto font_button = "Fonts";

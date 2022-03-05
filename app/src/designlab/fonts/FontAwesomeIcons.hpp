@@ -65,6 +65,7 @@ namespace icons {
     static constexpr auto lock_solid = "\uf023";
     static constexpr auto lock_open_solid = "\uf3c1";
     static constexpr auto long_arrow_alt_right_solid = "\uf30b";
+    static constexpr auto map_signs_solid = "\uf277";
     static constexpr auto minus_solid = "\uf068";
     static constexpr auto moon_solid = "\uf186";
     static constexpr auto paint_brush_solid = "\uf1fc";
@@ -168,6 +169,7 @@ namespace icons {
 #define ICONS_FA_LOCK_SOLID "\uf023"
 #define ICONS_FA_LOCK_OPEN_SOLID "\uf3c1"
 #define ICONS_FA_LONG_ARROW_ALT_RIGHT_SOLID "\uf30b"
+#define ICONS_FA_MAP_SIGNS_SOLID "\uf277"
 #define ICONS_FA_MINUS_SOLID "\uf068"
 #define ICONS_FA_MOON_SOLID "\uf186"
 #define ICONS_FA_PAINT_BRUSH_SOLID "\uf1fc"

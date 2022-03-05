@@ -33,6 +33,8 @@ set(SOURCES
 	view/Builder.hpp
 	view/ComponentMaker.cpp
 	view/ComponentMaker.hpp
+	view/GettingStarted.cpp
+	view/GettingStarted.hpp
 	view/FontMaker.cpp
 	view/FontMaker.hpp
 	view/ColorPreview.cpp

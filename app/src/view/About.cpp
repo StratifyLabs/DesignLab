@@ -25,9 +25,8 @@ About::About(const char *name) {
       "Check for Updates",
       nullptr))
     .add(HorizontalLine());
-  static const auto design_lab_section
-    = KeyString(icons::fa::flask_solid).append(" Design Lab");
-  column.add(SectionHeading(design_lab_section))
+
+  column.add(SectionHeading(ICONS_FA_FLASK_SOLID " Design Lab"))
     .add(AttributionRow(
       "Publisher",
       "Stratify Labs, Inc",

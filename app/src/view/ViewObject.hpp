@@ -55,6 +55,8 @@ protected:
     DESIGN_DECLARE_NAME(content_container);
     DESIGN_DECLARE_NAME(prompt_modal);
 
+
+    DESIGN_DECLARE_NAME(getting_started_object);
     DESIGN_DECLARE_NAME(home_object);
     DESIGN_DECLARE_NAME(about_object);
     DESIGN_DECLARE_NAME(builder_object);
