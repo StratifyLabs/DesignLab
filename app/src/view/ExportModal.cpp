@@ -29,9 +29,7 @@ void ExportModal::start() {
                       .set_width(60_percent));
 
   auto container = modal.find<Container>(Names::content_container);
-
-  modal.add_event_callback(EventCode::notified, notified);
-
+  
   container
     .add(HeaderRow(
       Names::title_header_row,
@@ -66,23 +64,6 @@ void ExportModal::start() {
 
 void ExportModal::cancel_clicked(lv_event_t *e) {
   Event(e).find_parent<Modal>(Names::export_modal).close(300_milliseconds);
-}
-
-void ExportModal::notified(lv_event_t *e) {
-  Model::Scope model_scope;
-  auto modal = Event(e).target<Modal>();
-  modal.find<Label>(Names::message_label)
-    .set_text_as_static(model().worker_message);
-
-  modal.find<Bar>(Names::progress_bar).set_value(model().worker_progress_range);
-
-  if (model().worker_message == Model::worker_done_message) {
-    // show the OK button
-    modal.find<Button>(Names::ok_button).clear_state(State::disabled);
-    modal.find<HeaderRow>(Names::title_header_row)
-      .get_button()
-      .add_state(State::disabled);
-  }
 }
 
 void ExportModal::ok_clicked(lv_event_t *e) {

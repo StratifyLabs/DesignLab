@@ -72,7 +72,6 @@ private:
 
   static void ok_clicked(lv_event_t *);
   static void cancel_clicked(lv_event_t *);
-  static void notified(lv_event_t *);
 };
 
 #endif // DESIGNLAB_EXPORTMODAL_HPP

@@ -10,7 +10,7 @@
 #include <printer/YamlPrinter.hpp>
 
 #include <design/extras/Form.hpp>
-#include <design/Worker.hpp>
+#include <design/ModelScope.hpp>
 
 #include "Settings.hpp"
 
@@ -26,9 +26,6 @@ public:
 
   printer::YamlPrinter printer;
   lvgl::Runtime *runtime = nullptr;
-  var::GeneralString worker_message;
-  lvgl::Range worker_progress_range;
-  lv_obj_t * worker_notify_object;
   bool is_project_path_valid = false;
   bool is_theme_updated = false;
   bool is_dark_theme = false;
