@@ -43,7 +43,7 @@ void AssetManager::construct(const AssetManager::Construct &options) {
     lvgl_assetfs_dirent_t entry{
       .start = offset,
       .mode = 0444,
-      .size = info.size(),
+      .size = u32(info.size()),
       .uid = 0};
 
     const auto file_name = Path::name(asset.get_path());

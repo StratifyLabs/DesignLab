@@ -29,7 +29,7 @@ void ExportModal::start() {
                       .set_width(60_percent));
 
   auto container = modal.find<Container>(Names::content_container);
-  
+
   container
     .add(HeaderRow(
       Names::title_header_row,

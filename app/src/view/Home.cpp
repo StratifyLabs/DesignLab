@@ -37,7 +37,7 @@ Home::Home(const char *name) {
       .add(NakedContainer(Names::content_area).set_flex_grow().fill_height()));
 
   auto configure_content
-    = model().is_theme_updated ? About::configure : GettingStarted::configure;
+    = model().is_theme_updated ? About::configure : Project::configure;
   configure_content(screen().find<Generic>(Names::content_area));
 }
 
@@ -101,7 +101,7 @@ void Home::configure_button_column(Column column) {
 
   column
     .find<Button>(
-      model().is_theme_updated ? Names::about_button : Names::getting_started_button)
+      model().is_theme_updated ? Names::about_button : Names::project_button)
     .add_state(State::checked);
 }
 

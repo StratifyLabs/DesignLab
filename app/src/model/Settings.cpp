@@ -53,6 +53,24 @@ Settings::Settings(var::StringView path, Settings::IsOverwrite is_overwrite)
     reset_error();
     to_object() = json::JsonObject();
   }
+
+  //initialize the structure
+  if( components_to_array().type() == JsonValue::Type::invalid ) {
+    set_components({});
+  }
+
+  if( fonts_to_array().type() == JsonValue::Type::invalid ) {
+    set_fonts({});
+  }
+
+  if( assets_to_array().type() == JsonValue::Type::invalid ) {
+    set_assets({});
+  }
+
+  if( icons().type() == JsonValue::Type::invalid ) {
+    set_icons({});
+  }
+
 }
 
 Settings &Settings::append_form_entry(const design::Form form) {

@@ -575,18 +575,8 @@ void Builder::tree_clicked(lv_event_t *e) {
 
           const auto name = Event(e).target().name();
           auto builder = get_builder(e);
-          printf("find %s\n", name);
-          API_PRINTF_TRACE_LINE();
           auto target_object = builder.find<Generic>(Names::target_object);
-          printf(
-            "target object has %d children\n",
-            target_object.get_child_count());
-          for (auto child : target_object) {
-            printf("Child:%s\n", child.name());
-          }
-          API_PRINTF_TRACE_LINE();
           auto target = target_object.find<Generic>(name);
-          API_PRINTF_TRACE_LINE();
           builder.select_target(target);
         }));
 }
