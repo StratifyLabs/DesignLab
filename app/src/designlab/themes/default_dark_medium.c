@@ -187,10 +187,10 @@ static const lv_style_t h4_style = {
 };
 
 static const lv_style_const_prop_t container_const_list[] = {
-  { .prop = LV_STYLE_PAD_TOP, .value = { .num = 10 } },
-  { .prop = LV_STYLE_PAD_BOTTOM, .value = { .num = 10 } },
   { .prop = LV_STYLE_PAD_LEFT, .value = { .num = 10 } },
   { .prop = LV_STYLE_PAD_RIGHT, .value = { .num = 10 } },
+  { .prop = LV_STYLE_PAD_TOP, .value = { .num = 10 } },
+  { .prop = LV_STYLE_PAD_BOTTOM, .value = { .num = 10 } },
   { .prop = LV_STYLE_BG_COLOR, .value = { .color = LV_COLOR_MAKE(0x22,0x22,0x22)  } },
   { .prop = LV_STYLE_BORDER_WIDTH, .value = { .num = 0 } },
   { .prop = LV_STYLE_TEXT_COLOR, .value = { .color = LV_COLOR_MAKE(0xff,0xff,0xff)  } },
@@ -681,6 +681,18 @@ static const lv_style_t form_style = {
   .is_const = 1
 };
 
+static const lv_style_const_prop_t form_select_file_modal_const_list[] = {
+  { .prop = LV_STYLE_WIDTH, .value = { .num = LV_PCT(80) } },
+  { .prop = LV_STYLE_HEIGHT, .value = { .num = LV_PCT(80) } },
+  { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
+};
+
+static const lv_style_t form_select_file_modal_style = {
+  .v_p = { .const_props = form_select_file_modal_const_list },
+  .has_group = 0xff,
+  .is_const = 1
+};
+
 static const lv_style_const_prop_t form_row_const_list[] = {
   { .prop = LV_STYLE_PAD_COLUMN, .value = { .num = 10 } },
   { .prop = LV_STYLE_WIDTH, .value = { .num = LV_PCT(100) } },
@@ -707,10 +719,10 @@ static const lv_style_t form_col_style = {
 
 static const lv_style_const_prop_t form_label_const_list[] = {
   { .prop = LV_STYLE_TEXT_FONT, .value = { .ptr = (void*)&montserrat_sb_36 } },
-  { .prop = LV_STYLE_PAD_TOP, .value = { .num = 10 } },
-  { .prop = LV_STYLE_PAD_BOTTOM, .value = { .num = 10 } },
   { .prop = LV_STYLE_PAD_LEFT, .value = { .num = 10 } },
   { .prop = LV_STYLE_PAD_RIGHT, .value = { .num = 10 } },
+  { .prop = LV_STYLE_PAD_TOP, .value = { .num = 10 } },
+  { .prop = LV_STYLE_PAD_BOTTOM, .value = { .num = 10 } },
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
 
@@ -722,10 +734,10 @@ static const lv_style_t form_label_style = {
 
 static const lv_style_const_prop_t form_field_const_list[] = {
   { .prop = LV_STYLE_TEXT_FONT, .value = { .ptr = (void*)&montserrat_r_36 } },
-  { .prop = LV_STYLE_PAD_TOP, .value = { .num = 10 *2 } },
-  { .prop = LV_STYLE_PAD_BOTTOM, .value = { .num = 10 *2 } },
   { .prop = LV_STYLE_PAD_LEFT, .value = { .num = 10 *2 } },
   { .prop = LV_STYLE_PAD_RIGHT, .value = { .num = 10 *2 } },
+  { .prop = LV_STYLE_PAD_TOP, .value = { .num = 10 *2 } },
+  { .prop = LV_STYLE_PAD_BOTTOM, .value = { .num = 10 *2 } },
   { .prop = LV_STYLE_BORDER_WIDTH, .value = { .num = 4 /2 } },
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
@@ -739,7 +751,7 @@ static const lv_style_t form_field_style = {
 static const lv_style_const_prop_t form_switch_const_list[] = {
   { .prop = LV_STYLE_BORDER_WIDTH, .value = { .num = 4 } },
   { .prop = LV_STYLE_RADIUS, .value = { .num = LV_RADIUS_CIRCLE } },
-  { .prop = LV_STYLE_WIDTH, .value = { .num = 64 *2 } },
+  { .prop = LV_STYLE_WIDTH, .value = { .num = 128 } },
   { .prop = LV_STYLE_HEIGHT, .value = { .num = 64 } },
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
@@ -752,10 +764,10 @@ static const lv_style_t form_switch_style = {
 
 static const lv_style_const_prop_t form_hint_const_list[] = {
   { .prop = LV_STYLE_TEXT_FONT, .value = { .ptr = (void*)&montserrat_sb_28 } },
-  { .prop = LV_STYLE_PAD_TOP, .value = { .num = 10 / 2 } },
-  { .prop = LV_STYLE_PAD_BOTTOM, .value = { .num = 10 / 2 } },
-  { .prop = LV_STYLE_PAD_LEFT, .value = { .num = 10 / 2 } },
-  { .prop = LV_STYLE_PAD_RIGHT, .value = { .num = 10 / 2 } },
+  { .prop = LV_STYLE_PAD_LEFT, .value = { .num = 10 / 2 *2 } },
+  { .prop = LV_STYLE_PAD_RIGHT, .value = { .num = 10 / 2 *2 } },
+  { .prop = LV_STYLE_PAD_TOP, .value = { .num = 10 / 2 *2 } },
+  { .prop = LV_STYLE_PAD_BOTTOM, .value = { .num = 10 / 2 *2 } },
   { .prop = LV_STYLE_TEXT_COLOR, .value = { .color = LV_COLOR_MAKE(0x66,0x66,0x66)  } },
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
@@ -780,10 +792,10 @@ static const lv_style_t form_filesystem_style = {
 static const lv_style_const_prop_t form_dropdown_const_list[] = {
   { .prop = LV_STYLE_TEXT_FONT, .value = { .ptr = (void*)&montserrat_r_36 } },
   { .prop = LV_STYLE_BORDER_WIDTH, .value = { .num = 4 /2 } },
-  { .prop = LV_STYLE_PAD_TOP, .value = { .num = 10 *2 } },
-  { .prop = LV_STYLE_PAD_BOTTOM, .value = { .num = 10 *2 } },
   { .prop = LV_STYLE_PAD_LEFT, .value = { .num = 10 *2 } },
   { .prop = LV_STYLE_PAD_RIGHT, .value = { .num = 10 *2 } },
+  { .prop = LV_STYLE_PAD_TOP, .value = { .num = 10 *2 } },
+  { .prop = LV_STYLE_PAD_BOTTOM, .value = { .num = 10 *2 } },
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
 
@@ -798,10 +810,10 @@ static const lv_style_const_prop_t form_dropdown_list_const_list[] = {
   { .prop = LV_STYLE_BORDER_WIDTH, .value = { .num = 4 /2 } },
   { .prop = LV_STYLE_MAX_HEIGHT, .value = { .num = 500 } },
   { .prop = LV_STYLE_PAD_ROW, .value = { .num = 10 } },
-  { .prop = LV_STYLE_PAD_TOP, .value = { .num = 10 *2 } },
-  { .prop = LV_STYLE_PAD_BOTTOM, .value = { .num = 10 *2 } },
   { .prop = LV_STYLE_PAD_LEFT, .value = { .num = 10 *2 } },
   { .prop = LV_STYLE_PAD_RIGHT, .value = { .num = 10 *2 } },
+  { .prop = LV_STYLE_PAD_TOP, .value = { .num = 10 *2 } },
+  { .prop = LV_STYLE_PAD_BOTTOM, .value = { .num = 10 *2 } },
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
 
@@ -1280,10 +1292,10 @@ static const lv_style_const_prop_t toast_const_list[] = {
   { .prop = LV_STYLE_BORDER_WIDTH, .value = { .num = 4 } },
   { .prop = LV_STYLE_TEXT_COLOR, .value = { .color = LV_COLOR_MAKE(0xff,0xff,0xff)  } },
   { .prop = LV_STYLE_BORDER_POST, .value = { .num = 1 } },
-  { .prop = LV_STYLE_PAD_TOP, .value = { .num = 10 } },
-  { .prop = LV_STYLE_PAD_BOTTOM, .value = { .num = 10 } },
   { .prop = LV_STYLE_PAD_LEFT, .value = { .num = 10 } },
   { .prop = LV_STYLE_PAD_RIGHT, .value = { .num = 10 } },
+  { .prop = LV_STYLE_PAD_TOP, .value = { .num = 10 } },
+  { .prop = LV_STYLE_PAD_BOTTOM, .value = { .num = 10 } },
   { .prop = LV_STYLE_PAD_ROW, .value = { .num = 10 } },
   { .prop = LV_STYLE_PAD_COLUMN, .value = { .num = 10 } },
   { .prop = LV_STYLE_LINE_COLOR, .value = { .color = LV_COLOR_MAKE(0x66,0x66,0x66)  } },
@@ -1449,10 +1461,10 @@ static const lv_style_t list_group_flush_style = {
 };
 
 static const lv_style_const_prop_t card_header_const_list[] = {
-  { .prop = LV_STYLE_PAD_TOP, .value = { .num = 10 } },
-  { .prop = LV_STYLE_PAD_BOTTOM, .value = { .num = 10 } },
   { .prop = LV_STYLE_PAD_LEFT, .value = { .num = 10 } },
   { .prop = LV_STYLE_PAD_RIGHT, .value = { .num = 10 } },
+  { .prop = LV_STYLE_PAD_TOP, .value = { .num = 10 } },
+  { .prop = LV_STYLE_PAD_BOTTOM, .value = { .num = 10 } },
   { .prop = LV_STYLE_BG_COLOR, .value = { .color = LV_COLOR_MAKE(0x66,0x66,0x66)  } },
   { .prop = LV_STYLE_BG_OPA, .value = { .num = 51 } },
   { .prop = LV_STYLE_BORDER_WIDTH, .value = { .num = 4 } },
@@ -1523,10 +1535,10 @@ static const lv_style_t primary_card_footer_style = {
 };
 
 static const lv_style_const_prop_t card_body_const_list[] = {
-  { .prop = LV_STYLE_PAD_TOP, .value = { .num = 10 } },
-  { .prop = LV_STYLE_PAD_BOTTOM, .value = { .num = 10 } },
   { .prop = LV_STYLE_PAD_LEFT, .value = { .num = 10 } },
   { .prop = LV_STYLE_PAD_RIGHT, .value = { .num = 10 } },
+  { .prop = LV_STYLE_PAD_TOP, .value = { .num = 10 } },
+  { .prop = LV_STYLE_PAD_BOTTOM, .value = { .num = 10 } },
   { .prop = LV_STYLE_WIDTH, .value = { .num = LV_PCT(100) } },
   { .prop = LV_STYLE_BG_COLOR, .value = { .color = LV_COLOR_MAKE(0x22,0x22,0x22)  } },
   { .prop = LV_STYLE_BG_OPA, .value = { .num = 255 } },
@@ -1541,10 +1553,10 @@ static const lv_style_t card_body_style = {
 };
 
 static const lv_style_const_prop_t card_footer_const_list[] = {
-  { .prop = LV_STYLE_PAD_TOP, .value = { .num = 10 } },
-  { .prop = LV_STYLE_PAD_BOTTOM, .value = { .num = 10 } },
   { .prop = LV_STYLE_PAD_LEFT, .value = { .num = 10 } },
   { .prop = LV_STYLE_PAD_RIGHT, .value = { .num = 10 } },
+  { .prop = LV_STYLE_PAD_TOP, .value = { .num = 10 } },
+  { .prop = LV_STYLE_PAD_BOTTOM, .value = { .num = 10 } },
   { .prop = LV_STYLE_BG_COLOR, .value = { .color = LV_COLOR_MAKE(0x66,0x66,0x66)  } },
   { .prop = LV_STYLE_BG_OPA, .value = { .num = 51 } },
   { .prop = LV_STYLE_BORDER_WIDTH, .value = { .num = 4 } },
@@ -1660,10 +1672,10 @@ static const lv_style_const_prop_t background_color_grey_const_list[] = {
   { .prop = LV_STYLE_BG_COLOR, .value = { .color = LV_COLOR_MAKE(0x66,0x66,0x66)  } },
   { .prop = LV_STYLE_BG_OPA, .value = { .num = 255 } },
   { .prop = LV_STYLE_TEXT_COLOR, .value = { .color = LV_COLOR_MAKE(0x44,0x44,0x44)  } },
-  { .prop = LV_STYLE_PAD_TOP, .value = { .num = 10 / 2 } },
-  { .prop = LV_STYLE_PAD_BOTTOM, .value = { .num = 10 / 2 } },
   { .prop = LV_STYLE_PAD_LEFT, .value = { .num = 10 / 2 } },
   { .prop = LV_STYLE_PAD_RIGHT, .value = { .num = 10 / 2 } },
+  { .prop = LV_STYLE_PAD_TOP, .value = { .num = 10 / 2 } },
+  { .prop = LV_STYLE_PAD_BOTTOM, .value = { .num = 10 / 2 } },
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
 
@@ -1725,10 +1737,10 @@ static const lv_style_t padding_zero_style = {
 };
 
 static const lv_style_const_prop_t padding_tiny_const_list[] = {
-  { .prop = LV_STYLE_PAD_TOP, .value = { .num = 10 / 3 } },
-  { .prop = LV_STYLE_PAD_BOTTOM, .value = { .num = 10 / 3 } },
   { .prop = LV_STYLE_PAD_LEFT, .value = { .num = 10 / 3 } },
   { .prop = LV_STYLE_PAD_RIGHT, .value = { .num = 10 / 3 } },
+  { .prop = LV_STYLE_PAD_TOP, .value = { .num = 10 / 3 } },
+  { .prop = LV_STYLE_PAD_BOTTOM, .value = { .num = 10 / 3 } },
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
 
@@ -1739,10 +1751,10 @@ static const lv_style_t padding_tiny_style = {
 };
 
 static const lv_style_const_prop_t padding_small_const_list[] = {
-  { .prop = LV_STYLE_PAD_TOP, .value = { .num = 10 / 2 } },
-  { .prop = LV_STYLE_PAD_BOTTOM, .value = { .num = 10 / 2 } },
   { .prop = LV_STYLE_PAD_LEFT, .value = { .num = 10 / 2 } },
   { .prop = LV_STYLE_PAD_RIGHT, .value = { .num = 10 / 2 } },
+  { .prop = LV_STYLE_PAD_TOP, .value = { .num = 10 / 2 } },
+  { .prop = LV_STYLE_PAD_BOTTOM, .value = { .num = 10 / 2 } },
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
 
@@ -1753,10 +1765,10 @@ static const lv_style_t padding_small_style = {
 };
 
 static const lv_style_const_prop_t padding_normal_const_list[] = {
-  { .prop = LV_STYLE_PAD_TOP, .value = { .num = 10 } },
-  { .prop = LV_STYLE_PAD_BOTTOM, .value = { .num = 10 } },
   { .prop = LV_STYLE_PAD_LEFT, .value = { .num = 10 } },
   { .prop = LV_STYLE_PAD_RIGHT, .value = { .num = 10 } },
+  { .prop = LV_STYLE_PAD_TOP, .value = { .num = 10 } },
+  { .prop = LV_STYLE_PAD_BOTTOM, .value = { .num = 10 } },
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
 
@@ -1767,11 +1779,10 @@ static const lv_style_t padding_normal_style = {
 };
 
 static const lv_style_const_prop_t padding_gap_const_list[] = {
-  { .prop = LV_STYLE_PAD_TOP, .value = { .num = 10 } },
-  { .prop = LV_STYLE_PAD_BOTTOM, .value = { .num = 10 } },
   { .prop = LV_STYLE_PAD_LEFT, .value = { .num = 10 } },
   { .prop = LV_STYLE_PAD_RIGHT, .value = { .num = 10 } },
-  { .prop = LV_STYLE_PAD_COLUMN, .value = { .num = 10 } },
+  { .prop = LV_STYLE_PAD_TOP, .value = { .num = 10 } },
+  { .prop = LV_STYLE_PAD_BOTTOM, .value = { .num = 10 } },
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
 
@@ -2058,10 +2069,10 @@ static const lv_style_t dropdown_list_style = {
 };
 
 static const lv_style_const_prop_t checkbox_marker_const_list[] = {
-  { .prop = LV_STYLE_PAD_TOP, .value = { .num = 10 } },
-  { .prop = LV_STYLE_PAD_BOTTOM, .value = { .num = 10 } },
   { .prop = LV_STYLE_PAD_LEFT, .value = { .num = 10 } },
   { .prop = LV_STYLE_PAD_RIGHT, .value = { .num = 10 } },
+  { .prop = LV_STYLE_PAD_TOP, .value = { .num = 10 } },
+  { .prop = LV_STYLE_PAD_BOTTOM, .value = { .num = 10 } },
   { .prop = LV_STYLE_BORDER_WIDTH, .value = { .num = 4 } },
   { .prop = LV_STYLE_BORDER_COLOR, .value = { .color = LV_COLOR_MAKE(0x1c,0x3a,0x87)  } },
   { .prop = LV_STYLE_BG_COLOR, .value = { .color = LV_COLOR_MAKE(0x22,0x22,0x22)  } },
@@ -2212,10 +2223,10 @@ static const lv_style_t keyboard_button_background_style = {
 };
 
 static const lv_style_const_prop_t list_background_const_list[] = {
-  { .prop = LV_STYLE_PAD_TOP, .value = { .num = 10 } },
-  { .prop = LV_STYLE_PAD_BOTTOM, .value = { .num = 10 } },
   { .prop = LV_STYLE_PAD_LEFT, .value = { .num = 10 } },
   { .prop = LV_STYLE_PAD_RIGHT, .value = { .num = 10 } },
+  { .prop = LV_STYLE_PAD_TOP, .value = { .num = 10 } },
+  { .prop = LV_STYLE_PAD_BOTTOM, .value = { .num = 10 } },
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
 
@@ -2231,10 +2242,10 @@ static const lv_style_const_prop_t list_button_const_list[] = {
   { .prop = LV_STYLE_BORDER_WIDTH, .value = { .num = 4 } },
   { .prop = LV_STYLE_BG_COLOR, .value = { .color = LV_COLOR_MAKE(0x22,0x22,0x22)  } },
   { .prop = LV_STYLE_BG_OPA, .value = { .num = 255 } },
-  { .prop = LV_STYLE_PAD_TOP, .value = { .num = 10 * 2 } },
-  { .prop = LV_STYLE_PAD_BOTTOM, .value = { .num = 10 * 2 } },
-  { .prop = LV_STYLE_PAD_LEFT, .value = { .num = 10 * 2 } },
-  { .prop = LV_STYLE_PAD_RIGHT, .value = { .num = 10 * 2 } },
+  { .prop = LV_STYLE_PAD_LEFT, .value = { .num = 10 *2 } },
+  { .prop = LV_STYLE_PAD_RIGHT, .value = { .num = 10 *2 } },
+  { .prop = LV_STYLE_PAD_TOP, .value = { .num = 10 *2 } },
+  { .prop = LV_STYLE_PAD_BOTTOM, .value = { .num = 10 *2 } },
   { .prop = LV_STYLE_PAD_COLUMN, .value = { .num = 10 } },
   { .prop = LV_STYLE_PROP_INV, .value = { .num = 0 } }
 };
@@ -2324,7 +2335,7 @@ static const lv_style_t led_style = {
   .is_const = 1
 };
 
-static const lvgl_api_style_descriptor_t lvgl_small_dark_style_descriptor_list[] = {
+static const lvgl_api_style_descriptor_t default_dark_medium_style_descriptor_list[] = {
   { .name = "h1", .style = &h1_style },
   { .name = "h2", .style = &h2_style },
   { .name = "h3", .style = &h3_style },
@@ -2364,6 +2375,7 @@ static const lvgl_api_style_descriptor_t lvgl_small_dark_style_descriptor_list[]
   { .name = "btn_outline_dark", .style = &btn_outline_dark_style },
   { .name = "paragraph", .style = &paragraph_style },
   { .name = "form", .style = &form_style },
+  { .name = "form_select_file_modal", .style = &form_select_file_modal_style },
   { .name = "form_row", .style = &form_row_style },
   { .name = "form_col", .style = &form_col_style },
   { .name = "form_label", .style = &form_label_style },
@@ -2428,7 +2440,7 @@ static const lvgl_api_style_descriptor_t lvgl_small_dark_style_descriptor_list[]
   { .name = "circle", .style = &circle_style }
 };
 
-void lvgl_small_dark_apply_callback(lv_theme_t * theme, lv_obj_t * object){
+void default_dark_medium_apply_callback(lv_theme_t * theme, lv_obj_t * object){
   if((lv_obj_get_parent(object) == NULL)){
     lv_obj_add_style(object, (lv_style_t*)&screen_style, LV_STATE_DEFAULT);
     lv_obj_add_style(object, (lv_style_t*)&scrollbar_style, LV_STATE_DEFAULT|LV_PART_SCROLLBAR);
@@ -2747,18 +2759,18 @@ void lvgl_small_dark_apply_callback(lv_theme_t * theme, lv_obj_t * object){
   }
 }
 
-const lvgl_api_style_descriptor_t * lvgl_small_dark_get_style_callback(int offset){
-  const size_t size = sizeof(lvgl_small_dark_style_descriptor_list) / sizeof(lvgl_api_style_descriptor_t);
+const lvgl_api_style_descriptor_t * default_dark_medium_get_style_callback(int offset){
+  const size_t size = sizeof(default_dark_medium_style_descriptor_list) / sizeof(lvgl_api_style_descriptor_t);
   if(offset < size){
-    return &(lvgl_small_dark_style_descriptor_list[offset]);
+    return &(default_dark_medium_style_descriptor_list[offset]);
   }
   return NULL;
 }
 
-lv_theme_t lvgl_small_dark_theme = {
-  .apply_cb = lvgl_small_dark_apply_callback,
+lv_theme_t default_dark_medium_theme = {
+  .apply_cb = default_dark_medium_apply_callback,
   .parent = NULL,
-  .user_data = (void*)lvgl_small_dark_get_style_callback,
+  .user_data = (void*)default_dark_medium_get_style_callback,
   .disp = NULL,
   .color_primary = 0,
   .color_secondary = 0,
@@ -2768,9 +2780,9 @@ lv_theme_t lvgl_small_dark_theme = {
   .flags = 0
 };
 
-lv_theme_t * lvgl_small_dark_theme_initialize(lv_disp_t * disp, lv_theme_t * parent){
-  lvgl_small_dark_theme.disp = disp;
-  lvgl_small_dark_theme.parent = parent;
-  return &lvgl_small_dark_theme;
+lv_theme_t * default_dark_medium_theme_initialize(lv_disp_t * disp, lv_theme_t * parent){
+  default_dark_medium_theme.disp = disp;
+  default_dark_medium_theme.parent = parent;
+  return &default_dark_medium_theme;
 }
 

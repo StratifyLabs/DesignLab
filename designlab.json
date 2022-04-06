@@ -2,16 +2,10 @@
    "source": "app/src",
    "themes": [
       {
-         "path": "SDK/dependencies/DesignLabThemes/default-default-dark.json",
-         "sizeName": "medium",
-         "xScale": "1.0",
-         "yScale": "2.0"
+         "path": "SDK/dependencies/DesignAPI/themes/default/theme-dark-medium.json"
       },
       {
-         "path": "SDK/dependencies/DesignLabThemes/default-default-light.json",
-         "sizeName": "medium",
-         "xScale": "2.0",
-         "yScale": "1.0"
+         "path": "SDK/dependencies/DesignAPI/themes/default/theme-light-medium.json"
       }
    ],
    "components": [
@@ -115,7 +109,7 @@
          "style": "regular",
          "range": "0x20-0x7F",
          "bitsPerPixel": "8",
-         "sizes": "28,32,36",
+         "userSizes": "12",
          "icons": "true"
       },
       {
@@ -124,7 +118,7 @@
          "style": "regular",
          "range": "0x20-0x7F",
          "bitsPerPixel": "8",
-         "sizes": "12,16,20",
+         "userSizes": "12",
          "icons": "false"
       },
       {
@@ -133,7 +127,7 @@
          "style": "semi_bold",
          "range": "0x20-0x7F",
          "bitsPerPixel": "8",
-         "sizes": "28,36,44,52,60",
+         "userSizes": "12",
          "icons": "true"
       }
    ],
@@ -638,7 +632,7 @@
          }
       ]
    },
-   "fontDirty": true,
+   "fontDirty": false,
    "assetsDirty": false,
    "fontsCompressed": false
 }

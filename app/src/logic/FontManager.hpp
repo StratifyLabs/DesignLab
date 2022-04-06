@@ -32,10 +32,6 @@ public:
     return font.get_user_sizes();
   }
 
-  static var::GeneralString get_theme_size_list(const Settings::Font &font) {
-    return font.get_theme_sizes();
-  }
-
   static var::PathString
   get_file_name(const Settings::Font &font, const var::StringView size) {
     return font.get_name() & "_"
@@ -48,26 +44,6 @@ public:
     var::StringView project_path,
     const Settings &settings) override;
 
-  template <class Context>
-  void for_each_font(
-    const var::Vector<Settings::Font> &font_list,
-    Context &context,
-    void (*callback)(const Settings::Font &, var::StringView, Context &)) {
-    for (const auto &font : font_list) {
-      {
-        const auto user_sizes = get_user_size_list(font);
-        for (const auto font_size : user_sizes.string_view().split(",")) {
-          callback(font, font_size, context);
-        }
-      }
-      {
-        const auto theme_sizes = get_theme_size_list(font);
-        for (const auto font_size : theme_sizes.string_view().split(",")) {
-          callback(font, font_size, context);
-        }
-      }
-    }
-  }
 
   using GeneratedContainer = var::Queue<var::PathString>;
   const GeneratedContainer & generated_container() const {
@@ -88,8 +64,22 @@ private:
   var::PathString m_lv_font_conv_path;
   int m_progress_value = 0;
   int m_progress_total = 0;
+  Construct m_construct;
 
   GeneratedContainer m_generated_container;
+
+  template <class Context>
+  void for_each_user_font(
+    const var::Vector<Settings::Font> &font_list,
+    Context &context,
+    void (*callback)(const Settings::Font &, var::StringView, Context &)) {
+    for (const auto &font : font_list) {
+        const auto user_sizes = get_user_size_list(font);
+        for (const auto font_size : user_sizes.string_view().split(",")) {
+          callback(font, font_size, context);
+        }
+    }
+  }
 
   var::String
   get_icon_font_range(Settings::Icons icons, var::StringView family);

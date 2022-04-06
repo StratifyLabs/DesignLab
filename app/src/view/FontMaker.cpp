@@ -33,7 +33,6 @@ FontMaker::get_feature_list(json::JsonObject object) {
   Settings::Font item(object);
 
   const auto user_size_list = FontManager::get_user_size_list(item);
-  const auto theme_size_list = FontManager::get_theme_size_list(item);
   result
     .push_back(
       {.icon = icons::fa::th_solid,

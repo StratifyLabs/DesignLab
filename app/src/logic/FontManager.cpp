@@ -14,7 +14,7 @@
 
 #include "FontManager.hpp"
 
-FontManager::FontManager(const Construct &options) {
+FontManager::FontManager(const Construct &options) : m_construct(options) {
 
   m_icons = options.icons;
 
@@ -50,38 +50,39 @@ FontManager::FontManager(const Construct &options) {
       const auto sizes = get_user_size_list(font);
       result += sizes.string_view().split(",").count();
     }
+    if (options.theme_font_list) {
+      result += options.theme_font_list->count();
+    }
     return result;
   }();
 
-  if (options.is_dry_run == false) {
-    for (const auto &font : font_list) {
-      const auto sizes = get_user_size_list(font);
-      for (const auto font_size : sizes.string_view().split(",")) {
-        process_font_size(
-          output_directory,
-          node_path,
-          options,
-          font,
-          font_size,
-          settings.is_fonts_compressed());
-      }
+  for (const auto &font : font_list) {
+    const auto sizes = get_user_size_list(font);
+    for (const auto font_size : sizes.string_view().split(",")) {
+      process_font_size(
+        output_directory,
+        node_path,
+        options,
+        font,
+        font_size,
+        settings.is_fonts_compressed());
     }
+  }
 
-    if (options.theme_font_list) {
-      for (const auto &theme_font : *(options.theme_font_list)) {
-        const lvgl::Font::Info info{theme_font};
-        for (const auto &font : font_list) {
-          if (
-            info.name() == font.get_name()
-            && font.get_style() == lvgl::Font::to_cstring(info.style())) {
-            process_font_size(
-              output_directory,
-              node_path,
-              options,
-              font,
-              var::NumberString(info.point_size()),
-              settings.is_fonts_compressed());
-          }
+  if (options.theme_font_list) {
+    for (const auto &theme_font : *(options.theme_font_list)) {
+      const lvgl::Font::Info info{theme_font};
+      for (const auto &font : font_list) {
+        if (
+          info.name() == font.get_name()
+          && font.get_style() == lvgl::Font::to_cstring(info.style())) {
+          process_font_size(
+            output_directory,
+            node_path,
+            options,
+            font,
+            var::NumberString(info.point_size()),
+            settings.is_fonts_compressed());
         }
       }
     }
@@ -122,6 +123,10 @@ void FontManager::process_font_size(
   StringPrinter printer;
 
   m_generated_container.push(get_file_name(font, font_size));
+
+  if (m_construct.is_dry_run) {
+    return;
+  }
 
   Process::Arguments arguments(node_path);
   arguments.push(m_lv_font_conv_path)
@@ -348,9 +353,8 @@ void FontManager::generate_fonts_source(
 
   const auto font_count = m_generated_container.count();
 
-  const GeneralString lvgl_font_list = GeneralString().format(
-    "const lvgl_api_font_descriptor_t lvgl_font_list[%d]",
-    font_count);
+  const GeneralString lvgl_font_list
+    = "const lvgl_api_font_descriptor_t lvgl_font_list[]";
 
   {
     CodePrinter::HeaderGuard header_guard(h_printer, "DESIGNLAB_FONTS_H_");
@@ -377,27 +381,44 @@ void FontManager::generate_fonts_source(
 
   c_printer.line("#include \"fonts.h\"").newline().newline();
 
-  for (const auto &generated : m_generated_container) {
-    c_printer.statement(
-      "extern const lv_font_t " | generated.string_view().pop_back(2));
-  }
+  static auto get_abbreviated_string = [](var::StringView style) {
+    return lvgl::Font::to_abbreviated_cstring(
+      lvgl::Font::style_from_string(style));
+  };
+
+  for_each_user_font<CodePrinter>(
+    font_list,
+    c_printer,
+    [](
+      const Settings::Font &font,
+      var::StringView font_size,
+      CodePrinter &c_printer) {
+      auto name = font.get_name() & "_"
+                  & get_abbreviated_string(font.get_style()) & "_" & font_size;
+      c_printer.statement("extern const lv_font_t " | name);
+    });
 
   c_printer.newline().newline();
 
   {
     CodePrinter::StructInitialization struct_init(c_printer, lvgl_font_list);
 
-    for (const auto &generated : m_generated_container) {
-      const auto variable_name = generated.string_view().pop_back(2);
-      const auto text_name
-        = PathString(variable_name)
-            .replace(
-              PathString::Replace().set_old_character('_').set_new_character(
-                '-'));
+    for_each_user_font<CodePrinter::StructInitialization>(
+      font_list,
+      struct_init,
+      [](
+        const Settings::Font &font,
+        var::StringView font_size,
+        CodePrinter::StructInitialization &struct_init) {
+        const auto name = font.get_name() & "_"
+                          & get_abbreviated_string(font.get_style()) & "_"
+                          & font_size;
+        const auto text_name = PathString(name).replace(
+          PathString::Replace().set_old_character('_').set_new_character('-'));
 
-      struct_init.add_member(
-        "{ .name = \"" | text_name | "\", .font = &" | variable_name | "}");
-    }
+        struct_init.add_member(
+          "{ .name = \"" | text_name | "\", .font = &" | name | "}");
+      });
   }
 
   c_printer.newline().newline();

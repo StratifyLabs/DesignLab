@@ -39,9 +39,9 @@ void Application::run(sys::Cli &cli) {
     Model::Scope model_scope;
     model().runtime = &runtime;
     model().light_theme
-      = Theme(lvgl_small_light_theme_initialize(runtime.display(), nullptr));
+      = Theme(default_light_medium_theme_initialize(runtime.display(), nullptr));
     model().dark_theme
-      = Theme(lvgl_small_dark_theme_initialize(runtime.display(), nullptr));
+      = Theme(default_dark_medium_theme_initialize(runtime.display(), nullptr));
 
     if (fs::FileSystem().directory_exists(
           model().session_settings.get_project())) {

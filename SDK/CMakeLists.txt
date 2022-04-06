@@ -53,7 +53,6 @@ sdk_add_subdirectory(InetAPI v1.2)
 sdk_add_subdirectory(WindowAPI main)
 sdk_add_subdirectory(LvglAPI main)
 sdk_add_subdirectory(DesignAPI main)
-sdk_add_subdirectory(DesignLabThemes main)
 
 sdk_add_subdirectory(CPrinterAPI main)
 

@@ -113,10 +113,21 @@ void ExportModal::ExportWorker::work() {
   m_font_path_list = get_font_path_list();
   static constexpr auto step_count = 5;
   const auto font_count = m_font_path_list.count();
-  const auto total_count = font_count + step_count;
+
+  update_message("Exporting Theme");
+  update_progress(0, 5);
+  export_themes();
+
+
+  if (is_error()) {
+    update_message(StringView("Theme Error: ") | error().message());
+    return;
+  }
+
+  const auto total_count = font_count + step_count + m_theme_font_list.count();
 
   update_message("Exporting Assets");
-  update_progress(0, total_count);
+  update_progress(1, total_count);
   export_assets();
 
   if (is_error()) {
@@ -124,19 +135,13 @@ void ExportModal::ExportWorker::work() {
     return;
   }
 
-  update_message("Exporting Theme");
-  update_progress(1, total_count);
-  export_themes();
+  update_message("Exporting Components");
+  update_progress(2, total_count);
+  export_components();
 
-  if (is_error()) {
-    update_message(StringView("Theme Error: ") | error().message());
-    return;
-  }
-
-  // need to add theme generated fonts to fonts settings
 
   update_message("Exporting Fonts");
-  update_progress(2, total_count);
+  update_progress(3, total_count);
 
   export_fonts();
 
@@ -145,16 +150,11 @@ void ExportModal::ExportWorker::work() {
     return;
   }
 
-  update_progress(3 + font_count, total_count);
-
-  update_message("Exporting Components");
-  update_progress(4 + font_count, total_count);
-  export_components();
 
   update_message("Finalizing");
 
   export_cmake_sourcelist();
-  update_progress(5 + font_count, total_count);
+  update_progress(total_count, total_count);
   update_message(Model::worker_done_message);
 
   save_settings();
@@ -163,7 +163,7 @@ void ExportModal::ExportWorker::work() {
 }
 
 void ExportModal::ExportWorker::update_font_progress(int value, int total) {
-  update_progress(3 + value, total + 4);
+  update_progress(3 + value, total + 3);
 }
 
 void ExportModal::ExportWorker::export_assets() {
