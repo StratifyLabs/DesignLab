@@ -48,7 +48,8 @@ public:
     JSON_ACCESS_STRING(Font, style);
     JSON_ACCESS_STRING(Font, range);
     JSON_ACCESS_STRING_WITH_KEY(Font, bitsPerPixel, bits_per_pixel);
-    JSON_ACCESS_STRING(Font, sizes);
+    JSON_ACCESS_STRING_WITH_KEY(Font, userSizes, user_sizes);
+    JSON_ACCESS_STRING_WITH_KEY(Font, themeSize, theme_sizes);
     // include the icons with this font
     JSON_ACCESS_BOOL(Font, icons);
   };

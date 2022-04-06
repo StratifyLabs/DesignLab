@@ -31,6 +31,8 @@ private:
     fs::PathList m_theme_path_list;
     fs::PathList m_font_path_list;
 
+    fs::PathList m_theme_font_list;
+
     void work() override;
 
     void update_message(var::StringView message);

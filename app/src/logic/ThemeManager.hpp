@@ -27,11 +27,13 @@ public:
     API_PMAZ(output_source_path,Construct,var::PathString,{});
   };
 
-  explicit ThemeManager(const Construct & options){
+  explicit ThemeManager(const Construct & options) : m_construct(options){
     construct(options);
   }
 
   fs::PathList get_source_list(var::StringView project_path, const Settings & settings) override;
+
+  fs::PathList get_font_name_list() const;
 
   printer::Printer &printer() { return m_printer; }
 
@@ -49,6 +51,9 @@ private:
     JSON_ACCESS_STRING(ThemeObject, name);
     JSON_ACCESS_STRING(ThemeObject, directory);
     JSON_ACCESS_STRING(ThemeObject, header);
+    JSON_ACCESS_REAL_WITH_KEY(ThemeObject, xScale, x_scale);
+    JSON_ACCESS_REAL_WITH_KEY(ThemeObject, yScale, y_scale);
+
   };
 
   class RuleObject : public json::JsonValue {
@@ -97,6 +102,7 @@ private:
     "tileview_tile",
     "win"};
 
+  Construct m_construct;
   const sys::Cli *m_cli;
   CodePrinter m_code_printer;
   printer::YamlPrinter m_printer;
@@ -131,6 +137,8 @@ private:
   void write_output(const var::GeneralString &value) {
     m_output.write(value.string_view());
   }
+
+  var::NameString get_scaled_font_name(var::StringView font_variable_value) const;
 };
 
 #endif // DESIGNLAB_LOGIC_THEMEMANAGER_HPP

@@ -8,6 +8,8 @@
 #include "ViewObject.hpp"
 #include "extras/Extras.hpp"
 
+#include "Editor.hpp"
+
 class ThemeMaker : public ViewObject, public ObjectAccess<ThemeMaker> {
 public:
   static void configure(lvgl::Generic generic){

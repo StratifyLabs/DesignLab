@@ -2,10 +2,16 @@
    "source": "app/src",
    "themes": [
       {
-         "path": "designlab/themes/lvgl-small-light.json"
+         "path": "SDK/dependencies/DesignLabThemes/default-default-dark.json",
+         "sizeName": "medium",
+         "xScale": "1.0",
+         "yScale": "2.0"
       },
       {
-         "path": "designlab/themes/lvgl-small-dark.json"
+         "path": "SDK/dependencies/DesignLabThemes/default-default-light.json",
+         "sizeName": "medium",
+         "xScale": "2.0",
+         "yScale": "1.0"
       }
    ],
    "components": [

@@ -32,14 +32,6 @@ FontManager::FontManager(const Construct &options) {
     = load_json_file(options.project_path / options.input_path);
   API_RETURN_IF_ERROR();
 
-  static constexpr auto font_solid_name = "Font Awesome 5 Free-Solid-900.otf";
-  static constexpr auto font_regular_name
-    = "Font Awesome 5 Free-Regular-400.otf";
-  static constexpr auto font_brands_name
-    = "Font Awesome 5 Brands-Regular-400.otf";
-  static constexpr auto font_file_list
-    = {font_solid_name, font_regular_name, font_brands_name};
-
   for (const auto *font : font_file_list) {
     const auto path = get_temporary_font_path(font);
     if (!FileSystem().exists(path)) {
@@ -52,109 +44,58 @@ FontManager::FontManager(const Construct &options) {
   const auto font_list = settings.get_fonts();
   const auto output_directory = settings.get_output_directory() / "fonts";
 
-  const auto progress_total = [&]() {
+  m_progress_total = [&]() {
     size_t result = 0;
     for (const auto &font : font_list) {
-      const auto sizes = get_size_list(font);
+      const auto sizes = get_user_size_list(font);
       result += sizes.string_view().split(",").count();
     }
     return result;
   }();
 
-  size_t progress_value = 0;
-
   if (options.is_dry_run == false) {
     for (const auto &font : font_list) {
-
-      const auto sizes = get_size_list(font);
-
+      const auto sizes = get_user_size_list(font);
       for (const auto font_size : sizes.string_view().split(",")) {
-        var::GeneralString command = "lv_font_conv";
+        process_font_size(
+          output_directory,
+          node_path,
+          options,
+          font,
+          font_size,
+          settings.is_fonts_compressed());
+      }
+    }
 
-        const auto output_file_path
-          = output_directory / get_file_name(font, font_size);
-
-        StringPrinter printer;
-
-        Process::Arguments arguments(node_path);
-        arguments.push(m_lv_font_conv_path)
-          .push("--bpp=" | font.get_bits_per_pixel())
-          .push("--size=" | font_size)
-          .push("--format=lvgl")
-          .push(
-            "--output=" | options.project_path / output_file_path.string_view())
-          .push("--font=" | options.project_path / font.get_path())
-          .push("--range=" | font.get_range());
-
-        if (settings.is_fonts_compressed() == false) {
-          arguments.push("--no-compress");
-        }
-
-        if (font.is_icons()) {
-          auto add_icon_range
-            = [&](var::StringView font_name, var::StringView family) {
-                const auto icon_range
-                  = get_icon_font_range(options.icons, family);
-                if (icon_range.length()) {
-                  arguments.push("--font=" | get_temporary_font_path(font_name))
-                    .push("--range=" | icon_range);
-                }
-              };
-
-          add_icon_range(font_solid_name, "solid");
-          add_icon_range(font_regular_name, "regular");
-          add_icon_range(font_brands_name, "brands");
-        }
-
-        auto env
-          = Process::Environment().set_working_directory(options.project_path);
-
-        if (!node_path.is_empty()) {
-          const auto current_path = getenv("PATH");
-          if (current_path != nullptr && 0) {
-            env.set("PATH", var::StringView(current_path) | ":" | node_path);
-          } else {
-            env.set("PATH", node_path);
+    if (options.theme_font_list) {
+      for (const auto &theme_font : *(options.theme_font_list)) {
+        const lvgl::Font::Info info{theme_font};
+        for (const auto &font : font_list) {
+          if (
+            info.name() == font.get_name()
+            && font.get_style() == lvgl::Font::to_cstring(info.style())) {
+            process_font_size(
+              output_directory,
+              node_path,
+              options,
+              font,
+              var::NumberString(info.point_size()),
+              settings.is_fonts_compressed());
           }
         }
+      }
+    }
 
-        printer.object("arguments", arguments).object("environment", env);
-
-        Process lv_font_conv(arguments, env);
-
-        lv_font_conv.wait();
-        lv_font_conv.read_standard_output();
-
-        printer.key("output", lv_font_conv.get_standard_output())
-          .key("error", lv_font_conv.get_standard_error());
-
-        auto status = lv_font_conv.status();
-        auto exit_status = status.exit_status();
-        printer.key("exitStatus", var::NumberString(exit_status));
-
-        const auto log_file_path = SessionSettings::get_application_directory()
-                                   / "lv_font_conv_log.txt";
-        File(File::IsOverwrite::yes, log_file_path).write(printer.output());
-
-        if (exit_status != 0) {
-
-          API_RETURN_ASSIGN_ERROR(
-            "`lv_font_conv` had an error (see `" | log_file_path.string_view()
-              | "` for details)",
-            EINVAL);
-        }
-
-        // was there an error?
-
-        progress_value++;
-
-        if (options.update_callback) {
-          options.update_callback(
-            options.update_context,
-            progress_value,
-            progress_total);
+    {
+      m_generated_container.sort(GeneratedContainer::ascending);
+      GeneratedContainer tmp_container;
+      for (const auto &generated : m_generated_container) {
+        const auto offset = tmp_container.find_offset(generated);
+        if (offset == tmp_container.count()) {
+          tmp_container.push(generated);
         }
       }
+      m_generated_container = std::move(tmp_container);
     }
   }
 
@@ -164,6 +105,97 @@ FontManager::FontManager(const Construct &options) {
 #endif
   generate_fontawesome_icons_hpp(full_output_directory);
   generate_fonts_source(full_output_directory, font_list);
+}
+
+void FontManager::process_font_size(
+  var::StringView output_directory,
+  var::StringView node_path,
+  const Construct &options,
+  const Settings::Font &font,
+  var::StringView font_size,
+  bool is_compressed) {
+  var::GeneralString command = "lv_font_conv";
+
+  const auto output_file_path
+    = output_directory / get_file_name(font, font_size);
+
+  StringPrinter printer;
+
+  m_generated_container.push(get_file_name(font, font_size));
+
+  Process::Arguments arguments(node_path);
+  arguments.push(m_lv_font_conv_path)
+    .push("--bpp=" | font.get_bits_per_pixel())
+    .push("--size=" | font_size)
+    .push("--format=lvgl")
+    .push("--output=" | options.project_path / output_file_path.string_view())
+    .push("--font=" | options.project_path / font.get_path())
+    .push("--range=" | font.get_range());
+
+  if (!is_compressed) {
+    arguments.push("--no-compress");
+  }
+
+  if (font.is_icons()) {
+    auto add_icon_range
+      = [&](var::StringView font_name, var::StringView family) {
+          const auto icon_range = get_icon_font_range(options.icons, family);
+          if (icon_range.length()) {
+            arguments.push("--font=" | get_temporary_font_path(font_name))
+              .push("--range=" | icon_range);
+          }
+        };
+
+    add_icon_range(font_solid_name, "solid");
+    add_icon_range(font_regular_name, "regular");
+    add_icon_range(font_brands_name, "brands");
+  }
+
+  auto env = Process::Environment().set_working_directory(options.project_path);
+
+  if (!node_path.is_empty()) {
+    const auto current_path = getenv("PATH");
+    if (current_path != nullptr && 0) {
+      env.set("PATH", var::StringView(current_path) | ":" | node_path);
+    } else {
+      env.set("PATH", node_path);
+    }
+  }
+
+  printer.object("arguments", arguments).object("environment", env);
+
+  Process lv_font_conv(arguments, env);
+
+  lv_font_conv.wait();
+  lv_font_conv.read_standard_output();
+
+  printer.key("output", lv_font_conv.get_standard_output())
+    .key("error", lv_font_conv.get_standard_error());
+
+  auto status = lv_font_conv.status();
+  auto exit_status = status.exit_status();
+  printer.key("exitStatus", var::NumberString(exit_status));
+
+  const auto log_file_path
+    = SessionSettings::get_application_directory() / "lv_font_conv_log.txt";
+  File(File::IsOverwrite::yes, log_file_path).write(printer.output());
+
+  if (exit_status != 0) {
+
+    API_RETURN_ASSIGN_ERROR(
+      "`lv_font_conv` had an error (see `" | log_file_path.string_view()
+        | "` for details)",
+      EINVAL);
+  }
+
+  m_progress_value++;
+
+  if (options.update_callback) {
+    options.update_callback(
+      options.update_context,
+      m_progress_value,
+      m_progress_total);
+  }
 }
 
 var::PathString FontManager::get_temporary_font_path(var::StringView filename) {
@@ -176,7 +208,7 @@ FontManager::get_source_list(var::StringView, const Settings &settings) {
   result.push_back("fonts/fonts.c").push_back("fonts/fonts.h");
   const auto font_list = settings.get_fonts();
   for (const auto &font : font_list) {
-    const auto sizes = get_size_list(font);
+    const auto sizes = get_user_size_list(font);
     for (const auto font_size : sizes.string_view().split(",")) {
       result.push_back("fonts" / get_file_name(font, font_size));
     }
@@ -291,18 +323,17 @@ void FontManager::generate_fontawesome_icons_hpp(var::StringView directory) {
         = String(
             (needs_x_prefix ? "x" : "") + icon.get_name() + "_"
             + icon.get_family())
-            .replace(
-              String::Replace().set_old_string("-").set_new_string("_")).to_upper();
+            .replace(String::Replace().set_old_string("-").set_new_string("_"))
+            .to_upper();
 
       code_printer.line(
-        "#define ICONS_FA_" | name.string_view() | " \"\\"
-        | icon.get_unicode() | "\"");
+        "#define ICONS_FA_" | name.string_view() | " \"\\" | icon.get_unicode()
+        | "\"");
     }
   }
 
   code_printer.newline();
   code_printer.newline();
-
 }
 
 void FontManager::generate_fonts_source(
@@ -315,16 +346,7 @@ void FontManager::generate_fonts_source(
   CodePrinter h_printer(fonts_h);
   CodePrinter c_printer(fonts_c);
 
-  const auto font_count = [&]() {
-    int count = 0;
-    for_each_font<int>(
-      font_list,
-      count,
-      [](const Settings::Font &font, var::StringView font_size, int &count) {
-        count++;
-      });
-    return count;
-  }();
+  const auto font_count = m_generated_container.count();
 
   const GeneralString lvgl_font_list = GeneralString().format(
     "const lvgl_api_font_descriptor_t lvgl_font_list[%d]",
@@ -355,39 +377,27 @@ void FontManager::generate_fonts_source(
 
   c_printer.line("#include \"fonts.h\"").newline().newline();
 
-  for_each_font<CodePrinter>(
-    font_list,
-    c_printer,
-    [](
-      const Settings::Font &font,
-      var::StringView font_size,
-      CodePrinter &c_printer) {
-      c_printer.statement(
-        "extern const lv_font_t " | get_file_name(font, font_size).pop_back(2));
-    });
+  for (const auto &generated : m_generated_container) {
+    c_printer.statement(
+      "extern const lv_font_t " | generated.string_view().pop_back(2));
+  }
 
   c_printer.newline().newline();
 
   {
     CodePrinter::StructInitialization struct_init(c_printer, lvgl_font_list);
 
-    for_each_font<CodePrinter::StructInitialization>(
-      font_list,
-      struct_init,
-      [](
-        const Settings::Font &font,
-        var::StringView font_size,
-        CodePrinter::StructInitialization &struct_init) {
-        const auto variable_name = get_file_name(font, font_size).pop_back(2);
-        const auto text_name
-          = PathString(variable_name)
-              .replace(
-                PathString::Replace().set_old_character('_').set_new_character(
-                  '-'));
+    for (const auto &generated : m_generated_container) {
+      const auto variable_name = generated.string_view().pop_back(2);
+      const auto text_name
+        = PathString(variable_name)
+            .replace(
+              PathString::Replace().set_old_character('_').set_new_character(
+                '-'));
 
-        struct_init.add_member(
-          "{ .name = \"" | text_name | "\", .font = &" | variable_name | "}");
-      });
+      struct_init.add_member(
+        "{ .name = \"" | text_name | "\", .font = &" | variable_name | "}");
+    }
   }
 
   c_printer.newline().newline();

@@ -17,7 +17,8 @@ using namespace design;
 
 ThemeManager::ThemeManager(const sys::Cli &cli) : m_cli(&cli) {
   printer().set_verbose_level(cli.get_option("verbose"));
-  construct({.input_path = cli.get_option("theme"), .project_path = "./"});
+  m_construct = {.input_path = cli.get_option("theme"), .project_path = "./"};
+  construct(m_construct);
 }
 
 void ThemeManager::construct(const Construct &options) {
@@ -116,6 +117,49 @@ fs::PathList ThemeManager::get_source_list(
   for (const auto &theme_file : theme_list) {
     ThemeObject theme = load_json_file(project_path / theme_file.get_path());
     result.push_back("themes" / theme.get_name() & ".c");
+  }
+  return result;
+}
+
+var::NameString
+ThemeManager::get_scaled_font_name(var::StringView font_variable_value) const {
+  const auto font_components = font_variable_value.split("_");
+  if (font_components.count() != 3) {
+    return {};
+  }
+
+  const auto point_size = font_components.at(2).to_unsigned_long();
+  const auto size
+    = var::NumberString(u32(point_size * m_theme_object.get_y_scale()));
+
+  return var::NameString(font_components.at(0))
+    .append("_")
+    .append(font_components.at(1))
+    .append("_")
+    .append(size);
+}
+
+fs::PathList ThemeManager::get_font_name_list() const {
+  const auto key_container = m_variables_object.get_key_list();
+  const auto font_count = [&]() {
+    int count = 0;
+    for (const auto &key : key_container) {
+      if (key.find("$font") == 0) {
+        ++count;
+      }
+    }
+    return count;
+  }();
+  fs::PathList result;
+  result.reserve(font_count);
+  for (const auto &key : key_container) {
+    if (key.find("$font") == 0) {
+      const auto font_name = m_variables_object.at(key).to_string_view();
+      const auto scaled_name = get_scaled_font_name(font_name).pop_front();
+      if (!scaled_name.is_empty()) {
+        result.push_back(scaled_name.string_view());
+      }
+    }
   }
   return result;
 }
@@ -371,7 +415,7 @@ void ThemeManager::generate_descriptors() {
         const auto font_variable_name
           = m_variables_object.at(key).to_string_view().pop_front();
         m_code_printer.statement(
-          "extern const lv_font_t " | font_variable_name);
+          "extern const lv_font_t " | get_scaled_font_name(font_variable_name));
       }
     }
     m_code_printer.newline();
@@ -393,7 +437,8 @@ void ThemeManager::generate_descriptors() {
           for (const auto &property : property_list) {
             struct_init.add_member_with_comment(
               var::NumberString(
-                u32(design::Utility::property_from_string(property.to_cstring())),
+                u32(
+                  design::Utility::property_from_string(property.to_cstring())),
                 " (lv_style_prop_t)0x%04X"),
               property.to_string_view());
           }
@@ -593,19 +638,33 @@ var::GeneralString ThemeManager::get_variable(const StringView key) {
       const auto result = m_variables_object.at(entry);
 
       if (result.is_integer()) {
-        return GeneralString(NumberString(result.to_integer()).string_view());
+        const auto integer_value = [&]() {
+          const auto value = result.to_integer();
+          if (key.back() == 'X' || key.find("Width") != StringView::npos) {
+            return int(value * m_theme_object.get_x_scale());
+          }
+
+          if (
+            key.back() == 'Y' || key.find("Height") != StringView::npos
+            || key.find("Radius") != StringView::npos) {
+            return int(value * m_theme_object.get_y_scale());
+          }
+
+          return value;
+        }();
+        return NumberString(integer_value).string_view();
       }
 
       if (result.is_real()) {
-        return GeneralString(NumberString(result.to_real()).string_view());
+        return NumberString(result.to_real()).string_view();
       }
 
       if (result.is_true()) {
-        return GeneralString("1");
+        return "1";
       }
 
       if (result.is_false()) {
-        return GeneralString("0");
+        return "0";
       }
 
       if (result.is_object()) {
@@ -625,6 +684,10 @@ var::GeneralString ThemeManager::get_variable(const StringView key) {
             }
           }
           return recursive_result.pop_back();
+        }
+
+        if (key.find("$font") == 0) {
+          return get_scaled_font_name(result.to_string_view()).string_view();
         }
 
         return result.to_string_view();
@@ -696,9 +759,10 @@ ThemeManager::get_property_value(Property property, const char *value) {
       return var::GeneralString().format(".color = %s ", value);
     }
 
-    const auto number_value = color_value.to_unsigned_long(StringView::Base::auto_);
+    const auto number_value
+      = color_value.to_unsigned_long(StringView::Base::auto_);
 
-    const lv_color_t lv_color = { .full = u32(number_value) };
+    const lv_color_t lv_color = {.full = u32(number_value)};
     return var::GeneralString().format(
       ".color = LV_COLOR_MAKE(0x%02x,0x%02x,0x%02x) ",
       LV_COLOR_GET_R(lv_color),
@@ -722,7 +786,8 @@ ThemeManager::get_property_value(Property property, const char *value) {
       return var::GeneralString().format(".num = 0x%X", u32(number_value));
     }
 
-    if (const auto number_value = Utility::gradient_direction_from_string(value);
+    if (const auto number_value
+        = Utility::gradient_direction_from_string(value);
         number_value != GradientDirection::invalid) {
       return var::GeneralString().format(".num = 0x%X", u32(number_value));
     }

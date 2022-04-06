@@ -133,6 +133,8 @@ void ExportModal::ExportWorker::work() {
     return;
   }
 
+  // need to add theme generated fonts to fonts settings
+
   update_message("Exporting Fonts");
   update_progress(2, total_count);
 
@@ -204,11 +206,21 @@ void ExportModal::ExportWorker::export_themes() {
   API_RETURN_IF_ERROR();
   const auto theme_list = m_project_settings.get_themes();
   for (const auto &theme : theme_list) {
+    ThemeManager theme_manager(
+      {.input_path = theme.get_path(),
+       .project_path = m_project_path,
+       .output_source_path = m_project_settings.get_source()});
     m_theme_path_list
-      = ThemeManager({.input_path = theme.get_path(),
-                      .project_path = m_project_path,
-                      .output_source_path = m_project_settings.get_source()})
-          .get_source_list(m_project_path, m_project_settings);
+      = theme_manager.get_source_list(m_project_path, m_project_settings);
+    const auto font_name_list = theme_manager.get_font_name_list();
+    m_theme_font_list.reserve(
+      m_theme_font_list.count() + font_name_list.count());
+    for (const auto &font : font_name_list) {
+      const auto offset = m_theme_font_list.find_offset(font);
+      if (offset == m_theme_font_list.count()) {
+        m_theme_font_list.push_back(font);
+      }
+    }
     if (is_error()) {
       return;
     }
@@ -226,7 +238,7 @@ void ExportModal::ExportWorker::export_themes() {
 }
 
 fs::PathList ExportModal::ExportWorker::get_font_path_list() {
-  const auto options = FontManager::Construct{
+  const FontManager::Construct options{
     .icons = m_project_settings.icons(),
     .input_path = "designlab.json",
     .is_dry_run = true,
@@ -242,6 +254,7 @@ fs::PathList ExportModal::ExportWorker::get_font_path_list() {
 
 void ExportModal::ExportWorker::export_fonts() {
   API_RETURN_IF_ERROR();
+
   const auto options = FontManager::Construct{
     .icons = m_project_settings.icons(),
     .input_path = "designlab.json",
@@ -250,11 +263,21 @@ void ExportModal::ExportWorker::export_fonts() {
     .node_path = m_node_path,
     .output_path = m_project_settings.get_source(),
     .project_path = m_project_path,
+    .theme_font_list = &m_theme_font_list,
     .update_callback = update_font_progress_callback,
     .update_context = this};
 
-  m_font_path_list
-    = FontManager(options).get_source_list(m_project_path, m_project_settings);
+  const FontManager font_manager{options};
+  const auto &generated_container{font_manager.generated_container()};
+  m_font_path_list.reserve(generated_container.count());
+  for (const auto &source_file : generated_container) {
+    const auto path = "fonts" / source_file;
+    const auto offset = m_font_path_list.find_offset(path);
+    if (offset == m_font_path_list.count()) {
+      m_font_path_list.push_back(path);
+    }
+  }
+  m_font_path_list.sort(fs::PathList::ascending);
 
   {
     Model::Scope model_scope;

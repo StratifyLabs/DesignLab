@@ -31,7 +31,7 @@ void AssetManager::construct(const AssetManager::Construct &options) {
 
   DataFile data_file;
 
-  lvgl_assetfs_header_t header{.count = asset_list.count()};
+  lvgl_assetfs_header_t header{.count = u32(asset_list.count())};
 
   data_file.write(View(header.count));
 

@@ -32,7 +32,8 @@ FontMaker::get_feature_list(json::JsonObject object) {
   var::Vector<InfoCard::Data::Feature> result;
   Settings::Font item(object);
 
-  const auto size_list = FontManager::get_size_list(item);
+  const auto user_size_list = FontManager::get_user_size_list(item);
+  const auto theme_size_list = FontManager::get_theme_size_list(item);
   result
     .push_back(
       {.icon = icons::fa::th_solid,
@@ -50,8 +51,8 @@ FontMaker::get_feature_list(json::JsonObject object) {
        .value = item.get_range()})
     .push_back(
       {.icon = icons::fa::info_circle_solid,
-       .label = "Sizes",
-       .value = size_list.string_view()})
+       .label = "User Sizes",
+       .value = user_size_list.string_view()})
     .push_back(
       {.icon = icons::fa::icons_solid,
        .label = "Icons",
@@ -103,7 +104,7 @@ FontMaker::InputSchema::InputSchema() {
               .set_hint("The style of the font (should match the file)."));
 
   push_back(Form::LineField::Schema()
-              .set_name(Settings::Font::sizes_key())
+              .set_name(Settings::Font::user_sizes_key())
               .set_label("Sizes")
               .set_value("20,24,28,32,40,48")
               .set_hint("A comma-separated list of font sizes."));

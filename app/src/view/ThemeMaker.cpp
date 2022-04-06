@@ -26,21 +26,19 @@ ThemeMaker::ThemeMaker(const char *name) {
 ThemeMaker::InputSchema::InputSchema() {
   Model::Scope model_scope;
   push_back(Form::SelectFile::Schema()
-              .set_name(Settings::Asset::path_key())
+              .set_name(Settings::Theme::path_key())
               .set_base_path(model().session_settings.get_project())
               .set_label("Select Theme JSON File")
               .set_suffix("json")
               .set_hint("Choose the Theme configuration file."));
+
 }
 
 var::Vector<InfoCard::Data::Feature>
 ThemeMaker::get_feature_list(json::JsonObject object) {
   var::Vector<InfoCard::Data::Feature> result;
   Settings::Theme theme(object);
-  const auto name = fs::Path::name(theme.get_path());
   result
-    .push_back(
-      {.icon = icons::fa::th_list_solid, .label = "Name", .value = name})
     .push_back(
       {.icon = icons::fa::folder_open_solid,
        .label = "Path",
