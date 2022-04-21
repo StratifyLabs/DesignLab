@@ -34,7 +34,7 @@ public:
     return true;
   }
 
-  bool is_existing_file_ok(const var::StringView path) {
+  static bool is_existing_file_ok(const var::StringView path) {
     if (!fs::FileSystem().exists(path)) {
       API_RETURN_VALUE_ASSIGN_ERROR(
         false,
@@ -44,7 +44,7 @@ public:
     return true;
   }
 
-  json::JsonObject load_json_file(var::StringView path) {
+  static json::JsonObject load_json_file(var::StringView path) {
     if(!is_existing_file_ok(path) ){
       return json::JsonObject();
     }
@@ -67,11 +67,11 @@ public:
     return {};
   }
 
-  printer::Printer &printer() { return m_printer; }
+  static printer::Printer &printer() { return m_printer; }
 
 
 private:
-  printer::YamlPrinter m_printer;
+  static printer::YamlPrinter m_printer;
 };
 
 #endif // DESIGNLAB_MANAGER_HPP

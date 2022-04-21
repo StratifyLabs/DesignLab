@@ -118,7 +118,6 @@ void ExportModal::ExportWorker::work() {
   update_progress(0, 5);
   export_themes();
 
-
   if (is_error()) {
     update_message(StringView("Theme Error: ") | error().message());
     return;
@@ -139,7 +138,6 @@ void ExportModal::ExportWorker::work() {
   update_progress(2, total_count);
   export_components();
 
-
   update_message("Exporting Fonts");
   update_progress(3, total_count);
 
@@ -149,7 +147,6 @@ void ExportModal::ExportWorker::work() {
     update_message(StringView("Font Error: ") | error().message());
     return;
   }
-
 
   update_message("Finalizing");
 
@@ -225,6 +222,13 @@ void ExportModal::ExportWorker::export_themes() {
       return;
     }
   }
+
+  const auto name_container
+    = ThemeManager::get_name_list(m_project_path, m_project_settings);
+
+  ThemeManager::generate_theme_source(
+    m_project_path / m_project_settings.get_output_directory() / "themes",
+    name_container);
 
   {
     Model::Scope model_scope;

@@ -351,10 +351,18 @@ void FontManager::generate_fonts_source(
   CodePrinter h_printer(fonts_h);
   CodePrinter c_printer(fonts_c);
 
-  const auto font_count = m_generated_container.count();
+  const auto count = [&]() {
+    int result = 0;
+    for_each_user_font<int>(
+      font_list,
+      result,
+      [](const Settings::Font &, var::StringView, int &count) { ++count; });
+    return result;
+  }();
 
   const GeneralString lvgl_font_list
-    = "const lvgl_api_font_descriptor_t lvgl_font_list[]";
+    = "static const lvgl_api_font_descriptor_t fonts_list["
+      | NumberString(count) | "]";
 
   {
     CodePrinter::HeaderGuard header_guard(h_printer, "DESIGNLAB_FONTS_H_");
@@ -365,6 +373,7 @@ void FontManager::generate_fonts_source(
       .line("extern \"C\" {")
       .line("#endif")
       .newline()
+      .line("const lvgl_api_font_descriptor_t *fonts_get_font(int offset);")
       .line("#if defined __link")
       .line("void fonts_initialize();")
       .line("#else")
@@ -422,21 +431,20 @@ void FontManager::generate_fonts_source(
   }
 
   c_printer.newline().newline();
-  c_printer.newline().line("#if defined __link").newline();
   {
     CodePrinter::Function get_font_function(
       c_printer,
-      "static const lvgl_api_font_descriptor_t *get_font(int offset)");
+      "const lvgl_api_font_descriptor_t *fonts_get_font(int offset)");
 
     c_printer.statement(
-      "const int count = sizeof(lvgl_font_list) / "
+      "const int count = sizeof(fonts_list) / "
       "sizeof(lvgl_api_font_descriptor_t)");
 
     {
       CodePrinter::IfScope check_offset(
         c_printer,
         "offset >= 0 && offset < count");
-      c_printer.statement("return lvgl_font_list + offset");
+      c_printer.statement("return fonts_list + offset");
     }
     c_printer.statement("return NULL");
   }
@@ -445,7 +453,8 @@ void FontManager::generate_fonts_source(
     CodePrinter::Function get_font_function(
       c_printer,
       "void fonts_initialize()");
-    c_printer.statement("lvgl_api_set_font_callback(get_font)");
+    c_printer.newline().line("#if defined __link");
+    c_printer.statement("lvgl_api_set_font_callback(fonts_get_font)");
+    c_printer.line("#endif").newline();
   }
-  c_printer.newline().line("#endif").newline().newline();
 }

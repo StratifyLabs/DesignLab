@@ -11,3 +11,4 @@
 #include "model/Settings.hpp"
 
 
+printer::YamlPrinter Manager::m_printer;

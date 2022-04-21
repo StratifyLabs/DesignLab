@@ -75,11 +75,9 @@ void ThemeManager::construct(const Construct &options) {
   }
   API_RETURN_IF_ERROR();
 
-  const auto output_directory
-    = options.project_path / options.output_source_path;
-
   const auto output_path
-    = output_directory / "designlab/themes" / m_theme_object.get_name() & ".c";
+    = get_source_directory() / m_theme_object.get_name() & ".c";
+
   printer().key("outputFile", output_path);
   m_output = DataFile();
 
@@ -107,6 +105,11 @@ void ThemeManager::construct(const Construct &options) {
   File(File::IsOverwrite::yes, output_path).write(m_output.seek(0));
 }
 
+var::PathString ThemeManager::get_source_directory() const {
+  return m_construct.project_path / m_construct.output_source_path
+         / "designlab/themes";
+}
+
 fs::PathList ThemeManager::get_source_list(
   var::StringView project_path,
   const Settings &settings) {
@@ -117,6 +120,22 @@ fs::PathList ThemeManager::get_source_list(
   for (const auto &theme_file : theme_list) {
     ThemeObject theme = load_json_file(project_path / theme_file.get_path());
     result.push_back("themes" / theme.get_name() & ".c");
+  }
+  result.push_back("themes/themes.c").push_back("themes/themes.h");
+  return result;
+}
+
+ThemeManager::ThemeNameContainer ThemeManager::get_name_list(
+  var::StringView project_path,
+  const Settings &settings) {
+  API_RETURN_VALUE_IF_ERROR({});
+
+  const auto theme_list = settings.get_themes();
+  ThemeNameContainer result;
+  result.reserve(theme_list.count());
+  for (const auto &theme_file : theme_list) {
+    ThemeObject theme = load_json_file(project_path / theme_file.get_path());
+    result.push_back(theme.get_name());
   }
   return result;
 }
@@ -379,7 +398,7 @@ void ThemeManager::generate_theme() {
 
   CPrinter::StructInitialization(
     m_code_printer,
-    "lv_theme_t " | name | "_theme")
+    "lv_theme_t themes_" | name)
     .add_member("apply_cb", name | "_apply_callback")
     .add_member("parent", "NULL")
     .add_member("user_data", "(void*)" | get_style_callback_name)
@@ -395,12 +414,12 @@ void ThemeManager::generate_theme() {
   {
     CPrinter::Function initialize_function(
       m_code_printer,
-      "lv_theme_t * " | name
-        | "_theme_initialize(lv_disp_t * disp, lv_theme_t * parent)");
+      "lv_theme_t * themes_" | name
+        | "_initialize(lv_disp_t * disp, lv_theme_t * parent)");
 
-    m_code_printer.statement(name | "_theme.disp = disp")
-      .statement(name | "_theme.parent = parent")
-      .statement("return &" | name | "_theme");
+    m_code_printer.statement("themes_" | name | ".disp = disp")
+      .statement("themes_" | name | ".parent = parent")
+      .statement("return &themes_" | name);
   }
 
   m_code_printer.newline();
@@ -1401,4 +1420,110 @@ ThemeManager::get_condition(var::StringView condition_value) {
   }
 
   return GeneralString(condition.string_view());
+}
+
+void ThemeManager::generate_theme_source(
+  const var::StringView output_directory,
+  const ThemeNameContainer &theme_name_container) {
+
+  File themes_h(File::IsOverwrite::yes, output_directory / "themes.h");
+  File themes_c(File::IsOverwrite::yes, output_directory / "themes.c");
+
+  CodePrinter h_printer(themes_h);
+  CodePrinter c_printer(themes_c);
+
+  const GeneralString lvgl_theme_list
+    = "static const lvgl_api_theme_descriptor_t themes_list["
+      | NumberString(theme_name_container.count()) | "]";
+
+  {
+    CodePrinter::HeaderGuard header_guard(
+      h_printer,
+      "DESIGNLAB_THEMES_THEMES_H_");
+    h_printer.newline();
+    h_printer.line("#include <lvgl_api.h>")
+      .newline()
+      .line("#if defined __cplusplus")
+      .line("extern \"C\" {")
+      .line("#endif")
+      .newline()
+      .line("const lvgl_api_theme_descriptor_t *themes_get_theme(int offset);")
+      .line("#if defined __link")
+      .line("void themes_initialize();")
+      .line("#endif")
+      .newline()
+      .line("#if defined __cplusplus")
+      .line("}")
+      .line("#endif")
+      .newline();
+  }
+
+  c_printer.newline().newline();
+
+  c_printer.line("#include \"themes.h\"").newline().newline();
+
+  static auto get_abbreviated_string = [](var::StringView style) {
+    return lvgl::Font::to_abbreviated_cstring(
+      lvgl::Font::style_from_string(style));
+  };
+
+  c_printer.newline().newline();
+
+  auto get_text_name = [](var::StringView name) {
+    return PathString(name).replace(
+      PathString::Replace().set_old_character('_').set_new_character('-'));
+  };
+
+  for (const auto &name : theme_name_container) {
+    c_printer.statement("extern const lv_theme_t themes_" | name);
+  }
+
+  c_printer.newline().newline();
+  {
+    CodePrinter::StructInitialization struct_init(c_printer, lvgl_theme_list);
+    for (const auto &name : theme_name_container) {
+      struct_init.add_member(
+        "{ .name = \"" | get_text_name(name) | "\", .theme = &themes_" | name | "}");
+    }
+  }
+
+  c_printer.newline().newline();
+  {
+    CodePrinter::Function function(
+      c_printer,
+      "const lvgl_api_theme_descriptor_t *themes_get_theme(int offset)");
+
+    c_printer.statement(
+      "const int count = sizeof(themes_list) / "
+      "sizeof(lvgl_api_theme_descriptor_t)");
+
+    {
+      CodePrinter::IfScope check_offset(
+        c_printer,
+        "offset >= 0 && offset < count");
+      c_printer.statement("return themes_list + offset");
+    }
+    c_printer.statement("return NULL");
+  }
+  for (const auto &name : theme_name_container) {
+    c_printer.statement(
+      "extern lv_theme_t * themes_" | name
+      | "_initialize(lv_disp_t * disp, lv_theme_t * parent)");
+  }
+
+  c_printer.newline();
+
+  {
+    CodePrinter::Function function(c_printer, "void themes_initialize()");
+    c_printer.line("#if defined __link");
+    c_printer.statement("lvgl_api_set_theme_callback(themes_get_theme)");
+    c_printer.line("#endif").newline();
+
+    for (const auto &name : theme_name_container) {
+      c_printer.statement(
+        "themes_" | name | "_initialize(lv_disp_get_default(), NULL)");
+    }
+  }
+
+  c_printer.newline();
 }

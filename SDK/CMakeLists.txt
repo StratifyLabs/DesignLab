@@ -10,18 +10,6 @@ file(MAKE_DIRECTORY ${BASE_DIRECTORY})
 
 message(STATUS "Base directory ${BASE_DIRECTORY}")
 
-# refresh the bootstrap code if needed
-execute_process(
-	COMMAND git pull
-	WORKING_DIRECTORY ${BASE_DIRECTORY}/CMakeSDK
-	)
-
-execute_process(
-	COMMAND cmake --build . --target install
-	WORKING_DIRECTORY ${BASE_DIRECTORY}/CMakeSDK/cmake_link
-	)
-
-
 macro(sdk_add_subdirectory NAME BRANCH)
 	if(IS_PULL OR NOT EXISTS ${BASE_DIRECTORY}/${NAME})
 		sos_sdk_git_clone_or_pull_branch(${BASE_DIRECTORY} ${NAME} ssh://git@github.com/StratifyLabs/${NAME}.git ${BRANCH})
