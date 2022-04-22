@@ -310,30 +310,31 @@ void FontManager::generate_fontawesome_icons_hpp(var::StringView directory) {
           | icon.get_unicode() | "\"");
       }
     }
-  }
 
-  code_printer.newline();
+    code_printer.newline();
 
-  for (const auto &icon : m_icons.get_range()) {
-    if (icon.get_name() != "bootstrap") {
-      const auto needs_x_prefix = [&]() {
-        if (icon.get_name().length()) {
-          const auto first = icon.get_name().at(0);
-          return first >= '0' && first <= '9';
-        }
-        return false;
-      }();
+    for (const auto &icon : m_icons.get_range()) {
+      if (icon.get_name() != "bootstrap") {
+        const auto needs_x_prefix = [&]() {
+          if (icon.get_name().length()) {
+            const auto first = icon.get_name().at(0);
+            return first >= '0' && first <= '9';
+          }
+          return false;
+        }();
 
-      const auto name
-        = String(
-            (needs_x_prefix ? "x" : "") + icon.get_name() + "_"
-            + icon.get_family())
-            .replace(String::Replace().set_old_string("-").set_new_string("_"))
-            .to_upper();
+        const auto name
+          = String(
+              (needs_x_prefix ? "x" : "") + icon.get_name() + "_"
+              + icon.get_family())
+              .replace(
+                String::Replace().set_old_string("-").set_new_string("_"))
+              .to_upper();
 
-      code_printer.line(
-        "#define ICONS_FA_" | name.string_view() | " \"\\" | icon.get_unicode()
-        | "\"");
+        code_printer.line(
+          "#define ICONS_FA_" | name.string_view() | " \"\\"
+          | icon.get_unicode() | "\"");
+      }
     }
   }
 

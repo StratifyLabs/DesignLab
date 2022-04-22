@@ -38,6 +38,7 @@ void Application::run(sys::Cli &cli) {
   {
     Model::Scope model_scope;
     model().runtime = &runtime;
+    model().is_export_on_startup = cli.get_option("export") == "true";
     model().light_theme
       = Theme(default_light_medium_theme_initialize(runtime.display(), nullptr));
     model().dark_theme

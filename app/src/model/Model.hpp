@@ -29,6 +29,7 @@ public:
   bool is_project_path_valid = false;
   bool is_theme_updated = false;
   bool is_dark_theme = false;
+  bool is_export_on_startup = false;
   var::PathString new_project_path;
 
   SessionSettings session_settings;

@@ -375,5 +375,11 @@ void ExportModal::ExportWorker::update_success() {
   push_task_to_runtime<ExportWorker>(this, [](ExportWorker *self) {
     auto modal = Modal(self->associated_object());
     modal.find<Button>(Names::ok_button).clear_state(State::disabled);
+    {
+      Model::Scope ms;
+      if( model().is_export_on_startup ){
+        exit(0);
+      }
+    }
   }).wait_runtime_task();
 }

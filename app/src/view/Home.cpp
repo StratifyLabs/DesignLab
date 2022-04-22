@@ -39,6 +39,15 @@ Home::Home(const char *name) {
   auto configure_content
     = model().is_theme_updated ? About::configure : Project::configure;
   configure_content(screen().find<Generic>(Names::content_area));
+
+  {
+    Model::Scope ms;
+    model().runtime->push([](void *) {
+      Event::send(
+        screen().find(ViewObject::Names::project_object),
+        EventCode::notified);
+    });
+  }
 }
 
 void Home::configure_button_column(Column column) {
