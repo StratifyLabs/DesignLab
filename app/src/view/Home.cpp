@@ -42,11 +42,13 @@ Home::Home(const char *name) {
 
   {
     Model::Scope ms;
-    model().runtime->push([](void *) {
-      Event::send(
-        screen().find(ViewObject::Names::project_object),
-        EventCode::notified);
-    });
+    if (model().is_export_on_startup) {
+      model().runtime->push([](void *) {
+        Event::send(
+          screen().find(ViewObject::Names::project_object),
+          EventCode::notified);
+      });
+    }
   }
 }
 

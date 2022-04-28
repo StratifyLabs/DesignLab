@@ -285,29 +285,33 @@ void FontManager::generate_fontawesome_icons_hpp(var::StringView directory) {
     cprinter::CppPrinter::HeaderGuard header_guard(
       code_printer,
       "FONTAWESOME_ICONS_HPP");
-    cprinter::CppPrinter::NamespaceScope icons_namespace(code_printer, "icons");
-    cprinter::CppPrinter::NamespaceScope fa_namespace(code_printer, "fa");
-    const auto icons = m_icons;
-    for (const auto &icon : icons.get_range()) {
-      if (icon.get_name() != "bootstrap") {
-        const auto needs_x_prefix = [&]() {
-          if (icon.get_name().length()) {
-            const auto first = icon.get_name().at(0);
-            return first >= '0' && first <= '9';
-          }
-          return false;
-        }();
+    {
+      cprinter::CppPrinter::NamespaceScope icons_namespace(
+        code_printer,
+        "icons");
+      cprinter::CppPrinter::NamespaceScope fa_namespace(code_printer, "fa");
+      const auto icons = m_icons;
+      for (const auto &icon : icons.get_range()) {
+        if (icon.get_name() != "bootstrap") {
+          const auto needs_x_prefix = [&]() {
+            if (icon.get_name().length()) {
+              const auto first = icon.get_name().at(0);
+              return first >= '0' && first <= '9';
+            }
+            return false;
+          }();
 
-        const auto name
-          = String(
-              (needs_x_prefix ? "x" : "") + icon.get_name() + "_"
-              + icon.get_family())
-              .replace(
-                String::Replace().set_old_string("-").set_new_string("_"));
+          const auto name
+            = String(
+                (needs_x_prefix ? "x" : "") + icon.get_name() + "_"
+                + icon.get_family())
+                .replace(
+                  String::Replace().set_old_string("-").set_new_string("_"));
 
-        code_printer.statement(
-          "static constexpr auto " | name.string_view() | " = \"\\"
-          | icon.get_unicode() | "\"");
+          code_printer.statement(
+            "static constexpr auto " | name.string_view() | " = \"\\"
+            | icon.get_unicode() | "\"");
+        }
       }
     }
 
