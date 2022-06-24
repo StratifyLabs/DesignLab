@@ -228,7 +228,7 @@ IconGrid::IconGrid(const char *name) {
     .set_flex_layout()
     .set_flex_flow(lvgl::FlexFlow::row_wrap)
     .set_flex_align(SetFlexAlign()
-                      .set_main(FlexAlign::space_between)
+                      .set_align_main(FlexAlign::space_between)
                       .set_track_cross(FlexAlign::start));
 }
 

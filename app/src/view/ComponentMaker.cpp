@@ -155,7 +155,7 @@ void ComponentMaker::builder_button_clicked(lv_event_t *e) {
                 screen()
                   .find<Modal>(Names::new_component_modal)
                   .close(300_milliseconds);
-              }))
+              }).cast_as_name())
             .set_width(80_percent)
             .set_height(60_percent))
         .set_enabled();

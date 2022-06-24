@@ -41,7 +41,7 @@ public:
   static void prompt_user(design::Prompt::Data &data) {
     Modal modal(Names::prompt_modal);
     modal.add_content(
-      Prompt(data).set_width(60_percent).set_height(40_percent));
+      Prompt(data.cast_as_name()).set_width(60_percent).set_height(40_percent));
   }
 
   static void close_prompt(lv_event_t *e) {
