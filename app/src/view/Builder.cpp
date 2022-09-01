@@ -472,7 +472,7 @@ Builder &Builder::edit_component(json::JsonObject form_value) {
   for (const auto &key : key_container) {
     const auto value = form_value.at(key);
     json_object.insert(key, value);
-    const auto property = Utility::property_from_string(key);
+    const auto property = Utility::property.from_string(key, Property::invalid);
     if (property != Property::invalid) {
       const auto description = Utility::get_property_description(property);
       const auto value_string = value.to_string_view();

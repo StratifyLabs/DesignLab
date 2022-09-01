@@ -13,8 +13,8 @@ set(DEPENDENCIES
 
 set(LOCAL_NAME ${PROJECT_NAME})
 
-sos_sdk_add_subdirectory(PRIVATE_SOURCELIST ${CMAKE_CURRENT_SOURCE_DIR}/src)
-sos_sdk_add_subdirectory(DESIGNLAB_SOURCELIST ${CMAKE_CURRENT_SOURCE_DIR}/src/designlab)
+cmsdk_add_subdirectory(PRIVATE_SOURCELIST ${CMAKE_CURRENT_SOURCE_DIR}/src)
+cmsdk_add_subdirectory(DESIGNLAB_SOURCELIST ${CMAKE_CURRENT_SOURCE_DIR}/src/designlab)
 
 set(RELEASE_TARGET DesignLab)
 
@@ -46,7 +46,7 @@ target_compile_options(${RELEASE_TARGET}
 
 set_property(TARGET ${RELEASE_TARGET} PROPERTY CXX_STANDARD 17)
 
-#sos_sdk_app_add_arch_targets("${RELEASE_OPTIONS}" "${DEPENDENCIES}" 0)
+#cmsdk_app_add_arch_targets("${RELEASE_OPTIONS}" "${DEPENDENCIES}" 0)
 foreach(DEPENDENCY ${DEPENDENCIES})
 	message(STATUS "SOS SDK Adding dependency ${DEPENDENCY}_release_link to ${RELEASE_TARGET}")
 

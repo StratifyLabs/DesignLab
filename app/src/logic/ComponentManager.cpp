@@ -199,7 +199,7 @@ void ComponentManager::add_modifiers(json::JsonObject node) {
   const auto class_name = node.at(Fields::component_type).to_string_view();
 
   for (const auto description : Utility::property_list) {
-    const auto property_name = Utility::to_cstring(description.property);
+    const auto property_name = Utility::property.to_string_view(description.property);
     const auto property_value = node.at(property_name);
     if (property_value.is_valid()) {
       const StringView property_type_class_name

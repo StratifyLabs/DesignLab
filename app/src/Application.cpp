@@ -27,6 +27,7 @@ void Application::run(sys::Cli &cli) {
 
   // make the fonts available to `Font::find()`
   fonts_initialize();
+  themes_initialize();
 
   // mount the assets FS which include the PNG icon
   // this file is distributed with the binary rather than as a separate file
@@ -39,10 +40,8 @@ void Application::run(sys::Cli &cli) {
     Model::Scope model_scope;
     model().runtime = &runtime;
     model().is_export_on_startup = (cli.get_option("export") == "true");
-    model().light_theme
-      = Theme(default_light_medium_theme_initialize(runtime.display(), nullptr));
-    model().dark_theme
-      = Theme(default_dark_medium_theme_initialize(runtime.display(), nullptr));
+    model().light_theme = Theme::find("default-light-medium");
+    model().dark_theme = Theme::find("default-dark-medium");
 
     if (fs::FileSystem().directory_exists(
           model().session_settings.get_project())) {

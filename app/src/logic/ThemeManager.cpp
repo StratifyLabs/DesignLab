@@ -396,9 +396,7 @@ void ThemeManager::generate_theme() {
   }
   m_code_printer.newline();
 
-  CPrinter::StructInitialization(
-    m_code_printer,
-    "lv_theme_t themes_" | name)
+  CPrinter::StructInitialization(m_code_printer, "lv_theme_t themes_" | name)
     .add_member("apply_cb", name | "_apply_callback")
     .add_member("parent", "NULL")
     .add_member("user_data", "(void*)" | get_style_callback_name)
@@ -456,8 +454,9 @@ void ThemeManager::generate_descriptors() {
           for (const auto &property : property_list) {
             struct_init.add_member_with_comment(
               var::NumberString(
-                u32(
-                  design::Utility::property_from_string(property.to_cstring())),
+                u32(design::Utility::property.from_string(
+                  property.to_string_view(),
+                  Property::invalid)),
                 " (lv_style_prop_t)0x%04X"),
               property.to_string_view());
           }
@@ -564,7 +563,9 @@ void ThemeManager::generate_styles() {
 
     return create_property_entry(
       property_name,
-      get_property_value(design::Utility::property_from_string(key), value));
+      get_property_value(
+        design::Utility::property.from_string(key, Property::invalid),
+        value));
   };
 
   const auto key_list = m_styles_object.get_key_list();
@@ -591,11 +592,11 @@ void ThemeManager::generate_styles() {
     printer().object("keys", entry_key_list);
     const auto style_name = get_effective_style(entry);
 
+    const auto style_array_name = style_name.string_view() | "_const_list";
     {
       CPrinter::StructInitialization entry(
         m_code_printer,
-        "static const lv_style_const_prop_t " | style_name.string_view()
-          | "_const_list[]");
+        "static const lv_style_const_prop_t " | style_array_name | "[]");
 
       for (const auto &key_entry : entry_key_list) {
 
@@ -606,21 +607,12 @@ void ThemeManager::generate_styles() {
 
         API_RETURN_IF_ERROR();
       }
-
-      entry.add_member(create_property_entry("LV_STYLE_PROP_INV", ".num = 0"));
     }
     m_code_printer.newline();
 
-    {
-      CPrinter::StructInitialization(
-        m_code_printer,
-        "static const lv_style_t " | style_name.string_view() | "_style")
-        .add_member(
-          "v_p",
-          "{ .const_props = " | style_name.string_view() | "_const_list }")
-        .add_member("has_group", "0xff")
-        .add_member("is_const", "1");
-    }
+    m_code_printer.statement(
+      "static LV_STYLE_CONST_INIT(" | style_name.string_view() | "_style, "
+      | style_array_name | ")");
     m_code_printer.newline();
   }
   {
@@ -790,73 +782,87 @@ ThemeManager::get_property_value(Property property, const char *value) {
   };
 
   auto get_number = [&](const char *value) {
-    if (const auto number_value = Utility::text_decoration_from_string(value);
+    if (const auto number_value
+        = Utility::text_decoration.from_string(value, TextDecoration::invalid);
         number_value != TextDecoration::invalid) {
       return var::GeneralString().format(".num = 0x%X", u32(number_value));
     }
 
-    if (const auto number_value = Utility::text_alignment_from_string(value);
+    if (const auto number_value
+        = Utility::text_alignment.from_string(value, TextAlignment::invalid);
         number_value != TextAlignment::invalid) {
       return var::GeneralString().format(".num = 0x%X", u32(number_value));
     }
 
-    if (const auto number_value = Utility::border_side_from_string(value);
+    if (const auto number_value
+        = Utility::border_side.from_string(value, BorderSide::invalid);
         number_value != BorderSide::invalid) {
       return var::GeneralString().format(".num = 0x%X", u32(number_value));
     }
 
-    if (const auto number_value
-        = Utility::gradient_direction_from_string(value);
+    if (const auto number_value = Utility::gradient_direction.from_string(
+          value,
+          GradientDirection::invalid);
         number_value != GradientDirection::invalid) {
       return var::GeneralString().format(".num = 0x%X", u32(number_value));
     }
 
-    if (const auto number_value = Utility::base_direction_from_string(value);
+    if (const auto number_value
+        = Utility::base_direction.from_string(value, BaseDirection::invalid);
         number_value != BaseDirection::invalid) {
       return var::GeneralString().format(".num = 0x%X", u32(number_value));
     }
 
-    if (const auto number_value = Utility::direction_from_string(value);
+    if (const auto number_value
+        = Utility::direction.from_string(value, Direction::invalid);
         number_value != Direction::invalid) {
       return var::GeneralString().format(".num = 0x%X", u32(number_value));
     }
 
-    if (const auto number_value = Utility::alignment_from_string(value);
+    if (const auto number_value
+        = Utility::alignment.from_string(value, Alignment::invalid);
         number_value != Alignment::invalid) {
       return var::GeneralString().format(".num = 0x%X", u32(number_value));
     }
 
-    if (const auto number_value = Utility::flex_flow_from_string(value);
+    if (const auto number_value
+        = Utility::flex_flow.from_string(value, FlexFlow::invalid);
         number_value != FlexFlow::invalid) {
       return var::GeneralString().format(".num = 0x%X", u32(number_value));
     }
 
-    if (const auto number_value = Utility::flex_align_from_string(value);
+    if (const auto number_value
+        = Utility::flex_align.from_string(value, FlexAlign::invalid);
         number_value != FlexAlign::invalid) {
       return var::GeneralString().format(".num = 0x%X", u32(number_value));
     }
 
-    if (const auto number_value = Utility::scroll_bar_mode_from_string(value);
+    if (const auto number_value
+        = Utility::scroll_bar_mode.from_string(value, ScrollBarMode::invalid);
         number_value != ScrollBarMode::invalid) {
       return var::GeneralString().format(".num = 0x%X", u32(number_value));
     }
 
-    if (const auto number_value = Utility::scroll_snap_mode_from_string(value);
+    if (const auto number_value
+        = Utility::scroll_snap.from_string(value, ScrollSnap::invalid);
         number_value != ScrollSnap::invalid) {
       return var::GeneralString().format(".num = 0x%X", u32(number_value));
     }
 
-    if (const auto number_value = Utility::is_animate_mode_from_string(value);
+    if (const auto number_value
+        = Utility::is_animate.from_string(value, IsAnimate::invalid);
         number_value != IsAnimate::invalid) {
       return var::GeneralString().format(".num = 0x%X", u32(number_value));
     }
 
-    if (const auto number_value = Utility::blend_mode_from_string(value);
+    if (const auto number_value
+        = Utility::blend_mode.from_string(value, BlendMode::invalid);
         number_value != BlendMode::invalid) {
       return var::GeneralString().format(".num = 0x%X", u32(number_value));
     }
 
-    if (const auto number_value = Utility::opacity_from_string(value);
+    if (const auto number_value
+        = Utility::opacity.from_string(value, Opacity::invalid);
         number_value != Opacity::invalid) {
       return var::GeneralString().format(".num = 0x%X", u32(number_value));
     }
@@ -867,6 +873,10 @@ ThemeManager::get_property_value(Property property, const char *value) {
 
     if (value == StringView("false")) {
       return var::GeneralString(".num = 0");
+    }
+
+    if( value == StringView("cover") ){
+      return var::GeneralString{".num = LV_OPA_COVER"};
     }
 
     return var::GeneralString().format(".num = %s", value);
@@ -883,21 +893,13 @@ ThemeManager::get_property_value(Property property, const char *value) {
   switch (property) {
 
   case Property::background_color:
-  case Property::background_color_filtered:
   case Property::background_gradient_color:
-  case Property::background_gradient_color_filtered:
   case Property::border_color:
-  case Property::border_color_filtered:
   case Property::outline_color:
-  case Property::outline_color_filtered:
   case Property::shadow_color:
-  case Property::shadow_color_filtered:
   case Property::line_color:
-  case Property::line_color_filtered:
   case Property::arc_color:
-  case Property::arc_color_filtered:
   case Property::text_color:
-  case Property::text_color_filtered:
     return get_color(value);
 
   case Property::text_font:
@@ -937,7 +939,6 @@ ThemeManager::get_property_value(Property property, const char *value) {
   case Property::background_image_tiled:
   case Property::background_main_stop:
   case Property::background_image_recolor:
-  case Property::background_image_recolor_filtered:
   case Property::border_opacity:
   case Property::border_width:
   case Property::border_side:
@@ -952,7 +953,6 @@ ThemeManager::get_property_value(Property property, const char *value) {
   case Property::shadow_opacity:
   case Property::image_opacity:
   case Property::image_recolor:
-  case Property::image_recolor_filtered:
   case Property::image_recolor_opacity:
   case Property::line_width:
   case Property::line_dash_width:
@@ -1483,7 +1483,8 @@ void ThemeManager::generate_theme_source(
     CodePrinter::StructInitialization struct_init(c_printer, lvgl_theme_list);
     for (const auto &name : theme_name_container) {
       struct_init.add_member(
-        "{ .name = \"" | get_text_name(name) | "\", .theme = &themes_" | name | "}");
+        "{ .name = \"" | get_text_name(name) | "\", .theme = &themes_" | name
+        | "}");
     }
   }
 

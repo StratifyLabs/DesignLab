@@ -2,6 +2,7 @@
 cmake_link/
 SDK/dependencies/
 SDK/StratifyLabs-SDK/
+SDK/local/
 CMakeLists.txt.user
 .idea/
 app/src/designlab/components/
