@@ -24,7 +24,7 @@ using namespace printer;
 #include "designlab/fonts/FontAwesomeIcons.hpp"
 #include "model/Model.hpp"
 
-class ViewObject : public ModelAccess {
+class ViewObject : public api::ExecutionContext {
 public:
   static void send_notify_to_home() {
     Event::send(
@@ -48,7 +48,6 @@ public:
     Event(e).find_parent<Modal>(Names::prompt_modal).close(300_milliseconds);
   }
 
-protected:
   struct Names {
     DESIGN_DECLARE_NAME(home_top_row);
     DESIGN_DECLARE_NAME(home_container);

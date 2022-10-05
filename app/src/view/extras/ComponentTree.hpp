@@ -18,20 +18,10 @@ public:
 
   using Fields = AddComponent::Fields;
 
-  static bool is_cancel_button(lv_event_t * e){
-    return Event(e).target().name() == Names::cancel_button;
-  }
+  static bool is_cancel_button(lv_event_t * e);
 
 private:
-  struct Names {
-    DESIGN_DECLARE_NAME(main_column);
-    DESIGN_DECLARE_NAME(tree_container);
-    DESIGN_DECLARE_NAME(cancel_button);
-  };
-
   void add_leaf(lvgl::Generic generic, const json::JsonObject tree_leaf, int indentation);
-
-  static void cancel_clicked(lv_event_t*e);
 
 };
 

@@ -40,46 +40,43 @@ Project::Project(const char *name) {
 }
 
 void Project::handle_exited(lv_event_t *) {
-  Model::Scope model_scope;
 
-  if (!model().session_settings.get_project().is_empty()) {
+  auto model = ModelInScope();
+  if (!model.instance.session_settings.get_project().is_empty()) {
     api::ErrorScope error_scope;
-    model().project_settings.save();
+    model.instance.project_settings.save();
   }
 
-  model().session_settings.set_project(
+  model.instance.session_settings.set_project(
     screen().find<Form::SelectFile>(Names::directory_select_file).get_value());
 
-  model().project_settings.set_source(
+  model.instance.project_settings.set_source(
     screen().find<Form::SelectFile>(Names::source_select_file).get_value());
 
-  model().project_settings = Settings(
-    Settings::get_file_path(model().session_settings.get_project()),
+  model.instance.project_settings = Settings(
+    Settings::get_file_path(model.instance.session_settings.get_project()),
     Settings::IsOverwrite::yes);
 
   API_ASSERT(is_success());
 }
 
 void Project::export_project(lv_event_t *) {
-  {
-    Model::Scope ms;
-    if (model().is_export_on_startup) {
-      mark_all_as_dirty(nullptr);
-    }
+  if (ModelInScope().instance.is_export_on_startup) {
+    mark_all_as_dirty(nullptr);
   }
   ExportModal::start();
   API_ASSERT(is_success());
 }
 
 void Project::configure_form(Form form) {
-  Model::Scope model_scope;
+  auto model = ModelInScope();
   form.add(
     Form::SelectFile(
       Form::SelectFile::Data::create(Names::directory_select_file)
         .set_select_folder()
         .set_absolute_path())
       .add_event_callback(EventCode::notified, project_path_changed)
-      .set_value(model().session_settings.get_project_cstring())
+      .set_value(model.instance.session_settings.get_project_cstring())
       .set_label("Select Project Directory")
       .set_hint("A file called `designlab.json` will be created in the project "
                 "directory if it doesn't already exist."));
@@ -92,7 +89,7 @@ void Project::configure_form(Form form) {
                          .find<Form::SelectFile>(Names::directory_select_file)
                          .get_value()))
       .add_event_callback(EventCode::notified, source_path_changed)
-      .set_value(model().project_settings.get_source_cstring())
+      .set_value(model.instance.project_settings.get_source_cstring())
       .set_label("Specify Source Directory")
       .set_hint("The source directory where the `designlab/*.c` files will be "
                 "generated. This is relative to the project directory."));
@@ -102,7 +99,7 @@ void Project::configure_form(Form form) {
                        .set_select_file()
                        .set_absolute_path())
       .add_event_callback(EventCode::notified, node_path_changed)
-      .set_value(model().session_settings.get_node_path_cstring())
+      .set_value(model.instance.session_settings.get_node_path_cstring())
       .set_label("Select path to `node`")
       .set_hint("This value is the same for all projects (saved in session "
                 "settings)."));
@@ -113,15 +110,16 @@ void Project::configure_form(Form form) {
         .set_select_file()
         .set_absolute_path())
       .add_event_callback(EventCode::notified, lv_font_conv_path_changed)
-      .set_value(model().session_settings.get_lv_font_conv_path_cstring())
+      .set_value(
+        model.instance.session_settings.get_lv_font_conv_path_cstring())
       .set_label("Select path to `lv_font_conv.js`")
       .set_hint("This value is the same for all projects (saved in session "
                 "settings)."));
 }
 
 void Project::source_path_changed(lv_event_t *e) {
-  Model::Scope model_scope;
-  const auto project_path = model().session_settings.get_project();
+  const auto project_path
+    = ModelInScope().instance.session_settings.get_project();
   auto form_select = Event(e).target<Form::SelectFile>();
   const auto new_path = form_select.get_value();
 
@@ -138,23 +136,23 @@ void Project::source_path_changed(lv_event_t *e) {
 
 void Project::project_path_changed(lv_event_t *e) {
   NotifyHome notify_home;
-  Model::Scope model_scope;
   auto form_select = Event(e).target<Form::SelectFile>();
   const auto new_path = form_select.get_value();
 
   if (!fs::FileSystem().directory_exists(new_path)) {
     form_select.set_error_message_as_static("Error: does not exist");
-    model().is_project_path_valid = false;
+    ModelInScope().instance.is_project_path_valid = false;
     return;
   }
 
   // verify the new path is OK
   const auto settings_file_path = Settings::get_file_path(new_path);
+  auto model = ModelInScope();
 
   if (fs::FileSystem().exists(settings_file_path)) {
     api::ErrorScope error_scope;
-    model().session_settings.set_project(new_path);
-    model().project_settings
+    model.instance.session_settings.set_project(new_path);
+    model.instance.project_settings
       = Settings(settings_file_path, Settings::IsOverwrite::yes);
 
     // set the source directory
@@ -166,12 +164,12 @@ void Project::project_path_changed(lv_event_t *e) {
             .find<Form::SelectFile>(Names::source_select_file);
 
       source_select_file.set_value(
-        model().project_settings.get_source_cstring());
+        model.instance.project_settings.get_source_cstring());
 
       source_select_file.user_data<Form::SelectFile::Data>()->base_path
         = new_path;
 
-      model().is_project_path_valid = true;
+      model.instance.is_project_path_valid = true;
     }
   } else {
     // create a new project
@@ -183,33 +181,35 @@ void Project::project_path_changed(lv_event_t *e) {
       = var::StringView("Would you like to create a new project in folder ")
         & new_path & "?";
 
-    model().new_project_path = settings_file_path;
+    model.instance.new_project_path = settings_file_path;
     prompt_user(Prompt::Data::create()
                   .set_title(title)
                   .set_message(message)
                   .set_accept_callback(accept_prompt_new_project)
                   .set_reject_callback(close_prompt));
-    model().is_project_path_valid = false;
+    model.instance.is_project_path_valid = false;
   }
 
   API_ASSERT(is_success());
 }
 
 void Project::mark_all_as_dirty(lv_event_t *) {
-  Model::Scope model_scope;
-  model().project_settings.set_font_dirty().set_assets_dirty();
+  auto model = ModelInScope();
+  model.instance.project_settings.set_font_dirty().set_assets_dirty();
   API_ASSERT(is_success());
 }
 
 void Project::accept_prompt_new_project(lv_event_t *e) {
   NotifyHome notify_home;
-  Model::Scope model_scope;
+  auto model = ModelInScope();
 
   const auto parent_directory
-    = Path::parent_directory(model().new_project_path);
-  printf("Create a new project %s\n", model().new_project_path.cstring());
+    = Path::parent_directory(model.instance.new_project_path);
+  printf(
+    "Create a new project %s\n",
+    model.instance.new_project_path.cstring());
 
-  File(File::IsOverwrite::yes, model().new_project_path)
+  File(File::IsOverwrite::yes, model.instance.new_project_path)
     .write(AssetFile("a:designlab.json"));
 
   const auto designlab_directory = parent_directory / "designlab";
@@ -234,15 +234,15 @@ void Project::accept_prompt_new_project(lv_event_t *e) {
 
   API_ASSERT(is_success());
 
-  model().is_project_path_valid = true;
-  model().session_settings.set_project(parent_directory);
-  model().project_settings
-    = Settings(model().new_project_path, Settings::IsOverwrite::yes);
+  model.instance.is_project_path_valid = true;
+  model.instance.session_settings.set_project(parent_directory);
+  model.instance.project_settings
+    = Settings(model.instance.new_project_path, Settings::IsOverwrite::yes);
   close_prompt(e);
 }
 
 void Project::node_path_changed(lv_event_t *e) {
-  Model::Scope model_scope;
+  auto model = ModelInScope();
   auto form_select = Event(e).target<Form::SelectFile>();
   const auto new_path = form_select.get_value();
 
@@ -259,13 +259,13 @@ void Project::node_path_changed(lv_event_t *e) {
     }
   }
 
-  model().session_settings.set_node_path(new_path);
+  model.instance.session_settings.set_node_path(new_path);
   form_select.hide_error_message();
   API_ASSERT(is_success());
 }
 
 void Project::lv_font_conv_path_changed(lv_event_t *e) {
-  Model::Scope model_scope;
+  auto model = ModelInScope();
   auto form_select = Event(e).target<Form::SelectFile>();
   const auto new_path = form_select.get_value();
 
@@ -287,7 +287,7 @@ void Project::lv_font_conv_path_changed(lv_event_t *e) {
     }
   }
 
-  model().session_settings.set_lv_font_conv_path(new_path);
+  model.instance.session_settings.set_lv_font_conv_path(new_path);
   form_select.hide_error_message();
   API_ASSERT(is_success());
 }

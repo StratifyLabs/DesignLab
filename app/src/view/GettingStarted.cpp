@@ -9,6 +9,21 @@
 #include "GettingStarted.hpp"
 #include "extras/Extras.hpp"
 
+namespace {
+
+struct LocalNames {
+  DESIGN_DECLARE_NAME(main_column);
+  DESIGN_DECLARE_NAME(introduction_paragraph);
+  DESIGN_DECLARE_NAME(project_paragraph);
+  DESIGN_DECLARE_NAME(theme_paragraph);
+  DESIGN_DECLARE_NAME(asset_paragraph);
+  DESIGN_DECLARE_NAME(font_paragraph);
+  DESIGN_DECLARE_NAME(icon_paragraph);
+  DESIGN_DECLARE_NAME(component_paragraph);
+  DESIGN_DECLARE_NAME(color_paragraph);
+};
+
+
 static constexpr auto introduction_paragraph
   = R"(Welcome to Design Lab! Design Lab is a desktop application
 used to generate themes and assets for LVGL based programs
@@ -70,6 +85,15 @@ static constexpr auto color_paragraph
   = R"(The color tool is for previewing colors that can be used in the themes
 you design.)";
 
+var::String remove_newlines(const char *paragraph) {
+  return String(paragraph)
+    .replace(String::Replace().set_old_string("\n\n").set_new_string("__"))
+    .replace(String::Replace().set_old_string("\n").set_new_string(" "))
+    .replace(String::Replace().set_old_string("__").set_new_string("\n\n"));
+}
+
+}
+
 GettingStarted::GettingStarted(const char *name) {
   construct_object(name);
   fill();
@@ -77,9 +101,9 @@ GettingStarted::GettingStarted(const char *name) {
   clear_flag(Flags::scrollable)
     .add(Container(ViewObject::Names::content_container)
            .fill()
-           .add(Column(Names::main_column)));
+           .add(Column(LocalNames::main_column)));
 
-  auto column = find<Column>(Names::main_column);
+  auto column = find<Column>(LocalNames::main_column);
   column.fill()
     .add(
       HeaderRow("Getting Started", icons::fa::github_brands, "gui", [](lv_event_t*){
@@ -90,55 +114,48 @@ GettingStarted::GettingStarted(const char *name) {
   {
     column.add(Heading2("Introduction"));
     static const auto text = remove_newlines(introduction_paragraph);
-    column.add(Paragraph(Names::introduction_paragraph, text.cstring()));
+    column.add(Paragraph(LocalNames::introduction_paragraph, text.cstring()));
   }
 
   {
     column.add(Heading2("Project"));
     static const auto text = remove_newlines(project_paragraph);
-    column.add(Paragraph(Names::project_paragraph, text.cstring()));
+    column.add(Paragraph(LocalNames::project_paragraph, text.cstring()));
   }
 
   {
     column.add(Heading2("Themes"));
     static const auto text = remove_newlines(theme_paragraph);
-    column.add(Paragraph(Names::theme_paragraph, text.cstring()));
+    column.add(Paragraph(LocalNames::theme_paragraph, text.cstring()));
   }
 
   {
     column.add(Heading2("Assets"));
     static const auto text = remove_newlines(asset_paragraph);
-    column.add(Paragraph(Names::asset_paragraph, text.cstring()));
+    column.add(Paragraph(LocalNames::asset_paragraph, text.cstring()));
   }
 
   {
     column.add(Heading2("Fonts"));
     static const auto text = remove_newlines(font_paragraph);
-    column.add(Paragraph(Names::font_paragraph, text.cstring()));
+    column.add(Paragraph(LocalNames::font_paragraph, text.cstring()));
   }
 
   {
     column.add(Heading2("Icons"));
     static const auto text = remove_newlines(icon_paragraph);
-    column.add(Paragraph(Names::icon_paragraph, text.cstring()));
+    column.add(Paragraph(LocalNames::icon_paragraph, text.cstring()));
   }
 
   {
     column.add(Heading2("Components"));
     static const auto text = remove_newlines(component_paragraph);
-    column.add(Paragraph(Names::component_paragraph, text.cstring()));
+    column.add(Paragraph(LocalNames::component_paragraph, text.cstring()));
   }
 
   {
     column.add(Heading2("Colors"));
     static const auto text = remove_newlines(color_paragraph);
-    column.add(Paragraph(Names::color_paragraph, text.cstring()));
+    column.add(Paragraph(LocalNames::color_paragraph, text.cstring()));
   }
-}
-
-var::String GettingStarted::remove_newlines(const char *paragraph) {
-  return String(paragraph)
-    .replace(String::Replace().set_old_string("\n\n").set_new_string("__"))
-    .replace(String::Replace().set_old_string("\n").set_new_string(" "))
-    .replace(String::Replace().set_old_string("__").set_new_string("\n\n"));
 }

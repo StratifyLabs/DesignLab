@@ -20,8 +20,6 @@ Home::Home(const char *name) {
   construct_object(name);
   fill();
 
-  Model::Scope model_scope;
-
   add(
     Row(ViewObject::Names::home_top_row)
       .fill()
@@ -37,13 +35,13 @@ Home::Home(const char *name) {
       .add(NakedContainer(Names::content_area).set_flex_grow().fill_height()));
 
   auto configure_content
-    = model().is_theme_updated ? About::configure : Project::configure;
+    = ModelInScope().instance.is_theme_updated ? About::configure : Project::configure;
   configure_content(screen().find<Generic>(Names::content_area));
 
   {
-    Model::Scope ms;
-    if (model().is_export_on_startup) {
-      model().runtime->push([](void *) {
+    auto model = ModelInScope();
+    if (model.instance.is_export_on_startup) {
+      model.instance.runtime->push([](void *) {
         Event::send(
           screen().find(ViewObject::Names::project_object),
           EventCode::notified);
@@ -112,7 +110,7 @@ void Home::configure_button_column(Column column) {
 
   column
     .find<Button>(
-      model().is_theme_updated ? Names::about_button : Names::project_button)
+      ModelInScope().instance.is_theme_updated ? Names::about_button : Names::project_button)
     .add_state(State::checked);
 }
 
@@ -121,6 +119,7 @@ void Home::add_side_button(
   const char *icon,
   const char *name,
   void (*callback)(Generic)) {
+  auto model = ModelInScope();
   column.add(
     Button(name)
       .add_flag(Flags::checkable)
@@ -132,11 +131,11 @@ void Home::add_side_button(
       .set_padding(16)
       .add(Label().set_text_as_static(icon).add_style("text_color_primary"))
       .add_label_as_static(name)
-      .add_style(model().is_dark_theme ? "btn_dark" : "btn_light")
+      .add_style(model.instance.is_dark_theme ? "btn_dark" : "btn_light")
       .set_background_opacity(Opacity::transparent)
       .set_background_opacity(Opacity::x70, State::checked)
       .set_background_color(
-        model().is_dark_theme ? Color::black() : Color::white(),
+        model.instance.is_dark_theme ? Color::black() : Color::white(),
         State::checked)
       .add_event_callback(
         EventCode::clicked,
@@ -173,12 +172,12 @@ void Home::update_buttons(lv_event_t *e) {
 
 void Home::notified(lv_event_t *e) {
   // children can notify Home of errors
-  Model::Scope ms;
-  set_project_button_enabled(e, model().is_project_path_valid);
+  auto model = ModelInScope();
+  set_project_button_enabled(e, model.instance.is_project_path_valid);
 
-  if (model().is_theme_updated) {
+  if (model.instance.is_theme_updated) {
     configure(screen().clean());
-    model().is_theme_updated = false;
+    model.instance.is_theme_updated = false;
   }
 }
 

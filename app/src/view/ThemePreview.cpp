@@ -2,36 +2,38 @@
 // Created by Tyler Gilbert on 12/4/21.
 //
 
-#include <design.hpp>
-#include <lvgl.hpp>
-#include <var.hpp>
-
+#include <design/Grid.hpp>
 #include <design/extras/CheckList.hpp>
 
 #include "ThemePreview.hpp"
 #include "extras/Extras.hpp"
 
-void ThemePreview::configure(lvgl::Generic generic) {
-  generic.add(
-    Container()
-      .set_scroll_mode(ScrollBarMode::auto_)
-      .fill()
-      .add(Column().fill_width().setup([](Column column) {
-        column.add(ScreenHeading("Theme Preview")).add(HorizontalLine());
-        configure_headings(column);
-        column.add(HorizontalLine());
-        configure_buttons(column);
-        column.add(HorizontalLine());
-        configure_badges(column);
-        column.add(HorizontalLine());
-        configure_cards(column);
-        column.add(HorizontalLine());
-        configure_checklists(column);
-        configure_progress(column);
-      })));
-}
+using namespace design;
+using namespace var;
 
-void ThemePreview::configure_headings(design::Column column) {
+namespace {
+static constexpr auto color_list = {
+  "default",
+  "primary",
+  "secondary",
+  "info",
+  "warning",
+  "danger",
+  "success",
+  "light",
+  "dark"};
+static constexpr auto outline_color_list = {
+  "outline_default",
+  "outline_primary",
+  "outline_secondary",
+  "outline_info",
+  "outline_warning",
+  "outline_danger",
+  "outline_success",
+  "outline_light",
+  "outline_dark"};
+
+void configure_headings(design::Column column) {
   column.add(SectionHeading("Typography").fill_width())
     .add(SubSectionHeading("Headings").fill_width())
     .add(Heading1("h1. Heading 1").fill_width())
@@ -40,7 +42,7 @@ void ThemePreview::configure_headings(design::Column column) {
     .add(Heading4("h4. Heading 4").fill_width());
 }
 
-void ThemePreview::configure_buttons(design::Column column) {
+void configure_buttons(design::Column column) {
 
   column.add(SectionHeading("Buttons"))
     .add(SectionHeading("Styles"))
@@ -71,7 +73,7 @@ void ThemePreview::configure_buttons(design::Column column) {
            .add(Button().add_style("btn_lg").add_label("Large")));
 }
 
-void ThemePreview::configure_badges(design::Column column) {
+void configure_badges(design::Column column) {
   column.add(SectionHeading("Badges"))
     .add(SectionHeading("Styles"))
     .add(Row().fill_width().setup([](Row row) {
@@ -114,7 +116,7 @@ void ThemePreview::configure_badges(design::Column column) {
                .add_label_as_static("99+"))));
 }
 
-void ThemePreview::configure_cards(design::Column column) {
+void configure_cards(design::Column column) {
   column.add(SectionHeading("Cards")).add(SubSectionHeading("Card Styles"));
 
   static auto populate_card = [](Card card, const char *color) {
@@ -138,7 +140,7 @@ void ThemePreview::configure_cards(design::Column column) {
   }));
 }
 
-void ThemePreview::configure_checklists(design::Column column) {
+void configure_checklists(design::Column column) {
   column.add(SectionHeading("Lists")).add(SubSectionHeading("Standard Lists"));
 
   column.add(Row()
@@ -193,7 +195,7 @@ void ThemePreview::configure_checklists(design::Column column) {
              .add_item("3", "SUVs")));
 }
 
-void ThemePreview::configure_progress(design::Column column) {
+void configure_progress(design::Column column) {
   column.add(SectionHeading("Progress"))
     .add(SubSectionHeading("Progress Bars"));
 
@@ -204,3 +206,25 @@ void ThemePreview::configure_progress(design::Column column) {
   column.add(Bar().set_width(80_percent).set_value(Range().set_value(25)).add_style("bg_danger", Part::indicator));
   column.add(Bar().set_width(80_percent).set_value(Range().set_value(50)).add_style("bg_success", Part::indicator));
 }
+}
+
+void ThemePreview::configure(lvgl::Generic generic) {
+  generic.add(
+    Container()
+      .set_scroll_mode(ScrollBarMode::auto_)
+      .fill()
+      .add(Column().fill_width().setup([](Column column) {
+        column.add(ScreenHeading("Theme Preview")).add(HorizontalLine());
+        configure_headings(column);
+        column.add(HorizontalLine());
+        configure_buttons(column);
+        column.add(HorizontalLine());
+        configure_badges(column);
+        column.add(HorizontalLine());
+        configure_cards(column);
+        column.add(HorizontalLine());
+        configure_checklists(column);
+        configure_progress(column);
+      })));
+}
+

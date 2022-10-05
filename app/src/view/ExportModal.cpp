@@ -56,8 +56,8 @@ void ExportModal::start() {
   if (data.export_worker.is_running()) {
     printf("Can't export right now\n");
   } else {
-    Model::Scope ms;
-    data.export_worker = ExportWorker(model().runtime);
+    auto model = ModelInScope();
+    data.export_worker = ExportWorker(model.instance.runtime);
     data.export_worker.set_associated_object(modal.object()).start();
   }
 }
@@ -72,17 +72,15 @@ void ExportModal::ok_clicked(lv_event_t *e) {
 
 void ExportModal::ExportWorker::work() {
   const auto save_settings = [&]() {
-    Model::Scope model_scope;
-    auto &model = ModelAccess::model();
+    auto model = ModelInScope();
     // this will reload the project saving the changes
-    m_project_path = model.session_settings.get_project();
-    m_lv_font_path = model.session_settings.get_lv_font_conv_path();
-    m_node_path = model.session_settings.get_node_path();
+    m_project_path = model.instance.session_settings.get_project();
+    m_lv_font_path = model.instance.session_settings.get_lv_font_conv_path();
+    m_node_path = model.instance.session_settings.get_node_path();
     const auto settings_path = Settings::get_file_path(m_project_path);
-    model.project_settings.save();
-    m_project_settings.copy(model.project_settings);
-
-    model.project_settings
+    model.instance.project_settings.save();
+    m_project_settings.copy(model.instance.project_settings);
+    model.instance.project_settings
       = Settings(settings_path, Settings::IsOverwrite::yes);
     // grab a read-only copy
     return Settings(settings_path);
@@ -94,8 +92,7 @@ void ExportModal::ExportWorker::work() {
   {
     api::ErrorScope error_scope;
     const PathString source_path = [&]() {
-      Model::Scope model_scope;
-      return PathString(ModelAccess::model().session_settings.get_project());
+      return PathString(ModelInScope().instance.session_settings.get_project());
     }() / settings.get_source() / "designlab";
 
     FileSystem().create_directory(source_path);
@@ -166,21 +163,19 @@ void ExportModal::ExportWorker::update_font_progress(int value, int total) {
 void ExportModal::ExportWorker::export_assets() {
   API_RETURN_IF_ERROR();
   const auto options = [&]() {
-    Model::Scope model_scope;
-    auto &model = ModelAccess::model();
-
+    auto model = ModelInScope();
     return AssetManager::Construct{
       .input_path = "designlab.json",
-      .output_path = model.project_settings.get_source(),
-      .project_path = model.session_settings.get_project()};
+      .output_path = model.instance.project_settings.get_source(),
+      .project_path = model.instance.session_settings.get_project()};
   }();
 
   m_asset_path_list
     = AssetManager(options).get_source_list(m_project_path, m_project_settings);
 
   const auto is_assets_dirty = []() {
-    Model::Scope model_scope;
-    return ModelAccess::model().project_settings.is_assets_dirty();
+    auto model = ModelInScope();
+    return model.instance.project_settings.is_assets_dirty();
   }();
 
   if (!is_assets_dirty) {
@@ -188,13 +183,12 @@ void ExportModal::ExportWorker::export_assets() {
   }
 
   {
-    Model::Scope model_scope;
-    auto &printer = ModelAccess::printer();
-    ModelAccess::model().project_settings.set_assets_dirty(false);
+    auto model = ModelInScope();
+    model.instance.project_settings.set_assets_dirty(false);
 
-    printer.info("complete");
+    model.instance.printer.info("complete");
     if (is_error()) {
-      printer.object("error", error());
+      model.instance.printer.object("error", error());
     }
   }
 }
@@ -231,12 +225,10 @@ void ExportModal::ExportWorker::export_themes() {
     name_container);
 
   {
-    Model::Scope model_scope;
-    auto &printer = ModelAccess::printer();
-
-    printer.info("complete");
+    auto model = ModelInScope();
+    model.instance.printer.info("complete");
     if (is_error()) {
-      printer.object("error", error());
+      model.instance.printer.object("error", error());
     }
   }
 }
@@ -284,27 +276,21 @@ void ExportModal::ExportWorker::export_fonts() {
   m_font_path_list.sort(fs::PathList::ascending);
 
   {
-    Model::Scope model_scope;
-    auto &printer = ModelAccess::printer();
-    ModelAccess::model().project_settings.set_font_dirty(false);
-
-    printer.info("complete");
+    auto model = ModelInScope();
+    model.instance.project_settings.set_font_dirty(false);
+    model.instance.printer.info("complete");
     if (is_error()) {
-      printer.object("error", error());
+      model.instance.printer.object("error", error());
     }
   }
 }
 
 void ExportModal::ExportWorker::export_components() {
   const auto component_container = [&]() {
-    Model::Scope model_scope;
-    auto &model = ModelAccess::model();
-    return model.project_settings.get_components();
+    return ModelInScope().instance.project_settings.get_components();
   }();
 
   const auto output_path = [&]() {
-    Model::Scope model_scope;
-    auto &model = ModelAccess::model();
     return m_project_path / m_project_settings.get_source()
            / "designlab/components";
   }();
@@ -327,8 +313,6 @@ void ExportModal::ExportWorker::export_components() {
 void ExportModal::ExportWorker::export_cmake_sourcelist() {
   API_RETURN_IF_ERROR();
   const auto output_path = [&]() {
-    Model::Scope model_scope;
-    auto &model = ModelAccess::model();
     return m_project_path / m_project_settings.get_source()
            / "designlab/CMakeLists.txt";
   }();
@@ -376,8 +360,8 @@ void ExportModal::ExportWorker::update_success() {
     auto modal = Modal(self->associated_object());
     modal.find<Button>(Names::ok_button).clear_state(State::disabled);
     {
-      Model::Scope ms;
-      if( model().is_export_on_startup ){
+      auto model = ModelInScope();
+      if (model.instance.is_export_on_startup) {
         exit(0);
       }
     }

@@ -105,9 +105,9 @@ IconMaker::IconMaker(const char *name) {
   }
 
   auto range = []() {
-    Model::Scope model_scope;
+    auto model = ModelInScope();
     StringList result;
-    return model().project_settings.icons().get_range();
+    return model.instance.project_settings.icons().get_range();
   }();
 
   update_icons<RangeList>(
@@ -197,7 +197,6 @@ void IconMaker::select_all(lv_event_t *e) {
 }
 
 void IconMaker::handle_exited(lv_event_t *e) {
-  Model::Scope model_scope;
   // grab the selected icons and save them to the project settings
 
   const Event event(e);
@@ -218,14 +217,13 @@ void IconMaker::handle_exited(lv_event_t *e) {
     });
 
   {
-    Model::Scope scope;
+    auto model = ModelInScope();
     RangeList range_list;
     range_list.reserve(icon_queue.count());
     for (const auto icon : icon_queue) {
       range_list.push_back(icon);
     }
-    model()
-      .project_settings
+    model.instance.project_settings
       .set_icons(
         Settings::Icons().set_name("icons").set_path("").set_range(range_list))
       .set_font_dirty();

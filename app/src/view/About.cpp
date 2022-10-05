@@ -8,6 +8,28 @@
 #include "About.hpp"
 #include "extras/Extras.hpp"
 
+namespace {
+struct LocalNames {
+  DESIGN_DECLARE_NAME(about_column);
+  DESIGN_DECLARE_NAME(dark_button);
+  DESIGN_DECLARE_NAME(light_button);
+};
+
+void update_theme(lv_event_t *e) {
+  About::NotifyHome notify_home;
+  auto model = ModelInScope();
+  const auto is_dark = Event(e).target().name() == LocalNames::dark_button;
+  const auto &theme
+    = is_dark ? model.instance.dark_theme : model.instance.light_theme;
+  Display(model.instance.runtime->display()).set_theme(theme);
+  screen().update_layout().invalidate();
+  model.instance.is_dark_theme = is_dark;
+  model.instance.is_theme_updated = true;
+  model.instance.session_settings.set_theme(is_dark ? "dark" : "light");
+}
+
+} // namespace
+
 About::About(const char *name) {
   construct_object(name);
   fill();
@@ -15,9 +37,9 @@ About::About(const char *name) {
   clear_flag(Flags::scrollable)
     .add(Container(ViewObject::Names::content_container)
            .fill()
-           .add(Column(Names::about_column)));
+           .add(Column(LocalNames::about_column)));
 
-  auto column = find<Column>(Names::about_column);
+  auto column = find<Column>(LocalNames::about_column);
   column.fill()
     .add(HeaderRow(
       "About",
@@ -64,24 +86,12 @@ About::About(const char *name) {
   column.add(SectionHeading("Theme"))
     .add(Row()
            .fill_width()
-           .add(Button(Names::dark_button)
+           .add(Button(LocalNames::dark_button)
                   .add_label(KeyString(icons::fa::moon_solid).append(" Dark"))
                   .add_style("btn_dark")
                   .add_event_callback(EventCode::clicked, update_theme))
-           .add(Button(Names::light_button)
+           .add(Button(LocalNames::light_button)
                   .add_label(KeyString(icons::fa::sun_solid).append(" Light"))
                   .add_style("btn_warning")
                   .add_event_callback(EventCode::clicked, update_theme)));
-}
-
-void About::update_theme(lv_event_t *e) {
-  NotifyHome notify_home;
-  Model::Scope model_scope;
-  const auto is_dark = Event(e).target().name() == Names::dark_button;
-  const auto &theme = is_dark ? model().dark_theme : model().light_theme;
-  Display(model().runtime->display()).set_theme(theme);
-  screen().update_layout().invalidate();
-  model().is_dark_theme = is_dark;
-  model().is_theme_updated = true;
-  model().session_settings.set_theme(is_dark ? "dark" : "light");
 }

@@ -59,10 +59,10 @@ void ComponentMaker::edit_clicked(lv_event_t *e, u32 offset) {
   printf("load offset %d\n", offset);
   // which object is being edited?
   const auto component_object = [](u32 offset) {
-    Model::Scope ms;
+    auto model = ModelInScope();
     const auto result
-      = model().project_settings.components_to_array().at(offset);
-    printer().object("component", result);
+      = model.instance.project_settings.components_to_array().at(offset);
+    ModelInScope().instance.printer.object("component", result);
     return result;
   }(offset);
 
@@ -88,20 +88,17 @@ void ComponentMaker::builder_button_clicked(lv_event_t *e) {
 
     auto builder = get_self(e).find<Builder>(ViewObject::Names::builder_object);
     const auto is_new = builder.is_new();
-
     if (!is_new) {
-
-      Model::Scope ms;
-
+      auto model = ModelInScope();
       const auto component = Settings::Component()
                                .set_name(builder.component_name())
                                .set_tree(builder.get_json_tree())
                                .trim_tree();
-
-      auto components_array = model().project_settings.components_to_array();
+      auto components_array
+        = model.instance.project_settings.components_to_array();
       components_array.remove(builder.component_offset());
       components_array.insert(builder.component_offset(), component);
-      model().project_settings.save();
+      model.instance.project_settings.save();
 
     } else {
       Modal(Names::new_component_modal)
@@ -118,7 +115,7 @@ void ComponentMaker::builder_button_clicked(lv_event_t *e) {
                   = screen().find<Builder>(ViewObject::Names::builder_object);
 
                 {
-                  Model::Scope ms;
+                  auto model = ModelInScope();
                   auto form_values = form.get_json_object();
                   const auto component
                     = Settings::Component()
@@ -136,9 +133,9 @@ void ComponentMaker::builder_button_clicked(lv_event_t *e) {
                         .set_tree(builder.get_json_tree())
                         .trim_tree();
 
-                  model().project_settings.components_to_array().append(
+                  model.instance.project_settings.components_to_array().append(
                     component);
-                  model().project_settings.save();
+                  model.instance.project_settings.save();
                 }
 
                 screen()
@@ -155,7 +152,8 @@ void ComponentMaker::builder_button_clicked(lv_event_t *e) {
                 screen()
                   .find<Modal>(Names::new_component_modal)
                   .close(300_milliseconds);
-              }).cast_as_name())
+              })
+              .cast_as_name())
             .set_width(80_percent)
             .set_height(60_percent))
         .set_enabled();
@@ -194,10 +192,10 @@ ComponentMaker ComponentMaker::get_self(lv_event_t *e) {
 }
 
 ComponentMaker::InputSchema::InputSchema() {
-  Model::Scope model_scope;
+  auto model = ModelInScope();
   push_back(Form::SelectFile::Schema()
               .set_name(Settings::Font::path_key())
-              .set_base_path(model().session_settings.get_project())
+              .set_base_path(model.instance.session_settings.get_project())
               .set_label("Select Font File")
               .set_hint("Choose the ttf file to use."));
 

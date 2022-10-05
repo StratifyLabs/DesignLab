@@ -7,6 +7,15 @@
 
 #include "ComponentTree.hpp"
 
+namespace {
+struct Names {
+  DESIGN_DECLARE_NAME(main_column);
+  DESIGN_DECLARE_NAME(tree_container);
+  DESIGN_DECLARE_NAME(cancel_button);
+};
+
+}
+
 ComponentTree::ComponentTree(const char *name) {
   construct_object(name);
   set_width(90_percent);
@@ -49,7 +58,6 @@ void ComponentTree::add_leaf(
       const auto name
         = leaf.to_object().at(Fields::component_name).to_cstring();
 
-      printf("add leaf %s %d\n", name, indentation);
       generic.add(NakedContainer()
                     .fill_width()
                     .add_flag(Flags::event_bubble)
@@ -63,4 +71,8 @@ void ComponentTree::add_leaf(
       add_leaf(generic, leaf, indentation + 20);
     }
   }
+}
+
+bool ComponentTree::is_cancel_button(lv_event_t *e) {
+    return Event(e).target().name() == Names::cancel_button;
 }

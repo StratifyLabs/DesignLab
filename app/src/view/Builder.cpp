@@ -2,14 +2,10 @@
 // Created by Tyler Gilbert on 2/24/22.
 //
 
-#include <json.hpp>
-#include <var.hpp>
-
 #include <design/extras/CheckList.hpp>
 #include <design/extras/DrawerStack.hpp>
 #include <design/extras/FileSystemCard.hpp>
 #include <design/extras/Form.hpp>
-#include <design/extras/NotificationToast.hpp>
 #include <design/extras/Prompt.hpp>
 #include <design/extras/Utility.hpp>
 
@@ -19,6 +15,179 @@
 
 #include "extras/ComponentTree.hpp"
 #include "extras/EditComponent.hpp"
+
+using namespace var;
+using namespace json;
+
+namespace {
+
+struct LocalNames {
+  DESIGN_DECLARE_NAME(container);
+  DESIGN_DECLARE_NAME(control_drawer);
+  DESIGN_DECLARE_NAME_VALUE(target_object, ComponentBase);
+  DESIGN_DECLARE_NAME(highlight_object);
+  DESIGN_DECLARE_NAME(builder_tools);
+  DESIGN_DECLARE_NAME(currently_selected_label);
+
+  DESIGN_DECLARE_NAME(tree_modal);
+
+  DESIGN_DECLARE_NAME(add_component_modal);
+  DESIGN_DECLARE_NAME(add_component);
+  DESIGN_DECLARE_NAME(edit_component_modal);
+  DESIGN_DECLARE_NAME(edit_component);
+
+  DESIGN_DECLARE_NAME(show_tree_button);
+  DESIGN_DECLARE_NAME(remove_button);
+  DESIGN_DECLARE_NAME(back_button);
+  DESIGN_DECLARE_NAME(get_parent_button);
+  DESIGN_DECLARE_NAME(get_previous_sibling_button);
+  DESIGN_DECLARE_NAME(get_next_sibling_button);
+};
+
+Builder get_builder(lv_event_t *e) {
+  auto result
+    = Event(e).find_parent<Builder>(ViewObject::Names::builder_object);
+  if (!result.is_valid()) {
+    return screen().find<Builder>(ViewObject::Names::builder_object);
+  }
+  return result;
+}
+
+void remove_clicked(lv_event_t *e) { get_builder(e).remove_selected(); }
+
+void edit_component_clicked(lv_event_t *e) {
+  if (EditComponent::is_cancel_button(e)) {
+    screen()
+      .find<Modal>(LocalNames::edit_component_modal)
+      .close(300_milliseconds);
+  }
+  if (Form::is_submit_button(e)) {
+    auto edit_component = Event(e).current_target<EditComponent>();
+    const auto form_value = edit_component.get_form().get_json_object();
+    ModelInScope().instance.printer.object("editForm", form_value);
+    get_builder(e).edit_component(form_value);
+    screen()
+      .find<Modal>(LocalNames::edit_component_modal)
+      .close(300_milliseconds);
+  }
+}
+
+void edit_clicked(lv_event_t *e) {
+  auto builder = get_builder(e);
+
+  // get the JSON object associated with the target
+  Modal(LocalNames::edit_component_modal)
+    .add_content(
+      EditComponent(
+        EditComponent::Data::create(LocalNames::edit_component)
+          .set_json_object(builder.get_active_json_object())
+          .set_target_object(Generic(builder.data()->selected_object)))
+        .add_event_callback(EventCode::clicked, edit_component_clicked));
+}
+
+void add_component_clicked(lv_event_t *e) {
+  if (Form::is_submit_button(e)) {
+    printf("Form Submitted -- Add Component\n");
+    auto add_component = Event(e).current_target<AddComponent>();
+    const auto form_value = add_component.get_form().get_json_object();
+    auto model = ModelInScope();
+    ModelInScope().instance.printer.object("form", form_value);
+    get_builder(e).add_component(form_value);
+    screen()
+      .find<Modal>(LocalNames::add_component_modal)
+      .close(300_milliseconds);
+    return;
+  }
+
+  if (AddComponent::is_cancel_button(e)) {
+    screen()
+      .find<Modal>(LocalNames::add_component_modal)
+      .close(300_milliseconds);
+  }
+}
+
+void add_clicked(lv_event_t *e) {
+  auto builder = get_builder(e);
+  Modal(LocalNames::add_component_modal)
+    .add_content(
+      AddComponent(LocalNames::add_component)
+        .set_parent_item_name(Generic(builder.data()->selected_object).name())
+        .add_event_callback(EventCode::clicked, add_component_clicked));
+}
+
+void show_clicked(lv_event_t *e) {
+  auto drawer = Event(e)
+                  .find_parent(ViewObject::Names::builder_object)
+                  .find<Drawer>(LocalNames::control_drawer);
+
+  if (drawer.is_opened()) {
+    drawer.close();
+  } else {
+    drawer.open();
+  }
+}
+
+void tree_clicked(lv_event_t *e) {
+  Modal(LocalNames::tree_modal)
+    .add_content(
+      ComponentTree()
+        .set_tree(get_builder(e).data()->json_tree)
+        .add_event_callback(EventCode::clicked, [](lv_event_t *e) {
+          screen().find<Modal>(LocalNames::tree_modal).close(300_milliseconds);
+
+          if (ComponentTree::is_cancel_button(e)) {
+            return;
+          }
+
+          const auto name = Event(e).target().name();
+          auto builder = get_builder(e);
+          auto target_object = builder.find<Generic>(LocalNames::target_object);
+          auto target = target_object.find<Generic>(name);
+          builder.select_target(target);
+        }));
+}
+
+void target_clicked(lv_event_t *e) {
+  auto object = Event(e).target<Generic>();
+  get_builder(e).select_target(object);
+}
+
+void get_parent_clicked(lv_event_t *e) {
+  auto builder = get_builder(e);
+  auto selected = Generic(builder.data()->selected_object);
+  if (selected.object() == builder.find(LocalNames::target_object).object()) {
+    return;
+  }
+  auto higlight_parent = Generic(builder.data()->selected_object).get_parent();
+  builder.select_target(higlight_parent);
+}
+
+void get_previous_sibling_clicked(lv_event_t *e) {
+  auto builder = get_builder(e);
+  auto selected = Generic(builder.data()->selected_object);
+  if (selected.object() == builder.find(LocalNames::target_object).object()) {
+    return;
+  }
+  const auto offset = selected.get_index();
+  if (offset > 0) {
+    builder.select_target(selected.get_parent().get_child(offset - 1));
+  }
+}
+
+void get_next_sibling_clicked(lv_event_t *e) {
+  auto builder = get_builder(e);
+  auto selected = Generic(builder.data()->selected_object);
+  if (selected.object() == builder.find(LocalNames::target_object).object()) {
+    return;
+  }
+  const auto offset = selected.get_index();
+  auto parent = selected.get_parent();
+  if (offset < parent.get_child_count() - 1) {
+    builder.select_target(parent.get_child(offset + 1));
+  }
+}
+
+} // namespace
 
 Builder::Builder(const char *name) {
   auto &data = Data::create(name);
@@ -31,7 +200,7 @@ Builder::Builder(const char *name) {
   construct_object(data.cast_as_name());
   fill();
 
-  add(Column(Names::container).fill());
+  add(Column(LocalNames::container).fill());
 
   clear_flag(Flags::scrollable);
   add(
@@ -43,25 +212,25 @@ Builder::Builder(const char *name) {
         Row()
           .fill_width()
           .add_flag(Flags::event_bubble)
-          .add(Button(Names::back_button)
+          .add(Button(LocalNames::back_button)
                  .add_label_as_static(icons::fa::chevron_left_solid)
                  .add_style("btn_outline_primary")
                  .add_flag(Flags::event_bubble))
           .add(ScreenHeading("Builder").set_flex_grow())
-          .add(
-            Label(Names::currently_selected_label).set_text_as_static("<none>"))
-          .add(Button(Names::get_previous_sibling_button)
+          .add(Label(LocalNames::currently_selected_label)
+                 .set_text_as_static("<none>"))
+          .add(Button(LocalNames::get_previous_sibling_button)
                  .add_style("btn_outline_primary")
                  .add_label_as_static(icons::fa::chevron_left_solid)
                  .add_event_callback(
                    EventCode::clicked,
                    get_previous_sibling_clicked))
-          .add(Button(Names::get_parent_button)
+          .add(Button(LocalNames::get_parent_button)
                  .add_style("btn_outline_primary")
                  .add_label_as_static(icons::fa::chevron_up_solid)
                  .add_event_callback(EventCode::clicked, get_parent_clicked))
           .add(
-            Button(Names::get_next_sibling_button)
+            Button(LocalNames::get_next_sibling_button)
               .add_style("btn_outline_primary")
               .add_label_as_static(icons::fa::chevron_right_solid)
               .add_event_callback(EventCode::clicked, get_next_sibling_clicked))
@@ -75,18 +244,18 @@ Builder::Builder(const char *name) {
           .add(Button()
                  .add_label_as_static(icons::fa::pencil_alt_solid)
                  .add_event_callback(EventCode::clicked, edit_clicked))
-          .add(Button(Names::remove_button)
+          .add(Button(LocalNames::remove_button)
                  .add_label_as_static(icons::fa::times_solid)
                  .add_style("btn_danger")
                  .add_event_callback(EventCode::clicked, remove_clicked)))
       .add(HorizontalLine())
-      .add(NakedContainer(Names::target_object)
+      .add(NakedContainer(LocalNames::target_object)
              .fill_width()
              .set_flex_grow()
              .add_flag(Flags::clickable)
              .add_event_callback(EventCode::clicked, target_clicked)));
 
-  add(NakedContainer(Names::highlight_object)
+  add(NakedContainer(LocalNames::highlight_object)
         .fill()
         .set_height(100)
         .clear_flag(Flags::clickable)
@@ -96,9 +265,9 @@ Builder::Builder(const char *name) {
         .set_border_width(4)
         .set_border_color(Color::red()));
 
-  data.selected_object = find(Names::target_object).object();
+  data.selected_object = find(LocalNames::target_object).object();
 
-  auto &drawer_data = Drawer::Data::create(Names::control_drawer);
+  auto &drawer_data = Drawer::Data::create(LocalNames::control_drawer);
 
   add(Drawer(drawer_data)
         .set_height(80_percent)
@@ -108,27 +277,10 @@ Builder::Builder(const char *name) {
         .close());
 }
 
-void Builder::show_clicked(lv_event_t *e) {
-  auto drawer = Event(e)
-                  .find_parent(ViewObject::Names::builder_object)
-                  .find<Drawer>(Names::control_drawer);
-
-  if (drawer.is_opened()) {
-    drawer.close();
-  } else {
-    drawer.open();
-  }
-}
-
-void Builder::target_clicked(lv_event_t *e) {
-  auto object = Event(e).target<Generic>();
-  get_builder(e).select_target(object);
-}
-
-Builder &Builder::select_target(Object object) {
-  auto target = find<Generic>(Names::target_object);
+Builder &Builder::select_target(const Object &object) {
+  auto target = find<Generic>(LocalNames::target_object);
   auto container = find<Generic>(ViewObject::Names::content_container);
-  auto highlight_object = find<Generic>(Names::highlight_object);
+  auto highlight_object = find<Generic>(LocalNames::highlight_object);
   if (object.object() == highlight_object.object()) {
     return *this;
   }
@@ -136,7 +288,6 @@ Builder &Builder::select_target(Object object) {
   target.update_layout();
 
   const auto coords = object.get_coordinates();
-  const auto target_coords = target.get_coordinates();
   const auto container_coords = container.get_coordinates();
 
   const auto highlight_point
@@ -162,36 +313,10 @@ Builder &Builder::select_target(Object object) {
     current = current.get_parent<Generic>();
   }
 
-  find<Label>(Names::currently_selected_label).set_text(object.name());
+  find<Label>(LocalNames::currently_selected_label).set_text(object.name());
 
   printf("JSON path is -%s-\n", data()->json_path.cstring());
   return *this;
-}
-
-Builder Builder::get_builder(lv_event_t *e) {
-  auto result
-    = Event(e).find_parent<Builder>(ViewObject::Names::builder_object);
-  if (result.is_valid() == false) {
-    return screen().find<Builder>(ViewObject::Names::builder_object);
-  }
-  return result;
-}
-
-void Builder::add_component_clicked(lv_event_t *e) {
-  if (Form::is_submit_button(e)) {
-    printf("Form Submitted -- Add Component\n");
-    auto add_component = Event(e).current_target<AddComponent>();
-    const auto form_value = add_component.get_form().get_json_object();
-    Model::Scope ms;
-    printer().object("form", form_value);
-    get_builder(e).add_component(form_value);
-    screen().find<Modal>(Names::add_component_modal).close(300_milliseconds);
-    return;
-  }
-
-  if (AddComponent::is_cancel_button(e)) {
-    screen().find<Modal>(Names::add_component_modal).close(300_milliseconds);
-  }
 }
 
 JsonObject Builder::get_active_json_object() const {
@@ -201,7 +326,7 @@ JsonObject Builder::get_active_json_object() const {
   return data()->json_tree.find(data()->json_path).to_object();
 }
 
-Builder &Builder::add_component(JsonObject form_value) {
+Builder &Builder::add_component(const JsonObject &form_value) {
 
   const auto type
     = form_value.at(AddComponent::Fields::component_type).to_string_view();
@@ -215,10 +340,7 @@ Builder &Builder::add_component(JsonObject form_value) {
   auto object = get_active_json_object();
 
   object.insert(name, form_value);
-  {
-    Model::Scope ms;
-    printer().object("tree", data()->json_tree);
-  }
+  ModelInScope().instance.printer.object("tree", data()->json_tree);
 
   if (type == Components::container) {
     container.add(Container(name));
@@ -226,8 +348,7 @@ Builder &Builder::add_component(JsonObject form_value) {
     container.add(Bar(name));
   } else if (type == Components::button) {
     container.add(Button(name).add_label(
-      form_value.at(AddComponent::Fields::component_label)
-        .to_cstring()));
+      form_value.at(AddComponent::Fields::component_label).to_cstring()));
   } else if (type == Components::calendar) {
     container.add(Calendar(name));
   } else if (type == Components::canvas) {
@@ -310,31 +431,23 @@ Builder &Builder::add_component(JsonObject form_value) {
   } else if (type == Components::form_line_field) {
     container.add(
       Form::LineField(name)
-        .set_label(
-          form_value.at(Fields::component_label).to_cstring())
-        .set_hint(
-          form_value.at(Fields::component_hint).to_cstring()));
+        .set_label(form_value.at(Fields::component_label).to_cstring())
+        .set_hint(form_value.at(Fields::component_hint).to_cstring()));
   } else if (type == Components::form_select) {
     container.add(
       Form::Select(name)
-        .set_label(
-          form_value.at(Fields::component_label).to_cstring())
-        .set_hint(
-          form_value.at(Fields::component_hint).to_cstring()));
+        .set_label(form_value.at(Fields::component_label).to_cstring())
+        .set_hint(form_value.at(Fields::component_hint).to_cstring()));
   } else if (type == Components::form_file_select) {
     container.add(
       Form::SelectFile(Form::SelectFile::Data::create(name))
-        .set_label(
-          form_value.at(Fields::component_label).to_cstring())
-        .set_hint(
-          form_value.at(Fields::component_hint).to_cstring()));
+        .set_label(form_value.at(Fields::component_label).to_cstring())
+        .set_hint(form_value.at(Fields::component_hint).to_cstring()));
   } else if (type == Components::form_switch) {
     container.add(
       Form::Switch(name)
-        .set_label(
-          form_value.at(Fields::component_label).to_cstring())
-        .set_hint(
-          form_value.at(Fields::component_hint).to_cstring()));
+        .set_label(form_value.at(Fields::component_label).to_cstring())
+        .set_hint(form_value.at(Fields::component_hint).to_cstring()));
   }
 
   else {
@@ -345,7 +458,7 @@ Builder &Builder::add_component(JsonObject form_value) {
 
   if (const auto width
       = form_value.at(AddComponent::Fields::component_width).to_string_view();
-      width.is_empty() == false) {
+      width) {
     const auto is_percentage = width.find("%") != StringView::npos;
     const auto value = width.to_unsigned_long();
     if (is_percentage) {
@@ -357,7 +470,7 @@ Builder &Builder::add_component(JsonObject form_value) {
 
   if (const auto height
       = form_value.at(AddComponent::Fields::component_height).to_string_view();
-      height.is_empty() == false) {
+      height) {
     const auto is_percentage = height.find("%") != StringView::npos;
     const auto value = height.to_unsigned_long();
     if (is_percentage) {
@@ -373,64 +486,19 @@ Builder &Builder::add_component(JsonObject form_value) {
   return *this;
 }
 
-void Builder::get_parent_clicked(lv_event_t *e) {
-  auto builder = get_builder(e);
-  auto selected = Generic(builder.data()->selected_object);
-  if (selected.object() == builder.find(Names::target_object).object()) {
-    return;
-  }
-  auto higlight_parent = Generic(builder.data()->selected_object).get_parent();
-  builder.select_target(higlight_parent);
-}
-
-void Builder::get_previous_sibling_clicked(lv_event_t *e) {
-  auto builder = get_builder(e);
-  auto selected = Generic(builder.data()->selected_object);
-  if (selected.object() == builder.find(Names::target_object).object()) {
-    return;
-  }
-  const auto offset = selected.get_index();
-  if (offset > 0) {
-    builder.select_target(selected.get_parent().get_child(offset - 1));
-  }
-}
-
-void Builder::get_next_sibling_clicked(lv_event_t *e) {
-  auto builder = get_builder(e);
-  auto selected = Generic(builder.data()->selected_object);
-  if (selected.object() == builder.find(Names::target_object).object()) {
-    return;
-  }
-  const auto offset = selected.get_index();
-  auto parent = selected.get_parent();
-  if (offset < parent.get_child_count() - 1) {
-    builder.select_target(parent.get_child(offset + 1));
-  }
-}
-
-void Builder::remove_clicked(lv_event_t *e) {
-  get_builder(e).remove_selected();
-}
-
 Builder &Builder::remove_selected() {
-  if (data()->selected_object == find(Names::target_object).object()) {
+  if (data()->selected_object == find(LocalNames::target_object).object()) {
     return *this;
   }
 
   {
-    {
-      Model::Scope ms;
-      printer().object("treeBefore", data()->json_tree);
-    }
+    ModelInScope().instance.printer.object("treeBefore", data()->json_tree);
     // clean the JSON tree
     const auto parent_path = fs::Path::parent_directory(data()->json_path);
     const auto object_name = fs::Path::name(data()->json_path);
     auto parent = data()->json_tree.find(parent_path);
     parent.to_object().remove(object_name);
-    {
-      Model::Scope ms;
-      printer().object("treeAfter", data()->json_tree);
-    }
+    ModelInScope().instance.printer.object("treeAfter", data()->json_tree);
   }
 
   // clean the graphics
@@ -440,29 +508,7 @@ Builder &Builder::remove_selected() {
   return select_target(parent);
 }
 
-void Builder::add_clicked(lv_event_t *e) {
-  auto builder = get_builder(e);
-  Modal(Names::add_component_modal)
-    .add_content(
-      AddComponent(Names::add_component)
-        .set_parent_item_name(Generic(builder.data()->selected_object).name())
-        .add_event_callback(EventCode::clicked, add_component_clicked));
-}
-
-void Builder::edit_clicked(lv_event_t *e) {
-  auto builder = get_builder(e);
-
-  // get the JSON object associated with the target
-  Modal(Names::edit_component_modal)
-    .add_content(
-      EditComponent(
-        EditComponent::Data::create(Names::edit_component)
-          .set_json_object(builder.get_active_json_object())
-          .set_target_object(Generic(builder.data()->selected_object)))
-        .add_event_callback(EventCode::clicked, edit_component_clicked));
-}
-
-Builder &Builder::edit_component(json::JsonObject form_value) {
+Builder &Builder::edit_component(const json::JsonObject &form_value) {
   // once editing modal is done, call this to sync the new JSON object settings
   // with item visually
   auto json_object = get_active_json_object();
@@ -488,40 +534,18 @@ Builder &Builder::edit_component(json::JsonObject form_value) {
     }
   }
 
-  Model::Scope ms;
-  printer().object("activeObject", json_object);
-  printer().object("tree", data()->json_tree);
+  ModelInScope()
+    .instance.printer.object("activeObject", json_object)
+    .object("tree", data()->json_tree);
 
   select_target(Generic(data()->selected_object));
 
   return *this;
 }
 
-void Builder::edit_component_clicked(lv_event_t *e) {
-  if (EditComponent::is_cancel_button(e)) {
-    screen().find<Modal>(Names::edit_component_modal).close(300_milliseconds);
-  }
-
-  if (Form::is_submit_button(e)) {
-    printf("Form submitted\n");
-
-    auto edit_component = Event(e).current_target<EditComponent>();
-    const auto form_value = edit_component.get_form().get_json_object();
-
-    {
-      Model::Scope ms;
-      printer().object("editForm", form_value);
-    }
-
-    get_builder(e).edit_component(form_value);
-
-    screen().find<Modal>(Names::edit_component_modal).close(300_milliseconds);
-  }
-}
-
 Builder &Builder::load_json_tree(Settings::Component component) {
   data()->json_tree = JsonObject();
-  auto target = find<Generic>(Names::target_object);
+  auto target = find<Generic>(LocalNames::target_object);
   // draw the objects on the display and add them to the tree
   select_target(target);
   build_tree(target.remove_children().object(), component.tree());
@@ -531,7 +555,7 @@ Builder &Builder::load_json_tree(Settings::Component component) {
   return *this;
 }
 
-void Builder::build_tree(lv_obj_t *lvgl_object, json::JsonObject object) {
+void Builder::build_tree(lv_obj_t *lvgl_object, const json::JsonObject & object) {
   if (!object.is_valid() || object.is_empty()) {
     return;
   }
@@ -561,22 +585,6 @@ void Builder::build_tree(lv_obj_t *lvgl_object, json::JsonObject object) {
   }
 }
 
-void Builder::tree_clicked(lv_event_t *e) {
-  Modal(Names::tree_modal)
-    .add_content(
-      ComponentTree()
-        .set_tree(get_builder(e).data()->json_tree)
-        .add_event_callback(EventCode::clicked, [](lv_event_t *e) {
-          screen().find<Modal>(Names::tree_modal).close(300_milliseconds);
-
-          if (ComponentTree::is_cancel_button(e)) {
-            return;
-          }
-
-          const auto name = Event(e).target().name();
-          auto builder = get_builder(e);
-          auto target_object = builder.find<Generic>(Names::target_object);
-          auto target = target_object.find<Generic>(name);
-          builder.select_target(target);
-        }));
+bool Builder::is_back_button(lv_event_t *e) {
+  return Event(e).target().name() == LocalNames::back_button;
 }

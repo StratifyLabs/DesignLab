@@ -1,5 +1,5 @@
 {
-   "source": "app/src",
+   "source": "",
    "themes": [
       {
          "path": "SDK/dependencies/DesignAPI/themes/default/theme-dark-medium.json"
@@ -20,7 +20,8 @@
                "main_heading": {
                   "component_name": "main_heading",
                   "component_type": "Heading1",
-                  "Component::Heading1::label": "Hello World"
+                  "Component::Heading1::label": "Hello World",
+                  "x": {}
                },
                "progress_bar": {
                   "component_name": "progress_bar",
@@ -39,7 +40,17 @@
                   "down_button": {
                      "component_name": "down_button",
                      "component_type": "Button",
-                     "Component::Button::label": "Down"
+                     "Component::Button::label": "Down",
+                     "radius": "20"
+                  },
+                  "MySlider": {
+                     "component_name": "MySlider",
+                     "component_type": "Slider",
+                     "width": "75%",
+                     "height": "40",
+                     "Component::label": "",
+                     "Component::hint": "",
+                     "Component::options": ""
                   }
                }
             }
@@ -632,7 +643,7 @@
          }
       ]
    },
-   "fontDirty": false,
-   "assetsDirty": false,
+   "fontDirty": true,
+   "assetsDirty": true,
    "fontsCompressed": false
 }

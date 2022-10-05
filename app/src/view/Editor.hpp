@@ -7,22 +7,19 @@
 
 #include <design/Typography.hpp>
 #include <json/Json.hpp>
-#include <lvgl.hpp>
-#include <design.hpp>
-
 #include <design/extras/Form.hpp>
 
 #include "extras/Extras.hpp"
 #include "model/Model.hpp"
 
-class Editor : public ObjectAccess<Editor>, public ModelAccess {
+class Editor : public ObjectAccess<Editor>, public api::ExecutionContext {
 public:
 
   enum class IsValid {
     no, yes
   };
 
-  using ValidateCallback = IsValid (*)(Form);
+  using ValidateCallback = IsValid (*)(design::Form);
   using EditClickedCallback = void (*)(lv_event_t * e, u32 offset);
   using AddClickedCallback = void (*)(lv_event_t * e);
 
@@ -47,10 +44,11 @@ public:
     API_PMAZ(title, Data, const char *, "Title");
     API_PMAZ(validate_callback, Data, ValidateCallback, nullptr);
 
+    API_PMAZ(edit_offset, Data, u32, 0);
+
   private:
     friend Editor;
     API_PMAZ(input_form_schema, Data, design::Form::Schema, {});
-    API_PMAZ(edit_offset, Data, u32, 0);
   };
 
   explicit Editor(Data &data);
@@ -70,49 +68,6 @@ protected:
 
   void configure_form_input(Data &data);
 
-private:
-  enum class Action { add, edit };
-
-  void show_values(Data &data);
-
-  static void hide_form(lv_event_t *) {
-    screen()
-      .find<Container>(Names::input_form_container)
-      .clear_state(State::user1);
-  }
-
-  static void show_add_form(lv_event_t *e);
-
-
-  static void remove_entry(const char *key_name, u32 offset);
-
-  static Editor get_self(lv_event_t *e);
-
-  static Data *get_data(lv_event_t *e) {
-    return get_self(e).user_data<Data>();
-  }
-
-  void set_action(Action action) {
-    if (action == Action::add) {
-      find<Button>(Names::add_button).clear_flag(Flags::hidden);
-      find<Button>(Names::edit_button).add_flag(Flags::hidden);
-    } else {
-      // edit
-      find<Button>(Names::add_button).add_flag(Flags::hidden);
-      find<Button>(Names::edit_button).clear_flag(Flags::hidden);
-    }
-  }
-
-  void show_form() {
-    find<Container>(Names::input_form_container).add_state(State::user1);
-    find<Column>(Names::input_form_column).scroll_to_y(0, IsAnimate::no);
-  }
-
-
-  static void submit_form_add(lv_event_t *e);
-  static void submit_form_edit(lv_event_t *e);
-  static void edit_info_card(lv_event_t *e);
-  static void remove_info_card(lv_event_t *e);
 };
 
 #endif // DESIGNLAB_EDITOR_HPP

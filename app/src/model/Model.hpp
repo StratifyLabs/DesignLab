@@ -18,12 +18,6 @@ struct Model {
 public:
   static constexpr auto worker_done_message = "Done";
 
-  // all access to the model must be withing a Scope
-  class Scope : public design::ModelScope {
-  public:
-    Scope() : design::ModelScope(Model::instance().model_scope_options) {}
-  };
-
   printer::YamlPrinter printer;
   lvgl::Runtime *runtime = nullptr;
   bool is_project_path_valid = false;
@@ -39,8 +33,13 @@ public:
   lvgl::Theme dark_theme;
 
 private:
+  class Scope : public design::ModelScope {
+  public:
+    Scope() : design::ModelScope(Model::instance().model_scope_options) {}
+  };
   friend Scope;
-  friend class ModelAccess;
+  friend class ModelInScope;
+  // all access to the model must be withing a Scope
 
   design::ModelScope::Construct model_scope_options;
 
@@ -55,20 +54,11 @@ private:
   }
 };
 
-class ModelAccess : public api::ExecutionContext {
+struct ModelInScope {
+  Model::Scope scope;
 public:
-  static Model &model() {
-    // make sure the caller has locked the model
-    Model &result = Model::instance();
-    API_ASSERT(result.model_scope_options.is_available());
-    return Model::instance();
-  }
-  static printer::Printer &printer() { return model().printer; }
-
-  static var::PathString get_project_path() {
-    Model::Scope model_scope;
-    return model().session_settings.get_project();
-  }
+  Model & instance = Model::instance();
 };
+
 
 #endif // DESIGNLAB_MODEL_HPP

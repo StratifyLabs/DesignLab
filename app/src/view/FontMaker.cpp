@@ -66,10 +66,9 @@ var::StringView FontMaker::get_info_title(json::JsonObject object) {
 
 
 FontMaker::InputSchema::InputSchema() {
-  Model::Scope model_scope;
   push_back(Form::SelectFile::Schema()
               .set_name(Settings::Font::path_key())
-              .set_base_path(model().session_settings.get_project())
+              .set_base_path(ModelInScope().instance.session_settings.get_project())
               .set_label("Select Font File")
               .set_hint("Choose the ttf file to use."));
 

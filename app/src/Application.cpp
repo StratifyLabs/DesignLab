@@ -21,7 +21,7 @@ void Application::run(sys::Cli &cli) {
     window::Point(),
     window::Size(320 * 6, 240 * 6),
     window::Window::Flags::shown | window::Window::Flags::highdpi
-    | window::Window::Flags::resizeable);
+      | window::Window::Flags::resizeable);
 
   runtime.window().set_minimum_size(window::Size(800, 600));
 
@@ -37,38 +37,35 @@ void Application::run(sys::Cli &cli) {
   // load the PNG decoder
   lvgl_api_initialize_png_decoder();
   {
-    Model::Scope model_scope;
-    model().runtime = &runtime;
-    model().is_export_on_startup = (cli.get_option("export") == "true");
-    model().light_theme = Theme::find("default-light-medium");
-    model().dark_theme = Theme::find("default-dark-medium");
+    auto model = ModelInScope();
+    model.instance.runtime = &runtime;
+    model.instance.is_export_on_startup = (cli.get_option("export") == "true");
+    model.instance.light_theme = Theme::find("default-light-medium");
+    model.instance.dark_theme = Theme::find("default-dark-medium");
 
     if (fs::FileSystem().directory_exists(
-          model().session_settings.get_project())) {
-      model().is_project_path_valid = true;
+          model.instance.session_settings.get_project())) {
+      model.instance.is_project_path_valid = true;
     }
 
-    auto session_theme = model().session_settings.get_theme();
-    model().is_dark_theme = session_theme == "dark";
+    auto session_theme = model.instance.session_settings.get_theme();
+    model.instance.is_dark_theme = session_theme == "dark";
 
     Display(runtime.display())
       .set_theme(
-        model().is_dark_theme ? model().dark_theme : model().light_theme);
+        model.instance.is_dark_theme ? model.instance.dark_theme
+                                     : model.instance.light_theme);
 
     runtime.window().set_position(window::Point(
-      model().session_settings.get_window_x(),
-      model().session_settings.get_window_y()));
+      model.instance.session_settings.get_window_x(),
+      model.instance.session_settings.get_window_y()));
   }
-
 
   Home::configure(screen().get<Generic>());
   runtime.loop();
 
-  {
-    Model::Scope model_scope;
-    const auto final_position = runtime.window().get_position();
-    model().session_settings.set_window_x(final_position.x());
-    model().session_settings.set_window_y(final_position.y());
-  }
+  const auto final_position = runtime.window().get_position();
+  ModelInScope()
+    .instance.session_settings.set_window_x(final_position.x())
+    .set_window_y(final_position.y());
 }
-

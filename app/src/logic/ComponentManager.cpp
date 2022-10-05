@@ -155,8 +155,8 @@ void ComponentManager::generate_source() {
 void ComponentManager::process_source_node(
   json::JsonObject node,
   IsNested is_nested) {
-  Model::Scope ms;
-  ModelAccess::printer().object("node", node);
+  auto model = ModelInScope();
+  ModelInScope().instance.printer.object("node", node);
 
   const auto name_value = node.at(Fields::component_name);
   if (!name_value.is_valid()) {
