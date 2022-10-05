@@ -524,6 +524,8 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h"*/
 #define LV_GPU_SDL_CUSTOM_BLEND_MODE (SDL_VERSION_ATLEAST(2, 0, 6))
 #endif
 
+#define LV_USE_MSG 1
+
 /*==================
 * EXAMPLES
 *==================*/

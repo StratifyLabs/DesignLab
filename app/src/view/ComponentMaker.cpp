@@ -11,36 +11,57 @@
 #include "Builder.hpp"
 #include "ComponentMaker.hpp"
 
-ComponentMaker::ComponentMaker(const char *name) {
-  construct_object(name);
-  fill();
+namespace {
+struct LocalNames {
+  DESIGN_DECLARE_NAME(builder_drawer);
+  DESIGN_DECLARE_NAME(new_component_prompt);
+  DESIGN_DECLARE_NAME(new_component_form);
+  DESIGN_DECLARE_NAME(new_component_line_field_name);
+  DESIGN_DECLARE_NAME(new_component_generate_worker_switch);
+  DESIGN_DECLARE_NAME(new_component_generate_data_switch);
+  DESIGN_DECLARE_NAME(new_component_modal);
+  DESIGN_DECLARE_NAME(component_maker_editor);
+};
 
-  auto &editor_data = Editor::Data::create(Names::component_maker_editor)
-                        .set_add_button_text("Add Component")
-                        .set_form_name(Settings::components_key())
-                        .set_nothing_to_show("No Components")
-                        .set_add_clicked_callback(add_clicked)
-                        .set_edit_clicked_callback(edit_clicked)
-                        .set_title("Components")
-                        .set_form_title("Component Details")
-                        .set_get_info_title_callback(get_info_title)
-                        .set_get_feature_list_callback(get_feature_list)
-                        .set_get_schema_callback(InputSchema::get_form_schema);
+class InputSchema : var::Vector<json::JsonObject> {
+public:
+  InputSchema() {
+    auto model = ModelInScope();
+    push_back(Form::SelectFile::Schema()
+                .set_name(Settings::Font::path_key())
+                .set_base_path(model.instance.session_settings.get_project())
+                .set_label("Select Font File")
+                .set_hint("Choose the ttf file to use."));
 
-  clear_flag(Flags::scrollable).add(Editor(editor_data).fill());
+    push_back(Form::LineField::Schema()
+                .set_name(Settings::Font::name_key())
+                .set_label("Name")
+                .set_value("montserrat")
+                .set_hint("The name of the font (should match the file)."));
+    push_back(
+      Form::Select::Schema()
+        .set_name(Settings::Font::style_key())
+        .set_label("Style")
+        .set_value("regular")
+        .set_options("any\nthin\nthin_italic\nextra_light\nextra_light_"
+                     "italic\nlight\nlight_italic\nregular\nregular_"
+                     "italic\nmedium\nmedium_italic\nsemi_bold\nsemi_bold_"
+                     "italic\nbold\nbold_italic\nextra_bold\nextra_bold_italic")
+        .set_hint("The style of the font (should match the file)."));
+  }
 
-  add(Drawer(Drawer::Data::create(Names::builder_drawer))
-        .fill()
-        .set_open_from_right()
-        .add_content(
-          Builder(ViewObject::Names::builder_object)
-            .add_event_callback(EventCode::clicked, builder_button_clicked)));
-}
+  static Form::Schema get_form_schema() {
+    Form::Schema result;
+    result.set_name(Settings::fonts_key())
+      .set_type(Form::Schema::schema_type)
+      .set_input(InputSchema());
+    return result;
+  }
+};
 
-var::Vector<InfoCard::Data::Feature>
-ComponentMaker::get_feature_list(json::JsonObject object) {
+var::Vector<InfoCard::Data::Feature> get_feature_list(json::JsonObject object) {
   var::Vector<InfoCard::Data::Feature> result;
-  Settings::Component item(object);
+  auto item = Settings::Component{std::move(object)};
 
   result.push_back(
     {.icon = icons::fa::info_circle_solid,
@@ -49,20 +70,29 @@ ComponentMaker::get_feature_list(json::JsonObject object) {
   return result;
 }
 
-var::StringView ComponentMaker::get_info_title(json::JsonObject object) {
-  Settings::Component item(object);
+ComponentMaker get_self(lv_event_t *e) {
+  auto self = Event(e).find_parent<ComponentMaker>(
+    ViewObject::Names::component_maker_object);
+  if (!self.is_valid()) {
+    return screen().find<ComponentMaker>(
+      ViewObject::Names::component_maker_object);
+  }
+  return self;
+}
+
+var::StringView get_info_title(json::JsonObject object) {
+  const auto item = Settings::Component{std::move(object)};
   return fs::Path::name(item.get_name());
 }
-void ComponentMaker::edit_clicked(lv_event_t *e, u32 offset) {
-  auto self = get_self(e);
 
-  printf("load offset %d\n", offset);
+void edit_clicked(lv_event_t *e, u32 offset) {
+  auto self = get_self(e);
   // which object is being edited?
   const auto component_object = [](u32 offset) {
     auto model = ModelInScope();
-    const auto result
+    auto result
       = model.instance.project_settings.components_to_array().at(offset);
-    ModelInScope().instance.printer.object("component", result);
+    model.instance.printer.object("component", result);
     return result;
   }(offset);
 
@@ -72,19 +102,19 @@ void ComponentMaker::edit_clicked(lv_event_t *e, u32 offset) {
     .set_component_offset(offset)
     .set_component_name(component.get_name())
     .load_json_tree(component);
-  screen().find<Drawer>(Names::builder_drawer).open();
+  screen().find<Drawer>(LocalNames::builder_drawer).open();
 }
 
-void ComponentMaker::add_clicked(lv_event_t *e) {
+void add_clicked(lv_event_t *e) {
   auto self = get_self(e);
   self.find<Builder>(ViewObject::Names::builder_object).load_json_tree({});
-  screen().find<Drawer>(Names::builder_drawer).open();
+  screen().find<Drawer>(LocalNames::builder_drawer).open();
 }
 
-void ComponentMaker::builder_button_clicked(lv_event_t *e) {
+void builder_button_clicked(lv_event_t *e) {
   if (Builder::is_back_button(e)) {
     // close the builder drawer
-    Event(e).find_parent<Drawer>(Names::builder_drawer).close();
+    Event(e).find_parent<Drawer>(LocalNames::builder_drawer).close();
 
     auto builder = get_self(e).find<Builder>(ViewObject::Names::builder_object);
     const auto is_new = builder.is_new();
@@ -101,15 +131,16 @@ void ComponentMaker::builder_button_clicked(lv_event_t *e) {
       model.instance.project_settings.save();
 
     } else {
-      Modal(Names::new_component_modal)
+      Modal(LocalNames::new_component_modal)
         .add_content(
           Prompt(
-            Prompt::Data::create(Names::new_component_prompt)
+            Prompt::Data::create(LocalNames::new_component_prompt)
               .set_title("Add New Component")
               .set_accept("OK")
               .set_accept_callback([](lv_event_t *) {
                 auto form = screen().find<Form>(
-                  {Names::new_component_prompt, Names::new_component_form});
+                  {LocalNames::new_component_prompt,
+                   LocalNames::new_component_form});
 
                 auto builder
                   = screen().find<Builder>(ViewObject::Names::builder_object);
@@ -120,15 +151,17 @@ void ComponentMaker::builder_button_clicked(lv_event_t *e) {
                   const auto component
                     = Settings::Component()
                         .set_name(
-                          form_values.at(Names::new_component_line_field_name)
+                          form_values
+                            .at(LocalNames::new_component_line_field_name)
                             .to_string_view())
                         .set_generate_worker(
                           form_values
-                            .at(Names::new_component_generate_worker_switch)
+                            .at(
+                              LocalNames::new_component_generate_worker_switch)
                             .to_bool())
                         .set_generate_data(
                           form_values
-                            .at(Names::new_component_generate_data_switch)
+                            .at(LocalNames::new_component_generate_data_switch)
                             .to_bool())
                         .set_tree(builder.get_json_tree())
                         .trim_tree();
@@ -139,18 +172,18 @@ void ComponentMaker::builder_button_clicked(lv_event_t *e) {
                 }
 
                 screen()
-                  .find<Modal>(Names::new_component_modal)
+                  .find<Modal>(LocalNames::new_component_modal)
                   .close(300_milliseconds);
 
                 screen()
-                  .find<Editor>(Names::component_maker_editor)
+                  .find<Editor>(LocalNames::component_maker_editor)
                   .refresh_values();
               })
               .set_message("")
               .set_reject("Cancel")
               .set_reject_callback([](lv_event_t *) {
                 screen()
-                  .find<Modal>(Names::new_component_modal)
+                  .find<Modal>(LocalNames::new_component_modal)
                   .close(300_milliseconds);
               })
               .cast_as_name())
@@ -158,60 +191,54 @@ void ComponentMaker::builder_button_clicked(lv_event_t *e) {
             .set_height(60_percent))
         .set_enabled();
 
-      auto prompt = screen().find<Prompt>(Names::new_component_prompt);
+      auto prompt = screen().find<Prompt>(LocalNames::new_component_prompt);
       prompt.get_content_column().add(
-        Form(Names::new_component_form)
-          .add(Form::LineField(Names::new_component_line_field_name)
+        Form(LocalNames::new_component_form)
+          .add(Form::LineField(LocalNames::new_component_line_field_name)
                  .set_label_as_static("Component Name")
                  .set_hint_as_static("Assign a name to this component (class "
                                      "name when generating code)"))
-          .add(Form::Switch(Names::new_component_generate_worker_switch)
+          .add(Form::Switch(LocalNames::new_component_generate_worker_switch)
                  .set_label_as_static("Generate Worker")
                  .set_hint_as_static("Generate a nested Worker class for "
                                      "performing tasks in the background"))
-          .add(Form::Switch(Names::new_component_generate_data_switch)
+          .add(Form::Switch(LocalNames::new_component_generate_data_switch)
                  .set_label_as_static("Generate Data")
                  .set_hint_as_static("Generate a nested Data class for storing "
-                                     "extra data not directly associatd with "
+                                     "extra data not directly associated with "
                                      "the visual aspects of the component")));
 
-      prompt.find<Form>(Names::new_component_form)
+      prompt.find<Form>(LocalNames::new_component_form)
         .move_to_index(
           prompt.get_message_label().add_flag(Flags::hidden).get_index());
     }
   }
 }
-ComponentMaker ComponentMaker::get_self(lv_event_t *e) {
-  auto self = Event(e).find_parent<ComponentMaker>(
-    ViewObject::Names::component_maker_object);
-  if (self.is_valid() == false) {
-    return screen().find<ComponentMaker>(
-      ViewObject::Names::component_maker_object);
-  }
-  return self;
-}
 
-ComponentMaker::InputSchema::InputSchema() {
-  auto model = ModelInScope();
-  push_back(Form::SelectFile::Schema()
-              .set_name(Settings::Font::path_key())
-              .set_base_path(model.instance.session_settings.get_project())
-              .set_label("Select Font File")
-              .set_hint("Choose the ttf file to use."));
+} // namespace
 
-  push_back(Form::LineField::Schema()
-              .set_name(Settings::Font::name_key())
-              .set_label("Name")
-              .set_value("montserrat")
-              .set_hint("The name of the font (should match the file)."));
-  push_back(
-    Form::Select::Schema()
-      .set_name(Settings::Font::style_key())
-      .set_label("Style")
-      .set_value("regular")
-      .set_options("any\nthin\nthin_italic\nextra_light\nextra_light_"
-                   "italic\nlight\nlight_italic\nregular\nregular_"
-                   "italic\nmedium\nmedium_italic\nsemi_bold\nsemi_bold_"
-                   "italic\nbold\nbold_italic\nextra_bold\nextra_bold_italic")
-      .set_hint("The style of the font (should match the file)."));
+ComponentMaker::ComponentMaker(const char *name) {
+  construct_object(name);
+  fill();
+
+  auto &editor_data = Editor::Data::create(LocalNames::component_maker_editor)
+                        .set_add_button_text("Add Component")
+                        .set_form_name(Settings::components_key())
+                        .set_nothing_to_show("No Components")
+                        .set_add_clicked_callback(add_clicked)
+                        .set_edit_clicked_callback(edit_clicked)
+                        .set_title("Components")
+                        .set_form_title("Component Details")
+                        .set_get_info_title_callback(get_info_title)
+                        .set_get_feature_list_callback(get_feature_list)
+                        .set_get_schema_callback(InputSchema::get_form_schema);
+
+  clear_flag(Flags::scrollable).add(Editor(editor_data).fill());
+
+  add(Drawer(Drawer::Data::create(LocalNames::builder_drawer))
+        .fill()
+        .set_open_from_right()
+        .add_content(
+          Builder(ViewObject::Names::builder_object)
+            .add_event_callback(EventCode::clicked, builder_button_clicked)));
 }

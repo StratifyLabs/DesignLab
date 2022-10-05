@@ -18,39 +18,6 @@ public:
   LVGL_OBJECT_ACCESS_DECLARE_CONSTRUCTOR(ComponentMaker);
 
 private:
-  struct Names {
-    static constexpr auto sizes_section_heading = "sizesSectionHeading";
-    DESIGN_DECLARE_NAME(builder_drawer);
-    DESIGN_DECLARE_NAME(new_component_prompt);
-    DESIGN_DECLARE_NAME(new_component_form);
-    DESIGN_DECLARE_NAME(new_component_line_field_name);
-    DESIGN_DECLARE_NAME(new_component_generate_worker_switch);
-    DESIGN_DECLARE_NAME(new_component_generate_data_switch);
-    DESIGN_DECLARE_NAME(new_component_modal);
-    DESIGN_DECLARE_NAME(component_maker_editor);
-  };
-
-  class InputSchema : var::Vector<json::JsonObject> {
-  public:
-    InputSchema();
-
-    static Form::Schema get_form_schema() {
-      Form::Schema result;
-      result.set_name(Settings::fonts_key())
-        .set_type(Form::Schema::schema_type)
-        .set_input(InputSchema());
-      return result;
-    }
-  };
-
-  static var::Vector<InfoCard::Data::Feature> get_feature_list(json::JsonObject);
-  static var::StringView get_info_title(json::JsonObject object);
-
-  static void add_clicked(lv_event_t * e);
-  static void edit_clicked(lv_event_t * e, u32 offset);
-  static void builder_button_clicked(lv_event_t * e);
-
-  static ComponentMaker get_self(lv_event_t * e);
 
 
 };

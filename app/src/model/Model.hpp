@@ -7,6 +7,7 @@
 
 #include <lvgl/Runtime.hpp>
 #include <lvgl/Theme.hpp>
+#include <lvgl/EventBus.hpp>
 #include <printer/YamlPrinter.hpp>
 
 #include <design/extras/Form.hpp>
@@ -59,6 +60,14 @@ struct ModelInScope {
 public:
   Model & instance = Model::instance();
 };
+
+enum class EventBusId {
+  invalid,
+  notify_home,
+  change_theme
+};
+
+using ApplicationEventBus = lvgl::EventBus<EventBusId>;
 
 
 #endif // DESIGNLAB_MODEL_HPP

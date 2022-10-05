@@ -6,8 +6,14 @@
 #include <sys.hpp>
 #include <var.hpp>
 
+#include "../../model/Model.hpp"
 #include "Extras.hpp"
 #include "designlab/fonts/FontAwesomeIcons.hpp"
+
+void NotifyHome::deleter(int *value) {
+  ApplicationEventBus::send(EventBusId::notify_home);
+}
+
 
 HeaderRow::HeaderRow(
   const char *title,

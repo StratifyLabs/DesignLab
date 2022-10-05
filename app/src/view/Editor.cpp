@@ -68,7 +68,6 @@ Editor::Data *get_data(lv_event_t *e) {
 
 void edit_info_card(lv_event_t *e) {
   auto self = get_self(e);
-
   auto *data = get_data(e);
   auto *info_card_data = InfoCard::get_data_from_event(e);
   if (data->edit_clicked_callback != nullptr) {
@@ -79,19 +78,16 @@ void edit_info_card(lv_event_t *e) {
   set_action(self, Action::edit);
   show_form(self);
   // this is clicked from an info card
-
   data->edit_offset = info_card_data->offset;
 
-  {
-    // populate the form with the current values
-    auto model = ModelInScope();
-    get_self(e)
-      .find<Form>(data->form_name)
-      .set_values(model.instance.project_settings.to_object()
-                    .at(data->form_name)
-                    .to_array()
-                    .at(data->edit_offset));
-  }
+  // populate the form with the current values
+  get_self(e)
+    .find<Form>(data->form_name)
+    .set_values(ModelInScope()
+                  .instance.project_settings.to_object()
+                  .at(data->form_name)
+                  .to_array()
+                  .at(data->edit_offset));
 }
 
 void show_values(Editor &editor, Editor::Data &data) {

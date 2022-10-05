@@ -26,17 +26,6 @@ using namespace printer;
 
 class ViewObject : public api::ExecutionContext {
 public:
-  static void send_notify_to_home() {
-    Event::send(
-      screen().find<Generic>(Names::home_top_row),
-      EventCode::notified);
-  }
-
-  class NotifyHome {
-  public:
-    NotifyHome() = default;
-    ~NotifyHome() { send_notify_to_home(); }
-  };
 
   static void prompt_user(design::Prompt::Data &data) {
     Modal modal(Names::prompt_modal);

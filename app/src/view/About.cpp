@@ -16,7 +16,7 @@ struct LocalNames {
 };
 
 void update_theme(lv_event_t *e) {
-  About::NotifyHome notify_home;
+  NotifyHome notify_home;
   auto model = ModelInScope();
   const auto is_dark = Event(e).target().name() == LocalNames::dark_button;
   const auto &theme

@@ -223,4 +223,15 @@ private:
   };
 };
 
+
+class NotifyHome {
+public:
+  NotifyHome() = default;
+
+private:
+  static void deleter(int * value);
+  using Resource = api::SystemResource<int, decltype(&deleter)>;
+  Resource m_resource = Resource(0, &deleter);
+};
+
 #endif // DESIGNLAB_EXTRAS_HPP
