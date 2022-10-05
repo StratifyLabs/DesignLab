@@ -21,15 +21,15 @@ include(CTest)
 
 
 
-sdk_add_subdirectory(API v1.5)
+sdk_add_subdirectory(API main)
 include(${BASE_DIRECTORY}/API/libraries/API.cmake)
 
 set(LVGL_CONFIG_PATH ${CMAKE_CURRENT_SOURCE_DIR}/config CACHE INTERNAL "LVGL config path")
 set(LVGL_NO_STRATIFY_OS ON CACHE INTERNAL "Do not include dependency on Stratify OS")
 set(MBEDTLS_CONFIG_FILE ${CMAKE_CURRENT_SOURCE_DIR}/config/mbedtls/config.h CACHE INTERNAL "MBEDTLS config file")
 
-sdk_add_subdirectory(JsonAPI v1.4)
-sdk_add_subdirectory(InetAPI v1.4)
+sdk_add_subdirectory(JsonAPI main)
+sdk_add_subdirectory(InetAPI main)
 
 sdk_add_subdirectory(WindowAPI main)
 sdk_add_subdirectory(LvglAPI main)
