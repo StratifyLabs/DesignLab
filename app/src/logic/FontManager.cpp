@@ -10,9 +10,8 @@
 
 #include "StringPrinter.hpp"
 
-#include "designlab/fonts/FontAwesomeIcons.hpp"
-
 #include "FontManager.hpp"
+#include "LvglFontGenerator.hpp"
 
 FontManager::FontManager(const Construct &options) : m_construct(options) {
 
@@ -115,7 +114,6 @@ void FontManager::process_font_size(
   const Settings::Font &font,
   var::StringView font_size,
   bool is_compressed) {
-  var::GeneralString command = "lv_font_conv";
 
   const auto output_file_path
     = output_directory / get_file_name(font, font_size);
@@ -158,13 +156,8 @@ void FontManager::process_font_size(
 
   auto env = Process::Environment().set_working_directory(options.project_path);
 
-  if (!node_path.is_empty()) {
-    const auto current_path = getenv("PATH");
-    if (current_path != nullptr && 0) {
-      env.set("PATH", var::StringView(current_path) | ":" | node_path);
-    } else {
-      env.set("PATH", node_path);
-    }
+  if (node_path) {
+    env.set("PATH", node_path);
   }
 
   printer.object("arguments", arguments).object("environment", env);

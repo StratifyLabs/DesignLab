@@ -9,17 +9,19 @@ set(SOURCES
 	logic/BootstrapIconManager.cpp
 	logic/BootstrapIconManager.hpp
 	logic/CodePrinter.hpp
-  logic/ComponentManager.cpp
-  logic/ComponentManager.hpp
 	logic/FontAwesomeManager.cpp
 	logic/FontAwesomeManager.hpp
 	logic/FontManager.cpp
 	logic/FontManager.hpp
+	logic/LvglFontGenerator.cpp
+	logic/LvglFontGenerator.hpp
 	logic/Manager.cpp
 	logic/Manager.hpp
 	logic/StringPrinter.hpp
 	logic/ThemeManager.cpp
 	logic/ThemeManager.hpp
+  logic/ComponentManager.cpp
+  logic/ComponentManager.hpp
 
 	model/Model.hpp
 	model/Settings.cpp

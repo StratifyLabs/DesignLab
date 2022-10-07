@@ -24,6 +24,7 @@ include(CTest)
 sdk_add_subdirectory(API main)
 include(${BASE_DIRECTORY}/API/libraries/API.cmake)
 
+set(LVGL_API_USE_FREETYPE ON CACHE INTERNAL "Use LVGL Freetype")
 set(LVGL_CONFIG_PATH ${CMAKE_CURRENT_SOURCE_DIR}/config CACHE INTERNAL "LVGL config path")
 set(LVGL_NO_STRATIFY_OS ON CACHE INTERNAL "Do not include dependency on Stratify OS")
 set(MBEDTLS_CONFIG_FILE ${CMAKE_CURRENT_SOURCE_DIR}/config/mbedtls/config.h CACHE INTERNAL "MBEDTLS config file")
