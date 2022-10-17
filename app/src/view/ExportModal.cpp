@@ -271,9 +271,7 @@ void ExportModal::ExportWorker::export_fonts() {
     const auto path = "fonts" / source_file;
     const auto offset = m_font_path_list.find_offset(path);
     if (offset == m_font_path_list.count()) {
-      printf("add path %s -> %s\n", path.cstring(), source_file.cstring());
       m_font_path_list.push_back(path);
-      printf("added %s\n", m_font_path_list.back().cstring());
     }
   }
   m_font_path_list.sort(fs::PathList::ascending);
