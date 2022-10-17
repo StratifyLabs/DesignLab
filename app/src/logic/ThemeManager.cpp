@@ -460,6 +460,10 @@ void ThemeManager::generate_descriptors() {
                 " (lv_style_prop_t)0x%04X"),
               property.to_string_view());
           }
+          struct_init.add_member_with_comment(
+            "(lv_style_prop_t)0x0000",
+            "zero terminator"
+            );
         }
         m_code_printer.newline();
       }

@@ -95,10 +95,11 @@ void ExportModal::ExportWorker::work() {
       return PathString(ModelInScope().instance.session_settings.get_project());
     }() / settings.get_source() / "designlab";
 
-    FileSystem().create_directory(source_path);
-    FileSystem().create_directory(source_path / "assets");
-    FileSystem().create_directory(source_path / "fonts");
-    FileSystem().create_directory(source_path / "themes");
+    FileSystem()
+      .create_directory(source_path)
+      .create_directory(source_path / "assets")
+      .create_directory(source_path / "fonts")
+      .create_directory(source_path / "themes");
     if (is_error()) {
       printf(
         "Failed to create output directories at %s\n",
@@ -270,7 +271,9 @@ void ExportModal::ExportWorker::export_fonts() {
     const auto path = "fonts" / source_file;
     const auto offset = m_font_path_list.find_offset(path);
     if (offset == m_font_path_list.count()) {
+      printf("add path %s -> %s\n", path.cstring(), source_file.cstring());
       m_font_path_list.push_back(path);
+      printf("added %s\n", m_font_path_list.back().cstring());
     }
   }
   m_font_path_list.sort(fs::PathList::ascending);

@@ -162,10 +162,8 @@ void set_project_button_enabled(lv_event_t *e, bool value) {}
 class HomeData : public UserDataAccess<HomeData> {
 public:
   explicit HomeData(const char *name = "") : UserDataAccess<HomeData>(name) {}
-  ApplicationEventBus::Subscription<HomeData> change_theme_subscription
-    = ApplicationEventBus::Subscription<HomeData>(
-      EventBusId::notify_home,
-      this);
+  ApplicationEventBus::UserDataSubscription<HomeData> change_theme_subscription
+    = ApplicationEventBus::UserDataSubscription<HomeData>(EventBusId::notify_home, this);
 
   void handle_event(EventBusId id) {
     static constexpr auto button_list = {
