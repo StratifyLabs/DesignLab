@@ -57,8 +57,8 @@ void ExportModal::start() {
     printf("Can't export right now\n");
   } else {
     auto model = ModelInScope();
-    data.export_worker = ExportWorker(model.instance.runtime);
-    data.export_worker.set_associated_object(modal.object()).start();
+    data.export_worker = ExportWorker(model.instance.runtime, modal.object());
+    data.export_worker.start();
   }
 }
 
@@ -337,28 +337,28 @@ void ExportModal::ExportWorker::export_cmake_sourcelist() {
 
 void ExportModal::ExportWorker::update_message(var::StringView message) {
   m_update_message = message;
-  push_task_to_runtime<ExportWorker>(this, [](ExportWorker *self) {
-    auto modal = Modal(self->associated_object());
+  push_task_to_runtime([this]() {
+    auto modal = Modal(associated_object());
     modal.find<Label>(Names::message_label)
-      .set_text(GeneralString(self->m_update_message).cstring());
+      .set_text(GeneralString(m_update_message).cstring());
   }).wait_runtime_task();
 }
 
 void ExportModal::ExportWorker::update_progress(int value, int total) {
   m_update_progress = value;
   m_update_total = total;
-  push_task_to_runtime<ExportWorker>(this, [](ExportWorker *self) {
-    auto modal = Modal(self->associated_object());
+  push_task_to_runtime([this]() {
+    auto modal = Modal(associated_object());
     modal.find<Bar>(Names::progress_bar)
       .set_value(Range()
-                   .set_value(self->m_update_progress)
-                   .set_maximum(self->m_update_total));
+                   .set_value(m_update_progress)
+                   .set_maximum(m_update_total));
   }).wait_runtime_task();
 }
 
 void ExportModal::ExportWorker::update_success() {
-  push_task_to_runtime<ExportWorker>(this, [](ExportWorker *self) {
-    auto modal = Modal(self->associated_object());
+  push_task_to_runtime([this]() {
+    auto modal = Modal(associated_object());
     modal.find<Button>(Names::ok_button).clear_state(State::disabled);
     {
       auto model = ModelInScope();

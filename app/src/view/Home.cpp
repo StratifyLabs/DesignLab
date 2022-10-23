@@ -219,7 +219,7 @@ Home::Home(const char *name) {
   configure_content(screen().find<Generic>(LocalNames::content_area));
 
   if (auto model = ModelInScope(); model.instance.is_export_on_startup) {
-    model.instance.runtime->push([](void *) {
+    model.instance.runtime->push([]() {
       Event::send(
         screen().find(ViewObject::Names::project_object),
         EventCode::notified);

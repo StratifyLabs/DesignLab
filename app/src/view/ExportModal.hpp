@@ -15,8 +15,8 @@ private:
   class ExportWorker : public WorkerAccess<ExportWorker> {
   public:
     ExportWorker() = default;
-    explicit ExportWorker(Runtime *runtime)
-      : WorkerAccess<ExportWorker>(runtime) {}
+    explicit ExportWorker(Runtime *runtime, lv_obj_t * object)
+      : WorkerAccess<ExportWorker>(runtime, object) {}
 
   private:
     var::StringView m_update_message;
