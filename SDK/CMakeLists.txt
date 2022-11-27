@@ -21,7 +21,7 @@ include(CTest)
 
 
 
-sdk_add_subdirectory(API main)
+sdk_add_subdirectory(API v1.6)
 include(${BASE_DIRECTORY}/API/libraries/API.cmake)
 
 set(LVGL_API_USE_FREETYPE ON CACHE INTERNAL "Use LVGL Freetype")
@@ -29,12 +29,12 @@ set(LVGL_CONFIG_PATH ${CMAKE_CURRENT_SOURCE_DIR}/config CACHE INTERNAL "LVGL con
 set(LVGL_NO_STRATIFY_OS ON CACHE INTERNAL "Do not include dependency on Stratify OS")
 set(MBEDTLS_CONFIG_FILE ${CMAKE_CURRENT_SOURCE_DIR}/config/mbedtls/config.h CACHE INTERNAL "MBEDTLS config file")
 
-sdk_add_subdirectory(JsonAPI main)
-sdk_add_subdirectory(InetAPI main)
+sdk_add_subdirectory(JsonAPI v1.5)
+sdk_add_subdirectory(InetAPI v1.5)
 
-sdk_add_subdirectory(WindowAPI main)
-sdk_add_subdirectory(LvglAPI main)
-sdk_add_subdirectory(DesignAPI main)
+sdk_add_subdirectory(WindowAPI v1.0)
+sdk_add_subdirectory(LvglAPI v1.0)
+sdk_add_subdirectory(DesignAPI v1.0)
 
 sdk_add_subdirectory(CPrinterAPI main)
 
