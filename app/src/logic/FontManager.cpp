@@ -58,6 +58,7 @@ FontManager::FontManager(const Construct &options) : m_construct(options) {
   for (const auto &font : font_list) {
     const auto sizes = get_user_size_list(font);
     for (const auto font_size : sizes.string_view().split(",")) {
+      auto error_scope = api::ErrorScope();
       process_font_size(
         output_directory,
         node_path,
@@ -65,6 +66,8 @@ FontManager::FontManager(const Construct &options) : m_construct(options) {
         font,
         font_size,
         settings.is_fonts_compressed());
+      if (is_error()) {
+      }
     }
   }
 
@@ -118,7 +121,7 @@ void FontManager::process_font_size(
   const auto output_file_path
     = output_directory / get_file_name(font, font_size);
 
-  StringPrinter printer;
+  auto printer = StringPrinter{};
 
   m_generated_container.push(get_file_name(font, font_size));
 
@@ -126,14 +129,16 @@ void FontManager::process_font_size(
     return;
   }
 
-  Process::Arguments arguments(node_path);
-  arguments.push(m_lv_font_conv_path)
-    .push("--bpp=" | font.get_bits_per_pixel())
-    .push("--size=" | font_size)
-    .push("--format=lvgl")
-    .push("--output=" | options.project_path / output_file_path.string_view())
-    .push("--font=" | options.project_path / font.get_path())
-    .push("--range=" | font.get_range());
+  auto arguments
+    = Process::Arguments(node_path)
+        .push(m_lv_font_conv_path)
+        .push("--bpp=" | font.get_bits_per_pixel())
+        .push("--size=" | font_size)
+        .push("--format=lvgl")
+        .push(
+          "--output=" | options.project_path / output_file_path.string_view())
+        .push("--font=" | options.project_path / font.get_path())
+        .push("--range=" | font.get_range());
 
   if (!is_compressed) {
     arguments.push("--no-compress");
@@ -162,7 +167,8 @@ void FontManager::process_font_size(
 
   printer.object("arguments", arguments).object("environment", env);
 
-  Process lv_font_conv(arguments, env);
+  auto lv_font_conv = Process(arguments, Process::Environment());
+
 
   lv_font_conv.wait();
   lv_font_conv.read_standard_output();
@@ -176,14 +182,15 @@ void FontManager::process_font_size(
 
   const auto log_file_path
     = SessionSettings::get_application_directory() / "lv_font_conv_log.txt";
-  File(File::IsOverwrite::yes, log_file_path).write(printer.output());
+  File(File::IsOverwrite::yes, log_file_path, OpenMode::append_write_only())
+    .write(printer.output());
 
   if (exit_status != 0) {
+    exit(1);
+    const auto description = "`lv_font_conv` had an error (see `"
+                             | log_file_path.string_view() | "` for details)";
 
-    API_RETURN_ASSIGN_ERROR(
-      "`lv_font_conv` had an error (see `" | log_file_path.string_view()
-        | "` for details)",
-      EINVAL);
+    API_RETURN_ASSIGN_ERROR(description, EINVAL);
   }
 
   m_progress_value++;

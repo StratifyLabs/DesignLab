@@ -85,6 +85,7 @@ void Project::configure_form(Form form) {
     Form::SelectFile(
       Form::SelectFile::Data::create(Names::source_select_file)
         .set_select_folder()
+        .set_absolute_path(false)
         .set_base_path(screen()
                          .find<Form::SelectFile>(Names::directory_select_file)
                          .get_value()))
